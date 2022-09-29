@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "husky": "husky install",
+    "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
+    "check:types": "tsc --noemit",
+    "check:te": "npm run check:types && npm run check:eslint",
+    "clean": "rm -rf ./node_modules ./storybook-static package-lock.json && npm i",
+    "check:update": "npm-check -u",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "rm -rf coverage && jest --coverage",
+    "sb": "start-storybook -p 6006",
+    "sb:prod": "start-storybook -p 80",
+    "build:sb": "build-storybook",
+    "chromatic": "npx chromatic --project-token=2f192326eb16"
   },
   "keywords": [],
   "author": "",
@@ -21,11 +31,14 @@
     "@storybook/react": "6.5.12",
     "@storybook/testing-library": "0.0.13",
     "babel-loader": "8.2.5",
+    "chromatic": "^6.10.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "description": "",
   "dependencies": {
     "storybook": "6.5.12"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "pkg-components@1.0.0"
 }
