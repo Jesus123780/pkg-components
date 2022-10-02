@@ -16,7 +16,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "rm -rf coverage && jest --coverage",
-    "storybook": "start-storybook -p 6006",
+    "sb": "start-storybook -p 6006",
     "sb:prod": "start-storybook -p 80",
     "build:sb": "build-storybook",
     "chromatic": "npx chromatic --project-token=2f192326eb16"
