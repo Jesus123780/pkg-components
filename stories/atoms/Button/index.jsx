@@ -1,20 +1,45 @@
 import PropTypes from 'prop-types';
 import './button.css';
+import { CustomButton } from './styled';
 
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+export const Button = ({
+  primary,
+  backgroundColor,
+  size,
+  label,
+  borderRadius,
+  color,
+  width,
+  padding,
+  ripple,
+  fontFamily,
+  child,
+  fontWeight,
+  ...props
+}) => {
+  const primitiveMode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+  const mode = ripple ? 'ripple-mode' : primitiveMode
   return (
-    <button
+    <CustomButton
+      width={width}
+      padding={padding}
       type="button"
       className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={backgroundColor && { backgroundColor }}
+      style={{
+        backgroundColor,
+        color,
+        fontWeight,
+        borderRadius,
+        fontFamily
+      }}
       {...props}
     >
       {label}
-    </button>
+      {child}
+    </CustomButton>
   );
 };
 
