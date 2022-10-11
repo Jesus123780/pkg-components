@@ -58,3 +58,18 @@
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 0px 1px inset;
   outline: none;
 }
+
+.storybook-button--loading svg {
+  animation: loading-spinner 1s linear infinite;
+  margin-top: 0.188rem;
+}
+
+@keyframes loading-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

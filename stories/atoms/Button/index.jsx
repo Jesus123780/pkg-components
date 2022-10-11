@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { Loading } from '../../../assets/icons';
+import { getGlobalStyle } from '../../../utils';
 import './button.css';
 import { CustomButton } from './styled';
 
@@ -16,18 +18,24 @@ export const Button = ({
   padding,
   ripple,
   fontFamily,
+  loading,
   child,
   fontWeight,
+  disabled,
   ...props
 }) => {
   const primitiveMode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
   const mode = ripple ? 'ripple-mode' : primitiveMode
   return (
     <CustomButton
+      disabled={loading || disabled}
       width={width}
+      loading={loading}
       padding={padding}
       type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
+      className={
+        ['storybook-button', `storybook-button--${size}`, `storybook-button--${loading && 'loading'}`, mode].join(' ')
+      }
       style={{
         backgroundColor,
         color,
@@ -37,7 +45,7 @@ export const Button = ({
       }}
       {...props}
     >
-      {label}
+      {loading  ? <Loading color={getGlobalStyle('--color-base-white')}  size={20} /> : label }
       {child}
     </CustomButton>
   );
