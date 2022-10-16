@@ -1,0 +1,38 @@
+
+  .column-container {
+    background-color: #f4f5f7;
+    padding: 15px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    height: 97vh;
+  }
+  .column-container *,
+  .column-container *::before,
+  .column-container::after {
+    box-sizing: inherit;
+  }
+  
+  .column-container .column {
+    text-align: center;
+    background: #ffffff;
+    padding: 15px;
+    display: inline-block;
+    position: relative;
+  }
+  .column-container .column-controler {
+    position: absolute;
+    border: 2px solid  var(--color-primary-red);
+    height: 100%;
+    z-index: 1;
+    opacity: 0.2;
+    top: 0;
+    right: 0;
+    cursor: ew-resize;
+    width: min-content;
+  }
+  .column-container .column-controler:hover {
+    opacity: 1;
+  }
