@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   CardProductsContent,
   CtnBox,
@@ -10,6 +10,7 @@ export const CardProductsComponent = ({
   router,
   onClick,
   isVisible,
+  image,
   food,
   setRef,
   redirect = () => { return },
@@ -49,7 +50,7 @@ export const CardProductsComponent = ({
               )}
             </CtnBox>
             <CtnBox>
-              {isVisible && (
+              {(!image && isVisible) && (
                 <img
                   alt={food.ProDescription || "img"}
                   blurDataURL="/images/DEFAULTBANNER.png"
@@ -58,6 +59,7 @@ export const CardProductsComponent = ({
                   src={food.ProImage}
                 />
               )}
+              {image}
             </CtnBox>
           </CardProductsContent>
         </WrapperCard>
