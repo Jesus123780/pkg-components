@@ -47,6 +47,7 @@ export const Button = ({
     >
       {loading  ? <Loading color={getGlobalStyle('--color-base-white')}  size={20} /> : label }
       {child}
+      {props.children}
     </CustomButton>
   );
 };

@@ -5,7 +5,13 @@ import React, {
 } from 'react';
 import './styles.css';
 
-export const  ResisesColumns = ({ lastMinWidth = 440, ...props  }) => {
+export const  ResisesColumns = ({
+  lastMinWidth = 440,
+  padding = '15px',
+  height = '100%',
+  backgroundColor,
+  ...props
+  }) => {
   const wrapper = useRef();
   const dragging = useRef(false);
   const columns = ['one', 'two'];
@@ -65,6 +71,11 @@ export const  ResisesColumns = ({ lastMinWidth = 440, ...props  }) => {
       <div
         className='column-container'
         ref={wrapper}
+        style={{
+          height: height,
+          padding: padding,
+          backgroundColor: backgroundColor || '#f4f5f7'
+       }}
         onMouseMove={onDrag}
         onTouchMove={onDrag}
         onMouseUp={onDragEnd}
