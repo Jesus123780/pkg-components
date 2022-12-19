@@ -1,33 +1,30 @@
 import styled from "styled-components";
 
 export const ModalWrapper = styled.div`
-    max-width: calc(100vw - 120px);
-    max-height: calc(100vh - 119px);
-    top: 60px;
-    right: 0px;
-    left: 0px;
     animation: 0s ease 0s 1 normal none running none;
-    transition: none 0s ease 0s;
-    display: flex;
-    position: fixed;
-    z-index: 9900;
-    inset: 0px;
-    margin: auto;
-    overflow-y: auto;
     background-color: #ffffff;
     border-radius: 3px;
     box-shadow: var(--ds-shadow-overlay,0 0 0 1px rgba(9,30,66,0.08),0 2px 1px rgba(9,30,66,0.08),0 0 20px -6px rgba(9,30,66,0.31));
+    display: flex;
+    inset: 0px;
+    left: 0px;
+    margin: auto;
+    max-height: calc(100vh - 119px);
+    max-width: calc(100vw - 120px);
+    overflow-y: auto;
+    position: fixed;
+    right: 0px;
+    top: 60px;
+    transition: none 0s ease 0s;
+    z-index: 9900;
     .modal--section__main {
         flex: 0 1 calc(75% + 12px);
         height: 100%;
-        border: 1px solid;
+        overflow-y: auto;
     }
-    
     .modal--section__sec {
         flex: 0 1 calc(24% + 12px);
         height: 100%;
-        /* border: 1px solid; */
-
     }
 `
 
@@ -74,4 +71,25 @@ export const SectionDetailOrder = styled.div`
     .header-responsible {
         padding: 10px;
     }
+`
+
+export const ContainerGrid = styled.div`
+    display: grid;    
+    margin: 0;
+    padding-bottom: 20px;
+    margin: auto;
+    padding: 0 30px;
+    height: 100vh;
+@media only screen and (min-width: 768px) and (min-width: 960px)
+{
+    grid-template-columns: repeat(auto-fill,minmax(175px,1fr));
+    grid-gap: 30px;
+}
+@media only screen and (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill,minmax(172px,1fr));
+    grid-gap: 20px;
+    grid-auto-rows: max-content;
+}
+
+
 `

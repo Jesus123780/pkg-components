@@ -40,6 +40,60 @@ export const IconDelete = ({ style = {}, size, color }) => {
   );
 };
 
+export const IconComment = (props) => (
+  <svg
+    fill="none"
+    height={16}
+    width={16}
+    xmlns="http://www.w3.org/2000/svg"
+    style={{
+      cursor: "pointer",
+    }}
+    {...props}
+  >
+    <path
+      d="M4.667 12.288h2.667L10.3 14.26a.665.665 0 0 0 1.034-.553v-1.42c2 0 3.333-1.334 3.333-3.334v-4c0-2-1.333-3.333-3.333-3.333H4.667c-2 0-3.333 1.333-3.333 3.333v4c0 2 1.333 3.334 3.333 3.334zm1-5.288h4.666M5.667 7h4.666"
+      stroke={props.color}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit={10}
+    />
+  </svg>
+)
+
+
+export const IconSendMessage = ({ size, color }) => {
+  return <svg
+    height={size}
+    viewBox='0 0 47.02 39.35'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  ><defs></defs><title>Asset 8</title><g data-name='Layer 2' id='Layer_2'><g data-name='Layer 2' id='Layer_2-2'><path
+      d='M45.84,1.13,17.26,26.45l12.08,3.14a1,1,0,0,0,1.17-.51L46,1.26A.1.1,0,0,0,45.84,1.13Z'
+      fill='none'
+      stroke={color}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      strokeWidth='1px'
+  /><path
+      d='M9.62,23.15l-7.83-2a1,1,0,0,1-.15-2L45.62,1a.06.06,0,0,1,.05.11l-36.05,22,4.86,14.57a1,1,0,0,0,2-.31l.79-11'
+      fill='none'
+      stroke={color}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      strokeWidth='1px'
+  /><line
+      fill='none'
+      stroke={color}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      strokeWidth='1px'
+      x1='16.06'
+      x2='23.65'
+      y1='38.35'
+      y2='28.11'
+  /></g></g></svg>
+}
 export const IconClose = ({ style = {}, size, color }) => {
   return (
     <svg

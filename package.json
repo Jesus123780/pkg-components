@@ -52,6 +52,7 @@
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/svelte": "^6.5.12",
     "storybook": "6.5.12",
+    "storybook-addon-next-router": "^4.0.2",
     "styled-components": "5.3.6"
   },
   "repository": {
