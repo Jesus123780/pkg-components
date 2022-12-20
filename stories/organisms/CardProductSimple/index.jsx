@@ -18,7 +18,7 @@ import {
   ItemProQuantity,
   OverlineFree,
   WrapperButton,
-  WrapperCard,
+  WrapperCard
 } from "./styled";
 export const MemoCardProductSimple = ({
   del,
@@ -45,9 +45,11 @@ export const MemoCardProductSimple = ({
   render = null,
   src,
   sum,
+  margin,
   tag,
   ValueDelivery,
   widthButton,
+  activeComment,
   dispatch = () => {
     return;
   },
@@ -110,7 +112,7 @@ export const MemoCardProductSimple = ({
         style={{ display: "none" }}
         type="file"
       />
-      <WrapperCard>
+      <WrapperCard margin={margin}>
         {handleFree && (
           <OverlineFree
             free={free}
@@ -136,6 +138,7 @@ export const MemoCardProductSimple = ({
               onClick={() => {
                 return handleComment();
               }}
+              right={buttonComment && activeComment}
               top={"90px"}
             >
               <IconComment

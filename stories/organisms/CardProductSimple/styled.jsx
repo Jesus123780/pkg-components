@@ -4,7 +4,7 @@ import {
   BGColor,
   DarkSilver,
   PColor,
-  PVColor,
+  PVColor
 } from "public/colors";
 import styled, { css } from "styled-components";
 
@@ -177,6 +177,8 @@ export const Button = styled.button`
 `;
 export const WrapperCard = styled.div`
   position: relative;
+  margin: ${({ margin }) => {return margin || '0'}};
+
   &&:hover ${OverlineFree} {
     top: -30px;
   }
@@ -195,6 +197,9 @@ export const ButtonCard = styled.button`
   z-index: 999;
   top: ${({ top }) => {
     return top ? top : "20px";
+  }};
+  right: ${({ right }) => {
+    return right ? '0' : "-50px";
   }};
   transition-delay: ${({ delay }) => {
     return delay ? delay : "auto";

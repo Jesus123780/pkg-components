@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { DarkSilver, SECBGColor } from "../../../assets/colors";
 
 export const ModalWrapper = styled.div`
     animation: 0s ease 0s 1 normal none running none;
@@ -73,6 +74,37 @@ export const SectionDetailOrder = styled.div`
     }
 `
 
+export const HeaderWrapperDetail = styled.div`
+    display: flex;
+    flex-direction: row;
+    grid-column-gap: 12px;
+    column-gap: 12px;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 8px 12px;
+    border-radius: 200px;
+    transition: background-color .3s ease-in-out;
+    border: 0;
+    cursor: pointer;
+    background-color: ${SECBGColor};
+    &:hover {
+      background-color: ${SECBGColor};
+    }
+    .info-sales {
+    color: ${DarkSilver};
+    transition: background-color .3s ease-in-out;
+    white-space: nowrap;
+    text-align: left;
+    }
+    width: 100%;
+    span {
+    font-size: .75rem;
+    line-height: 1rem;
+    display: block;
+    }
+`
 export const ContainerGrid = styled.div`
     display: grid;    
     margin: 0;

@@ -1,11 +1,13 @@
-import { IconSales } from "@/public/icons";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CLIENT_URL_BASE } from "~/apollo/urls";
-import { CardProducts } from "~/components/CartProduct";
+import { numberFormat } from "~/utils";
+import { IconSales } from "../../../assets/icons";
 import { Column } from "../../atoms/Column";
 import { CustomLink } from "../../atoms/Link";
 import { Overline } from "../../atoms/Overline";
+import { AwesomeModal } from "../AwesomeModal";
+import { CardProductSimple } from "../CardProductSimple";
 import { ResisesColumns } from "../ResisesColumns";
 import { Text } from "./../../atoms";
 import { Button } from "./../../atoms/Button/index";
@@ -13,11 +15,12 @@ import { Skeleton } from "./../../molecules/Skeleton";
 import {
   ActionButton,
   ContainerGrid,
+  HeaderWrapperDetail,
   ModalWrapper,
   SectionDetailOrder
 } from "./styled";
 
-export const ModalDetailOrder = ({
+export const MemoModalDetailOrder = ({
   dataModal = {},
   dataStore,
   pDatCre,
@@ -39,25 +42,89 @@ export const ModalDetailOrder = ({
     return;
   },
 }) => {
-  const { payMethodPState, pSState, pCodeRef, getAllPedidoStore } = dataModal;
+  const {
+    payMethodPState,
+    pSState,
+    locationUser,
+    pCodeRef,
+    getAllPedidoStore,
+  } = dataModal;
+  const dataLocation = (locationUser && JSON.parse(locationUser)) || {};
+  const { cName, country, dName, uLocationKnow } = dataLocation;
   const router = useRouter();
   const stateOrder = {
-    0: "Confirmado",
+    1: "Confirmado",
     2: "En Proceso",
     3: "Listo Para Entrega",
     4: "Pedido Concluido",
     5: "Rechazado",
   };
   const { yearMonthDay, hourMinutes12, longDayName } = pDatCre || {};
-  const [groupProduct, setgroupProduct] = useState({
-    PRODUCT: [],
-  });
-  useEffect(() => {
-    const groupProduct = () => {};
-  }, []);
+  const [stateSale, setStateSale] = useState(pSState);
+  const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [oneProductToComment, setOneProductToComment] = useState({})
+  const [values, setValues] = useState({})
+  const handleChange = (e, error) => {
+    setValues({ ...values, [e.target.name]: e.target.value })
+  }
+  const handleComment = (product, comment) => {
+    if (product) {
+      setOneProductToComment(product)
+      setValues({
+        ...values,
+        comment: comment || ''
+      })
+    }
+    setOpenCommentModal(!openCommentModal)
+  }
+  const handleChangeStateSale = (value, pCodeRef) => {
+    HandleChangeState(value, pCodeRef);
+    setStateSale(value);
+  };
 
   return (
     <>
+      {openCommentModal && (
+        <AwesomeModal
+          btnConfirm={false}
+          footer={false}
+          header={true}
+          onCancel={() => {
+            return handleComment();
+          }}
+          onHide={() => {
+            return handleComment();
+          }}
+          padding="20px"
+          show={openCommentModal}
+          size="400px"
+          title="Mira los comentarios"
+          zIndex="9999"
+        >
+          <CardProductSimple
+            {...oneProductToComment}
+            ProDescription={oneProductToComment.ProDescription}
+            ProDescuento={oneProductToComment.ProDescuento}
+            ProImage={oneProductToComment.ProImage}
+            ProPrice={oneProductToComment.ProPrice}
+            ProQuantity={oneProductToComment.ProQuantity}
+            ValueDelivery={oneProductToComment.ValueDelivery}
+            comment={false}
+            edit={false}
+            pName={oneProductToComment.pName}
+            render={null}
+          />
+          <textarea
+            className="input-textarea"
+            name="comment"
+            onChange={(e) => {
+              return handleChange(e)
+            }}
+            required
+            value={values?.comment}
+          />
+        </AwesomeModal>
+      )}
       <Overline
         show
         zIndex="9800"
@@ -73,68 +140,119 @@ export const ModalDetailOrder = ({
           lastMinWidth={200}
         >
           <div className="modal--section__main">
-            <Text as="h1" fontSize="24px" color="#172b4d">
+            <Text
+              margin="20px 0"
+              fontWeight="300"
+              fontSize="24px"
+              color="#172b4d"
+            >
               {pCodeRef}
             </Text>
-            <ContainerGrid>
-              {saleKey?.map((store, i) => {
-                console.log(store)
-                return (
-                  <div key={i + 1}>
-                    {saleGroup[store]?.length ?? 0}
-                    <div>
-                      {saleGroup[store]?.map((sale, idx) => {
-                        const producto = sale?.getAllShoppingCard?.productFood || {};
-                        return <div>
-                           <Text size="1.5em">
-                          Cantidad: {sale?.getAllShoppingCard?.cantProducts}{" "}
-                        </Text>
-                           <CardProducts
-                          {...producto}
-                          ProDescription={producto.ProDescription}
-                          ProDescuento={producto.ProDescuento}
-                          ProImage={producto.ProImage}
-                          ProPrice={producto.ProPrice}
-                          ProQuantity={producto.ProQuantity}
-                          ValueDelivery={producto.ValueDelivery}
-                          edit={false}
-                          key={producto.pId}
-                          onClick={() => {
-                            return router.push(
-                              `/update/products/editar/${producto.pId}`
-                            );
-                          }}
-                          pName={producto.pName}
-                          render={<IconSales size="20px" />}
-                          tag={false}
-                        />
-                        </div>;
-                      })}
+            {/* {false && (
+              <ContainerGrid>
+                {saleKey?.map((store, i) => {
+                  return (
+                    <div key={i + 1}>
+                      {saleGroup[store]?.length ?? 0}
+                      <div>
+                        {saleGroup[store]?.map((sale, idx) => {
+                          const producto =
+                            sale?.getAllShoppingCard?.productFood || {};
+                          return (
+                            <div>
+                              <HeaderWrapperDetail
+                              // onClick={() => {
+                              //   return setSalesOpen(!salesOpen);
+                              // }}
+                              // style={style}
+                              >
+                                <IconSales size={30} />
+                                <div className="info-sales">
+                                  <span>Crear una venta</span>
+                                  {true ? (
+                                    <span>Cargando...</span>
+                                  ) : (
+                                    <span>
+                                      Total de ventas hoy{" "}
+                                      {sale?.getAllShoppingCard?.cantProducts}
+                                    </span>
+                                  )}
+                                </div>
+                              </HeaderWrapperDetail>
+                              <Text size="1.5em">
+                                Cantidad:{" "}
+                                {sale?.getAllShoppingCard?.cantProducts}
+                              </Text>
+                              <CardProductSimple
+                                {...producto}
+                                ProDescription={producto.ProDescription}
+                                ProDescuento={producto.ProDescuento}
+                                ProImage={producto.ProImage}
+                                ProPrice={producto.ProPrice}
+                                ProQuantity={producto.ProQuantity}
+                                ValueDelivery={producto.ValueDelivery}
+                                buttonComment={true}
+                                edit={false}
+                                key={producto.pId}
+                                onClick={() => {
+                                  return router.push(
+                                    `/update/products/editar/${producto.pId}`
+                                  );
+                                }}
+                                pName={producto.pName}
+                                render={<IconSales size="20px" />}
+                                tag={false}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </ContainerGrid>
+                  );
+                })}
+              </ContainerGrid>
+            )} */}
             <div>
               <ContainerGrid>
                 {loading || getAllPedidoStore?.length <= 0 ? (
                   <Skeleton height={400} numberObject={50} />
                 ) : (
                   getAllPedidoStore?.map((sale) => {
+                    console.log("🚀 ~ file: index.jsx:230 ~ getAllPedidoStore?.map ~ sale", sale)
                     const producto =
                       sale?.getAllShoppingCard?.productFood || {};
+                    const priceTotal =
+                      (sale?.getAllShoppingCard?.cantProducts *
+                      producto.ProPrice);
+                      const activeComment = sale?.getAllShoppingCard?.comments?.length > 0
                     return (
                       <div>
-                        <Text size="1.5em">
-                          Cantidad: {sale?.getAllShoppingCard?.cantProducts}{" "}
-                        </Text>
-                        <CardProducts
+                        <HeaderWrapperDetail
+                        onClick={() => {
+                          return;
+                        }}
+                        >
+                          <IconSales size={30} />
+                          <div className="info-sales">
+                            <span>
+                              Cantidad {sale?.getAllShoppingCard?.cantProducts}
+                            </span>
+                            <span>total: {numberFormat(priceTotal)}</span>
+                          </div>
+                        </HeaderWrapperDetail>
+                        <CardProductSimple
                           {...producto}
+                          margin='20px 0 0 0'
                           ProDescription={producto.ProDescription}
                           ProDescuento={producto.ProDescuento}
                           ProImage={producto.ProImage}
+                          free={!producto.ProPrice}
                           ProPrice={producto.ProPrice}
                           ProQuantity={producto.ProQuantity}
+                          buttonComment={activeComment}
+                          activeComment={activeComment}
+                          asComment={activeComment}
+                          handleComment={() => { return handleComment(producto, sale?.getAllShoppingCard?.comments)}}
                           ValueDelivery={producto.ValueDelivery}
                           edit={false}
                           key={producto.pId}
@@ -155,11 +273,6 @@ export const ModalDetailOrder = ({
             </div>
           </div>
           <div className="modal--section__sec">
-            {/* <RippleButton onClick={() => {return HandleChangeState(1)}}> Confirmar pedido</RippleButton>
-        <RippleButton onClick={() => {return HandleChangeState(2)}}> Pedido en proceso</RippleButton>
-        <RippleButton onClick={() => {return HandleChangeState(3)}}> Pedido en listo para entrega</RippleButton>
-        <RippleButton onClick={() => {return HandleChangeState(4)}}> Pedido concluido</RippleButton>
-        <RippleButton onClick={() => {return HandleChangeState(5)}}> Rechazar pedido</RippleButton> */}
             <Column position="relative">
               <Button
                 color="#ffffff"
@@ -171,7 +284,7 @@ export const ModalDetailOrder = ({
                   return handleOpenActions();
                 }}
               >
-                {stateOrder[pSState]}
+                {stateOrder[stateSale]}
               </Button>
               <Column>
                 {openAction && (
@@ -183,7 +296,7 @@ export const ModalDetailOrder = ({
                     <div
                       className="option"
                       onClick={() => {
-                        return HandleChangeState(1, pCodeRef);
+                        return handleChangeStateSale(1, pCodeRef);
                       }}
                     >
                       {" "}
@@ -192,7 +305,7 @@ export const ModalDetailOrder = ({
                     <div
                       className="option"
                       onClick={() => {
-                        return HandleChangeState(2, pCodeRef);
+                        return handleChangeStateSale(2, pCodeRef);
                       }}
                     >
                       {" "}
@@ -201,7 +314,7 @@ export const ModalDetailOrder = ({
                     <div
                       className="option"
                       onClick={() => {
-                        return HandleChangeState(3, pCodeRef);
+                        return handleChangeStateSale(3, pCodeRef);
                       }}
                     >
                       {" "}
@@ -210,7 +323,7 @@ export const ModalDetailOrder = ({
                     <div
                       className="option"
                       onClick={() => {
-                        return HandleChangeState(4, pCodeRef);
+                        return handleChangeStateSale(4, pCodeRef);
                       }}
                     >
                       {" "}
@@ -219,7 +332,7 @@ export const ModalDetailOrder = ({
                     <div
                       className="option"
                       onClick={() => {
-                        return HandleChangeState(5, pCodeRef);
+                        return handleChangeStateSale(5, pCodeRef);
                       }}
                     >
                       {" "}
@@ -244,6 +357,12 @@ export const ModalDetailOrder = ({
                   <Text fontSize="14px">{pCodeRef}</Text>
                 </div>
 
+                <div className="header-responsible">
+                  <Text fontSize="14px">Ubicacion</Text>
+                  <Text fontSize="14px">{`${cName ?? ""} - ${
+                    uLocationKnow ?? ""
+                  } - ${country ?? ""} - ${dName ?? ""}`}</Text>
+                </div>
                 <div className="header-responsible">
                   <Text fontSize="14px">Canal</Text>
                   <Text fontSize="14px">DELIVERY-APP</Text>
@@ -285,3 +404,7 @@ export const ModalDetailOrder = ({
     </>
   );
 };
+
+export const ModalDetailOrder = React.memo(MemoModalDetailOrder, (prev, next) => {
+  return prev.dataStore === next.dataStore
+})
