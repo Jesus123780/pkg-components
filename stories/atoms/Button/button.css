@@ -1,0 +1,75 @@
+.storybook-button {
+  font-family: 'PFont-Light';
+  font-weight: 700;
+  border: 0;
+  border-radius: 3em;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1;
+}
+.storybook-button--primary {
+  color: white;
+  background-color: var(--color-primary-red);
+  font-size: .75rem;
+  line-height: 1rem;
+  display: block;
+
+}
+.storybook-button--secondary {
+  color: #333;
+  background-color: transparent;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
+}
+.storybook-button--small {
+  font-size: 12px;
+  padding: 10px 16px;
+}
+.storybook-button--medium {
+  font-size: 14px;
+  padding: 11px 20px;
+}
+.storybook-button--large {
+  font-size: 16px;
+  padding: 12px 24px;
+}
+
+
+/* ripple-mode */
+
+/* ripple-mode effect */
+.ripple-mode {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple-mode:hover {
+  background: #ffffff radial-gradient(circle, transparent 1%, #e9e9e93a 1%) center/15000%;
+}
+.ripple-mode:active {
+  background-color: #6eb9f7;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+/* Button style */
+.ripple-mode {
+  cursor: pointer;
+  color: white;
+  background-color: #2196f3;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 0px 1px inset;
+  outline: none;
+}
+
+.storybook-button--loading svg {
+  animation: loading-spinner 1s linear infinite;
+  margin-top: 0.188rem;
+}
+
+@keyframes loading-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

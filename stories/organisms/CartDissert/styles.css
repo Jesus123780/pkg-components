@@ -1,0 +1,29 @@
+.content-cart {
+    background-color: 'red';
+    padding: 10px;
+    margin: 15px 0;
+    border-bottom: 1px solid #ccc;
+    grid-template-columns: 5fr 10%;
+    gap: 20px;
+    cursor: move;
+    display: grid;
+
+}
+.title_card{
+    word-break: break-word;
+    font-family: PFont-Light;
+    color: #ffff;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.25em;
+    font-weight: 500;
+}
+.price {
+    word-break: break-word;
+    font-family: PFont-Light;
+    color: red;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.25em;
+    font-weight: 600;
+}

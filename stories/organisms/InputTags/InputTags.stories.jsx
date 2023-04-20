@@ -1,0 +1,21 @@
+import React from 'react';
+import { TagsInput } from './index';
+
+// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+export default {
+  title: 'organisms/TagsInput',
+  component: TagsInput,
+  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
+  argTypes: {
+    backgroundColor: { control: 'color' },
+  },
+};
+
+// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+const Template = (args) => <TagsInput {...args} />;
+
+export const TemplateTagsInput = Template.bind({});
+// More on args: https://storyb ook.js.org/docs/react/writing-stories/args
+TemplateTagsInput.args = {
+  placeholder: 'Enter'
+};
