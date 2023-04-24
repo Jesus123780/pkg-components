@@ -34,7 +34,7 @@ export const AwesomeModal = ({
   customHeight = false,
   submit = false,
   header = true,
-  sizeIconClose = '20px',
+  sizeIconClose = '30px',
   borderRadius = '.3rem',
   onHide = () => { return },
   onCancel = () => { return },

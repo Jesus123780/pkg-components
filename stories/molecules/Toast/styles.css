@@ -61,6 +61,8 @@
     margin-bottom: 6px;
     width: 300px;
     height: 18px;
+    color: var(--color-base-white);
+
   }
   .notification-message {
     margin: 0;
@@ -70,6 +72,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: var(--color-base-white);
   }
   .notification-image {
     float: left;
@@ -81,7 +84,7 @@
   }
 
   .toast {
-    height: 60px;
+    height: 75px;
     width: 370px;
     color: var(--color-base-black);
     padding: 10px;

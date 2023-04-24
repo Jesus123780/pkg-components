@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { IconClose } from "./../../../assets/icons/index";
 import "./styles.css";
+import { PColor, BGColor } from "../../../assets/colors";
 
 export const Toast = (props) => {
   const { toastList, position, autoDelete, autoDeleteTime } = props;
@@ -40,6 +41,12 @@ export const Toast = (props) => {
       deleteToast(id);
     }
   };
+
+  const backgroundColor = {
+    success: '#50a773',
+    warning: '#ebbc26',
+    error: `${PColor}69`
+  }
   return (
     <>
       <div className={`notification-container ${position}`}>
@@ -50,7 +57,7 @@ export const Toast = (props) => {
               left: `${divPosition}px`,
               transition: "left 0.5s ease-in-out",
               className: `notification toast ${position}`,
-              backgroundColor: toast.backgroundColor,
+              backgroundColor: backgroundColor[toast.backgroundColor] ?? '#50a773',
             }}
             onDrag={handleDrag}
             onDragEnd={(e) => {
@@ -62,7 +69,7 @@ export const Toast = (props) => {
             // style={{ backgroundColor: toast.backgroundColor }}
           >
             <button onClick={() => deleteToast(toast.id)}>
-              <IconClose size={20} />
+              <IconClose size={30} color={BGColor} />
             </button>
             <div>
               <p className="notification-title">{toast.title}</p>
