@@ -11,7 +11,7 @@ export const ResisesColumnsMemo = ({
   ...props
 }) => {
   const wrapper = useRef();
-  const initialDividerPos = { __0: 80, __1: 20 };
+  const initialDividerPos = { __0: 60, __1: 40 };
   const [columnsChildren, setColumnsChildren] = useState([]);
   const [dividerPos, setDividerPos] = useState(initialDividerPos);
   const getInitialDividerPos = (numSections) => {

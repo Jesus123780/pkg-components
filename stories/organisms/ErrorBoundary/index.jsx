@@ -1,7 +1,7 @@
 
-export const ErrorBoundary = () => {
+export const ErrorBoundary = ({ message }) => {
   return (
-    <div>Ho mierda</div>
+    <div>{message} Ho mierda</div>
   )
 }
 

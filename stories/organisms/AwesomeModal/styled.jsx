@@ -217,6 +217,7 @@ export const ModalFooter = styled.div`
     margin: auto;
     justify-content: space-between;
     display: flex;
+    border-top: 1px solid;
     background-color: ${({ backgroundColor }) => { return backgroundColor || BGColor }};
 `
 
