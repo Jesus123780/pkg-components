@@ -7,9 +7,13 @@
     gap: 20px;
     cursor: move;
     display: grid;
-
 }
-.title_card{
+
+.content-cart-flex {
+    display: flex;
+}
+
+.title_card {
     word-break: break-word;
     font-family: PFont-Light;
     color: #ffff;
@@ -18,6 +22,7 @@
     line-height: 1.25em;
     font-weight: 500;
 }
+
 .price {
     word-break: break-word;
     font-family: PFont-Light;

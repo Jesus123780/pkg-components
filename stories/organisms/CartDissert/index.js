@@ -9,19 +9,18 @@ export const Card = ({
   }) => {
     return (
       <Column>
-        <div className="content-cart">
+        <div className="content-cart content-cart-flex">
           <Column>
             <h3 className='title_card'>{card?.title}</h3>
             <h3 className='title_card'>Item: {index + 1}</h3>
           </Column>
           <button
             bgColor='transparent'
-            margin='0px'
-            onClick={() => { return removeOneItem({ listID, id: card.id}) }}
             type='button'
             widthButton='min-content'
+            onClick={() => { return removeOneItem({ listID, id: card.id}) }}
           >
-            <IconDelete color={'red'} size='25px' />
+            <IconDelete color={'red'} size='23px' />
           </button>
         </div>
       </Column>
