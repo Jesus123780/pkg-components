@@ -11,7 +11,7 @@ export const ModalWrapper = styled.div`
     left: 0px;
     margin: auto;
     max-height: calc(100vh - 119px);
-    max-width: calc(100vw - 120px);
+    max-width: 50%;
     overflow-y: auto;
     position: fixed;
     right: 0px;
