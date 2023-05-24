@@ -111,36 +111,8 @@ export const MemoCardProductSimple = ({
       handle();
     }, 0);
   };
-  // function getImageUrl(url) {
-  //   try {
-  //     let xhr = new XMLHttpRequest();
-  //     xhr.open('HEAD', url, false);
-  //     xhr.send();
-  //     if (xhr.status === 200) {
-  //       // la imagen existe, retorna la ruta de la imagen
-  //       return url;
-  //     } else {
-  //       // la imagen no existe, retorna la ruta de la imagen alternativa
-  //       return '/images/DEFAULTBANNER.png';
-  //     }
-  //   } catch (error) {
-  //     return '/images/DEFAULTBANNER.png';
-  //   }
-  // }
-  function getImageUrl(url) {
-    if (url) {
-      const pathname = new URL(url).pathname.toLowerCase();
-      return (
-        pathname.endsWith(".gif") ||
-        pathname.endsWith(".jpg") ||
-        pathname.endsWith(".jpeg") ||
-        pathname.endsWith(".png") ||
-        pathname.endsWith(".webp")
-      );
-    }
-  }
-  const urlImage = getImageUrl(ProImage);
-  const newProImage = urlImage ? ProImage : "/images/DEFAULTBANNER.png";
+
+  const urlImage = "/images/DEFAULTBANNER.png";
   const showCategories = dataExtra.length > 0 || dataOptional.length > 0;
   const formatter = new Intl.ListFormat("es", {
     style: "long",
@@ -384,7 +356,6 @@ export const MemoCardProductSimple = ({
               layout="fill"
               placeholder="empty"
               objectFit="cover"
-              // src={newProImage ?? src}
               src="/images/DEFAULTBANNER.png"
             />
           </div>
