@@ -17,8 +17,41 @@
   .column-container *::before,
   .column-container::after {
     box-sizing: inherit;
+    
+  }
+  
+  .column-container .swiper-button-next {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 4px;
+    color: var(--color-text-white);
+    font-weight: 600;
+    padding: 25px;
+    transition: all 0.3s ease 0s;
   }
 
+  .column-container .swiper-button-next:hover {
+    background-color: rgb(39, 39, 39);
+  }
+
+  .column-container .swiper-button-prev:hover {
+    background-color: rgb(39, 39, 39);
+  }
+
+  .column-container .swiper-button-prev {
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 50%;
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 4px;
+      color: var(--color-text-white);
+      font-weight: 600;
+      padding: 25px;
+      transition: all 0.3s ease 0s;
+  }
+
+  .column-container .swiper-button-next:after, .swiper-button-prev:after {
+    font-size: 1.2rem;
+  }
+  
   .column-container .column {
     text-align: center;
     background: #ffffff;

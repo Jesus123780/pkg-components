@@ -72,6 +72,8 @@ export const SectionDetailOrder = styled.div`
     }
     .header-responsible {
         padding: 10px;
+        display: flex;
+        flex-direction: column;
     }
 `
 

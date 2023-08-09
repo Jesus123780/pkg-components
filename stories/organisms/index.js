@@ -9,5 +9,7 @@ export * from './ListItemDessert';
 export * from './InputImage/Placeholder';
 export * from './ModalDetailOrder';
 export * from './ResisesColumns';
+export * from './Portal';
 export * from './AwesomeModal';
 export * from './Bills';
+export * from './Table';

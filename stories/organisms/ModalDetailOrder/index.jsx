@@ -1,26 +1,25 @@
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { numberFormat } from "../../../utils/index";
-import { IconSales } from "../../../assets/icons";
-import { Column } from "../../atoms/Column";
-import { CustomLink } from "../../atoms/Link";
-import { Overline } from "../../atoms/Overline";
-import { AwesomeModal } from "../AwesomeModal";
-import { CardProductSimple } from "../CardProductSimple";
-import { ResisesColumns } from "../ResisesColumns";
-import { Text } from "./../../atoms";
-import { Button } from "./../../atoms/Button/index";
-import { Skeleton } from "./../../molecules/Skeleton";
+import React, { useState, useEffect } from 'react'
+import { numberFormat } from '../../../utils/index'
+import { IconSales } from '../../../assets/icons'
+import { Column } from '../../atoms/Column'
+import { CustomLink } from '../../atoms/Link'
+import { Overline } from '../../atoms/Overline'
+import { AwesomeModal } from '../AwesomeModal'
+import { CardProductSimple } from '../CardProductSimple'
+import { ResisesColumns } from '../ResisesColumns'
+import { Text } from './../../atoms'
+import { Button } from './../../atoms/Button/index'
+import { Skeleton } from './../../molecules/Skeleton'
 import {
   ActionButton,
   ContainerGrid,
   HeaderWrapperDetail,
   ModalWrapper,
   SectionDetailOrder,
-} from "./styled";
-import { PColor } from "../../../assets/colors";
+} from './styled'
+import { PColor, BGColor } from '../../../assets/colors'
 
-const CLIENT_URL_BASE = "http://localhost:3000/";
+const CLIENT_URL_BASE = process.env.MAIN_URL_BASE
 
 export const MemoModalDetailOrder = ({
   dataModal = {},
@@ -30,26 +29,30 @@ export const MemoModalDetailOrder = ({
   saleKey,
   saleGroup,
   openAction = false,
+  disabledPrint = false,
   edit = true,
   totalProductsPrice = 0,
   loading = false,
   handleOpenActions = () => {
-    return;
+    return
+  },
+  handlePrint = () => {
+    return
   },
   handleModalItem = () => {
-    return;
+    return
   },
   setModalItem = () => {
-    return;
+    return
   },
   HandleChangeState = () => {
-    return;
+    return
   },
   onPress = () => {
-    return;
+    return
   },
   onClose = () => {
-    return;
+    return
   },
 }) => {
   const {
@@ -60,34 +63,43 @@ export const MemoModalDetailOrder = ({
     channel,
     change,
     getAllPedidoStore,
-  } = dataModal;
-  const dataLocation = (locationUser && JSON.parse(locationUser)) || {};
-  const { cName, country, dName, uLocationKnow } = dataLocation;
+  } = dataModal
+  const dataLocation = (locationUser && JSON.parse(locationUser)) || {}
+  const { 
+    cName, 
+    country, 
+    dName, 
+    uLocationKnow
+  } = dataLocation
   const stateOrder = {
-    0: "Confirmado",
-    2: "En Proceso",
-    3: "Listo Para Entrega",
-    4: "Pedido Concluido",
-    5: "Rechazado",
-  };
-  const { yearMonthDay, hourMinutes12, longDayName } = pDatCre || {};
-  const [stateSale, setStateSale] = useState(pSState);
-  const [openCommentModal, setOpenCommentModal] = useState(false);
-  const [oneProductToComment, setOneProductToComment] = useState({});
-  const [values, setValues] = useState({});
+    0: 'Confirmado',
+    2: 'En Proceso',
+    3: 'Listo Para Entrega',
+    4: 'Pedido Concluido',
+    5: 'Rechazado'
+  }
+  const { 
+    yearMonthDay, 
+    hourMinutes12, 
+    longDayName
+  } = pDatCre || {}
+  const [oneProductToComment, setOneProductToComment] = useState({})
+  const [openCommentModal, setOpenCommentModal] = useState(false)
+  const [stateSale, setStateSale] = useState(pSState)
+  const [values, setValues] = useState({})
   const handleChange = (e, error) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+    setValues({ ...values, [e.target.name]: e.target.value })
+  }
   const handleComment = (product, comment) => {
     if (product) {
-      setOneProductToComment(product);
+      setOneProductToComment(product)
       setValues({
         ...values,
-        comment: comment || "",
-      });
+        comment: comment || '',
+      })
     }
-    setOpenCommentModal(!openCommentModal);
-  };
+    setOpenCommentModal(!openCommentModal)
+  }
   /**
    * Description
    * @param {any} value
@@ -96,11 +108,15 @@ export const MemoModalDetailOrder = ({
    **/
   const handleChangeStateSale = (value, pCodeRef) => {
     if (stateSale !== value) {
-      HandleChangeState(value, pCodeRef);
-      setStateSale(value);
+      HandleChangeState(value, pCodeRef)
+      setStateSale(value)
     }
-  };
-  if (saleError) return <>Error</>;
+  }
+  useEffect(() => {
+    setStateSale(pSState)
+  }, [pSState])
+  
+  if (saleError) return <>Error</>
   return (
     <>
       {openCommentModal && (
@@ -109,16 +125,16 @@ export const MemoModalDetailOrder = ({
           footer={false}
           header={true}
           onCancel={() => {
-            return handleComment();
+            return handleComment()
           }}
           onHide={() => {
-            return handleComment();
+            return handleComment()
           }}
-          padding="20px"
+          padding='20px'
           show={openCommentModal}
-          size="400px"
-          title="Mira los comentarios"
-          zIndex="9999"
+          size='400px'
+          title='Mira los comentarios'
+          zIndex='9999'
         >
           <CardProductSimple
             {...oneProductToComment}
@@ -128,10 +144,10 @@ export const MemoModalDetailOrder = ({
             render={null}
           />
           <textarea
-            className="input-textarea"
-            name="comment"
+            className='input-textarea'
+            name='comment'
             onChange={(e) => {
-              return handleChange(e);
+              return handleChange(e)
             }}
             required
             value={values?.comment}
@@ -140,28 +156,28 @@ export const MemoModalDetailOrder = ({
       )}
       <Overline
         show
-        zIndex="9800"
-        bgColor="rgba(0,0,0,.4)"
+        zIndex='9800'
+        bgColor={`${BGColor}20`}
         onClick={() => {
           if (openAction) {
-            handleOpenActions();
+            handleOpenActions()
           }
-          return onClose();
+          return onClose()
         }}
       />
       <ModalWrapper>
         <ResisesColumns
-          backgroundColor="transparent"
+          backgroundColor='transparent'
           initialDividerPosition={{ __0: 80, __1: 20 }}
-          lastMinWidth={"auto"}
-          padding="0"
+          lastMinWidth={'auto'}
+          padding='0'
         >
-          <div className="modal--section__main">
+          <div className='modal--section__main'>
             <Text
-              margin="20px 0"
-              fontWeight="300"
-              fontSize="24px"
-              color="#172b4d"
+              margin='20px 0'
+              fontWeight='300'
+              fontSize='24px'
+              color='#172b4d'
             >
               {pCodeRef}
             </Text>
@@ -172,21 +188,21 @@ export const MemoModalDetailOrder = ({
                 ) : (
                   getAllPedidoStore?.map((sale, index) => {
                     const producto =
-                      sale?.getAllShoppingCard?.productFood || {};
+                      sale?.getAllShoppingCard?.productFood || {}
                     const priceTotal =
                       sale?.getAllShoppingCard?.cantProducts *
-                      producto.ProPrice;
+                      producto.ProPrice
                     const activeComment =
-                      sale?.getAllShoppingCard?.comments?.length > 0;
+                      sale?.getAllShoppingCard?.comments?.length > 0
                     return (
                       <div key={index}>
                         <HeaderWrapperDetail
                           onClick={() => {
-                            return;
+                            return
                           }}
                         >
                           <IconSales size={30} />
-                          <div className="info-sales">
+                          <div className='info-sales'>
                             <span>
                               Cantidad: {sale?.getAllShoppingCard?.cantProducts}
                             </span>
@@ -195,7 +211,7 @@ export const MemoModalDetailOrder = ({
                         </HeaderWrapperDetail>
                         <CardProductSimple
                           {...producto}
-                          margin="20px 0 0 0"
+                          margin='20px 0 0 0'
                           ProDescription={producto.ProDescription}
                           ProDescuento={producto.ProDescuento}
                           ProImage={producto.ProImage}
@@ -209,7 +225,7 @@ export const MemoModalDetailOrder = ({
                             return handleComment(
                               producto,
                               sale?.getAllShoppingCard?.comments
-                            );
+                            )
                           }}
                           ValueDelivery={producto.ValueDelivery}
                           edit={false}
@@ -218,28 +234,28 @@ export const MemoModalDetailOrder = ({
                             handleModalItem(
                               producto.pId ?? null,
                               sale.ShoppingCard ?? null
-                            );
-                            return setModalItem(true);
+                            )
+                            return setModalItem(true)
                           }}
                           pName={producto.pName}
-                          render={<IconSales size="20px" />}
+                          render={<IconSales size='20px' />}
                           tag={false}
                         />
                       </div>
-                    );
+                    )
                   })
                 )}
               </ContainerGrid>
             </div>
           </div>
-          <div className="modal--section__sec">
+          <div className='modal--section__sec'>
             {edit && (
-              <Column position="relative">
+              <Column position='relative'>
                 <Button
-                  color="#ffffff"
-                  width="90%"
-                  padding="5px"
-                  borderRadius="2px"
+                  color={BGColor}
+                  width='90%'
+                  padding='5px'
+                  borderRadius='2px'
                   backgroundColor={PColor}
                   onClick={handleOpenActions}
                 >
@@ -249,52 +265,52 @@ export const MemoModalDetailOrder = ({
                   {openAction && (
                     <ActionButton
                       onPress={() => {
-                        return;
+                        return
                       }}
                     >
                       <div
-                        className="option"
+                        className='option'
                         onClick={() => {
-                          return handleChangeStateSale(0, pCodeRef);
+                          return handleChangeStateSale(0, pCodeRef)
                         }}
                       >
-                        {" "}
+                        {' '}
                         Confirmar pedido
                       </div>
                       <div
-                        className="option"
+                        className='option'
                         onClick={() => {
-                          return handleChangeStateSale(2, pCodeRef);
+                          return handleChangeStateSale(2, pCodeRef)
                         }}
                       >
-                        {" "}
+                        {' '}
                         Pedido en proceso
                       </div>
                       <div
-                        className="option"
+                        className='option'
                         onClick={() => {
-                          return handleChangeStateSale(3, pCodeRef);
+                          return handleChangeStateSale(3, pCodeRef)
                         }}
                       >
-                        {" "}
+                        {' '}
                         Pedido en listo para entrega
                       </div>
                       <div
-                        className="option"
+                        className='option'
                         onClick={() => {
-                          return handleChangeStateSale(4, pCodeRef);
+                          return handleChangeStateSale(4, pCodeRef)
                         }}
                       >
-                        {" "}
+                        {' '}
                         Pedido concluido
                       </div>
                       <div
-                        className="option"
+                        className='option'
                         onClick={() => {
-                          return handleChangeStateSale(5, pCodeRef);
+                          return handleChangeStateSale(5, pCodeRef)
                         }}
                       >
-                        {" "}
+                        {' '}
                         Rechazar pedido
                       </div>
                     </ActionButton>
@@ -304,68 +320,79 @@ export const MemoModalDetailOrder = ({
             )}
             <Column>
               <SectionDetailOrder>
-                <div className="header-detail">
-                  <Text fontSize="14px">Detalles</Text>
+                <div className='header-detail'>
+                  <Text fontSize='14px'>Detalles</Text>
                 </div>
 
-                <div className="header-responsible">
-                  <Text fontSize="14px">Responsable</Text>
-                  <Text fontSize="14px">{dataStore?.storeName}</Text>
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Responsable: </Text>
+                  <Text fontSize='14px'>{dataStore?.storeName}</Text>
                 </div>
-                <div className="header-responsible">
-                  <Text fontSize="14px">Codigo</Text>
-                  <Text fontSize="14px">{pCodeRef}</Text>
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Codigo:</Text>
+                  <Text fontSize='14px'>{pCodeRef}</Text>
                 </div>
 
-                <div className="header-responsible">
-                  <Text fontSize="14px">Ubicacion</Text>
-                  <Text fontSize="14px">{`${cName ?? ""} - ${
-                    uLocationKnow ?? ""
-                  } - ${country ?? ""} - ${dName ?? ""}`}</Text>
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Ubicacion</Text>
+                  <Text fontSize='14px'>{`${cName ?? ''} - ${
+                    uLocationKnow ?? ''
+                  } - ${country ?? ''} - ${dName ?? ''}`}</Text>
                 </div>
-                <div className="header-responsible">
-                  <Text fontSize="14px">Canal</Text>
-                  <Text fontSize="14px">
-                    {channel ? "RESTAURANTE" : "DELIVERY-APP"}
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Canal: </Text>
+                  <Text fontSize='14px'>
+                    {channel ? 'RESTAURANTE' : 'DELIVERY-APP'}
                   </Text>
                 </div>
-                <div className="header-responsible">
-                  <Text fontSize="14px">Cambio</Text>
-                  <Text fontSize="14px">{numberFormat(change)}</Text>
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Cambio</Text>
+                  <Text fontSize='14px'>$ {numberFormat(change || 0)}</Text>
                 </div>
                 {
                   <CustomLink
                     href={`${CLIENT_URL_BASE}delivery/${dataStore?.city?.cName?.toLocaleLowerCase()}-${dataStore?.department?.dName?.toLocaleLowerCase()}/${dataStore?.storeName
-                      ?.replace(/\s/g, "-")
+                      ?.replace(/\s/g, '-')
                       ?.toLocaleLowerCase()}/${dataStore?.idStore}`}
                   >
-                    <Text margin="12px 0 0 5px" size="19px">
-                      $ {dataStore?.storeName ?? ""}
+                    <Text margin='12px 0 0 5px' size='19px'>
+                      {dataStore?.storeName ?? ''}
                     </Text>
                   </CustomLink>
                 }
-                <div className="header-responsible">
-                  <Text fontSize="14px">Total</Text>
-                  <Text fontSize="14px">{totalProductsPrice}</Text>
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Total</Text>
+                  <Text fontSize='14px'>$ {totalProductsPrice || 0}</Text>
                 </div>
-                <div className="header-responsible">
-                  <Text fontSize="14px">Metodo de pago</Text>
-                  <Text fontSize="14px">
-                    {payMethodPState === 0 ? "EFECTIVO" : "TRANSFERENCIA"}
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Metodo de pago</Text>
+                  <Text fontSize='14px'>
+                    {payMethodPState === 0 ? 'EFECTIVO' : 'TRANSFERENCIA'}
                   </Text>
                 </div>
-                <div className="header-responsible">
-                  <Text fontSize="14px">Fecha de creacion</Text>
-                  <Text fontSize="14px">
+                <div className='header-responsible'>
+                  <Text fontSize='14px'>Fecha de creacion</Text>
+                  <Text fontSize='14px'>
                     {`${yearMonthDay} - ${longDayName} - ${hourMinutes12}`}
                   </Text>
                 </div>
               </SectionDetailOrder>
             </Column>
+            <Button
+              color={BGColor}
+              width='90%'
+              padding='5px 0'
+              borderRadius='2px'
+              disabled={disabledPrint}
+              backgroundColor={PColor}
+              onClick={handlePrint}
+            >
+              Descargar factura de venta
+            </Button>
           </div>
         </ResisesColumns>
       </ModalWrapper>
     </>
-  );
-};
-export const ModalDetailOrder = React.memo(MemoModalDetailOrder);
+  )
+}
+export const ModalDetailOrder = React.memo(MemoModalDetailOrder)

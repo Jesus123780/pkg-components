@@ -32,7 +32,6 @@ export const View = styled.span`
     ${({ align }) => { return align && css`text-align: ${align};` }}
     ${({ textTransform }) => { return textTransform && css`text-transform: ${textTransform};` }}
     ${({ justifyContent }) => { return justifyContent && css`justify-content: ${justifyContent};` }}
-    display: flex;
     ${({ display }) => { return display && css`display: ${display};` }}
     ${({ color }) => { return color && css`color: ${color};` }}
     ${({ flexDirection }) => { return flexDirection && css`flex-direction: ${flexDirection};` }}

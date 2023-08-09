@@ -165,32 +165,32 @@ export const BtnClose = styled.button`
 `
 
 export const ModalBody = styled.div`
-    position: relative;
-    flex: 1 1 auto;
-    overflow-y: auto;
-    border-radius: ${({ borderRadius }) => { return borderRadius || 'none' }};
     background-color: ${({ backgroundColor }) => { return backgroundColor || BGColor }};
+    border-radius: ${({ borderRadius }) => { return borderRadius || 'none' }};
     display: ${({ display }) => { return display || 'block' }};
+    flex: 1 1 auto;
     height: ${({ height }) => { return height || 'auto' }};
-
     min-height: ${({ height }) => { return height || 'auto' }};
     min-height: ${({ height }) => { return height || 'auto' }};
+    overflow-y: auto;
     padding: ${({ padding }) => { return padding || '0' }};
+    position: relative;
 .modal-wrapper {
-    width: 300px;
-    min-width: 300px;
     background-color: #FFFFFF;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    height: 140px;
-    box-shadow: -1px -1px 15px -6px rgba(0,0,0,0.75);
     border-radius: 5px;
+    bottom: 0;
+    box-shadow: -1px -1px 15px -6px rgba(0,0,0,0.75);
+    height: 140px;
+    left: 0;
+    margin: auto;
+    min-width: 300px;
     padding: 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    z-index: 1000;
+    z-index: 99999;
     h2 {
         text-align: center;
         font-size: 15px;
@@ -217,7 +217,7 @@ export const ModalFooter = styled.div`
     margin: auto;
     justify-content: space-between;
     display: flex;
-    border-top: 1px solid;
+    border-top: 1px solid #beb5b569;
     background-color: ${({ backgroundColor }) => { return backgroundColor || BGColor }};
 `
 

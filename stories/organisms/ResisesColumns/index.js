@@ -1,11 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { IconArrowLeft } from "../..";
-import "./styles.css";
+import React, { 
+  useCallback, 
+  useEffect, 
+  useRef, 
+  useState
+} from 'react';
+import { IconArrowLeft } from '../..';
+import './styles.css';
 
 export const ResisesColumnsMemo = ({
   lastMinWidth = '440px',
-  padding = "15px",
-  height = "100%",
+  padding = '15px',
+  height = '',
   backgroundColor,
   initialDividerPosition = null,
   ...props
@@ -72,7 +77,7 @@ export const ResisesColumnsMemo = ({
       const boundingRect = wrapper.current.getBoundingClientRect();
       const columnRect = columnRef[selectedRef]?.getBoundingClientRect();
       if (columnRect && !!columnRef[selectedRef]) {
-        columnRef[selectedRef].classList.add("no-select");
+        columnRef[selectedRef].classList.add('no-select');
       }
       const elemLeft = columnRect?.left;
       const screenWidth = window.innerWidth;
@@ -130,12 +135,12 @@ export const ResisesColumnsMemo = ({
   return (
     <React.Fragment>
       <div
-        className="column-container"
+        className='column-container'
         ref={wrapper}
         style={{
           height: height,
           padding: padding,
-          backgroundColor: backgroundColor || "#f4f5f7",
+          backgroundColor: backgroundColor || '#f4f5f7',
         }}
         onMouseLeave={onDragEnd}
         onMouseMove={onDrag}
@@ -150,7 +155,7 @@ export const ResisesColumnsMemo = ({
             <div
               key={index}
               ref={(ref) => (columnRef[index] = ref)}
-              className="column"
+              className='column'
               style={{
                 width: `${dividerPos[data]}%`,
                 minWidth: `${lastMinWidth}`,
@@ -159,8 +164,8 @@ export const ResisesColumnsMemo = ({
               {props.children[index]}
               {nextColumn !== undefined && (
                 <div
-                  className="column-controler"
-                  style={{ right: "-2px", borderColor: "red" }}
+                  className='column-controler'
+                  style={{ right: '-2px', borderColor: 'red' }}
                   onMouseDownCapture={() =>
                     handleColtroler(data, nextColumn, index)
                   }

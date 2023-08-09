@@ -29,15 +29,16 @@ import {
 
 export const InputHooks = ({
   autoComplete = 'off',
+  autoFocus,
   border = '',
   Cc,
   checked = false,
-  autoFocus,
   dataForm = {},
   disabled = false,
   display = '',
   email = false,
-  error = '',
+  error = false,
+  errorForm = {},
   fontSize = '14px',
   height,
   labelColor,
@@ -48,9 +49,6 @@ export const InputHooks = ({
   name = '',
   nit = false,
   numeric = false,
-  onChange = (e) => {
-    return e
-  },
   padding = '',
   paddingInput = '',
   pass,
@@ -62,14 +60,17 @@ export const InputHooks = ({
   required,
   title = '',
   type = 'text',
-  TypeTextarea = '',
+  typeTextarea = '',
   value = '',
   width = '100%',
+  withShowSuggestions = false,
+  onChange = (e) => { return e },
   onFocus = () => { return },
+  setForcedError = () => { return },
   onInvalid = () => { return },
   setDataValue = () => { return },
+  onKeyDown = () => { return },
   onBlur = () => { return }
-
 }) => {
   // STATE
   const [errors, setError] = useState(error)
@@ -125,7 +126,6 @@ export const InputHooks = ({
 
   const autoCompleteEmail = (email) => {
     setShowSuggestions(false)
-    // errorMessage: '',
     if (email) {
       const suggestionList = provideEmailSuggestion(email)
       if (suggestionList.length > 1) {
@@ -135,7 +135,9 @@ export const InputHooks = ({
         const errorMessage = simpleVerifyEmail(email)
         // eslint-disable-next-line no-empty
         if (errorMessage) {
-          mysql.services.clever-cloud.co        }
+          // mysql.services.clever-cloud.co
+          console.log(errorMessage)
+        }
       }
     }
   }
@@ -272,6 +274,7 @@ export const InputHooks = ({
     // setTimeout(() => setShowSuggestions(true))
   }
   const asType = numeric ? 'number' : type
+
   return (
     <BoxInput
       maxWidth={maxWidth}
@@ -282,7 +285,7 @@ export const InputHooks = ({
       {pass && <ShowPass onClick={() => { return setIsPasswordShown(!isPasswordShown) }} type='button'>
         {isPasswordShown ? <IconNoShow size='20px' /> : <IconShowEye size='20px' />}
       </ShowPass>}
-      {!TypeTextarea
+      {!typeTextarea
         ? <div>
           <InputV
             autoComplete={type === 'password' ? 'current-password' : isEmailValue }
@@ -295,6 +298,7 @@ export const InputHooks = ({
             error={errors}
             focus={onFocus}
             margin={margin}
+            onKeyDown={onKeyDown}
             name={name}
             numeric={numeric}
             onBlur={onBlur || handleBlur}
@@ -309,23 +313,30 @@ export const InputHooks = ({
             type={isPasswordShown ? 'text' : asType}
             value={value}
           />
-          {(email && !!showSuggestions) && (
-            <div>
+
+          {(email && 
+          !!showSuggestions && 
+          withShowSuggestions
+          ) && (
               <Listbox role='listbox' >
                 {suggestionList.map((suggestion, index) => {
                   return (
                     <List
                       aria-pressed={index === state.selectedIndex}
                       key={index}
-                      onClick={() => {
+                      onClick={(e) => {
                         dispatch({ type: 'select', payload: index })
                         handleSuggestionOnClick()
                         setDataValue({ ...dataForm, [name]: suggestion })
+                        setError('')
+                        e.target.blur()
                       }}
                       onKeyPress={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault()
                           dispatch({ type: 'select', payload: index })
+                          setDataValue({ ...dataForm, [name]: suggestion })
+                          setError('')
                           e.target.blur()
                         }
                       }}
@@ -337,7 +348,6 @@ export const InputHooks = ({
                   )
                 })}
               </Listbox>
-            </div>
           )}
         </div>
         : <TextAreaInput
@@ -368,13 +378,13 @@ export const InputHooks = ({
         type={type}
         value={value}
       >{title}</LabelInput>}
-      {errors && <Tooltip>{message}</Tooltip>}
+      {!!errors && <Tooltip>{message}</Tooltip>}
     </BoxInput>
   )
 }
 
 InputHooks.propTypes = {
-  TypeTextarea: PropTypes.any,
+  typeTextarea: PropTypes.any,
   autoComplete: PropTypes.any,
   border: PropTypes.any,
   checked: PropTypes.any,

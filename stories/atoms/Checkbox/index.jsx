@@ -97,18 +97,20 @@ const CheckboxLabel = styled.label`
   color: #9e9e9e;
   transition: color 250ms cubic-bezier(0.4,0,0.23,1);
   &&::before {
-    content: '';
     align-items: center;
     background: transparent;
     border-radius: 50%;
     box-shadow: 0 0 0 2px #9e9e9e inset;
+    content: '';
     cursor: pointer;
     display: flex;
     height: 2em;
+    max-height: 2em;
     justify-content: center;
     margin-right: 1em;
     transition: all 250ms cubic-bezier(0.4,0,0.23,1);
-    width:2em;
+    width: 2em;
+    min-width: 2em;
 }
 ${props => {
     return props.checked && css`
