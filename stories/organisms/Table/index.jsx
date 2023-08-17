@@ -33,7 +33,17 @@ import { BColor } from '../../../assets/colors'
 
 export { Section }  from './styled'
 
-export const Table = ({ titles = [], bgRow, data, pointer, renderBody = [], entryPerView, handleAdd, buttonAdd, labelBtn }) => {
+export const Table = ({ 
+  titles = [], 
+  bgRow,
+  data, 
+  pointer, 
+  renderBody = [], 
+  entryPerView, 
+  handleAdd, 
+  buttonAdd, 
+  labelBtn
+}) => {
   const initialState = { selectedIndex: 0 }
 
   function reducer (state, action) {

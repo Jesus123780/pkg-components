@@ -57,7 +57,10 @@
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/manager-webpack5": "^6.5.15",
     "@storybook/svelte": "^6.5.15",
+    "chart.js": "^4.3.3",
+    "fs": "^0.0.1-security",
     "next": "^13.2.4",
+    "react-chartjs-2": "^5.2.0",
     "storybook": "6.5.15",
     "storybook-addon-next-router": "4.0.2",
     "styled-components": "5.3.6"

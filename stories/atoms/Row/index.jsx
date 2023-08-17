@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 
-const Row = ({ children, as='div', ...props }) => {
+export const Row = ({ children, as='div', ...props }) => {
   return (
     <View as={as} {...props}>
       {children}
@@ -14,7 +14,6 @@ Row.propTypes = {
   children: PropTypes.node
 }
 
-export default Row
 
 export const View = styled.div`
     ${({ lineHeight }) => { return lineHeight && css`line-height: ${lineHeight};` }}

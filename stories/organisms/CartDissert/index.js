@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { IconDelete } from "../../../assets/icons"
-import Column from "../../atoms/Column"
-import Row from "../../atoms/Row"
+import { Column } from "../../atoms/Column"
+import { Row } from "../../atoms/Row"
 
 export const Card = ({
   card,

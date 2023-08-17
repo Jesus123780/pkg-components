@@ -1,0 +1,11 @@
+import PropTypes from 'prop-types'
+import ReactDOMServer from 'react-dom/server'
+
+export const NoScript = (props) => {
+  const staticMarkup = ReactDOMServer.renderToStaticMarkup(props.children)
+  return <noscript dangerouslySetInnerHTML={{ __html: staticMarkup }} />
+}
+
+NoScript.propTypes = {
+  children: PropTypes.any
+}

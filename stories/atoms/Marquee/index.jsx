@@ -11,7 +11,7 @@ function ___$insertStyle(css) {
     return css;
 }
 
-// Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 
 let React = require('react');
 

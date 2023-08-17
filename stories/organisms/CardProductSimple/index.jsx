@@ -204,7 +204,7 @@ export const MemoCardProductSimple = ({
             {ValueDelivery && (
               <span className="description">
                 Domicilio ${" "}
-                {ValueDelivery ? numberFormat(ValueDelivery) : "Gratis"}
+                {!!ValueDelivery ? numberFormat(ValueDelivery) : "Gratis"}
               </span>
             )}
 
@@ -212,7 +212,7 @@ export const MemoCardProductSimple = ({
               <span className="price">
                 $ {ProPrice ? numberFormat(ProPrice) || free === 1 : "Gratis"}
               </span>
-              {ProDescuento && (
+              {!!ProDescuento && (
                 <span className="price discount">{` $ ${numberFormat(
                   ProDescuento
                 )}`}</span>
