@@ -8,9 +8,11 @@ import {
 } from './styled'
 import { ProfileInfo } from './ProfileInfo'
 import { Devices } from '../Devices'
+import { RestaurantInfo } from './RestaurantInfo'
 
 export const UserProfile = ({
   dataForm = {},
+  dataStore = {},
   dataDevice = [],
   deviceId = null,
   loading = false,
@@ -23,7 +25,7 @@ export const UserProfile = ({
   const [editingProfile, setEditingProfile] = useState(false)
   const [editingDataProfile, setEditingDataProfile] = useState(false)
   const [editingAddress, setEditingAddress] = useState(false)
-  const [currentView, setCurrentView] = useState('profile')
+  const [currentView, setCurrentView] = useState('restaurante')
 
   const handleViewChange = useCallback((tabKey) => {
     setCurrentView(tabKey);
@@ -77,8 +79,8 @@ export const UserProfile = ({
         />
       </div>
     ),
-    'info del restaurante': (
-      <></>
+    restaurante: (
+      <RestaurantInfo data={dataStore} />
     )
   }
 

@@ -11,7 +11,6 @@ export const Container = styled.div`
     height: 80vh;
     width: 90%;
     margin: auto;
-    overflow: hidden;
 `
 
 export const UserInfo = styled.div`
@@ -98,7 +97,7 @@ export const ContainerColumn = styled.div`
   overflow: hidden auto;
   &:last-child {
     border-right: none;
-    overflow: auto;
+    overflow: hidden auto ;
     height: 100%;
   }
   

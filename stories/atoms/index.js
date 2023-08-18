@@ -11,4 +11,6 @@ export * from './Row';
 export * from './Loading';
 export * from './NoScript';
 export * from './Column';
+export * from './Tooltip';
+
 

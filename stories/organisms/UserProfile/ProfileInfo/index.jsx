@@ -12,16 +12,17 @@ import {
 } from '../styled'
 
 export const ProfileInfo = ({
-  dataForm,
-  editingAddress,
-  editingDataProfile,
-  editingProfile,
+  dataForm = {},
+  editingAddress = false,
+  editingDataProfile = false,
+  editingProfile = false,
   loadingSubmit = false,
   handleProfileEditClick = () => { return },
   handleAddressEditClick = () => { return },
   handleProfileDataEditClick = () => { return },
   onChange = () => { return }
 }) => {
+  const label = editingDataProfile ? 'Guardar' : 'Editar'
   return (
     <div>
       <ProfileSection>
@@ -59,16 +60,9 @@ export const ProfileInfo = ({
             }
 
             <Label>Email</Label>
-            {editingProfile ?
-              <Input
-                type="email"
-                name='email'
-                onChange={onChange}
-                value={dataForm?.email || ''}
-              /> :
-              <ReadOnlyText>
-                {dataForm?.email}
-              </ReadOnlyText>}
+            <ReadOnlyText>
+              {dataForm?.email}
+            </ReadOnlyText>
           </UserInfo>
         </div>
 
@@ -82,7 +76,7 @@ export const ProfileInfo = ({
           Información personal
         </Title>
         <EditButton disabled={loadingSubmit} editing={editingDataProfile} onClick={handleProfileDataEditClick}>
-          {loadingSubmit ? 'Cargando' : (editingDataProfile ? 'Guardar' : 'Editar')}
+          {loadingSubmit ? 'Cargando' : label}
           <svg width="30" height="30" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11.6024 3.14982L4.41868 10.7536C4.14743 11.0423 3.88493 11.6111 3.83243 12.0048L3.50868 14.8398C3.39493 15.8636 4.12993 16.5636 5.14493 16.3886L7.96243 15.9073C8.35618 15.8373 8.90743 15.5486 9.17868 15.2511L16.3624 7.64732C17.6049 6.33482 18.1649 4.83857 16.2312 3.00982C14.3062 1.19857 12.8449 1.83732 11.6024 3.14982Z" stroke={editingDataProfile ? '#ffffff' : "#282828"} stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M10.4033 4.41797C10.7796 6.83297 12.7396 8.67922 15.1721 8.92422" stroke={editingDataProfile ? '#ffffff' : "#282828"} stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
@@ -134,18 +128,9 @@ export const ProfileInfo = ({
           )}
 
           <Label>Email</Label>
-          {editingDataProfile ? (
-            <Input
-              type="email"
-              name='email'
-              onChange={onChange}
-              value={dataForm?.email || ''}
-            />
-          ) : (
-            <ReadOnlyText>
-              {dataForm?.email}
-            </ReadOnlyText>
-          )}
+          <ReadOnlyText>
+            {dataForm?.email}
+          </ReadOnlyText>
         </>
 
       </ProfileSection>
