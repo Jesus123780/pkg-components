@@ -77,13 +77,14 @@ RippleButton.propTypes = {
   style: PropTypes.any,
   type: PropTypes.any,
   widthButton: PropTypes.any
+
 }
 const Button = styled.button`
-
 &:disabled {
   background-color: ${`#cccccc75`} !important;
   cursor: no-drop;
 }
+
  padding: ${ ({ padding })=> {return padding ? padding: '1em'} };
  background-color: ${ ({ bgColor })=> {return bgColor ? bgColor: 'red'} };
  color: ${ ({ color })=> {return color ? color: BGColor} };
