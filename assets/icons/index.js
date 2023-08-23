@@ -264,6 +264,65 @@ export const IconComment = (props) => (
     />
   </svg>
 )
+export const IconCancel = ({ style = {}, size, color }) => {
+  return <svg
+    fill={color || '#717171'}
+    height={size}
+    style={style}
+    viewBox='0 0 32 32'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <rect
+      height={20.36}
+      rx={1.13}
+      transform='rotate(-45 8 9.6)'
+      width={2.26}
+      x={8}
+      y={9.6}
+    />
+    <rect
+      height={20.36}
+      rx={1.13}
+      transform='rotate(45 22.4 8)'
+      width={2.26}
+      x={22.4}
+      y={8}
+    />
+  </svg>
+}
+// Icon de Arrow
+export const IconArrowBottom = ({ style = {}, color, size }) => {
+  return <svg
+    color={color}
+    height={size}
+    style={style}
+    version='1.1'
+    viewBox='0 0 129 129'
+    width={size}
+  >
+    <path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill={color} />
+  </svg>
+}
+
+
+export const IconFolder = ({ style = {}, size }) => {
+  return <svg
+    height={size}
+    style={style}
+    viewBox='0 0 254.89 207.69'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  ><path
+      d='M200.4,258.36h82.18l21.32,30.72H414.64s13.49-.61,9,11.35c-.58,1.56,0,28.17,0,28.17h22.11s3.13,2,3.13,5.09a15.74,15.74,0,0,1,0,6.46l-44.8,122.47s.19,4.11-11.35,3.33l-189.2.1s-9.39-.69-9.19-9.3V263.06S196.88,258.36,200.4,258.36Z'
+      fill='#e5b911'
+      transform='translate(-194.34 -258.36)'
+  /><path
+      d='M423.64,328.6h22.11s3.13,2,3.13,5.09a15.74,15.74,0,0,1,0,6.46l-44.8,122.47s.19,4.11-11.35,3.33l-189.19.1s-5.59-.41-8.06-4.55a8.78,8.78,0,0,1-1.14-4.75c.22-11.24,21.81-58.84,29.36-81.62,2.79-8.43,6.38-16.59,9.13-25a82.53,82.53,0,0,1,7-15.92,29.4,29.4,0,0,1,2.48-4c5.71-6.66,17.73-5.16,26.17-4.35,11.52,1.11,23.18.21,34.68,1.49,6.88.76,23.65,1,57.19,1.36C379.28,328.92,400.47,328.94,423.64,328.6Z'
+      fill='#ecce3d'
+      transform='translate(-194.34 -258.36)'
+  /></svg>
+}
 
 export const IconPlus = ({ style = {}, size, color }) => {
   return <svg
