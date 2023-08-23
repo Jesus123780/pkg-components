@@ -1,9 +1,12 @@
-import PropTypes from 'prop-types'
-import { getGlobalStyle } from '../../../utils'
-import { IconLoading } from '../../../assets/icons'
-import { CustomButton } from './styled'
-import './button.css'
+import PropTypes from 'prop-types';
+import { Loading } from '../../../assets/icons';
+import { getGlobalStyle } from '../../../utils';
+import './button.css';
+import { CustomButton } from './styled';
 
+/**
+ * Primary UI component for user interaction
+ */
 export const Button = ({
   primary,
   backgroundColor,
@@ -21,7 +24,7 @@ export const Button = ({
   disabled,
   ...props
 }) => {
-  const primitiveMode = primary ? 'storybook-button--primary' : 'storybook-button--secondary'
+  const primitiveMode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
   const mode = ripple ? 'ripple-mode' : primitiveMode
   return (
     <CustomButton
@@ -42,12 +45,12 @@ export const Button = ({
       }}
       {...props}
     >
-      {loading  ? <IconLoading color={getGlobalStyle('--color-base-white')}  size={20} /> : label }
+      {loading  ? <Loading color={getGlobalStyle('--color-base-white')}  size={20} /> : label }
       {child}
       {props.children}
     </CustomButton>
-  )
-}
+  );
+};
 
 Button.propTypes = {
   /**
@@ -70,11 +73,11 @@ Button.propTypes = {
    * Optional click handler
    */
   onClick: PropTypes.func,
-}
+};
 
 Button.defaultProps = {
   backgroundColor: null,
   primary: false,
   size: 'medium',
   onClick: undefined,
-}
+};

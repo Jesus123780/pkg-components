@@ -1,4 +1,4 @@
-import { Column } from "../../atoms/Column"
+import Column from "../../atoms/Column"
 import { Card } from "../CartDissert"
 
 export const List = ({
@@ -6,7 +6,6 @@ export const List = ({
     setData,
     listID,
     data,
-    isCustomSubOpExPid,
     removeOneItem = () => { return }
   }) => {
     return (
@@ -19,7 +18,6 @@ export const List = ({
                 data={data}
                 id={list?.id}
                 index={index}
-                isCustomSubOpExPid={isCustomSubOpExPid}
                 key={card?.id}
                 list={list}
                 listID={listID}

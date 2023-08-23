@@ -11,6 +11,9 @@ export const Column = ({ children, ...props }) => {
 
 Column.propTypes = {}
 
+
+export default Column
+
 export const View = styled.div`
     ${({ lineHeight }) => { return lineHeight && css`line-height: ${lineHeight};` }}
     ${({ height }) => { return height && css`height: ${height};` }}

@@ -14,14 +14,13 @@
 }
 
 .title_card {
+    word-break: break-word;
+    font-family: PFont-Light;
+    color: #ffff;
     margin: 0;
     font-size: 1rem;
     line-height: 1.25em;
     font-weight: 500;
-    color: #3f3e3e;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .price {

@@ -69,4 +69,3 @@ SearchBar.propTypes = {
   placeholder: PropTypes.string
 }
 
-export default SearchBar

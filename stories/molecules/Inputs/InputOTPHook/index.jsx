@@ -137,31 +137,36 @@ export const InputOTPHookMemo = (props) => {
 
   const handleOnPaste = useCallback(
     (e) => {
-      e.preventDefault()
+      e.preventDefault();
       const pastedData = e.clipboardData
         .getData('text/plain')
         .trim()
         .slice(0, length - activeInput)
-        .split('')
+        .split('');
       if (pastedData) {
-        let nextFocusIndex = 0
-        const updatedOTPValues = [...otpValues]
-        updatedOTPValues.forEach((val, index) => {
-          if (index >= activeInput) {
-            const changedValue = getRightValue(pastedData.shift() || val)
-            if (changedValue) {
-              updatedOTPValues[index] = changedValue
-              nextFocusIndex = index
-            }
+        let nextFocusIndex = 0;
+        const updatedOTPValues = [...otpValues]; // Clonamos el estado actual
+  
+        // Usamos un índice separado para rastrear el índice de los valores pegados
+        let pasteIndex = 0;
+  
+        // Iteramos sobre los valores existentes en updatedOTPValues
+        for (let index = activeInput; index < length; index++) {
+          // Si aún hay valores pegados, actualizamos el valor actual en updatedOTPValues
+          if (pastedData[pasteIndex]) {
+            updatedOTPValues[index] = getRightValue(pastedData[pasteIndex]) || '';
+            pasteIndex++;
           }
-        })
-        setOTPValues(updatedOTPValues)
-        setActiveInput(Math.min(nextFocusIndex + 1, length - 1))
+        }
+  
+        setOTPValues(updatedOTPValues); // Actualizamos el estado
+        handleOtpChange(updatedOTPValues); // Notificamos el cambio del OTP completo
+        setActiveInput(Math.min(activeInput + pasteIndex, length - 1)); // Ajustamos el índice activo
       }
     },
-    [activeInput, getRightValue, length, otpValues]
-  )
-
+    [activeInput, getRightValue, handleOtpChange, length, otpValues]
+  );
+  
   return (
     <Content {...rest}>
       {Array(length)

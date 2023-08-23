@@ -1,6 +1,6 @@
 {
   "name": "pkg-components",
-  "version": "1.1.0",
+  "version": "1.0.8",
   "main": "index.js",
   "private": false,
   "publishConfig": {
@@ -19,7 +19,8 @@
     "sb": "start-storybook -p 6006",
     "sb:prod": "start-storybook",
     "build:sb": "build-storybook",
-    "chromatic": "npx chromatic --project-token=2f192326eb16"
+    "chromatic": "npx chromatic --project-token=2f192326eb16",
+    "create-story-files": "node createStoryFile.js"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +28,6 @@
   "devDependencies": {
     "@babel/core": "7.19.3",
     "@storybook/addon-actions": "6.5.15",
-    "@storybook/addon-docs": "^7.0.27",
     "@storybook/addon-essentials": "6.5.15",
     "@storybook/addon-interactions": "6.5.15",
     "@storybook/addon-links": "6.5.15",
@@ -36,13 +36,11 @@
     "@storybook/manager-webpack4": "6.5.15",
     "@storybook/react": "6.5.15",
     "@storybook/testing-library": "0.0.13",
-    "autoprefixer": "^10.4.14",
     "babel-loader": "8.2.5",
     "chromatic": "^6.10.1",
     "dotenv-webpack": "^8.0.1",
     "html-webpack-plugin": "^5.5.0",
     "lodash.debounce": "^4.0.8",
-    "postcss-flexbugs-fixes": "^5.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "webpack": "^5.74.0",
@@ -57,10 +55,7 @@
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/manager-webpack5": "^6.5.15",
     "@storybook/svelte": "^6.5.15",
-    "chart.js": "^4.3.3",
-    "fs": "^0.0.1-security",
     "next": "^13.2.4",
-    "react-chartjs-2": "^5.2.0",
     "storybook": "6.5.15",
     "storybook-addon-next-router": "4.0.2",
     "styled-components": "5.3.6"

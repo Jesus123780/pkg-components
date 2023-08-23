@@ -143,47 +143,36 @@ export const AwesomeModal = ({
                     disabled={disabled}
                     onClick={() => { return setSModal(false) }}
                     type='button'
-                  >
-                    {cancel || BUTTONS_TEXT.cancel}
-                  </RippleButton>
+                  >{cancel || BUTTONS_TEXT.cancel}</RippleButton>
                   <RippleButton
                     border
                     onClick={() => { hide() }}
                     type={submit ? 'submit' : 'button'}
-                  >
-                    {confirm || BUTTONS_TEXT.confirm}
-                  </RippleButton>
+                  >{confirm || BUTTONS_TEXT.confirm}</RippleButton>
                 </div>
               </div>
             }
             {children}
           </ModalBody>
             {footer && <ModalFooter backgroundColor={backgroundColor}>
-              {btnCancel ? 
-              <RippleButton
+              {btnCancel ? <Button
                 border
-                disabled={disabled}
-                margin='0 10px 0 0'
-                onClick={clickCancel}
-                padding='10px'
-                type='button'
                 widthButton='200px'
+                disabled={disabled}
+                onClick={clickCancel}
+                type='button'
               >
                 {cancel || BUTTONS_TEXT.cancel}
-              </RippleButton> : <div />
-              }
-              {btnConfirm && 
-              <RippleButton
+              </Button> : <div></div>}
+              {btnConfirm && <Button
                 border
-                margin='0 0 0 10px'
-                onClick={clickConfirm}
-                padding='10px'
-                type={submit ? 'submit' : 'button'}
                 widthButton='200px'
+                onClick={clickConfirm}
+                type={submit ? 'submit' : 'button'}
               >
                 {confirm || BUTTONS_TEXT.confirm}
                 {iconConfirm}
-              </RippleButton>}
+              </Button>}
             </ModalFooter>}
         </Modal>
       </Wrapper>

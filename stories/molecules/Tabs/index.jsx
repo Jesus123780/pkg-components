@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { PColor } from '../../public/colors'
+import { PColor } from '../../../assets/colors'
 
 const TabPanel = ({ children }) => {return (
   <TabContent role='tabpanel' tabIndex='0'>
