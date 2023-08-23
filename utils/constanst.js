@@ -21,7 +21,6 @@ export const scrollStyle = css`
 
 &::-webkit-scrollbar-thumb {
     background-color: #797979;
-    border-radius: 20px;
     border: 2px solid #f1f2f3;
 }
     &::-webkit-scrollbar-track {

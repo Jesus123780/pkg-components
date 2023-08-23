@@ -129,7 +129,6 @@ export const CheckBoxLabel = styled.label`
   left: 0;
   width: 55px;
   height: 26px;
-  border-radius: 15px;
   background: ${PVColor};
   cursor: pointer;
   &::after {
@@ -147,7 +146,6 @@ export const CheckBoxLabel = styled.label`
 export const CheckBox = styled.input`
   opacity: 0;
   z-index: 1;
-  border-radius: 15px;
   width: 42px;
   height: 26px;
  &:checked + ${CheckBoxLabel} {
@@ -188,7 +186,6 @@ export const EntryPaginationC = styled.div`
 `
 export const EntryButton = styled.button`
     cursor: pointer;
-    border-radius: 20px;
     width: 100px;
     padding: 0 6px;
     height: 25px;

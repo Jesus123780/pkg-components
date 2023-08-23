@@ -2,7 +2,13 @@ import React from 'react'
 import './styles.css'
 
 export const Carrusel3D = (props) => {
-  const { children, active, moveRight, moveLeft, maxView } = props
+  const { 
+    children, 
+    active,
+    moveRight, 
+    moveLeft, 
+    maxView
+  } = props
   const MAX_VISIBILITY = maxView ?? 3
   const count = React.Children.count(children)
   return (

@@ -135,7 +135,8 @@ export const InputHooks = ({
         const errorMessage = simpleVerifyEmail(email)
         // eslint-disable-next-line no-empty
         if (errorMessage) {
-          mysql.services.clever-cloud.co        }
+          // mysql.services.clever-cloud.co     
+        }
       }
     }
   }

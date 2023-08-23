@@ -1,3 +1,30 @@
+export const IconSearch = ({ style = {}, size, color, props }) => {
+  return <svg
+    height={size}
+    style={style}
+    viewBox='0 0 16.39 16.23'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+  ><circle
+      cx='6.91'
+      cy='6.91'
+      fill='none'
+      r='6.41'
+      stroke={color}
+  /><rect
+      fill='none'
+      height='0.54'
+      rx='0.22'
+      stroke={color}
+      strokeMiterlimit='10'
+      transform='translate(45.89 33.02) rotate(42.94)'
+      width='5.71'
+      x='-39.59'
+      y='7.49'
+  /></svg>
+}
+
 export const IconRate = ({ style = {}, size, color }) => {
   return <svg
     height={size}
