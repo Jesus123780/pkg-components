@@ -89,8 +89,8 @@ export const MemoCardProductSimple = ({
       setStartAnimateUp("");
     }, 250);
   };
-  const handleDown = () => {
-    handleDecrement();
+  const handleDown = (event) => {
+    handleDecrement(event);
     setStartAnimateUp("");
     setAnimateType("");
     setTimeout(() => {
@@ -102,8 +102,8 @@ export const MemoCardProductSimple = ({
     }, 0);
   };
 
-  const handleUp = () => {
-    handleIncrement();
+  const handleUp = (event) => {
+    handleIncrement(event);
     setStartAnimateUp("");
     setAnimateType("");
     setTimeout(() => {
@@ -154,14 +154,12 @@ export const MemoCardProductSimple = ({
         {handleFree && (
           <OverlineFree
             free={free}
-            onClick={() => {
-              return handleFreeProducts();
-            }}
+            onClick={handleFreeProducts}
           >
             <span>Gratis</span>
           </OverlineFree>
         )}
-        <Card free={free} height={height}>
+        <Card free={free} height={height} onClick={onClick} radius='15px'>
           {del && (
             <ButtonCard grid={false} onClick={handleDelete}>
               <IconDelete color={PColor} size={20} />
@@ -173,11 +171,9 @@ export const MemoCardProductSimple = ({
               tooltip={asComment}
               delay=".1s"
               grid={false}
-              onClick={() => {
-                return handleComment();
-              }}
+              onClick={handleComment}
               right={buttonComment && activeComment}
-              top={"90px"}
+              top="90px"
             >
               <IconComment
                 color={asComment ? PColor : "var(--color-neutral-gray-dark)"}
@@ -225,9 +221,7 @@ export const MemoCardProductSimple = ({
                 <Button
                   delay=".1s"
                   grid={false}
-                  onClick={() => {
-                    return handleDown();
-                  }}
+                  onClick={handleDown}
                   top={"80px"}
                 >
                   <svg
@@ -300,9 +294,7 @@ export const MemoCardProductSimple = ({
                 <Button
                   delay=".1s"
                   grid={false}
-                  onClick={() => {
-                    return handleUp();
-                  }}
+                  onClick={handleUp}
                   top={"80px"}
                 >
                   <svg
@@ -367,9 +359,7 @@ export const MemoCardProductSimple = ({
         </Card>
         {showCategories && (
           <OverlineCategory
-            onClick={() => {
-              return handleFreeProducts();
-            }}
+            onClick={handleFreeProducts}
           >
             <span>{listCategories}</span>
           </OverlineCategory>

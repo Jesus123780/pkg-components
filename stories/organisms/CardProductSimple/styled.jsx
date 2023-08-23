@@ -334,7 +334,7 @@ export const ButtonCard = styled.button`
   }}
 `;
 export const Card = styled.div`
-    border-radius: 4px;
+    border-radius: ${({radius})=>{ return radius ? radius : '4px'}};
     border: 1px solid #f2f2f2;
     box-shadow: 0 1px 4px rgba(0,0,0,.05);
     display: grid;

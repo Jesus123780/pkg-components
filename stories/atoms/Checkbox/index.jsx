@@ -50,7 +50,9 @@ export const Checkbox = ({
         ref={inputEl}
         type='checkbox'
       />
-      {<CheckboxLabel checked={checked === true} htmlFor={`checkbox-${id}`}>{label}</CheckboxLabel>}
+      <CheckboxLabel checked={checked} htmlFor={`checkbox-${id}`}>
+        {label}
+      </CheckboxLabel>
     </Span>
   )
 }
