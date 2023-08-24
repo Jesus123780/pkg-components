@@ -1,12 +1,12 @@
 
 export const ErrorBoundary = ({ message }) => {
   return (
-    <div>{message} Ho mierda</div>
+    <div>{message}</div>
   )
 }
 
 export const AppErrorFallback = () => {
   return (
-    <div>Ho mierda</div>
+    <div></div>
   )
 }

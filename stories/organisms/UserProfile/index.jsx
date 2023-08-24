@@ -25,7 +25,7 @@ export const UserProfile = ({
   const [editingProfile, setEditingProfile] = useState(false)
   const [editingDataProfile, setEditingDataProfile] = useState(false)
   const [editingAddress, setEditingAddress] = useState(false)
-  const [currentView, setCurrentView] = useState('restaurante')
+  const [currentView, setCurrentView] = useState('Perfil')
 
   const handleViewChange = useCallback((tabKey) => {
     setCurrentView(tabKey);
@@ -52,7 +52,7 @@ export const UserProfile = ({
     }
   }
   const memoizedComponents = {
-    profile: (
+    Perfil: (
       <ProfileInfo
         dataForm={dataForm}
         loadingSubmit={loadingSubmit}
@@ -66,7 +66,7 @@ export const UserProfile = ({
         onChange={onChange}
       />
     ),
-    dispositivos: (
+    Dispositivos: (
       <div style={{ width: '90%', margin: '0 30px' }}>
       <Text fSize='1.5rem'>
         Mis dispositivos
@@ -79,7 +79,7 @@ export const UserProfile = ({
         />
       </div>
     ),
-    restaurante: (
+    Restaurante: (
       <RestaurantInfo data={dataStore} />
     )
   }

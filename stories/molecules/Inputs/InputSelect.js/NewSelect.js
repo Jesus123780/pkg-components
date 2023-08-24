@@ -51,6 +51,7 @@ export const NewSelect = ({
   minWidth,
   error,
   required = false,
+  overLine = false,
   accessor,
   fullName,
   handleClickAction = () => { return }
@@ -136,11 +137,13 @@ export const NewSelect = ({
         ref={v => { return !!v && changeRef(v) }}
         width={width}
       >
+        {overLine && 
         <Overline
           bgColor={`${SECColor}56`}
           onClick={() => { return setSelect(false) }}
           show={select}
         />
+        }
         <MainButton
           border={border}
           color={val ? SFColor : '#757575'}

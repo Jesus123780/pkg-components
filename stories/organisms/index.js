@@ -16,3 +16,5 @@ export * from './Providers';
 export * from './ResisesColumns';
 export * from './Table';
 export * from './UserProfile';
+export * from './ComingSoon';
+export * from './VirtualizedList';
