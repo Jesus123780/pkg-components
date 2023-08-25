@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ButtonContent } from './ButtonContent'
 import { useGoogleLogin } from '../../../hooks/useGoogleLogin'
 
-export const GoogleLogin = props => {
+export const GoogleLogin = (props = {}) => {
   const [hovered, setHovered] = useState(false)
   const [active, setActive] = useState(false)
   const {
@@ -37,7 +37,7 @@ export const GoogleLogin = props => {
     responseType,
     jsSrc,
     prompt
-  } = props
+  } = props || {}
 
   const { signIn, loaded } = useGoogleLogin({
     onSuccess,
