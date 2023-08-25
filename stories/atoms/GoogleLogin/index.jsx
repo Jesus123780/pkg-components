@@ -3,41 +3,40 @@ import PropTypes from 'prop-types'
 import { ButtonContent } from './ButtonContent'
 import { useGoogleLogin } from '../../../hooks/useGoogleLogin'
 
-export const GoogleLogin = (props = {}) => {
+export const GoogleLogin = ({
+  onSuccess = () => {},
+  onAutoLoadFinished = () => {},
+  onRequest = () => {},
+  onFailure = () => {},
+  onScriptLoadFailure = () => {},
+  tag = 'button',
+  type = 'button',
+  className = '',
+  disabledStyle = {},
+  buttonText = 'Sign in with Google',
+  children = null,
+  render = null,
+  theme = 'light',
+  icon = true,
+  disabled: disabledProp = false,
+  clientId = '',
+  cookiePolicy = 'single_host_origin',
+  loginHint = '',
+  hostedDomain = '',
+  autoLoad = false,
+  isSignedIn = false,
+  fetchBasicProfile = true,
+  redirectUri = '',
+  discoveryDocs = [],
+  uxMode = 'popup',
+  scope = 'profile email',
+  accessType = 'online',
+  responseType = '',
+  jsSrc = 'https://apis.google.com/js/api.js',
+  prompt = ''
+} = {}) => {
   const [hovered, setHovered] = useState(false)
   const [active, setActive] = useState(false)
-  const {
-    onSuccess,
-    onAutoLoadFinished,
-    onRequest,
-    onFailure,
-    onScriptLoadFailure,
-    tag,
-    type,
-    className,
-    disabledStyle,
-    buttonText,
-    children,
-    render,
-    theme,
-    icon,
-    disabled: disabledProp,
-    clientId,
-    cookiePolicy,
-    loginHint,
-    hostedDomain,
-    autoLoad,
-    isSignedIn,
-    fetchBasicProfile,
-    redirectUri,
-    discoveryDocs,
-    uxMode,
-    scope,
-    accessType,
-    responseType,
-    jsSrc,
-    prompt
-  } = props || {}
 
   const { signIn, loaded } = useGoogleLogin({
     onSuccess,

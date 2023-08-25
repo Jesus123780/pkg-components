@@ -3,16 +3,16 @@ import loadScript from './loadScript'
 import removeScript from './removeScript'
 
 export const useGoogleLogin = ({
-  onSuccess = () => {},
-  onAutoLoadFinished = () => {},
-  onFailure = () => {},
-  onRequest = () => {},
-  onScriptLoadFailure,
-  clientId,
+  onSuccess = () => { return },
+  onAutoLoadFinished = () => { return },
+  onFailure = () => { return },
+  onRequest = () => { return },
+  onScriptLoadFailure = () => { return },
+  clientId = '',
   cookiePolicy,
   loginHint,
   hostedDomain,
-  autoLoad,
+  autoLoad = false,
   isSignedIn,
   fetchBasicProfile,
   redirectUri,
@@ -51,22 +51,26 @@ export const useGoogleLogin = ({
     if (e) {
       e.preventDefault() // to prevent submit if used within form
     }
-    if (loaded) {
+    if (loaded && window.gapi) {
       const GoogleAuth = window.gapi.auth2.getAuthInstance()
-      const options = {
-        prompt
-      }
-      onRequest()
-      if (responseType === 'code') {
-        GoogleAuth.grantOfflineAccess(options).then(
-          res => onSuccess(res),
-          err => onFailure(err)
-        )
+      if (GoogleAuth) {
+        const options = {
+          prompt
+        }
+        onRequest()
+        if (responseType === 'code') {
+          GoogleAuth.grantOfflineAccess(options).then(
+            res => onSuccess(res),
+            err => onFailure(err)
+          )
+        } else {
+          GoogleAuth.signIn(options).then(
+            res => handleSigninSuccess(res),
+            err => onFailure(err)
+          )
+        }
       } else {
-        GoogleAuth.signIn(options).then(
-          res => handleSigninSuccess(res),
-          err => onFailure(err)
-        )
+        onFailure(new Error('GoogleAuth is not available.'));
       }
     }
   }
@@ -151,10 +155,10 @@ export const useGoogleLogin = ({
   }, [])
 
   useEffect(() => {
-    if (autoLoad) {
-      signIn()
+    if (autoLoad && loaded) {
+      signIn();
     }
-  }, [loaded])
+  }, [loaded, autoLoad]);
 
   return { signIn, loaded }
 }
