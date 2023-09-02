@@ -1,10 +1,23 @@
 import PropTypes from 'prop-types'
-import { useCallback, useEffect, useState } from 'react'
+import { 
+  useCallback, 
+  useEffect, 
+  useState
+} from 'react'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
-import { BtnClose, Container, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle, Wrapper } from './styled'
-import { Button } from '../../atoms/Button';
-import { IconClose } from '../../../assets/icons';
-import { RippleButton } from '../../atoms';
+import { 
+  BtnClose, 
+  Container, 
+  Modal, 
+  ModalBody,
+  ModalFooter,
+  ModalHeader, 
+  ModalTitle, 
+  Wrapper
+} from './styled'
+import { Button } from '../../atoms/Button'
+import { IconClose } from '../../../assets/icons'
+import { RippleButton } from '../../atoms'
 
 export const AwesomeModal = ({
   backgroundColor,
@@ -28,9 +41,10 @@ export const AwesomeModal = ({
   children,
   hideOnConfirm = true,
   timeOut = 200,
+  backdropAnimation = false,
   height,
   bgColor,
-  question,
+  question = false,
   customHeight = false,
   submit = false,
   header = true,
@@ -63,17 +77,26 @@ export const AwesomeModal = ({
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       return () => { return keyboard && window.removeEventListener('keyup', () => { return }) }
     }
-  }, [keyboard, hide, show, backdrop, question, modal, state])
+  }, [
+    keyboard, 
+    hide, 
+    show, 
+    backdrop, 
+    question, 
+    modal, 
+    state
+  ])
   useEffect(() => {
     setState(show)
   }, [show])
   const onBackdropHide = e => {
     e.preventDefault()
     if (backdrop === 'static') {
-      setAnimationBackdrop(!backdropA)
+      setAnimationBackdrop(true)
     } else {
       hide()
     }
+    setTimeout(() => setAnimationBackdrop(false), 100);
   }
   useEffect(() => {
     if (show && useScroll) {
@@ -98,6 +121,12 @@ export const AwesomeModal = ({
     }
     onConfirm()
   }
+  const onClickBackdrop = () => {
+    if (backdropAnimation) {
+      setAnimationBackdrop(false);
+    }
+  };
+
   return (
     <Container
       bgColor={bgColor}
@@ -108,7 +137,7 @@ export const AwesomeModal = ({
       state={state}
       zIndex={zIndex}
     >
-      <Wrapper backdropA={backdropA} onMouseDown={onBackdropHide}>
+      <Wrapper backdropA={backdropA} onMouseDown={onClickBackdrop}>
         <Modal
           backdropA={backdropA}
           borderRadius={borderRadius}
@@ -134,9 +163,11 @@ export const AwesomeModal = ({
             height={customHeight || 'calc(100vh - 87px)'}
             padding={padding}
           >
-            {modal &&
+            {(modal && show) &&
               <div className='modal-wrapper'>
-                <h2>{`¿Seguro que quieres cerrar ${title ?? ''}?`}</h2>
+                <h2>
+                  {`¿Seguro que quieres cerrar ${title ?? ''}?`}
+                </h2>
                 <div className='modal-confirm'>
                   <RippleButton
                     border

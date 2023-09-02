@@ -1,4 +1,4 @@
-import Column from "../../atoms/Column"
+import { Column } from "../../atoms/Column"
 import { Card } from "../CartDissert"
 
 export const List = ({

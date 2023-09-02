@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 import {
   CardProductsContent,
   CtnBox,
   TooltipCardProduct,
   WrapperCard
-} from "./styled";
-import { IconDelete } from '../..';
-import { IconEdit } from '../..';
-import { PColor } from './../../../assets/colors/index';
+} from "./styled"
+import { IconDelete, IconEdit } from '../..'
+import { PColor } from './../../../assets/colors/index'
+import Image from 'next/image'
 
 export const CardProductsComponent = ({
   router,
@@ -16,6 +16,7 @@ export const CardProductsComponent = ({
   image,
   food,
   setRef,
+  isEdit = true,
   redirect = () => { return },
   handleDelete = () => { return },
 }) => {
@@ -23,22 +24,26 @@ export const CardProductsComponent = ({
     <div ref={setRef}>
       {
         <WrapperCard>
-          <TooltipCardProduct>
-            <button
-              onClick={redirect}
-            >
-              <IconEdit color={PColor} size={20} />
-            </button>
-          </TooltipCardProduct>
-          <TooltipCardProduct left="50px">
-            <button
-              onClick={() => {
-                return handleDelete(food);
-              }}
-            >
-              <IconDelete color={PColor} size={20} />
-            </button>
-          </TooltipCardProduct>
+          {isEdit &&
+            <>
+              <TooltipCardProduct>
+                <button
+                  onClick={redirect}
+                >
+                  <IconEdit color={PColor} size={20} />
+                </button>
+              </TooltipCardProduct>
+              <TooltipCardProduct left="50px">
+                <button
+                  onClick={() => {
+                    return handleDelete(food)
+                  }}
+                >
+                  <IconDelete color={PColor} size={20} />
+                </button>
+              </TooltipCardProduct>
+            </>
+          }
           <CardProductsContent onClick={onClick}>
             <CtnBox>
               {isVisible && (
@@ -54,12 +59,14 @@ export const CardProductsComponent = ({
             </CtnBox>
             <CtnBox>
               {(!image && isVisible) && (
-                <img
+                <Image
                   alt={food.ProDescription || "img"}
                   blurDataURL="/images/DEFAULTBANNER.png"
                   layout="fill"
+                  width={300}
+                  height={300}
                   objectFit="cover"
-                  src={food.ProImage}
+                  src={"/images/DEFAULTBANNER.png" || food.ProImage}
                 />
               )}
               {image}
@@ -68,6 +75,6 @@ export const CardProductsComponent = ({
         </WrapperCard>
       }
     </div>
-  );
-};
+  )
+}
 export const CardProducts = React.memo(CardProductsComponent)

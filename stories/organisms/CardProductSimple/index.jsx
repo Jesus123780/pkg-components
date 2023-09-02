@@ -1,14 +1,14 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import PropTypes from "prop-types";
+import Image from "next/image"
+import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   IconComment,
   IconDelete,
   IconEdit,
   IconPlus,
-} from "../../../assets/icons";
+} from "../../../assets/icons"
 import {
   ActionName,
   Button,
@@ -21,11 +21,11 @@ import {
   OverlineFree,
   WrapperButton,
   WrapperCard,
-} from "./styled";
-import { RippleButton } from "../../atoms/Ripple";
-import { numberFormat } from "./../../../utils/index";
-import { PColor, BGColor } from "./../../../assets/colors/index";
-import { Tag } from "../../atoms";
+} from "./styled"
+import { RippleButton } from "../../atoms/Ripple"
+import { numberFormat } from "./../../../utils/index"
+import { PColor, BGColor } from "./../../../assets/colors/index"
+import { Tag } from "../../atoms"
 
 export const MemoCardProductSimple = ({
   del,
@@ -60,85 +60,85 @@ export const MemoCardProductSimple = ({
   dataExtra = [],
   dataOptional = [],
   dispatch = () => {
-    return;
+    return
   },
   handleComment = () => {
-    return;
+    return
   },
   handleDelete = () => {
-    return;
+    return
   },
   handleFreeProducts = () => {
-    return;
+    return
   },
   onClick = () => {
-    return;
+    return
   },
   onTargetClick = () => {
-    return;
+    return
   },
 }) => {
-  const router = useRouter();
-  const [startAnimateUp, setStartAnimateUp] = useState("");
-  const [animateType, setAnimateType] = useState("");
-  const [show, setShow] = useState(false);
+  const router = useRouter()
+  const [startAnimateUp, setStartAnimateUp] = useState("")
+  const [animateType, setAnimateType] = useState("")
+  const [show, setShow] = useState(false)
 
   const handle = () => {
     setTimeout(() => {
-      setAnimateType("move-up");
-      setStartAnimateUp("");
-    }, 250);
-  };
+      setAnimateType("move-up")
+      setStartAnimateUp("")
+    }, 250)
+  }
   const handleDown = (event) => {
-    handleDecrement(event);
-    setStartAnimateUp("");
-    setAnimateType("");
+    handleDecrement(event)
+    setStartAnimateUp("")
+    setAnimateType("")
     setTimeout(() => {
-      setStartAnimateUp("start-animate-down");
+      setStartAnimateUp("start-animate-down")
       setTimeout(() => {
-        setAnimateType("move-down");
-        setStartAnimateUp("");
-      }, 150);
-    }, 0);
-  };
+        setAnimateType("move-down")
+        setStartAnimateUp("")
+      }, 150)
+    }, 0)
+  }
 
   const handleUp = (event) => {
-    handleIncrement(event);
-    setStartAnimateUp("");
-    setAnimateType("");
+    handleIncrement(event)
+    setStartAnimateUp("")
+    setAnimateType("")
     setTimeout(() => {
-      setStartAnimateUp("start-animate-up");
-      handle();
-    }, 0);
-  };
+      setStartAnimateUp("start-animate-up")
+      handle()
+    }, 0)
+  }
 
-  const urlImage = "/images/DEFAULTBANNER.png";
-  const showCategories = dataExtra.length > 0 || dataOptional.length > 0;
+  const urlImage = "/images/DEFAULTBANNER.png"
+  const showCategories = dataExtra.length > 0 || dataOptional.length > 0
   const formatter = new Intl.ListFormat("es", {
     style: "long",
     type: "conjunction",
-  });
+  })
   const formatterOptional = new Intl.ListFormat("es", {
     style: "narrow",
     type: "unit",
-  });
+  })
   const ListFormat = dataExtra
     .map((product) => {
-      return `$ ${numberFormat(product?.extraPrice)}, ${product.extraName}`;
+      return `$ ${numberFormat(product?.extraPrice)}, ${product.extraName}`
     })
-    .slice(0, 4);
+    .slice(0, 4)
   const ListFormatOptional = dataOptional
     ?.map((product) => {
       return product?.ExtProductFoodsSubOptionalAll?.map((subProduct) => {
-        return `${subProduct.OptionalSubProName}` || "";
-      });
+        return `${subProduct.OptionalSubProName}` || ""
+      })
     })
-    .slice(0, 4);
-  const finalListFormat = formatter?.format(ListFormat) || "";
-  const finalOptional = [...ListFormatOptional];
+    .slice(0, 4)
+  const finalListFormat = formatter?.format(ListFormat) || ""
+  const finalOptional = [...ListFormatOptional]
   const finalListFormatOptional =
-    formatterOptional?.format(finalOptional[0]) || "";
-  const listCategories = `${finalListFormat}, ${finalListFormatOptional}`;
+    formatterOptional?.format(finalOptional[0]) || ""
+  const listCategories = `${finalListFormat}, ${finalListFormatOptional}`
 
   return (
     <>
@@ -187,7 +187,7 @@ export const MemoCardProductSimple = ({
               delay=".1s"
               grid={false}
               onClick={() => {
-                return router.push(`/update/products/editar/${pId}`);
+                return router.push(`/update/products/editar/${pId}`)
               }}
               top={"80px"}
             >
@@ -245,7 +245,7 @@ export const MemoCardProductSimple = ({
                 <div
                   className="counts--container"
                   onClick={() => {
-                    return setShow(index);
+                    return setShow(index)
                   }}
                 >
                   <div className={`count ${startAnimateUp}${animateType}`}>
@@ -257,7 +257,7 @@ export const MemoCardProductSimple = ({
                     max={999}
                     min={1}
                     onBlur={() => {
-                      return setShow(false);
+                      return setShow(false)
                     }}
                     onChange={(event) => {
                       return dispatch({
@@ -268,7 +268,7 @@ export const MemoCardProductSimple = ({
                           index: index,
                           id: pId,
                         },
-                      });
+                      })
                     }}
                     onFocus={(event) => {
                       return dispatch({
@@ -279,10 +279,10 @@ export const MemoCardProductSimple = ({
                           index: index,
                           id: pId,
                         },
-                      });
+                      })
                     }}
                     onKeyDown={(event) => {
-                      return event.key === "Enter" ? setShow(false) : null;
+                      return event.key === "Enter" ? setShow(false) : null
                     }}
                     show={show}
                     type="number"
@@ -324,7 +324,7 @@ export const MemoCardProductSimple = ({
                   bgColor={BGColor}
                   margin="5px auto"
                   onClick={() => {
-                    return onClick();
+                    return onClick()
                   }}
                   padding="0"
                   widthButton={widthButton}
@@ -337,7 +337,7 @@ export const MemoCardProductSimple = ({
           <div
             className="dish-card__container-image"
             onClick={() => {
-              return onTargetClick();
+              return onTargetClick()
             }}
           >
             <Image
@@ -375,9 +375,9 @@ export const MemoCardProductSimple = ({
         )}
       </WrapperCard>
     </>
-  );
-};
-export const CardProductSimple = React.memo(MemoCardProductSimple);
+  )
+}
+export const CardProductSimple = React.memo(MemoCardProductSimple)
 
 MemoCardProductSimple.propTypes = {
   ProDescription: PropTypes.any,
@@ -394,4 +394,4 @@ MemoCardProductSimple.propTypes = {
   pName: PropTypes.any,
   render: PropTypes.any,
   widthButton: PropTypes.any,
-};
+}

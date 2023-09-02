@@ -39,7 +39,7 @@ ScaleModal.propTypes = {
 
 export default ScaleModal
 
-const zoomIn = keyframes`
+export const zoomIn = keyframes`
   0% {
     transform:scale(0);
   }
@@ -49,7 +49,7 @@ const zoomIn = keyframes`
     
 `
 
-const zoomOut = keyframes`
+export const zoomOut = keyframes`
    0% {
     transform:scale(1);
   }

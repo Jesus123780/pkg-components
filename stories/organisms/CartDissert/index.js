@@ -1,5 +1,5 @@
 import { IconDelete } from "../../../assets/icons"
-import Column from "../../atoms/Column"
+import { Column } from "../../atoms/Column"
 
 export const Card = ({
     card,

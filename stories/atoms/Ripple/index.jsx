@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useRef, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { BGColor } from './../../../assets/colors'
+import { PColor } from 'public/colors'
 
 export const RippleButton = props => {
   const {
@@ -81,8 +82,7 @@ RippleButton.propTypes = {
 }
 const Button = styled.button`
 &:disabled {
-  background-color: ${`#cccccc75`} !important;
-  cursor: no-drop;
+  background-color: ${`${PColor}69`} !important;
 }
 
  padding: ${ ({ padding })=> {return padding ? padding: '1em'} };

@@ -30,6 +30,8 @@ const SearchIcon = styled.span`
 
 export const SearchBar = ({
   placeholder = 'Search...',
+  padding = '0px 30px 0',
+  margin = '0',
   handleChange = () => { return },
   handleSubmit = () => { return }
 }) => {
@@ -46,7 +48,7 @@ export const SearchBar = ({
   }
 
   return (
-    <form onSubmit={customHandleSubmit} style={{ padding: '0px 30px 0' }}>
+    <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin }}>
       <SearchBarContainer>
         <SearchIcon>
           <IconSearch size='25px' color={PColor} />
