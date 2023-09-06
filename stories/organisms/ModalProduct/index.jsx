@@ -8,7 +8,8 @@ import {
 } from '../../../assets/colors'
 import {
     IconArrowBottom,
-    IconMiniCheck
+    IconMiniCheck,
+    IconShopping
 } from '../../../assets/icons'
 import { numberFormat } from '../../../utils'
 import {
@@ -57,11 +58,13 @@ export const ModalProduct = ({
     handleAddProducts = () => { return },
     handleCountProducts = () => { return }
 }) => {
+    console.log({loading})
     // EFFECTS
     const {
         ProDescription,
         ProDescuento,
         ProPrice,
+        intoCart,
         getStore,
         pName
     } = dataOneProduct || {}
@@ -111,6 +114,7 @@ export const ModalProduct = ({
                                 <HeadSticky>
                                     <Text size='1.1em'>{pName}</Text>
                                     <Text size='1.1em'>Cantidad: {quantity} </Text>
+                                    {intoCart &&  <IconShopping color={PColor} size='25px' />}
                                 </HeadSticky>
                                 <Text
                                     color='#676464'
@@ -233,7 +237,7 @@ export const ModalProduct = ({
                                 style={{ margin: '0 20px 0 0', width: '60%' }}
                             />
                             <RippleButton
-                                disabled={disabled && !loading}
+                                disabled={disabled && loading}
                                 color={BGColor}
                                 onClick={() => { return handleAddProducts(dataOneProduct) }}
                                 padding='5px'
