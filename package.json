@@ -1,32 +1,27 @@
 {
-  "name": "pkg-components",
-  "version": "1.1.5",
-  "main": "index.js",
-  "private": false,
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "scripts": {
-    "husky": "husky install",
-    "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
-    "check:types": "tsc --noemit",
-    "check:te": "npm run check:types && npm run check:eslint",
-    "clean": "rm -rf ./node_modules ./storybook-static package-lock.json && npm i",
-    "check:update": "npm-check -u",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "rm -rf coverage && jest --coverage",
-    "sb": "start-storybook -p 6006",
-    "sb:prod": "start-storybook",
-    "build:sb": "build-storybook",
-    "chromatic": "npx chromatic --project-token=2f192326eb16",
-    "create-story-files": "node createStoryFile.js"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jesus123780/pkg-components/issues"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.19.1",
+    "@babel/preset-typescript": "^7.18.6",
+    "@stitches/react": "^1.2.8",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/manager-webpack5": "^6.5.15",
+    "@storybook/svelte": "^6.5.15",
+    "chart.js": "^4.4.0",
+    "next": "^13.2.4",
+    "react-chartjs-2": "5.2.0",
+    "storybook": "6.5.15",
+    "storybook-addon-next-router": "4.0.2",
+    "styled-components": "5.3.6"
+  },
+  "description": "",
   "devDependencies": {
-    "@babel/core": "7.19.3",
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.22.15",
+    "@babel/preset-react": "^7.22.15",
     "@storybook/addon-actions": "6.5.15",
     "@storybook/addon-essentials": "6.5.15",
     "@storybook/addon-interactions": "6.5.15",
@@ -36,37 +31,46 @@
     "@storybook/manager-webpack4": "6.5.15",
     "@storybook/react": "6.5.15",
     "@storybook/testing-library": "0.0.13",
-    "babel-loader": "8.2.5",
+    "babel-loader": "^8.2.5",
     "chromatic": "^6.10.1",
     "dotenv-webpack": "^8.0.1",
+    "fs": "^0.0.1-security",
     "html-webpack-plugin": "^5.5.0",
     "lodash.debounce": "^4.0.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "webpack": "^5.74.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.11.1"
   },
-  "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.19.1",
-    "@babel/preset-env": "^7.19.3",
-    "@babel/preset-react": "^7.18.6",
-    "@babel/preset-typescript": "^7.18.6",
-    "@stitches/react": "^1.2.8",
-    "@storybook/addon-postcss": "^2.0.0",
-    "@storybook/manager-webpack5": "^6.5.15",
-    "@storybook/svelte": "^6.5.15",
-    "next": "^13.2.4",
-    "storybook": "6.5.15",
-    "storybook-addon-next-router": "4.0.2",
-    "styled-components": "5.3.6"
+  "homepage": "https://github.com/Jesus123780/pkg-components#readme",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "pkg-components",
+  "private": false,
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jesus123780/pkg-components.git"
   },
-  "bugs": {
-    "url": "https://github.com/Jesus123780/pkg-components/issues"
+  "scripts": {
+    "build:sb": "build-storybook",
+    "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
+    "check:te": "npm run check:types && npm run check:eslint",
+    "check:types": "tsc --noemit",
+    "check:update": "npm-check -u",
+    "chromatic": "npx chromatic --project-token=2f192326eb16",
+    "clean": "rm -rf ./node_modules ./storybook-static package-lock.json && npm i",
+    "create-story-files": "node createStoryFile.js",
+    "husky": "husky install",
+    "sb": "start-storybook -p 6006",
+    "sb:prod": "start-storybook",
+    "test": "jest",
+    "test:coverage": "rm -rf coverage && jest --coverage",
+    "test:watch": "jest --watch"
   },
-  "homepage": "https://github.com/Jesus123780/pkg-components#readme",
-  "description": ""
+  "version": "1.1.6"
 }

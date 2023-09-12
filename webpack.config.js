@@ -12,14 +12,6 @@ module.exports = {
           },
         },
       },
-      // Agrega una regla similar para archivos chart.js si es necesario
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
-      },
     ],
   },
 };

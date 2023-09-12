@@ -33,11 +33,11 @@ import { BColor } from '../../../assets/colors'
 
 export { Section }  from './styled'
 
-export const Table = ({ 
-  titles = [], 
+export const Table = ({
+  titles = [],
   bgRow,
-  data, 
-  pointer, 
+  data,
+  pointer,
   renderBody = [], 
   entryPerView, 
   handleAdd, 

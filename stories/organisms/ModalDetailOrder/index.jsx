@@ -100,6 +100,14 @@ export const MemoModalDetailOrder = ({
       setStateSale(value);
     }
   };
+  const options = [
+    { value: 0, label: "Confirmar pedido" },
+    { value: 2, label: "Pedido en proceso" },
+    { value: 3, label: "Pedido en listo para entrega" },
+    { value: 4, label: "Pedido concluido" },
+    { value: 5, label: "Rechazar pedido" },
+  ];
+
   if (saleError) return <>Error</>;
   return (
     <>
@@ -247,56 +255,18 @@ export const MemoModalDetailOrder = ({
                 </Button>
                 <Column>
                   {openAction && (
-                    <ActionButton
-                      onPress={() => {
-                        return;
-                      }}
-                    >
-                      <div
-                        className="option"
-                        onClick={() => {
-                          return handleChangeStateSale(0, pCodeRef);
-                        }}
-                      >
-                        {" "}
-                        Confirmar pedido
-                      </div>
-                      <div
-                        className="option"
-                        onClick={() => {
-                          return handleChangeStateSale(2, pCodeRef);
-                        }}
-                      >
-                        {" "}
-                        Pedido en proceso
-                      </div>
-                      <div
-                        className="option"
-                        onClick={() => {
-                          return handleChangeStateSale(3, pCodeRef);
-                        }}
-                      >
-                        {" "}
-                        Pedido en listo para entrega
-                      </div>
-                      <div
-                        className="option"
-                        onClick={() => {
-                          return handleChangeStateSale(4, pCodeRef);
-                        }}
-                      >
-                        {" "}
-                        Pedido concluido
-                      </div>
-                      <div
-                        className="option"
-                        onClick={() => {
-                          return handleChangeStateSale(5, pCodeRef);
-                        }}
-                      >
-                        {" "}
-                        Rechazar pedido
-                      </div>
+                    <ActionButton>
+                      {options.map((option) => (
+                        <div
+                          key={option.value}
+                          className="option"
+                          onClick={() =>
+                            handleChangeStateSale(option.value, pCodeRef)
+                          }
+                        >
+                          {option.label}
+                        </div>
+                      ))}
                     </ActionButton>
                   )}
                 </Column>

@@ -29,6 +29,7 @@ import {
 } from './styled'
 import {
     Checkbox,
+    Column,
     Overline,
     RippleButton,
     Tag
@@ -52,13 +53,11 @@ export const ModalProduct = ({
     handleIncrementExtra = () => { return },
     handleDecrease = () => { return },
     handleIncrease = () => { return },
-    setAlertBox = () => { return },
     handleAddOptional = () => { return },
     useEvents = () => { return },
     handleAddProducts = () => { return },
     handleCountProducts = () => { return }
 }) => {
-    console.log({loading})
     // EFFECTS
     const {
         ProDescription,
@@ -112,9 +111,13 @@ export const ModalProduct = ({
                             </div>
                             <ContentInfo>
                                 <HeadSticky>
-                                    <Text size='1.1em'>{pName}</Text>
-                                    <Text size='1.1em'>Cantidad: {quantity} </Text>
+                                    <Column>
+                                        <Text size='1.1em'>{pName}</Text>
+                                        <Text size='1.1em'>Cantidad: {quantity} </Text>
+                                    </Column>
+                                    <>
                                     {intoCart &&  <IconShopping color={PColor} size='25px' />}
+                                    </>
                                 </HeadSticky>
                                 <Text
                                     color='#676464'
@@ -165,7 +168,7 @@ export const ModalProduct = ({
                                         <p className='garnish-choices__title'>Adicionales</p>
                                         <p className='garnish-choices__title-desc'>Escoge las opciones.</p>
                                     </div>
-                                    <IconMiniCheck color={'#009b3a'} size={'15px'} />
+                                    <IconMiniCheck color='#009b3a' size={'15px'} />
                                 </GarnishChoicesHeader>}
                                 {dataExtra?.length > 0 && dataExtra?.map((extra, index) => {
                                     const contentPrice = extra.extraPrice === 0 && extra.quantity == 0

@@ -4,7 +4,7 @@ import {
     BGVColor,
     DarkSilver,
     PColor
-  } from 'public/colors'
+  } from '../../../assets/colors'
   import styled, { css } from 'styled-components'
   
   export const ContainerButtonAction = styled.div`
@@ -90,6 +90,7 @@ import {
   `
   export const HeadSticky = styled.div`
       position: sticky;
+      display: flex;
       top: -30px;
       background-color: #fff;
       padding: 25px 0;

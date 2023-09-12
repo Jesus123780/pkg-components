@@ -13,6 +13,7 @@ export * from './ListItemDessert';
 export * from './ModalDetailOrder';
 export * from './Table';
 export * from './BannerStore';
+export * from './OrderCard';
 export * from './Portal';
 export * from './Providers';
 export * from './ResisesColumns';
