@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types'
-import { 
-  useCallback, 
-  useEffect, 
+import React, {
+  useCallback,
+  useEffect,
   useState
 } from 'react'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
-import { 
-  BtnClose, 
-  Container, 
-  Modal, 
+import {
+  BtnClose,
+  Container,
+  Modal,
   ModalBody,
   ModalFooter,
-  ModalHeader, 
-  ModalTitle, 
+  ModalHeader,
+  ModalTitle,
   Wrapper
 } from './styled'
 import { Button } from '../../atoms/Button'

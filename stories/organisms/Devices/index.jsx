@@ -1,26 +1,61 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { CardDevice, ContainerDevices } from './styled'
 import { platformIcons } from './PlatformIcons'
 import { Skeleton } from '../../molecules/Skeleton'
+/**
+ * Function to get the platform icon based on the platform name.
+ * @param {string} platform - The platform name.
+ * @returns {string} - The platform icon.
+ */
+const getPlatformIcon = (platform) => {
+  return platformIcons[platform] || ''
+};
+
+/**
+ * Function to prioritize the current device in the data array.
+ * @param {Array} data - The array of devices.
+ * @param {string} deviceId - The ID of the current device.
+ * @returns {Array} - The updated array with the current device at the beginning.
+ */
+const prioritizeCurrentDevice = (data, deviceId) => {
+  if (Array.isArray(data) && deviceId) {
+    const newData = [...data]  // Create a new array to avoid modifying the original
+    const currentDeviceIndex = newData.findIndex(device => device?.deviceId === deviceId)
+
+    if (currentDeviceIndex !== -1) {
+      const currentDevice = newData[currentDeviceIndex]
+      newData?.splice(currentDeviceIndex, 1)
+      newData?.unshift(currentDevice)
+    }
+
+    return newData
+  } else {
+    return data
+  }
+
+  return data;
+};
 
 export const Devices = ({
     data = [],
     deviceId = null,
     loading = false
 }) => {
-  function getPlatformIcon(platform) {
-    return platformIcons[platform]
-  }
+  const prioritizedData = prioritizeCurrentDevice(data, deviceId);
+
   if (loading) return (
     <ContainerDevices>
       <Skeleton numberObject={4} height={75} margin={'10px 0'} />
     </ContainerDevices>
-  )
+  );
+
   return (
     <ContainerDevices>
-      {data?.map(x => {return (
+      {prioritizedData?.map(x => (
         <CardDevice key={x.dId}>
           <span className='device__icon'>
-          {getPlatformIcon(x.platform)}
+            {getPlatformIcon(x.platform)}
           </span>
           <div className='device__info'>
             <div className='device__description-wrapper'>
@@ -32,7 +67,16 @@ export const Devices = ({
             <span className='device__localization' tabIndex='0'> {x?.DatCre} </span>
           </div>
         </CardDevice>
-      )})}
+      ))}
     </ContainerDevices>
-  )
-}
+  );
+};
+
+// Prop types for the Devices component
+Devices.propTypes = {
+  data: PropTypes.array,
+  deviceId: PropTypes.string,
+  loading: PropTypes.bool
+};
+
+export default Devices;
