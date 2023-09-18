@@ -1,64 +1,89 @@
 import React from 'react';
+import Link from 'next/link';
 import { StatusItemOrderProcess } from './StatusItemOrderProcess';
 import { CardOrder } from './styled';
 
-export const OrderCard = ({ storeOrder }) => {
+const labelStatusOrder = {
+  0: '',
+  1: 'Aceptado',
+  2: 'Pedido en proceso',
+  3: 'Listo para entrega',
+  4: 'Pedido concluido',
+  5: 'Pedido Rechazado',
+};
+export const OrderCard = ({ storeOrder = [] }) => {
   return (
     <CardOrder>
-      {!!storeOrder &&
-        storeOrder.map((x, i) => (
-          <div className="card" key={i + 1}>
-            <div className="card-header">
-              <div className="order-number"># {x.pCodeRef}</div>
-              {x.pSState === 5 ? (
-                <div>
-                  <StatusItemOrderProcess
-                    data={x.pDatMod}
-                    pulse={false}
-                    text={'El pedido fue rechazado'}
-                  />
+      {storeOrder?.length > 0
+        ? storeOrder.map((order, i) => {
+            console.log(order);
+            const { getOneStore } = order || {};
+            const {
+              idStore,
+              storeName,
+              city,
+              department
+            } = getOneStore || {};
+            const pCodeRef = order.pCodeRef;
+            return (
+              <Link
+                key={pCodeRef}
+                href={{
+                  pathname: '/proceso-de-compra/finalizar',
+                  query: {
+                    saleId: pCodeRef,
+                    idStore,
+                  },
+                }}
+                passHref
+                shallow
+              >
+                <div className='card'>
+                  <div className='card-header'>
+                    <div>
+                      <h5 className='card-title_store'>
+                        {storeName} {city?.cName} {department?.dName}
+                      </h5>
+                    </div>
+                    {order.pCodeRef && (
+                      <div className='order-number'>
+                        Ref de pedido
+                        <div>
+                        # {order?.pCodeRef}
+
+                        </div>
+                      </div>
+                    )}
+                    <div className='order-status_container'>
+                      <span className='order-status'>
+                        {labelStatusOrder[order.pSState]}
+                      </span>
+                      <div className='status-list'>
+                        {[1, 2, 3, 4].map((state) => {
+                          return (
+                            <StatusItemOrderProcess
+                              key={state}
+                              pulse={
+                                order.pSState === state ||
+                                order.pSState >= state
+                              }
+                              rejected={order.pSState === 5}
+                              text={
+                                order.pSState === state
+                                  ? labelStatusOrder[order.pSState]
+                                  : ''
+                              }
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <div className="status-list">
-                  {x.pSState === 0 && (
-                    <StatusItemOrderProcess
-                      data={x.pDatMod}
-                      pulse={x.pSState === 0}
-                    />
-                  )}
-                  {x.pSState >= 1 && (
-                    <StatusItemOrderProcess
-                      data={x.pDatMod}
-                      pulse={x.pSState === 1}
-                      text={'Aceptado'}
-                    />
-                  )}
-                  {x.pSState >= 2 && (
-                    <StatusItemOrderProcess
-                      data={x.pDatMod}
-                      pulse={x.pSState === 2}
-                      text={'Pedido en proceso'}
-                    />
-                  )}
-                  {x.pSState >= 3 && (
-                    <StatusItemOrderProcess
-                      data={x.pDatMod}
-                      pulse={x.pSState === 3}
-                      text={'listo para entrega'}
-                    />
-                  )}
-                  {x.pSState >= 4 && (
-                    <StatusItemOrderProcess
-                      data={x.pDatMod}
-                      pulse={x.pSState === 4}
-                      text={'Pedido concluido'}
-                    />
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+              </Link>
+            );
+          })
+        : null}
     </CardOrder>
   );
 };

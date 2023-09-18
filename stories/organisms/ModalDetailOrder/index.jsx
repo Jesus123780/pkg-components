@@ -20,8 +20,7 @@ import {
 } from "./styled";
 import { PColor } from "../../../assets/colors";
 
-const CLIENT_URL_BASE = "http://localhost:3000/";
-
+const CLIENT_URL_BASE = process.env.URL_BASE;
 export const MemoModalDetailOrder = ({
   dataModal = {},
   dataStore,
@@ -30,6 +29,7 @@ export const MemoModalDetailOrder = ({
   saleKey,
   saleGroup,
   openAction = false,
+  isClient = false,
   edit = true,
   totalProductsPrice = 0,
   loading = false,
@@ -299,18 +299,20 @@ export const MemoModalDetailOrder = ({
                     {channel ? "RESTAURANTE" : "DELIVERY-APP"}
                   </Text>
                 </div>
-                <div className="header-responsible">
-                  <Text fontSize="14px">Cambio</Text>
-                  <Text fontSize="14px">{numberFormat(change)}</Text>
-                </div>
+                {!!change && (
+                  <div className="header-responsible">
+                    <Text fontSize="14px">Cambio</Text>
+                    <Text fontSize="14px">{numberFormat(change)}</Text>
+                  </div>
+                )}
                 {
                   <CustomLink
-                    href={`${CLIENT_URL_BASE}delivery/${dataStore?.city?.cName?.toLocaleLowerCase()}-${dataStore?.department?.dName?.toLocaleLowerCase()}/${dataStore?.storeName
+                    href={`${CLIENT_URL_BASE}/delivery/${dataStore?.city?.cName?.toLocaleLowerCase()}-${dataStore?.department?.dName?.toLocaleLowerCase()}/${dataStore?.storeName
                       ?.replace(/\s/g, "-")
                       ?.toLocaleLowerCase()}/${dataStore?.idStore}`}
                   >
                     <Text margin="12px 0 0 5px" size="19px">
-                      $ {dataStore?.storeName ?? ""}
+                      {dataStore?.storeName ?? ""}
                     </Text>
                   </CustomLink>
                 }
@@ -324,12 +326,16 @@ export const MemoModalDetailOrder = ({
                     {payMethodPState === 0 ? "EFECTIVO" : "TRANSFERENCIA"}
                   </Text>
                 </div>
-                <div className="header-responsible">
-                  <Text fontSize="14px">Fecha de creacion</Text>
-                  <Text fontSize="14px">
-                    {`${yearMonthDay} - ${longDayName} - ${hourMinutes12}`}
-                  </Text>
-                </div>
+                {pDatCre ? (
+                  <div className="header-responsible">
+                    <Text fontSize="14px">Fecha de creacion</Text>
+                    <Text fontSize="14px">
+                      {pDatCre
+                        ? `${yearMonthDay} - ${longDayName} - ${hourMinutes12}`
+                        : null}
+                    </Text>
+                  </div>
+                ) : null}
               </SectionDetailOrder>
             </Column>
           </div>
