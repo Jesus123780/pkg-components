@@ -42,20 +42,21 @@ jobs:
           fi
         working-directory: ${{ github.workspace }}
 
-  publish-npm:
+  publish_npm:
     runs-on: ubuntu-latest
-    needs:
-      - build  # Ahora depende del trabajo 'build'
     steps:
-      - uses: actions/checkout@v2
-      # Autenticación en npm
-      - name: Authenticate with npm
-        run: npm login --registry=https://registry.npmjs.org/ --scope=@juvinao
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      # Instala las dependencias antes de publicar
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # Publica en npm
       - name: Publish to npm
-        run: npm publish --registry=https://registry.npmjs.org/ --access public --token=${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
