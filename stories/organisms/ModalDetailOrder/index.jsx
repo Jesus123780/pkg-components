@@ -64,7 +64,7 @@ export const MemoModalDetailOrder = ({
   const dataLocation = (locationUser && JSON.parse(locationUser)) || {};
   const { cName, country, dName, uLocationKnow } = dataLocation;
   const stateOrder = {
-    0: "Confirmado",
+    1: "Confirmado",
     2: "En Proceso",
     3: "Listo Para Entrega",
     4: "Pedido Concluido",
@@ -95,13 +95,14 @@ export const MemoModalDetailOrder = ({
    * @returns {any}
    **/
   const handleChangeStateSale = (value, pCodeRef) => {
+    console.log("🚀 ~ file: index.jsx:98 ~ handleChangeStateSale ~ value, pCodeRef:", value, pCodeRef)
     if (stateSale !== value) {
       HandleChangeState(value, pCodeRef);
       setStateSale(value);
     }
   };
   const options = [
-    { value: 0, label: "Confirmar pedido" },
+    { value: 1, label: "Confirmar pedido" },
     { value: 2, label: "Pedido en proceso" },
     { value: 3, label: "Pedido en listo para entrega" },
     { value: 4, label: "Pedido concluido" },
