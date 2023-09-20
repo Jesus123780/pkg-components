@@ -2,10 +2,22 @@
 name: 'Chromatic Deployment and NPM Publish'
 
 # Event for the workflow
-on: push
+on:
+  push:
+    branches:
+      - main  # Puedes cambiar a la rama que desees
 
 # List of jobs
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Instala las dependencias antes de la construcción
+      - name: Install dependencies
+        run: npm install
+
   validate-commit:
     name: Validate Commit Message
     runs-on: ubuntu-latest
@@ -29,17 +41,11 @@ jobs:
             exit 1
           fi
         working-directory: ${{ github.workspace }}
-  test:
-    # Operating System
-    runs-on: ubuntu-latest
-    # Job steps
-    steps:
-      - uses: actions/checkout@v1
-      - run: npm install -f
 
   publish-npm:
     runs-on: ubuntu-latest
-    needs: build
+    needs:
+      - build  # Ahora depende del trabajo 'build'
     steps:
       - uses: actions/checkout@v2
 
@@ -50,4 +56,3 @@ jobs:
       # Publica en npm
       - name: Publish to npm
         run: npm publish --registry=https://registry.npmjs.org/ --access public --token=${{ secrets.NPM_TOKEN }}
-
