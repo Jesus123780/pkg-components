@@ -6,6 +6,29 @@ on: push
 
 # List of jobs
 jobs:
+  validate-commit:
+    name: Validate Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate commit messages
+        run: |
+          last_commit_message=$(git log -1 --pretty=format:%s)
+          if [[ ! "$last_commit_message" =~ ^(fix:|feat:) ]]; then
+            echo "Error: El mensaje de confirmación no cumple con el formato esperado (fix: o feat:)"
+            exit 1
+          fi
+        working-directory: ${{ github.workspace }}
   test:
     # Operating System
     runs-on: ubuntu-latest
@@ -16,9 +39,15 @@ jobs:
 
   publish-npm:
     runs-on: ubuntu-latest
-    needs: test
+    needs: build
     steps:
       - uses: actions/checkout@v2
-      - run: npm install
-      - run: npm publish --access public
+
+      # Instala las dependencias antes de publicar
+      - name: Install dependencies
+        run: npm install
+
+      # Publica en npm
+      - name: Publish to npm
+        run: npm publish --registry=https://registry.npmjs.org/ --access public --token=${{ secrets.NPM_TOKEN }}
 
