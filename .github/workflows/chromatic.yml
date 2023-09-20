@@ -13,10 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: npm install -f
-      - uses: chromaui/action@v1
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
   publish-npm:
     runs-on: ubuntu-latest
