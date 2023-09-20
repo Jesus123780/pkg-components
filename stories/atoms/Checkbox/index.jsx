@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { PColor } from '../../../assets/colors'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css, keyframes } from 'styled-components'
 
 export const Checkbox = ({
@@ -11,10 +11,14 @@ export const Checkbox = ({
   indeterminate = false,
   label,
   name,
-  onChange = () => { return },
+  onChange = () => {},
   ...restProps
 }) => {
   const inputEl = useRef(null)
+  const [clickCount, setClickCount] = useState(0)
+  const [lastClickTime, setLastClickTime] = useState(0)
+
+  const clickThreshold = 1000; // Umbral de tiempo en milisegundos
 
   const syncIndeterminateState = useCallback(() => {
     if (inputEl && inputEl.current) {
@@ -30,8 +34,24 @@ export const Checkbox = ({
     if (indeterminate) {
       syncIndeterminateState()
     }
+
+    const now = Date.now();
+
+    if (now - lastClickTime < clickThreshold) {
+      setClickCount(prevClickCount => prevClickCount + 1);
+    } else {
+      setClickCount(1);
+    }
+
+    if (clickCount >= 7) {
+      alert('¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.');
+      setClickCount(0);
+    }
+
+    setLastClickTime(now);
     onChange(event, id)
   }
+
   const disabledStyles = { color: '#CCC' }
 
   return (

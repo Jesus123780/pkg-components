@@ -31,7 +31,7 @@ export const QuantityButton = ({
           data-test-id='marmita-counter'
           padding={padding}
         >
-          <ButtonDecrement
+          {quantity != 0 && <ButtonDecrement
             className={styles['btn-icon btn-icon--primary btn-icon--size-m btn-icon--transparent marmita-counter__btn-decrement']}
             disabled={showNegativeButton || validateZero || disabled}
             onClick={() => {return  validationOne ? () => { return } : handleDecrement()}}
@@ -51,11 +51,11 @@ export const QuantityButton = ({
                 > </path>
               </svg>
             </span>
-          </ButtonDecrement>
+          </ButtonDecrement>}
           <span className={styles['marmita-counter__value_label']}>{label}</span>
-          <div className={`${styles['marmita-counter__value']} ${classNameQuantity}`}>
+          {quantity != 0 && <div className={`${styles['marmita-counter__value']} ${classNameQuantity}`}>
             {validateZero ? null : quantity }
-          </div>
+          </div>}
           {<ButtonIncrement
             disabled={showPositiveButton || disabled}
             onClick={() => {return handleIncrement()}}

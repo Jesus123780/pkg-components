@@ -1,5 +1,4 @@
 .column-container {
-  border-bottom: 1px solid #e9ecef;
   height: calc(100vh - 100px);
   box-sizing: border-box;
   position: relative;
@@ -55,7 +54,7 @@
 .column-container .column {
   text-align: center;
   background: #ffffff;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   display: inline-block;
   position: relative;
 }
