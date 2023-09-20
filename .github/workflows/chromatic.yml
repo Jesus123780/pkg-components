@@ -48,6 +48,9 @@ jobs:
       - build  # Ahora depende del trabajo 'build'
     steps:
       - uses: actions/checkout@v2
+      # Autenticación en npm
+      - name: Authenticate with npm
+        run: npm login --registry=https://registry.npmjs.org/ --scope=@juvinao
 
       # Instala las dependencias antes de publicar
       - name: Install dependencies
