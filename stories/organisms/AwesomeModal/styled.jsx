@@ -1,6 +1,11 @@
 /* eslint-disable consistent-return */
 import styled, { css, keyframes } from 'styled-components'
-import { BGColor, SECColor, SEGColor } from '../../../assets/colors'
+import {
+    BGColor,
+    SECColor,
+    SEGColor,
+    DarkSilver
+} from '../../../assets/colors'
 import { MODAL_SIZES } from './constanst'
 
 const fadeIn = keyframes`
@@ -217,7 +222,7 @@ export const ModalFooter = styled.div`
     margin: auto;
     justify-content: space-between;
     display: flex;
-    border-top: 1px solid;
+    border-top: 1px solid ${`${DarkSilver}33`};
     background-color: ${({ backgroundColor }) => { return backgroundColor || BGColor }};
 `
 

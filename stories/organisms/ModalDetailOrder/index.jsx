@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { numberFormat } from "../../../utils/index";
 import { IconSales } from "../../../assets/icons";
 import { Column } from "../../atoms/Column";
@@ -72,6 +71,15 @@ export const MemoModalDetailOrder = ({
   };
   const { yearMonthDay, hourMinutes12, longDayName } = pDatCre || {};
   const [stateSale, setStateSale] = useState(pSState);
+  useEffect(() => {
+    // setStateSale()
+    const data = dataModal?.hasOwnProperty('pSState')
+    console.log(data)
+    if (data) {
+      setStateSale(pSState)
+    }
+  }, [dataModal])
+
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [oneProductToComment, setOneProductToComment] = useState({});
   const [values, setValues] = useState({});
@@ -95,7 +103,6 @@ export const MemoModalDetailOrder = ({
    * @returns {any}
    **/
   const handleChangeStateSale = (value, pCodeRef) => {
-    console.log("🚀 ~ file: index.jsx:98 ~ handleChangeStateSale ~ value, pCodeRef:", value, pCodeRef)
     if (stateSale !== value) {
       HandleChangeState(value, pCodeRef);
       setStateSale(value);

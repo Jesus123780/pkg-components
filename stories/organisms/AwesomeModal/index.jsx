@@ -160,7 +160,7 @@ export const AwesomeModal = ({
             borderRadius={borderRadius}
             backgroundColor={backgroundColor}
             display={display}
-            height={customHeight || 'calc(100vh - 87px)'}
+            height={customHeight || 'calc(100vh - 82px)'}
             padding={padding}
           >
             {(modal && show) &&
