@@ -28,7 +28,7 @@ export const Button = ({
   const mode = ripple ? 'ripple-mode' : primitiveMode
   return (
     <CustomButton
-      disabled={loading || disabled}
+      c={loading || disabled}
       width={width}
       loading={loading}
       padding={padding}
@@ -37,7 +37,7 @@ export const Button = ({
         ['storybook-button', `storybook-button--${size}`, `storybook-button--${loading && 'loading'}`, mode].join(' ')
       }
       style={{
-        backgroundColor: disabled ? 'gray' : backgroundColor,
+        backgroundColor: disabled ? '#ff000069' : backgroundColor,
         color,
         fontWeight,
         borderRadius,

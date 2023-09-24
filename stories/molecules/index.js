@@ -14,4 +14,5 @@ export * from './Skeleton';
 export * from './Steps';
 export * from './Tabs';
 export * from './Toast';
+export * from './DaySelector';
 // Comentario

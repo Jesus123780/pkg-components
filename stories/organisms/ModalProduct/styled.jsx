@@ -42,8 +42,6 @@ import {
       height: 100vh;   
       position: fixed; 
       overflow: hidden scroll;
-      /* height: 100%; */
-      /* width: 100%; */
   
     }
   `
