@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+export * from './PositionTooltip';
 
 const TooltipContainer = styled.div`
   position: relative;

@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types'
-import { PColor } from '../../../assets/colors'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import styled, { css, keyframes } from 'styled-components'
+import PropTypes from "prop-types"
+import { PColor } from "../../../assets/colors"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import styled, { css, keyframes } from "styled-components"
 
 export const Checkbox = ({
   checked,
-  className = '',
+  className = "",
   disabled = false,
   id,
   indeterminate = false,
@@ -44,7 +44,7 @@ export const Checkbox = ({
     }
 
     if (clickCount >= 7) {
-      alert('¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.');
+      alert("¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.");
       setClickCount(0);
     }
 
@@ -52,11 +52,11 @@ export const Checkbox = ({
     onChange(event, id)
   }
 
-  const disabledStyles = { color: '#CCC' }
+  const disabledStyles = { color: "#CCC" }
 
   return (
     <Span
-      className={className || ''}
+      className={className || ""}
       id={id}
       style={disabled ? disabledStyles : {}}
       {...restProps}
@@ -68,7 +68,7 @@ export const Checkbox = ({
         name={name}
         onChange={handleChange}
         ref={inputEl}
-        type='checkbox'
+        type="checkbox"
       />
       <CheckboxLabel checked={checked} htmlFor={`checkbox-${id}`}>
         {label}
@@ -119,7 +119,7 @@ const CheckboxLabel = styled.label`
   color: #9e9e9e;
   transition: color 250ms cubic-bezier(0.4,0,0.23,1);
   &&::before {
-    content: '';
+    content: "";
     align-items: center;
     background: transparent;
     border-radius: 50%;
@@ -135,7 +135,7 @@ const CheckboxLabel = styled.label`
 ${props => {
     return props.checked && css`
   &&::before {
-    content: '';
+    content: "";
     cursor: pointer;
     box-shadow: 0 0 0 0.5em ${PColor} inset;
     animation: ${checkboxCheck} 200ms cubic-bezier(0.4, 0, 0.23, 1);

@@ -11,12 +11,12 @@ import Image from 'next/image'
 
 export const CardProductsComponent = ({
   router,
-  onClick,
   isVisible,
   image,
   food,
   setRef,
   isEdit = true,
+  onClick = () => { return },
   redirect = () => { return },
   handleDelete = () => { return },
 }) => {
@@ -48,11 +48,11 @@ export const CardProductsComponent = ({
             <CtnBox>
               {isVisible && (
                 <>
-                  <h3 className="card__description">{food.pName}</h3>
-                  <h3 className="card__description">{food.ProDescription}</h3>
+                  <h3 className="card__description">{food?.pName ||''}</h3>
+                  <h3 className="card__description">{food?.ProDescription || ''}</h3>
                   <div className="footer">
-                    <span className="card__price">$ {food.ProPrice}</span>
-                    <span className="card__des">$ {food.ProDescuento}</span>
+                    <span className="card__price">$ {food?.ProPrice || 0}</span>
+                    <span className="card__des">$ {food?.ProDescuento}</span>
                   </div>
                 </>
               )}
@@ -60,7 +60,7 @@ export const CardProductsComponent = ({
             <CtnBox>
               {(!image && isVisible) && (
                 <Image
-                  alt={food.ProDescription || "img"}
+                  alt={food?.ProDescription || "img"}
                   blurDataURL="/images/DEFAULTBANNER.png"
                   layout="fill"
                   width={300}

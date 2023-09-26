@@ -1,12 +1,15 @@
-import { Column } from "../../atoms/Column"
-import { Card } from "../CartDissert"
+import { Column } from '../../atoms/Column'
+import { Card } from '../CartDissert'
 
 export const List = ({
     list,
     setData,
     listID,
+    loadingEditSubOptional = false,
     data,
-    removeOneItem = () => { return }
+    selectedItem = {},
+    removeOneItem = () => { return },
+    editOneItem = () => { return }
   }) => {
     return (
       <Column margin='10px 0'>
@@ -19,8 +22,11 @@ export const List = ({
                 id={list?.id}
                 index={index}
                 key={card?.id}
+                loadingEditSubOptional={loadingEditSubOptional}
                 list={list}
                 listID={listID}
+                editOneItem={editOneItem}
+                selectedItem={selectedItem}
                 removeOneItem={removeOneItem}
                 setData={setData}
               />

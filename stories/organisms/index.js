@@ -21,3 +21,4 @@ export * from './ModalProduct';
 export * from './UserProfile';
 export * from './ComingSoon';
 export * from './VirtualizedList';
+export * from './OptionalExtraProducts';

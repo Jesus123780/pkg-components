@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 
-export const ActiveLink = ({ 
-  children, 
-  activeClassName = '', 
+export const ActiveLink = ({
+  children,
+  activeClassName = '',
   ...props
 }) => {
   const { asPath } = useRouter()

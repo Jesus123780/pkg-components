@@ -5,7 +5,7 @@ import "./styles.css";
 export const ResisesColumnsMemo = ({
   lastMinWidth = '440px',
   padding = "15px",
-  height = "100%",
+  height = "",
   backgroundColor,
   initialDividerPosition = null,
   ...props
@@ -128,7 +128,7 @@ export const ResisesColumnsMemo = ({
   }, []);
 
   return (
-    <React.Fragment>
+    <div>
       <div
         className="column-container"
         ref={wrapper}
@@ -154,6 +154,7 @@ export const ResisesColumnsMemo = ({
               style={{
                 width: `${dividerPos[data]}%`,
                 minWidth: `${lastMinWidth}`,
+                height: '100%'
               }}
             >
               {props.children[index]}
@@ -168,7 +169,7 @@ export const ResisesColumnsMemo = ({
                   onTouchStart={onDragStart}
                 >
                 {false && <div >
-                    <IconArrowLeft color={'RED'} size={20} />
+                    <IconArrowLeft color='var(--color-primary-red)' size={20} />
                   </div>}
                 </div>
               )}
@@ -176,7 +177,7 @@ export const ResisesColumnsMemo = ({
           );
         })}
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -16,7 +16,6 @@ export const OrderCard = ({ storeOrder = [] }) => {
     <CardOrder>
       {storeOrder?.length > 0
         ? storeOrder.map((order, i) => {
-            console.log(order);
             const { getOneStore } = order || {};
             const {
               idStore,
