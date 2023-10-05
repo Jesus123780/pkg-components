@@ -1,17 +1,21 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
-import { Button, Tag, RippleButton, Column, Text } from "../../atoms";
-import { ResisesColumns, List, AwesomeModal } from "../../organisms";
-import { InputHooks } from "../../molecules";
-import { EColor, NorthTexasGreen, PColor } from "../../../assets/colors";
+import PropTypes from "prop-types"
+import { useState } from "react"
+import { Button, Tag, RippleButton, Column, Text } from "../../atoms"
+import { ResisesColumns, List, AwesomeModal } from "../../organisms"
+import { InputHooks } from "../../molecules"
+import {
+  EColor,
+  NorthTexasGreen,
+  PColor
+} from "../../../assets/colors"
 import {
   IconEdit,
   IconDelete,
   IconMiniCheck,
   IconQuestion,
-} from "../../../assets/icons";
-import { BodyDnd, GarnishChoicesHeader } from "./styled";
-import { FormExtra } from "./FormExtra";
+} from "../../../assets/icons"
+import { BodyDnd, GarnishChoicesHeader } from "./styled"
+import { FormExtra } from "./FormExtra"
 
 export const OptionalExtraProducts = ({
   title = "",
@@ -23,49 +27,51 @@ export const OptionalExtraProducts = ({
   selectedExtra,
   openModalEditExtra,
   setSelectedExtra,
-  setOpenModalEditExtra,
+  setOpenModalEditExtra = () => {
+    return
+  },
   handleCheck = () => {
-    return;
+    return
   },
   editOneItem = () => {
-    return;
+    return
   },
   handleRemoveList = () => {
-    return;
+    return
   },
   setTitle = () => {
-    return;
+    return
   },
   setCheck = {},
   handleChangeItems = () => {
-    return;
+    return
   },
   handleAdd = () => {
-    return;
+    return
   },
   removeOneItem = () => {
-    return;
+    return
   },
   handleAddList = () => {
-    return;
+    return
   },
   setData = () => {
-    return;
+    return
   },
   sendNotification = () => {
-    return;
+    return
   },
   editOneExtra = () => {
-    return;
+    return
   },
   ...props
 }) => {
   // STATES
-  const [numberLimit, setNumberLimit] = useState(1);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [numberLimit, setNumberLimit] = useState(1)
+  const [showTooltip, setShowTooltip] = useState(false)
   const handleShowTooltip = (index) => {
-    return setShowTooltip(index === showTooltip ? false : index);
-  };
+    return setShowTooltip(index === showTooltip ? false : index)
+  }
 
   return (
     <BodyDnd>
@@ -77,12 +83,12 @@ export const OptionalExtraProducts = ({
       >
         <div className="first-column">
           {dataListIds?.map((listID, index) => {
-            const list = data.lists[listID];
-            const numberLimit = list?.numberLimit;
-            const incompleteList = list.numberLimit === list.cards.length;
+            const list = data.lists[listID]
+            const numberLimit = list?.numberLimit
+            const incompleteList = list.numberLimit === list.cards.length
             const messageLimit = `${numberLimit} ${
               numberLimit > 1 ? "opciones" : "opción"
-            }`;
+            }`
             return (
               <Column
                 style={{ minWidth: "100%", height: '100%' }}
@@ -112,7 +118,7 @@ export const OptionalExtraProducts = ({
                     bgColor="transparent"
                     margin="0px"
                     onClick={() => {
-                      return handleRemoveList(index, listID);
+                      return handleRemoveList(index, listID)
                     }}
                     type="button"
                     widthButton="min-content"
@@ -123,8 +129,8 @@ export const OptionalExtraProducts = ({
                     bgColor="transparent"
                     margin="0px"
                     onClick={() => {
-                      setOpenModalEditExtra(!openModalEditExtra);
-                      return setSelectedExtra(list);
+                      setOpenModalEditExtra(!openModalEditExtra)
+                      return setSelectedExtra(list)
                     }}
                     type="button"
                     widthButton="min-content"
@@ -136,7 +142,7 @@ export const OptionalExtraProducts = ({
                       backgroundColor="transparent"
                       border="none"
                       onClick={() => {
-                        return handleShowTooltip(listID);
+                        return handleShowTooltip(listID)
                       }}
                       primary
                     >
@@ -155,7 +161,7 @@ export const OptionalExtraProducts = ({
                             backgroundColor="transparent"
                             border="none"
                             onClick={() => {
-                              return setShowTooltip(false);
+                              return setShowTooltip(false)
                             }}
                             primary
                           >
@@ -202,12 +208,12 @@ export const OptionalExtraProducts = ({
                       id: list.id,
                       value,
                       name: "list_value",
-                    });
+                    })
                   }}
                   onFocus={true}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !incompleteList) {
-                      handleAdd({ listId: listID });
+                      handleAdd({ listId: listID })
                     }
                   }}
                   title="Añade un item"
@@ -218,13 +224,13 @@ export const OptionalExtraProducts = ({
                   margin="16px 0 auto"
                   onClick={() => {
                     if (!incompleteList) {
-                      return handleAdd({ listId: listID });
+                      return handleAdd({ listId: listID })
                     }
-                    return null;
+                    return null
                   }}
                   onKeyPress={(e) => {
                     if (e.key === "Enter" && !incompleteList) {
-                      handleAdd({ listId: listID });
+                      handleAdd({ listId: listID })
                     }
                   }}
                   widthButton="100%"
@@ -232,7 +238,7 @@ export const OptionalExtraProducts = ({
                   Adicionar
                 </RippleButton>
               </Column>
-            );
+            )
           })}
         </div>
         <FormExtra
@@ -256,11 +262,11 @@ export const OptionalExtraProducts = ({
         height="auto"
         onCancel={() => {
           setSelectedExtra({})
-          return false;
+          return false
         }}
         onHide={() => {
           setSelectedExtra({})
-          return setOpenModalEditExtra(!openModalEditExtra);
+          return setOpenModalEditExtra(!openModalEditExtra)
         }}
         padding={0}
         question={false}
@@ -287,7 +293,7 @@ export const OptionalExtraProducts = ({
           onClick={() => {
             editOneExtra({
               ...selectedExtra,
-            });
+            })
           }}
           style={{
             margin: "15px auto",
@@ -300,8 +306,8 @@ export const OptionalExtraProducts = ({
         </RippleButton>
       </AwesomeModal>
     </BodyDnd>
-  );
-};
+  )
+}
 
 OptionalExtraProducts.propTypes = {
   data: PropTypes.shape({
@@ -320,4 +326,4 @@ OptionalExtraProducts.propTypes = {
   setData: PropTypes.func,
   setTitle: PropTypes.func,
   title: PropTypes.string,
-};
+}

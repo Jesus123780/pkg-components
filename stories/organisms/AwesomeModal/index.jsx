@@ -18,6 +18,7 @@ import {
 import { Button } from '../../atoms/Button'
 import { IconClose } from '../../../assets/icons'
 import { RippleButton } from '../../atoms'
+import { PColor } from '../../../assets/colors'
 
 export const AwesomeModal = ({
   backgroundColor,
@@ -152,7 +153,7 @@ export const AwesomeModal = ({
           <>
             <ModalHeader>
               <ModalTitle>{title}</ModalTitle>
-              <BtnClose onClick={() => { return question ? onShowQuestion() : hide() }}><IconClose size={sizeIconClose} /></BtnClose>
+              <BtnClose onClick={() => { return question ? onShowQuestion() : hide() }}><IconClose size={sizeIconClose} color={PColor} /></BtnClose>
             </ModalHeader>
           </>
           }
