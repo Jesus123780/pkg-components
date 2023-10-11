@@ -74,7 +74,6 @@ export const MemoModalDetailOrder = ({
   useEffect(() => {
     // setStateSale()
     const data = dataModal?.hasOwnProperty('pSState')
-    console.log(data)
     if (data) {
       setStateSale(pSState)
     }

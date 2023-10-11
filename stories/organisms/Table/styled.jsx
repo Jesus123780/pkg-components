@@ -28,6 +28,9 @@ export const Section = styled.th`
         background-color: rgba(0, 0, 0, 0.03);
     }
    `}}
+   &:disabled {
+       background-color: #e9e9e933;
+   }
     background-color: ${({ bgRow }) => {return bgRow === 1 ? `${TBGAColor}` : bgRow === 2 ? `${BGColor}` : bgRow === 3 ? `${TBGBColor}` : bgRow === 4 ? `${TBGSColor}` : bgRow === 5 ? TBGAColor : bgRow === 6 ? TBGEColor : bgRow === 7 ? TBGRColor : bgRow === 8 && TBGDColor}};
     :hover {
         background-color: #e9e9e933;

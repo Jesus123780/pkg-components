@@ -62,15 +62,16 @@ export const InputHooks = ({
   required,
   title = '',
   type = 'text',
-  TypeTextarea = '',
+  typeTextarea = false,
   value = '',
   width = '100%',
   onFocus = () => { return },
   onInvalid = () => { return },
   setDataValue = () => { return },
-  onBlur = () => { return }
-
+  onBlur = () => { return },
+  ...rest
 }) => {
+console.log({typeTextarea})
   // STATE
   const [errors, setError] = useState(error)
   const [isPasswordShown, setIsPasswordShown] = useState(false)
@@ -207,7 +208,7 @@ export const InputHooks = ({
     }
     // Valida que el campo sea tipo numérico
     if (numeric) {
-      if (isNaN(e.target.value)) return errorFunc(e, true, 'El campo debe ser numérico')
+      if (isNaN(parseFloat(e.target.value))) return errorFunc(e, true, 'El campo debe ser numérico')
       errorFunc(e, false, '')
     }
     // Valida que el campo sea solo letras
@@ -275,6 +276,7 @@ export const InputHooks = ({
   const asType = numeric ? 'number' : type
   return (
     <BoxInput
+      {...rest}
       maxWidth={maxWidth}
       minWidth={minWidth}
       padding={padding}
@@ -283,9 +285,10 @@ export const InputHooks = ({
       {pass && <ShowPass onClick={() => { return setIsPasswordShown(!isPasswordShown) }} type='button'>
         {isPasswordShown ? <IconNoShow size='20px' /> : <IconShowEye size='20px' />}
       </ShowPass>}
-      {!TypeTextarea
+      {!typeTextarea
         ? <div>
           <InputV
+            {...rest}
             autoComplete={type === 'password' ? 'current-password' : isEmailValue }
             autoFocus={autoFocus}
             border={border}
@@ -375,7 +378,7 @@ export const InputHooks = ({
 }
 
 InputHooks.propTypes = {
-  TypeTextarea: PropTypes.any,
+  typeTextarea: PropTypes.any,
   autoComplete: PropTypes.any,
   border: PropTypes.any,
   checked: PropTypes.any,

@@ -91,11 +91,10 @@ export const OptionalExtraProducts = ({
             }`
             return (
               <Column
-                style={{ minWidth: "100%", height: '100%' }}
+                style={{ minWidth: "100%", height: 'max-content' }}
                 border={`2px solid ${
                   incompleteList ? NorthTexasGreen : "transparent"
                 }`}
-                height="min-content"
                 key={listID}
                 role="list"
               >

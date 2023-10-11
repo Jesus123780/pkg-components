@@ -69,24 +69,30 @@ export const AwesomeModal = ({
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (question && backdrop === 'static' && state === true && show === true) {
-      window.addEventListener('keyup', e => { return e.code === 'Escape' && setSModal(true) })
-      return () => { return keyboard && window.removeEventListener('keyup', () => { return setSModal(false) }) }
+    const handleKeyUp = (e) => {
+      if (e.code === 'Escape') {
+        setSModal(true);
+      }
+    };
+  
+    if (question && backdrop === 'static' && state && show) {
+      window.addEventListener('keyup', handleKeyUp);
+      return () => {
+        if (keyboard) window.removeEventListener('keyup', handleKeyUp);
+      };
     }
-    if (backdrop !== 'static') {
-      if (keyboard && show) window.addEventListener('keyup', e => { return e.code === 'Escape' && hide() })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return () => { return keyboard && window.removeEventListener('keyup', () => { return }) }
+  
+    if (backdrop !== 'static' && keyboard && show) {
+      window.addEventListener('keyup', handleKeyUp);
+      return () => {
+        window.removeEventListener('keyup', handleKeyUp);
+      };
     }
-  }, [
-    keyboard, 
-    hide, 
-    show, 
-    backdrop, 
-    question, 
-    modal, 
-    state
-  ])
+  
+    // Cleanup for other cases
+    return () => {};
+  }, [keyboard, hide, show, backdrop, question, modal, state]);
+  
   useEffect(() => {
     setState(show)
   }, [show])
@@ -150,12 +156,12 @@ export const AwesomeModal = ({
           state={state}
         >
           {header &&
-          <>
-            <ModalHeader>
-              <ModalTitle>{title}</ModalTitle>
-              <BtnClose onClick={() => { return question ? onShowQuestion() : hide() }}><IconClose size={sizeIconClose} color={PColor} /></BtnClose>
-            </ModalHeader>
-          </>
+            <>
+              <ModalHeader>
+                <ModalTitle>{title}</ModalTitle>
+                <BtnClose onClick={() => { return question ? onShowQuestion() : hide() }}><IconClose size={sizeIconClose} color={PColor} /></BtnClose>
+              </ModalHeader>
+            </>
           }
           <ModalBody
             borderRadius={borderRadius}
@@ -186,26 +192,35 @@ export const AwesomeModal = ({
             }
             {children}
           </ModalBody>
-            {footer && <ModalFooter backgroundColor={backgroundColor}>
-              {btnCancel ? <Button
-                border
-                widthButton='200px'
-                disabled={disabled}
-                onClick={clickCancel}
-                type='button'
-              >
-                {cancel || BUTTONS_TEXT.cancel}
-              </Button> : <div></div>}
-              {btnConfirm && <Button
-                border
-                widthButton='200px'
-                onClick={clickConfirm}
-                type={submit ? 'submit' : 'button'}
-              >
-                {confirm || BUTTONS_TEXT.confirm}
-                {iconConfirm}
-              </Button>}
-            </ModalFooter>}
+          {footer && (
+            <ModalFooter backgroundColor={backgroundColor}>
+              {btnCancel && (
+                <Button
+                  border
+                  backgroundColor={PColor}
+                  widthButton='200px'
+                  disabled={disabled}
+                  onClick={clickCancel}
+                  type='button'
+                >
+                  {cancel || BUTTONS_TEXT.cancel}
+                </Button>
+              )}
+              {btnConfirm && (
+                <Button
+                  backgroundColor={PColor}
+                  border
+                  widthButton='200px'
+                  onClick={clickConfirm}
+                  type={submit ? 'submit' : 'button'}
+                >
+                  {confirm || BUTTONS_TEXT.confirm}
+                  {iconConfirm}
+                </Button>
+              )}
+            </ModalFooter>
+          )}
+
         </Modal>
       </Wrapper>
     </Container>
@@ -218,7 +233,7 @@ AwesomeModal.propTypes = {
   borderRadius: PropTypes.string,
   btnCancel: PropTypes.bool,
   btnConfirm: PropTypes.bool,
-  cancel: PropTypes.any,
+  cancel: PropTypes.string,
   children: PropTypes.any,
   closeIcon: PropTypes.bool,
   confirm: PropTypes.any,

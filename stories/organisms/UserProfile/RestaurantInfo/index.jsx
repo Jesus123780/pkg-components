@@ -12,7 +12,6 @@ import {
 export const RestaurantInfo = ({
     data = {}
 }) => {
-    console.log(data)
     return (
         <>
             <Title>Información del Restaurante</Title>

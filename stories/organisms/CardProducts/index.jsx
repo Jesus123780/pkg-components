@@ -10,7 +10,6 @@ import { PColor } from './../../../assets/colors/index'
 import Image from 'next/image'
 
 export const CardProductsComponent = ({
-  router,
   isVisible,
   image,
   food,
