@@ -6,10 +6,13 @@ import {
   Loading
 } from '../../../assets/icons';
 import { Column } from '../../atoms/Column';
-import './styles.css';
+// import './styles.css';
 
 export const Card = ({
-  card,
+  card = {
+    title: '',
+    id: ''
+  },
   listID,
   index = 0,
   loadingEditSubOptional = false,
@@ -19,7 +22,7 @@ export const Card = ({
 }) => {
   const [editingCardId, setEditingCardId] = useState(null);
 
-  const [editedTitle, setEditedTitle] = useState(card.title);
+  const [editedTitle, setEditedTitle] = useState(card?.title);
 
   const handleEditCard = (cardId) => {
     setEditingCardId(cardId);

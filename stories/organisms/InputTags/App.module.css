@@ -36,16 +36,3 @@ form .tags-input__tags input {
     flex: 1;
     min-width: 80px;
 }
-form button {
-    color: #222;
-    padding: 10px 20px;
-    border: 0;
-    outline: 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-form .error {
-    padding: 5px 0;
-    color: #ff5964;
-    font-size: 12px;
-}

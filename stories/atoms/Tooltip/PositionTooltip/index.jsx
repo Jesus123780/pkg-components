@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './Tooltip.css';  // Archivo CSS para estilos
+// import './Tooltip.css';  // Archivo CSS para estilos
 
 export const PositionTooltip = ({ text, position }) => {
   const [tooltipPosition, setTooltipPosition] = useState(position);

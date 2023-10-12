@@ -13,11 +13,11 @@
     margin-right: 15px;
 }
 
-@media only screen and (min-width: 960px) {
+/* @media only screen and (min-width: 960px) {
     .dish-action__counter {
         margin-right: 15px;
     }
-}
+} */
 .marmita-counter {
     display: flex;
     padding: 10px;
@@ -40,7 +40,7 @@
     margin: auto;
 }
 
-@keyframes zoomOutUp {
+/* @keyframes zoomOutUp {
     from {
         -webkit-transform: translate3d(0, 100%, 0);
         transform: translate3d(0, 100%, 0);
@@ -51,7 +51,7 @@
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
       }
-  }
+  } */
 .marmita-counter .btn-icon {
     margin-left: 0;
     margin-right: 0;

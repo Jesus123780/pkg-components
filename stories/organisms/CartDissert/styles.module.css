@@ -1,0 +1,66 @@
+.content-card {
+    position: relative;
+    display: flex;
+    -webkit-flex-direction: space-between;
+    -ms-flex-direction: space-between;
+    flex-direction: space-between;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    width: 100%;
+    min-height: 40px;
+    padding: 15px;
+    overflow: hidden;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    height: auto;
+    opacity: 1;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgb(0 0 0 / 5%), 0px 4px 16px rgb(0 0 0 / 8%);
+}
+.content-card__input {
+    padding: 10px;
+    width: 80%;
+}
+
+.content-card:hover .content-card__actions {
+    right: -20px;
+}
+.content-card__button {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.content-card__actions {
+    transition: 0.1s;
+
+    margin: auto;
+    position: absolute;
+    right: -60px;
+    top: 20px;
+    width: 100px;
+}
+
+.content-card-flex {
+    display: flex;
+}
+
+.title_card {
+    word-break: break-word;
+    font-family: 'PFont-Light';
+    color: var(--color-neutral-black);
+    margin: 0;
+    font-size: 1rem;
+    padding: 10px;
+    line-height: 1.25em;
+    font-weight: 500;
+}
+
+.price {
+    word-break: break-word;
+    font-family: 'PFont-Light';
+    color: red;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.25em;
+    font-weight: 600;
+}

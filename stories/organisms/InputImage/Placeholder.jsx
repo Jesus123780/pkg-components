@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { PColor } from "../../../assets/colors";
-import Imagen from "../../../assets/icons/food.png";
 import Image from "next/image";
 
 export const Placeholder = ({ onClick = () => { return } }) => {
@@ -15,7 +14,7 @@ export const Placeholder = ({ onClick = () => { return } }) => {
             alt={""}
             blurDataURL="/images/DEFAULTBANNER.png"
             className="image_item"
-            src={Imagen || "/images/DEFAULTBANNER.png"}
+            src={"/images/DEFAULTBANNER.png"}
           />
         </div>
         <button className="button" onClick={onClick}>

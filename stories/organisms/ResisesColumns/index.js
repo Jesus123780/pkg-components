@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IconArrowLeft } from "../..";
-import "./styles.css";
+// import "./styles.module.css";
 
 export const ResisesColumnsMemo = ({
   lastMinWidth = '440px',

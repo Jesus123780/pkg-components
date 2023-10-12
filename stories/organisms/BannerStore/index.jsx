@@ -129,7 +129,7 @@ export const BannerStore = ({
             <MerchantInfo >
                 {store?.Image ?
                     <Image
-                        alt={altLogo ?? 'logo'}
+                        alt={altLogo}
                         className='logo'
                         height={70}
                         objectFit='contain'

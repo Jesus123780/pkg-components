@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconClose } from "./../../../assets/icons/index";
 import { PColor, BGColor } from "../../../assets/colors";
-import "./styles.css";
+// import "./styles.module.css";
+
 
 export const Toast = (props) => {
   const { toastList, position, autoDelete, autoDeleteTime } = props;
@@ -57,7 +58,7 @@ export const Toast = (props) => {
               left: `${divPosition}px`,
               transition: "left 0.5s ease-in-out",
               className: `notification toast ${position}`,
-              backgroundColor: backgroundColor[toast.backgroundColor] ?? '#50a773',
+              // backgroundColor: backgroundColor[toast.backgroundColor] ?? '#50a773',
             }}
             onDrag={handleDrag}
             onDragEnd={(e) => {

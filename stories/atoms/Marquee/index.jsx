@@ -1,3 +1,4 @@
+import React, { useRef, useState, useEffect, Fragment } from 'react'
 
 
 function ___$insertStyle(css) {
@@ -13,7 +14,6 @@ function ___$insertStyle(css) {
 
 // Object.defineProperty(exports, '__esModule', { value: true });
 
-let React = import('react');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -37,12 +37,12 @@ export const Marquee = function (_a) {
     let _b, _c, _d, _e;
     let _f = _a.style, style = _f === void 0 ? {} : _f, _g = _a.className, className = _g === void 0 ? "" : _g, _h = _a.play, play = _h === void 0 ? true : _h, _j = _a.pauseOnHover, pauseOnHover = _j === void 0 ? false : _j, _k = _a.pauseOnClick, pauseOnClick = _k === void 0 ? false : _k, _l = _a.direction, direction = _l === void 0 ? "left" : _l, _m = _a.speed, speed = _m === void 0 ? 20 : _m, _o = _a.delay, delay = _o === void 0 ? 0 : _o, _p = _a.loop, loop = _p === void 0 ? 0 : _p, _q = _a.gradient, gradient = _q === void 0 ? true : _q, _r = _a.gradientColor, gradientColor = _r === void 0 ? [255, 255, 255] : _r, _s = _a.gradientWidth, gradientWidth = _s === void 0 ? 200 : _s, onFinish = _a.onFinish, onCycleComplete = _a.onCycleComplete, children = _a.children;
     // React Hooks
-    let _t = React.useState(0), containerWidth = _t[0], setContainerWidth = _t[1];
-    let _u = React.useState(0), marqueeWidth = _u[0], setMarqueeWidth = _u[1];
-    let _v = React.useState(false), isMounted = _v[0], setIsMounted = _v[1];
-    let containerRef = React.useRef(null);
-    let marqueeRef = React.useRef(null);
-    React.useEffect(function () {
+    let _t = useState(0), containerWidth = _t[0], setContainerWidth = _t[1];
+    let _u = useState(0), marqueeWidth = _u[0], setMarqueeWidth = _u[1];
+    let _v = useState(false), isMounted = _v[0], setIsMounted = _v[1];
+    let containerRef = useRef(null);
+    let marqueeRef = useRef(null);
+    useEffect(function () {
         if (!isMounted)
             return;
         let calculateWidth = function () {
@@ -59,7 +59,7 @@ export const Marquee = function (_a) {
             window.removeEventListener("resize", calculateWidth);
         };
     }, [isMounted]);
-    React.useEffect(function () {
+    useEffect(function () {
         setIsMounted(true);
     }, []);
     // Gradient color in an unfinished rgba format
@@ -68,7 +68,7 @@ export const Marquee = function (_a) {
     let duration = marqueeWidth < containerWidth
         ? containerWidth / speed
         : marqueeWidth / speed;
-    return (React__default['default'].createElement(React.Fragment, null, !isMounted ? null : (React__default['default'].createElement("div", { ref: containerRef, style: __assign(__assign({}, style), (_b = {}, _b["--pause-on-hover"] = !play || pauseOnHover ? "paused" : "running", _b["--pause-on-click"] = !play || (pauseOnHover && !pauseOnClick) || pauseOnClick ? "paused" : "running", _b)), className: className + " marquee-container" },
+    return (React__default['default'].createElement(Fragment, null, !isMounted ? null : (React__default['default'].createElement("div", { ref: containerRef, style: __assign(__assign({}, style), (_b = {}, _b["--pause-on-hover"] = !play || pauseOnHover ? "paused" : "running", _b["--pause-on-click"] = !play || (pauseOnHover && !pauseOnClick) || pauseOnClick ? "paused" : "running", _b)), className: className + " marquee-container" },
         gradient && (React__default['default'].createElement("div", { style: (_c = {},
                 _c["--gradient-color"] = rgbaGradientColor + ", 1), " + rgbaGradientColor + ", 0)",
                 _c["--gradient-width"] = typeof gradientWidth === "number"

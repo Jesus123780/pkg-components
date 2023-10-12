@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
-import { Loading } from '../../../assets/icons';
-import { getGlobalStyle } from '../../../utils';
-import { CustomButton } from './styled';
-import './button.css';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Loading } from '../../../assets/icons'
+import { getGlobalStyle } from '../../../utils'
+import { CustomButton } from './styled'
+// import './button.module.css'
 
 /**
  * Primary UI component for user interaction
@@ -24,7 +25,7 @@ export const Button = ({
   disabled,
   ...props
 }) => {
-  const primitiveMode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+  const primitiveMode = primary ? 'storybook-button--primary' : 'storybook-button--secondary'
   const mode = ripple ? 'ripple-mode' : primitiveMode
   return (
     <CustomButton
@@ -41,7 +42,8 @@ export const Button = ({
         color,
         fontWeight,
         borderRadius,
-        fontFamily
+        fontFamily,
+        ...props
       }}
       {...props}
     >
@@ -49,8 +51,8 @@ export const Button = ({
       {child}
       {props.children}
     </CustomButton>
-  );
-};
+  )
+}
 
 Button.propTypes = {
   /**
@@ -73,11 +75,11 @@ Button.propTypes = {
    * Optional click handler
    */
   onClick: PropTypes.func,
-};
+}
 
 Button.defaultProps = {
   backgroundColor: null,
   primary: false,
   size: 'medium',
   onClick: undefined,
-};
+}

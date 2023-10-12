@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import styles from './DraggableContainer.module.css';
+// import styles from './DraggableContainer.module.css';
 
 
 export const DraggableContainer = ({
@@ -99,24 +99,7 @@ export const DraggableContainer = ({
     }
 
     return (
-        isOpen ? (
-            <>
-                <div className={styles.draggable__fullScreen} onClick={() => onClose()} />
-                <div
-                    className={styles.draggable__container}
-                    ref={modalRef}
-                    onTouchStart={handleDragStart}
-                    style={{ padding: props.padding }}
-                >
-                    <div className={styles.drop__container}>
-                        <div className={styles.draggable_button}></div>
-                    </div>
-                    {children}
-                </div>
-            </>
-        ) : (
-            <div ref={modalRef} />
-        )
+       <></>
     )
 
 };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { validateEmail } from "../../../utils/index";
 import { Tag } from "../../atoms";
-import "./App.css";
+// import "./App.module.css";
 
 export const TagsInput = ({
   label,
