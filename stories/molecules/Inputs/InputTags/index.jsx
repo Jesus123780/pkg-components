@@ -4,11 +4,11 @@ import styled, { css } from 'styled-components'
 import { SEGColor, SFVColor } from '../../../../assets/colors'
 import { IconCancel } from '../../../../assets/icons'
 
-export const InputTags = ({ 
-    width, 
-    disabled = false, 
-    setTags, 
-    tags, 
+export const InputTags = ({
+    width,
+    disabled = false,
+    setTags,
+    tags,
     ...props
 }) => {
   const refBox = useRef()

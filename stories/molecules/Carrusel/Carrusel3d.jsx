@@ -1,12 +1,12 @@
 import React from 'react'
-// import './styles.css'
+import styles from './styles.module.css'
 
 export const Carrusel3D = (props) => {
-  const { 
-    children, 
+  const {
+    children,
     active,
-    moveRight, 
-    moveLeft, 
+    moveRight,
+    moveLeft,
     maxView
   } = props
   const MAX_VISIBILITY = maxView ?? 3
@@ -16,7 +16,7 @@ export const Carrusel3D = (props) => {
       <div className='carousel'>
         {React.Children.map(children, (child, i) => (
           <div
-            className='card-container'
+            className={styles['card-container']}
             style={{
               '--active': i === active ? 1 : 0,
               '--offset': (active - i) / 3,
@@ -31,20 +31,19 @@ export const Carrusel3D = (props) => {
           </div>
         ))}
       </div>
-      <div container justifyContent='space-evenly'>
+      <div>
         <div item>
-          <button size='large' onClick={moveLeft} disabled={active === 0}>
-            Clikc
+          <button onClick={moveLeft} disabled={active === 0}>
+            Click
           </button>
         </div>
 
         <div item>
           <button
-            size='large'
             onClick={moveRight}
             disabled={active === count - 1}
           >
-            Clikc
+            Click
           </button>
         </div>
       </div>

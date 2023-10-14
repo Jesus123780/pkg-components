@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import { 
-  useCallback, 
-  useEffect, 
+import {
+  useCallback,
+  useEffect,
   useRef
 } from 'react'
 

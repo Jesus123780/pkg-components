@@ -2,11 +2,16 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { IconClose } from "./../../../assets/icons/index";
 import { PColor, BGColor } from "../../../assets/colors";
-// import "./styles.module.css";
+import styles from  "./styles.module.css";
 
 
 export const Toast = (props) => {
-  const { toastList, position, autoDelete, autoDeleteTime } = props;
+  const {
+  toastList,
+  position,
+  autoDelete,
+  autoDeleteTime
+} = props
   const [list, setList] = useState(toastList);
 
   useEffect(() => {
@@ -50,15 +55,15 @@ export const Toast = (props) => {
   }
   return (
     <>
-      <div className={`notification-container ${position}`}>
+      <div className={styles[`notification-container ${position}`]}>
         {list.map((toast, i) => (
           <div
             style={{
               position: "relative",
               left: `${divPosition}px`,
               transition: "left 0.5s ease-in-out",
-              className: `notification toast ${position}`,
-              // backgroundColor: backgroundColor[toast.backgroundColor] ?? '#50a773',
+              className: styles[`notification toast ${position}`],
+              backgroundColor: backgroundColor[toast?.backgroundColor] ?? '#50a773',
             }}
             onDrag={handleDrag}
             onDragEnd={(e) => {
@@ -66,15 +71,14 @@ export const Toast = (props) => {
             }}
             draggable
             key={i}
-            className={`notification toast ${position}`}
-            // style={{ backgroundColor: toast.backgroundColor }}
+            className={styles[`notification toast ${position}`]}
           >
             <button onClick={() => deleteToast(toast.id)}>
               <IconClose size={30} color={BGColor} />
             </button>
             <div>
-              <p className="notification-title">{toast.title}</p>
-              <p className="notification-message">{toast.description}</p>
+              <p className={styles["notification-title"]}>{toast.title}</p>
+              <p className={styles["notification-message"]}>{toast.description}</p>
             </div>
           </div>
         ))}

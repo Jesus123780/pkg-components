@@ -21,11 +21,14 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.js$/,
+        include: /@storybook\/addon-jest/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+        },
+      },
     ],
-  },
-  resolve: {
-    alias: {
-      'react-chartjs-2': path.resolve(__dirname, '../node_modules/react-chartjs-2/dist/index.js'),
-    },
   },
 };

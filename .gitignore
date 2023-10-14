@@ -38,3 +38,5 @@ yarn-error.log*
 
 build-storybook.log
 node_modules
+# Jest ignore
+.jest-test-results.json

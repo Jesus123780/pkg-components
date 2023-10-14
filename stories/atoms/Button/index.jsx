@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import { Loading } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
 import { CustomButton } from './styled'
-// import './button.module.css'
+import styles from './button.module.css'
 
 /**
  * Primary UI component for user interaction
  */
 export const Button = ({
-  primary,
-  backgroundColor,
+  primary = true,
+  backgroundColor = '',
   size,
   label,
   borderRadius,
@@ -25,8 +25,8 @@ export const Button = ({
   disabled,
   ...props
 }) => {
-  const primitiveMode = primary ? 'storybook-button--primary' : 'storybook-button--secondary'
-  const mode = ripple ? 'ripple-mode' : primitiveMode
+  const primitiveMode = primary ? styles['storybook-button--primary'] : styles['storybook-button--secondary']
+  const mode = ripple ? styles['ripple-mode'] : primitiveMode
   return (
     <CustomButton
       c={loading || disabled}
@@ -35,7 +35,7 @@ export const Button = ({
       padding={padding}
       type="button"
       className={
-        ['storybook-button', `storybook-button--${size}`, `storybook-button--${loading && 'loading'}`, mode].join(' ')
+        [styles['storybook-button'], styles[`storybook-button--${size}`], styles[`storybook-button--${loading && 'loading'}`], mode].join(' ')
       }
       style={{
         backgroundColor: disabled ? '#ff000069' : backgroundColor,

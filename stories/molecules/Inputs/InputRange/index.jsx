@@ -4,16 +4,17 @@ import {
   Circle,
   ContainerRange,
   Input,
-  Progress, 
-  Svg } from './styled'
+  Progress,
+  Svg
+} from './styled'
 
 export const Range = ({
   min = 0,
   max = 100,
-  value = 0, 
+  value = 0,
   label,
   onChange,
-  width 
+  width
 }) => {
   const [currentValue, setCurrentValue] = useState(value)
   const inputWidth = 600
