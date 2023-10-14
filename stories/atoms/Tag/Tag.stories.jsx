@@ -17,6 +17,5 @@ const Template = (args) => <Tag {...args} />;
 export const TemplateTag = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TemplateTag.args = {
-  label: "Tag",
-  children: "Hello, world"
+  label: "Tag"
 };
