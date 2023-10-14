@@ -17,5 +17,11 @@ const Template = (args) => <Toast {...args} />;
 export const TemplateToast = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TemplateToast.args = {
-  toastList: [1, 2, 3, 4]
+  toastList: [
+  {
+    backgroundColor: 'red',
+    title: 'Title',
+    description: 'Description'
+  },
+  ]
 };

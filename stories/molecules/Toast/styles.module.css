@@ -89,7 +89,7 @@
     color: var(--color-base-black);
     padding: 10px;
   }
-  .notification-container button {
+  .notification-button {
     position: relative;
     right: -0.3em;
     top: -0.3em;

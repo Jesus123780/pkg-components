@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import { IconClose } from "./../../../assets/icons/index";
-import { PColor, BGColor } from "../../../assets/colors";
-import styles from  "./styles.module.css";
+import PropTypes from "prop-types"
+import React, { useEffect, useState } from "react"
+import { IconClose } from "./../../../assets/icons/index"
+import { PColor, BGColor } from "../../../assets/colors"
+import styles from  "./styles.module.css"
 
 
 export const Toast = (props) => {
@@ -73,7 +73,7 @@ export const Toast = (props) => {
             key={i}
             className={styles[`notification toast ${position}`]}
           >
-            <button onClick={() => deleteToast(toast.id)}>
+            <button className={styles['notification-button']} onClick={() => deleteToast(toast.id)}>
               <IconClose size={30} color={BGColor} />
             </button>
             <div>

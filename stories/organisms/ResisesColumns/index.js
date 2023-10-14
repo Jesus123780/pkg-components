@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IconArrowLeft } from "../..";
-// import "./styles.module.css";
+import styles from "./styles.module.css"
 
 export const ResisesColumnsMemo = ({
   lastMinWidth = '440px',
@@ -130,7 +130,7 @@ export const ResisesColumnsMemo = ({
   return (
     <div>
       <div
-        className="column-container"
+        className={styles["column-container"]}
         ref={wrapper}
         style={{
           height: height,
@@ -150,7 +150,7 @@ export const ResisesColumnsMemo = ({
             <div
               key={index}
               ref={(ref) => (columnRef[index] = ref)}
-              className="column"
+              className={styles["column"]}
               style={{
                 width: `${dividerPos[data]}%`,
                 minWidth: `${lastMinWidth}`,
@@ -160,7 +160,7 @@ export const ResisesColumnsMemo = ({
               {props.children[index]}
               {nextColumn !== undefined && (
                 <div
-                  className="column-controler"
+                  className={styles["column-controler"]}
                   style={{ right: "-2px", borderColor: "red" }}
                   onMouseDownCapture={() =>
                     handleColtroler(data, nextColumn, index)
