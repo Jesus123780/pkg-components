@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Loading } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
 import { CustomButton } from './styled'
-import styles from './button.module.css'
+import styles from './button.module.css';
 
 /**
  * Primary UI component for user interaction

@@ -8,7 +8,7 @@ export const DropdownMenu = ({ options = [], show, position }) => {
   return <Container position={position}>
     {options?.map((x, i) => {
       return <DropdownItem key={'context_menu_option_' + i} onClick={x?.action || (() => { return true })}>
-        {x?.icon && <IconArrowBottom icon={x.icon} style={{ marginRight: '10px' }} />}
+        {x?.icon && <IconArrowBottom size={10} icon={x.icon} style={{ marginRight: '10px' }} />}
         {x?.optionName}
       </DropdownItem>
     })}

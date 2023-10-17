@@ -1,43 +1,31 @@
-import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
-import { 
-  ContainerText, 
-  ContainerToast, 
-  ContentToast
-} from './styled'
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { AlertContent } from './AlertContent';
 
 export const AlertBox = ({ err }) => {
-  const [closed, setClosed] = useState(false)
+  const [closed, setClosed] = useState(false);
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (err) {
-      const timeOut = setTimeout(() => {return setClosed(true)}, (err.duration || 7000) / 2)
+      const timeOut = setTimeout(() => setClosed(true), (err.duration || 7000) / 2);
       return () => {
-        clearTimeout(timeOut)
-        setClosed(false)
-      }
+        clearTimeout(timeOut);
+        setClosed(false);
+      };
     }
-  }, [err])
+  }, [err]);
+
   return (
-    <ContainerToast
-      closed={closed}
-      color={err?.color}
-      error={!!err?.message}
-      onClick={setClosed}
-    >
-      <ContentToast>
-        <ContainerText >{(err?.message || '')}</ContainerText>
-        <div></div>
-      </ContentToast>
-    </ContainerToast>
-  )
-}
+    <div onClick={() => setClosed(true)}>
+      <AlertContent err={err} closed={closed} />
+    </div>
+  );
+};
 
 AlertBox.propTypes = {
   err: PropTypes.shape({
     color: PropTypes.string,
     duration: PropTypes.number,
-    message: PropTypes.string
-  })
-}
+    message: PropTypes.string,
+  }),
+};

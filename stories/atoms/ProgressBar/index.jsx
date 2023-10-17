@@ -2,7 +2,7 @@ import { EColor, PColor } from '../../../assets/colors'
 import styled, { css, keyframes } from 'styled-components'
 
 export const width = keyframes`
- 0% { 
+ 0% {
      width: 0%;
      opacity: 100%;
     }
@@ -10,8 +10,8 @@ export const width = keyframes`
     70% {
      opacity: 90%;
     }
-    100% { 
-        width: 100%; 
+    100% {
+        width: 100%;
         opacity: 9%;
         visibility: hidden;
     }
@@ -37,3 +37,8 @@ export const ProgressBar = styled.div`
 
     ${props => { return (props.final) <= props.progress && css`background-color: ${EColor};` }}
 `
+
+ProgressBar.displayName = 'ProgressBar'
+ProgressBar.defaultProps = {
+  'data-testid': 'progress-bar'
+}

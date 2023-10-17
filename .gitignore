@@ -7,7 +7,7 @@
 .cache/storybook/dev-server
 # testing
 /coverage
-/node_modules/ 
+/node_modules/
 package-lock.json
 
 # next.js

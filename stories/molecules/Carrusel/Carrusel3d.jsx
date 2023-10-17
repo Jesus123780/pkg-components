@@ -13,7 +13,7 @@ export const Carrusel3D = (props) => {
   const count = React.Children.count(children)
   return (
     <>
-      <div className='carousel'>
+      <div className={styles['carousel']}>
         {React.Children.map(children, (child, i) => (
           <div
             className={styles['card-container']}

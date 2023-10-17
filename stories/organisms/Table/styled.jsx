@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components'
 import {
   BGColor,
   EColor,
@@ -13,35 +13,35 @@ import {
   TBGSColor,
   TFBColor,
   TFEColor,
-  TFSColor,
-} from "../../../assets/colors";
+  TFSColor
+} from '../../../assets/colors'
 
 export const ContainerTable = styled.div`
   width: 100%;
   min-width: max-content;
-`;
+`
 export const TableResponsive = styled.div`
   overflow: hidden;
   overflow-x: auto;
   border: 1px solid ${`${SFVColor}13`};
-`;
+`
 export const Button = styled.button`
   background-color: transparent;
-`;
+`
 export const Section = styled.th`
   display: grid;
   grid-template-columns: ${({ columnWidth }) => {
     return columnWidth
       ? columnWidth?.map((x) => {
-          return `${x?.width} `;
-        })
-      : "1fr";
+        return `${x?.width} `
+      })
+      : '1fr'
   }};
   height: auto;
   align-items: center;
   margin: 0 auto;
   padding: ${({ padding }) => {
-    return padding;
+    return padding
   }};
   place-content: center;
   border-bottom: 1px solid #f0f0f0;
@@ -54,7 +54,7 @@ export const Section = styled.th`
           background-color: rgba(0, 0, 0, 0.03);
         }
       `
-    );
+    )
   }}
   &:disabled {
     background-color: #e9e9e933;
@@ -63,18 +63,18 @@ export const Section = styled.th`
     return bgRow === 1
       ? `${TBGAColor}`
       : bgRow === 2
-      ? `${BGColor}`
-      : bgRow === 3
-      ? `${TBGBColor}`
-      : bgRow === 4
-      ? `${TBGSColor}`
-      : bgRow === 5
-      ? TBGAColor
-      : bgRow === 6
-      ? TBGEColor
-      : bgRow === 7
-      ? TBGRColor
-      : bgRow === 8 && TBGDColor;
+        ? `${BGColor}`
+        : bgRow === 3
+          ? `${TBGBColor}`
+          : bgRow === 4
+            ? `${TBGSColor}`
+            : bgRow === 5
+              ? TBGAColor
+              : bgRow === 6
+                ? TBGEColor
+                : bgRow === 7
+                  ? TBGRColor
+                  : bgRow === 8 && TBGDColor
   }};
   :hover {
     background-color: #e9e9e933;
@@ -82,7 +82,7 @@ export const Section = styled.th`
       background-color: #fff;
     }
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
@@ -97,39 +97,39 @@ export const Content = styled.div`
         justify-content:center;
         align-items: flex-start};
     `
-    );
+    )
   }}
   justify-content: ${({ justify }) => {
-    return justify || "start";
+    return justify || 'start'
   }};
-`;
+`
 export const Title = styled.span`
   cursor: ${({ pointer }) => {
-    return pointer && "pointer";
+    return pointer && 'pointer'
   }};
   font-size: 0.875rem;
   font-family: PFont-Regular;
   user-select: none;
   pointer-events: none;
-`;
+`
 export const Box = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 export const Text = styled.span`
   display: block;
   border-radius: 4px;
   font-size: ${({ size }) => {
-    return size ? `${size}` : "12px";
+    return size ? `${size}` : '12px'
   }};
   color: ${({ color }) => {
     return color === 1
       ? TFSColor
       : color === 2
-      ? TFEColor
-      : color === 3
-      ? TFBColor
-      : "#272b41";
+        ? TFEColor
+        : color === 3
+          ? TFBColor
+          : '#272b41'
   }};
   transition: 0.5s;
   ${({ hover, theme }) => {
@@ -141,24 +141,24 @@ export const Text = styled.span`
           color: ${theme.TFBColor};
         }
       `
-    );
+    )
   }}
-`;
+`
 export const StatusC = styled.span`
   display: block;
   font-family: sans-serif;
   border-radius: 10rem;
   background-color: ${({ theme, color }) => {
-    return color === 1 && theme.SCColor;
+    return color === 1 && theme.SCColor
   }};
   color: ${({ color, theme }) => {
     return color === 1
       ? theme.TFSColor
       : color === 2
-      ? theme.TFEColor
-      : color === 3
-      ? theme.TFBColor
-      : "#272b41";
+        ? theme.TFEColor
+        : color === 3
+          ? theme.TFBColor
+          : '#272b41'
   }};
   font-size: 12px;
   min-width: 100px;
@@ -166,9 +166,9 @@ export const StatusC = styled.span`
   padding: 2px;
   font-weight: 700;
   color: ${({ theme }) => {
-    return theme.BGAColor;
+    return theme.BGAColor
   }};
-`;
+`
 export const ProfileImg = styled.div`
   width: 40px;
   min-width: 40px;
@@ -179,12 +179,12 @@ export const ProfileImg = styled.div`
   border-radius: 100px;
   object-fit: cover;
   cursor: ${({ pointer }) => {
-    return pointer && "pointer";
+    return pointer && 'pointer'
   }};
-`;
+`
 export const BtnIcon = styled.div`
   margin-right: 5px;
-`;
+`
 export const TableBtn = styled.button`
   border-radius: 5px;
   border: none;
@@ -195,25 +195,25 @@ export const TableBtn = styled.button`
     return color === 1
       ? theme.TFSColor
       : color === 2
-      ? theme.TFEColor
-      : color === 3
-      ? theme.TFBColor
-      : BGColor;
+        ? theme.TFEColor
+        : color === 3
+          ? theme.TFBColor
+          : BGColor
   }};
 
   font-size: 12px;
   :hover {
     cursor: pointer;
   }
-`;
+`
 export const Image = styled.img`
   width: 40px;
   border-radius: 100px;
   object-fit: cover;
-`;
+`
 export const CheckBoxWrapper = styled.div`
   position: relative;
-`;
+`
 export const CheckBoxLabel = styled.label`
   position: absolute;
   top: 0;
@@ -233,7 +233,7 @@ export const CheckBoxLabel = styled.label`
     box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
     transition: 0.2s;
   }
-`;
+`
 export const CheckBox = styled.input`
   opacity: 0;
   z-index: 1;
@@ -251,28 +251,28 @@ export const CheckBox = styled.input`
       transition: 0.2s;
     }
   }
-`;
+`
 
 export const EntryPerViewC = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-`;
+`
 export const EntryLabel = styled.label`
   font-size: 13px;
   font-family: PFont-Regular;
-`;
+`
 export const EntryInput = styled.input`
   width: 38px;
   height: 23px;
   margin: 0px 10px 0px 10px;
   outline: none;
-`;
+`
 export const EntryPaginationC = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-`;
+`
 export const EntryButton = styled.button`
   cursor: pointer;
   width: 100px;
@@ -284,7 +284,7 @@ export const EntryButton = styled.button`
   font-weight: 400;
   user-select: none;
   transition: all 200ms ease;
-`;
+`
 export const CurrentPage = styled.span`
   display: flex;
   width: 34px;
@@ -302,7 +302,7 @@ export const CurrentPage = styled.span`
   font-weight: 400;
   user-select: none;
   transition: all 200ms ease;
-`;
+`
 export const ArrowsLabel = styled.label`
   display: flex;
   flex-direction: column;
@@ -310,7 +310,7 @@ export const ArrowsLabel = styled.label`
   position: relative;
 
   /* pointer-events: none; */
-`;
+`
 export const ArrowsCheck = styled.input`
   /* display: none; */
   /* opacity: 0; */
@@ -320,7 +320,7 @@ export const ArrowsCheck = styled.input`
   /* left: 0; */
   /* bottom: 0; */
   /* opacity: 0; */
-`;
+`
 export const A = styled.a`
   text-decoration: none;
-`;
+`

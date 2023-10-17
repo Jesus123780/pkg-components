@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { BGColor, PColor, SFVColor } from '../../../assets/colors';
+import { BGColor, PColor, SFVColor } from '../../../assets/colors'
 
 export const Container = styled.div`
     background-color: #ffffff; 
@@ -16,7 +16,7 @@ export const Container = styled.div`
 export const UserInfo = styled.div`
   margin-left: 20px;
   font-family: 'PFont-Light', sans-serif;
-`;
+`
 
 export const Avatar = styled.div`
   width: 100px;
@@ -24,7 +24,7 @@ export const Avatar = styled.div`
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-`;
+`
 
 export const ProfileSection = styled.div`
   background-color: #ffffff;
@@ -43,7 +43,7 @@ export const ProfileSection = styled.div`
       border: 1px solid #cccccc89;
     }
   }
-`;
+`
 
 export const ReadOnlyText = styled.p`
   font-size: 1rem;
@@ -52,7 +52,7 @@ export const ReadOnlyText = styled.p`
   font-family: 'PFont-Light', sans-serif;
   padding: 1rem;
   margin-bottom: 0.5rem;
-`;
+`
 
 export const EditButton = styled.button`
   background-color: ${props => (props.editing ? '#ffcccc' : 'transparent')};
@@ -73,21 +73,21 @@ export const EditButton = styled.button`
     margin-right: 0.5rem;
     stroke: var(--color-base-white);
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 2rem;
   color: #333333;
   font-family: 'PFont-Light', sans-serif;
-`;
+`
 
 export const Label = styled.label`
   font-size: 1rem;
   font-weight: bold;
   color: #555555;
   font-family: 'PFont-Light', sans-serif;
-`;
+`
 
 
 export const ContainerColumn = styled.div`
@@ -102,7 +102,7 @@ export const ContainerColumn = styled.div`
   }
   
   width: ${({ width }) => width || '100%'};
-`;
+`
 
 export const Input = styled.input`
   width: 100%;
@@ -112,7 +112,7 @@ export const Input = styled.input`
   border-radius: 0.5rem;
   font-family: 'PFont-Light', sans-serif;
   font-size: 1rem; /* Ajusta el tamaño de fuente para que coincida con ReadOnlyText */
-`;
+`
 
 export const Button = styled.button`
   background-color: transparent;
@@ -135,7 +135,7 @@ export const Button = styled.button`
     background-color: ${`${PColor}69`};
     color: ${BGColor};
   }
-`;
+`
 
 
 export const Card = styled.div`

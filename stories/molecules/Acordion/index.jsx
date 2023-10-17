@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
+import React from 'react';
 import {
   useEffect,
   useRef,
@@ -31,7 +32,7 @@ export const Options = ({
   useEffect(() => {
     setHeight(refButton.current.clientHeight - refMenu.current.clientHeight)
     setHeightMenu(refMenu.current.clientHeight)
-    !!location.pathname.includes(path) && handleClick(index)
+    !!location?.pathname?.includes(path) && handleClick(index)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

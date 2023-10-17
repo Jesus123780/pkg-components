@@ -1,9 +1,9 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { css, keyframes } from 'styled-components'
 import {
   APColor,
   BGColor,
   SFVColor
-} from "./../../../assets/colors/index";
+} from './../../../assets/colors/index'
 
 const pulse = keyframes`
   0% {
@@ -15,7 +15,7 @@ const pulse = keyframes`
   100% {
       box-shadow: 0 0 0 0 rgba(204,169,44, 0);
   }
-`;
+`
 
 export const CardOrder = styled.div`
   width: 100%;
@@ -88,7 +88,7 @@ export const CardOrder = styled.div`
     justify-content: space-between;
     height: 100%;
   }
-`;
+`
 export const FeedItem = styled.div`
   width: 20px;
   height: 20px;
@@ -122,8 +122,8 @@ export const FeedItem = styled.div`
   }
   ${(props) => {
     if (props.rejected) 
-    return (
-      css`
+      return (
+        css`
         border: 1px solid ${SFVColor};
         animation: ${pulse} 2s infinite;
         background-color: ${SFVColor};
@@ -135,6 +135,6 @@ export const FeedItem = styled.div`
         animation: ${pulse} 2s infinite;
         background-color: ${APColor};
       `
-    );
+    )
   }}
-`;
+`

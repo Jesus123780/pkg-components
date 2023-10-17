@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import {
+import React, {
   useCallback,
   useEffect,
   useRef
@@ -22,7 +22,7 @@ export const Draggable = ({
         elemRef.current.style.top = `${minY | 0}px`
       }
     }, [minX, minY])
-  
+
     const initialiseDrag = event => {
       const { target, clientX, clientY } = event
       const { offsetTop, offsetLeft } = target
@@ -80,6 +80,7 @@ export const Draggable = ({
     }, [maxX, maxY, minX, minY, moveX, moveY])
     return (
       <div
+        data-testid='draggable-element'
         onMouseDown={initialiseDrag}
         onTouchMove={handleChange}
         ref={elemRef}

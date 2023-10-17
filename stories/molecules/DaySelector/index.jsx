@@ -23,12 +23,12 @@ export const DaySelector = ({
 };
 
 DaySelector.propTypes = {
-  days: PropTypes.shape({
-    map: PropTypes.func
-  }),
+  days: PropTypes.arrayOf(
+    PropTypes.shape({
+      day: PropTypes.number,
+      name: PropTypes.string
+    })
+  ),
   handleDaySelection: PropTypes.func,
-  selectedDays: PropTypes.shape({
-    includes: PropTypes.func
-  })
-}
-
+  selectedDays: PropTypes.arrayOf(PropTypes.number)
+};

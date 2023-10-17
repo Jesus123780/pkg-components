@@ -1,21 +1,36 @@
-import React from 'react'
+import React from 'react';
 import { Checkbox } from './index';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'atoms/Checkbox',
   component: Checkbox,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
 };
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template = (args) => <Checkbox {...args} />;
 
-export const TemplateCheckbox = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-TemplateCheckbox.args = {
-  label: 'Checkbox'
+export const Default = Template.bind({});
+Default.args = {
+  checked: false,
+  disabled: false,
+  id: 'checkbox1',
+  label: 'Checkbox Label',
+  onChange: () => {},
+};
+
+export const Checked = Template.bind({});
+Checked.args = {
+  ...Default.args,
+  checked: true,
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  ...Default.args,
+  disabled: true,
+};
+
+export const Indeterminate = Template.bind({});
+Indeterminate.args = {
+  ...Default.args,
+  indeterminate: true,
 };

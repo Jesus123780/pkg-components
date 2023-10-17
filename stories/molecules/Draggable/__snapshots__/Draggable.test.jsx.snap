@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Draggable renders correctly 1`] = `
+<div>
+  <div
+    data-testid="draggable-element"
+    style="width: 100%; position: fixed; left: 0px; top: 0px;"
+  />
+</div>
+`;

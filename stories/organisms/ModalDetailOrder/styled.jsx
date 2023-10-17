@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { DarkSilver, SECBGColor } from "../../../assets/colors";
+import styled from 'styled-components'
+import { DarkSilver, SECBGColor } from '../../../assets/colors'
 
 export const ModalWrapper = styled.div`
     animation: 0s ease 0s 1 normal none running none;
