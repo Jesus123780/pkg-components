@@ -1,14 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   BColor,
   BGColor,
   NorthTexasGreen,
-  PColor,
-} from "../../../assets/colors";
+  PColor
+} from '../../../assets/colors'
 
 export const Div = styled.div`
   width: 30%;
-`;
+`
 export const ContainerListOptions = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -19,11 +19,11 @@ export const ContainerListOptions = styled.div`
     width: 30%;
     margin: 0 10px;
   }
-`;
+`
 export const WrapperList = styled.div`
   width: 100%;
   cursor: move;
-`;
+`
 export const GarnishChoicesHeader = styled.div`
   padding: 12px 20px 10px;
   display: flex;
@@ -89,7 +89,7 @@ export const GarnishChoicesHeader = styled.div`
     display: flex;
     align-items: center;
   }
-`;
+`
 export const CardsComponent = styled.div`
   background-color: ${BGColor};
   display: flex;
@@ -128,7 +128,7 @@ export const CardsComponent = styled.div`
     right: 0;
     top: -21px;
   }
-`;
+`
 export const ContentModal = styled.form`
   display: flex;
   flex-direction: column;
@@ -151,7 +151,7 @@ export const ContentModal = styled.form`
     height: 100%;
     padding: 16px 20px;
   }
-`;
+`
 export const BodyDnd = styled.div`
   .first-column {
     display: grid;
@@ -186,7 +186,7 @@ export const BodyDnd = styled.div`
     width: 100%;
     }
     }
-`;
+`
 export const ContentLinesItems = styled.div`
   display: flex;
   align-items: center;
@@ -194,9 +194,9 @@ export const ContentLinesItems = styled.div`
   height: min-content;
   border-bottom: 1px solid #ccc;
   ${(props) => {
-    return props.noBorder && `border-bottom: none`;
+    return props.noBorder && `border-bottom: none`
   }}
-`;
+`
 export const ContentCheckbox = styled.div`
   transition: all 0.1s;
   color: inherit;
@@ -204,7 +204,7 @@ export const ContentCheckbox = styled.div`
   outline: none;
   position: relative;
   margin-right: 2px;
-`;
+`
 
 export const Container = styled.div`
   padding: 20px;
@@ -213,7 +213,7 @@ export const Container = styled.div`
     display: none;
     padding: 0;
   }
-`;
+`
 export const Action = styled.div`
   align-items: center;
   background: #fff;
@@ -223,4 +223,4 @@ export const Action = styled.div`
   padding: 20px;
   height: 80px;
   width: 100%;
-`;
+`

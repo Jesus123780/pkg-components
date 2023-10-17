@@ -4,10 +4,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
-    requireConfigFile: false,
-    ecmaFeatures: {
-      jsx: true // Habilita la sintaxis JSX
-    }
+    requireConfigFile: false
   },
   rules: {
     semi: ['error', 'never'],

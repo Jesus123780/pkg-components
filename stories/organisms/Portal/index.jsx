@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
-export const Portal = ({ children, selector= 'portal' }) => {
+export const Portal = ({ children, selector = 'portal' }) => {
   const [dom, setDom] = useState(undefined)
   useEffect(() => {
     setDom(window.document.getElementById(selector))

@@ -1,21 +1,21 @@
-import PropTypes from "prop-types"
-import { useState } from "react"
-import { Button, Tag, RippleButton, Column, Text } from "../../atoms"
-import { ResisesColumns, List, AwesomeModal } from "../../organisms"
-import { InputHooks } from "../../molecules"
+import PropTypes from 'prop-types'
+import { useState } from 'react'
+import { Button, Tag, RippleButton, Column, Text } from '../../atoms'
+import { ResisesColumns, List, AwesomeModal } from '../../organisms'
+import { InputHooks } from '../../molecules'
 import {
   EColor,
   NorthTexasGreen,
   PColor
-} from "../../../assets/colors"
+} from '../../../assets/colors'
 import {
   IconEdit,
   IconDelete,
   IconMiniCheck,
-  IconQuestion,
-} from "../../../assets/icons"
-import { BodyDnd, GarnishChoicesHeader } from "./styled"
-import { FormExtra } from "./FormExtra"
+  IconQuestion
+} from '../../../assets/icons'
+import { BodyDnd, GarnishChoicesHeader } from './styled'
+import { FormExtra } from './FormExtra'
 
 export const OptionalExtraProducts = ({
   title = "",

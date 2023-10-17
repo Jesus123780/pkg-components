@@ -71,7 +71,6 @@ export const InputHooks = ({
   onBlur = () => { return },
   ...rest
 }) => {
-console.log({typeTextarea})
   // STATE
   const [errors, setError] = useState(error)
   const [isPasswordShown, setIsPasswordShown] = useState(false)
