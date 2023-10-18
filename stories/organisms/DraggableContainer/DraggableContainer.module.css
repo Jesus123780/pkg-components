@@ -1,42 +1,42 @@
 .draggable__fullScreen {
-    background-color: rgba(40, 40, 40, 0.4);
-    left: 0;
-    min-height: 100%;
-    min-width: 100%;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    z-index: 4;
+  background-color: rgba(40, 40, 40, 0.4);
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  z-index: 4;
 }
 
 .draggable__container {
-    background-color: white;
-    border-radius: 16px 16px 0px 0px;
-    bottom: 0;
-    box-shadow: 0px 0px 6px rgba(27, 33, 56, 0.15);
-    left: 0;
-    min-height: 90%;
-    overflow: auto;
-    padding-top: 10px;
-    position: fixed;
-    right: 0;
-    z-index: 5;
+  background-color: white;
+  border-radius: 16px 16px 0px 0px;
+  bottom: 0;
+  box-shadow: 0px 0px 6px rgba(27, 33, 56, 0.15);
+  left: 0;
+  min-height: 90%;
+  overflow: auto;
+  padding-top: 10px;
+  position: fixed;
+  right: 0;
+  z-index: 5;
 }
 
 .drop__container {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .draggable_button {
-    align-self: center;
-    background-color: #c4c4c4;
-    border-radius: 0.625rem;
-    cursor: grab;
-    display: flex;
-    height: 6px;
-    justify-content: center;
-    margin: 10px;
-    width: 45px;
+  align-self: center;
+  background-color: #c4c4c4;
+  border-radius: 0.625rem;
+  cursor: grab;
+  display: flex;
+  height: 6px;
+  justify-content: center;
+  margin: 10px;
+  width: 45px;
 }

@@ -1,56 +1,59 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Tag, Text, Checkbox } from "../../atoms";
-import { PColor, BGColor } from "../../../assets/colors";
-import { IconQuestion } from "../../../assets/icons";
-import { InputHooks, QuantityButton } from "../../molecules";
-import { GarnishChoicesHeader, ContentCheckbox } from "./styled";
+import PropTypes from 'prop-types'
+import React from 'react'
+import { BGColor, PColor } from '../../../assets/colors'
+import { IconQuestion } from '../../../assets/icons'
+import { Button, Checkbox, Tag, Text } from '../../atoms'
+import { InputHooks, QuantityButton } from '../../molecules'
+import { ContentCheckbox, GarnishChoicesHeader } from './styled'
 
 export const FormExtra = ({
   isEdit = false,
-  numberLimit = "",
+  numberLimit = '',
   selectedExtra = {},
   setCheck,
   showTooltip,
-  title = "",
+  title = '',
   handleAddList = () => {
-    return;
+    return
   },
   setSelectedExtra = () => {
-    return;
+    return
   },
   handleCheck = () => {
-    return;
+    return
   },
   handleShowTooltip = () => {
-    return;
+    return
   },
   setNumberLimit = () => {
-    return;
+    return
   },
   setShowTooltip = () => {
-    return;
+    return
   },
   setTitle = () => {
-    return;
+    return
   },
+  sendNotification = () => {
+    return
+  }
 }) => {
-  const defaultTitle = "Escoge tu... ";
-  const finalTitle = title || defaultTitle;
+  const defaultTitle = 'Escoge tu... '
+  const finalTitle = title || defaultTitle
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: '100%' }}>
       <div>
         <GarnishChoicesHeader>
-          <div className="content">
+          <div className='content'>
             <div>
-              <p className="garnish-choices__title">{finalTitle}</p>
-              <p className="garnish-choices__title-desc">
-                Escoge hasta {isEdit ? selectedExtra?.numberLimit : numberLimit}{" "}
+              <p className='garnish-choices__title'>{finalTitle}</p>
+              <p className='garnish-choices__title-desc'>
+                Escoge hasta {isEdit ? selectedExtra?.numberLimit : numberLimit}{' '}
                 opciones.
               </p>
             </div>
-            <div className="garnish-choices">
+            <div className='garnish-choices'>
               {isEdit
                 ? !!selectedExtra?.required && <Tag />
                 : setCheck.exState === true && <Tag />}
@@ -58,30 +61,30 @@ export const FormExtra = ({
           </div>
           {!isEdit && (
             <Button
-              backgroundColor="transparent"
-              border="none"
+              backgroundColor='transparent'
+              border='none'
               onClick={() => {
-                return handleShowTooltip("main");
+                return handleShowTooltip('main')
               }}
               primary
             >
-              {showTooltip === "main" && !isEdit && (
-                <div className="tooltip" style={{ right: 0, top: 70 }}>
-                  <Text fontSize=".75rem" color="var(--color-neutral-black)">
+              {showTooltip === 'main' && !isEdit && (
+                <div className='tooltip' style={{ right: 0, top: 70 }}>
+                  <Text color='var(--color-neutral-black)' fontSize='.75rem'>
                     Si no completas el numero de items no se mostraran a los
                     clientes
                   </Text>
                   <Button
                     Button
-                    className="btn-ok"
-                    backgroundColor="transparent"
-                    border="none"
+                    backgroundColor='transparent'
+                    border='none'
+                    className='btn-ok'
                     onClick={() => {
-                      return setShowTooltip(false);
+                      return setShowTooltip(false)
                     }}
                     primary
                   >
-                    <Text color={PColor} fontWeight="600">
+                    <Text color={PColor} fontWeight='600'>
                       Ok, entendí
                     </Text>
                   </Button>
@@ -92,23 +95,23 @@ export const FormExtra = ({
           )}
         </GarnishChoicesHeader>
         <InputHooks
-          name="title"
+          name='title'
           onChange={(e) => {
             if (isEdit)
               return setSelectedExtra({
                 ...selectedExtra,
-                title: e.target.value,
-              });
-            return setTitle(e.target.value);
+                title: e.target.value
+              })
+            return setTitle(e.target.value)
           }}
           onKeyDown={(e) => {
-            if (isEdit) return;
-            if (e.key === "Enter") {
-              handleAddList({ title: title, numberLimit: numberLimit });
+            if (isEdit) return
+            if (e.key === 'Enter') {
+              handleAddList({ title: title, numberLimit: numberLimit })
             }
           }}
-          title="Añadir nueva lista"
-          type="text"
+          title='Añadir nueva lista'
+          type='text'
           value={isEdit ? selectedExtra?.title : title}
         />
         <GarnishChoicesHeader>
@@ -117,22 +120,22 @@ export const FormExtra = ({
               checkbox
               checked={isEdit ? (selectedExtra?.required === 1 ) : (!!setCheck.exState)}
               id={
-                isEdit ? "selectedExtraCheckbox"
-                  : "setCheckCheckbox"
+                isEdit ? 'selectedExtraCheckbox'
+                  : 'setCheckCheckbox'
               }
-              margin="10px 0"
-              name="exState"
+              margin='10px 0'
+              name='exState'
               onChange={(e) => {
                 if (isEdit) {
-                  setSelectedExtra((prevSelectedExtra) => ({
+                  setSelectedExtra((prevSelectedExtra) => {return {
                     ...selectedExtra,
-                    required: prevSelectedExtra.required === 1 ? 0 : 1,
-                  }));
+                    required: prevSelectedExtra.required === 1 ? 0 : 1
+                  }})
                 } else {
-                  handleCheck(e);
+                  handleCheck(e)
                 }
               }}
-              type="checkbox"
+              type='checkbox'
             />
           </ContentCheckbox>
           <QuantityButton
@@ -140,17 +143,17 @@ export const FormExtra = ({
               if (isEdit)
                 return setSelectedExtra({
                   ...selectedExtra,
-                  numberLimit: selectedExtra?.numberLimit - 1,
-                });
-              return setNumberLimit(numberLimit === 0 ? 0 : numberLimit - 1);
+                  numberLimit: selectedExtra?.numberLimit - 1
+                })
+              return setNumberLimit(numberLimit === 0 ? 0 : numberLimit - 1)
             }}
             handleIncrement={() => {
               if (isEdit)
                 return setSelectedExtra({
                   ...selectedExtra,
-                  numberLimit: selectedExtra?.numberLimit + 1,
-                });
-              return setNumberLimit(numberLimit + 1);
+                  numberLimit: selectedExtra?.numberLimit + 1
+                })
+              return setNumberLimit(numberLimit + 1)
             }}
             quantity={isEdit ? selectedExtra?.numberLimit : numberLimit}
             showNegativeButton={isEdit ? (selectedExtra?.numberLimit === 1) : (numberLimit === 1)}
@@ -159,24 +162,24 @@ export const FormExtra = ({
           {!isEdit && (
             <Button
               backgroundColor={PColor}
-              borderRadius="0"
+              borderRadius='0'
               color={BGColor}
-              fontWeight="300"
+              fontWeight='300'
               onClick={() => {
-                if (title.trim() === "") {
+                if (title.trim() === '') {
                   return sendNotification({
-                    description: "hace falta el titulo de la sobremesa",
-                    title: "Error",
-                    backgroundColor: "error",
-                  });
+                    description: 'hace falta el titulo de la sobremesa',
+                    title: 'Error',
+                    backgroundColor: 'error'
+                  })
                 }
                 return handleAddList({
                   title: title,
-                  numberLimit: numberLimit,
-                });
+                  numberLimit: numberLimit
+                })
               }}
-              type="button"
-              width="100%"
+              type='button'
+              width='100%'
             >
               Añadir
             </Button>
@@ -184,15 +187,23 @@ export const FormExtra = ({
         </GarnishChoicesHeader>
       </div>
     </div>
-  );
-};
+  )
+}
 
 FormExtra.propTypes = {
   handleAddList: PropTypes.func,
+  handleCheck: PropTypes.func,
   handleShowTooltip: PropTypes.func,
+  isEdit: PropTypes.bool,
   numberLimit: PropTypes.string,
+  selectedExtra: PropTypes.object,
+  setCheck: PropTypes.shape({
+    exState: PropTypes.bool
+  }),
+  setNumberLimit: PropTypes.func,
+  setSelectedExtra: PropTypes.func,
   setShowTooltip: PropTypes.func,
   setTitle: PropTypes.func,
   showTooltip: PropTypes.string,
-  title: PropTypes.string,
-};
+  title: PropTypes.string
+}

@@ -1,12 +1,5 @@
-import {
-  APColor,
-  BColor,
-  BGColor,
-  DarkSilver,
-  PColor,
-  PVColor,
-} from "./../../../assets/colors/index"
-import styled, { css } from "styled-components"
+import styled, { css } from 'styled-components'
+import { APColor, BColor, BGColor, DarkSilver, PColor, PVColor } from './../../../assets/colors/index'
 
 export const ContentImage = styled.div`
   display: flex;
@@ -18,11 +11,11 @@ export const ContentImage = styled.div`
     max-height: 300px;
     width: 100%;
   }
-`;
+`
 
 export const InputFile = styled.input`
   display: none;
-`;
+`
 export const ActionName = styled.span`
   position: absolute;
   height: 20px;
@@ -39,13 +32,13 @@ export const ActionName = styled.span`
   align-items: center;
   display: flex;
   place-content: center;
-`;
+`
 export const WrapperButton = styled.div`
   width: ${({ width }) => {
-    return width || "100%";
+    return width || '100%'
   }};
   margin: ${({ margin }) => {
-    return margin || "initial";
+    return margin || 'initial'
   }};
   display: flex;
   justify-content: center;
@@ -53,7 +46,7 @@ export const WrapperButton = styled.div`
   .ProQuantity {
     padding: 10px;
   }
-`;
+`
 export const InputCounter = styled.input`
   text-align: center;
   position: absolute;
@@ -72,7 +65,7 @@ export const InputCounter = styled.input`
   &&:focus {
     box-shadow: 0 0 0 1px ${PVColor};
   }
-`;
+`
 export const ItemProQuantity = styled.button`
   background-color: transparent;
   position: relative;
@@ -153,13 +146,13 @@ export const ItemProQuantity = styled.button`
       }
     }
   }
-`;
+`
 export const OverlineFree = styled.button`
   width: 90%;
   height: 100px;
   position: absolute;
   top: ${({ free }) => {
-    return free ? "-30px" : "0px";
+    return free ? '-30px' : '0px'
   }};
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
@@ -174,7 +167,7 @@ export const OverlineFree = styled.button`
     left: 0;
     right: 0;
   }
-`;
+`
 
 export const OverlineCategory = styled.button`
   width: 100%;
@@ -183,7 +176,7 @@ export const OverlineCategory = styled.button`
   position: absolute;
   background-color: transparent;
   bottom: ${({ withCategories }) => {
-    return withCategories ? "-30px" : "-10px";
+    return withCategories ? '-30px' : '-10px'
   }};
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
@@ -208,17 +201,17 @@ export const OverlineCategory = styled.button`
     top: 10px;
     width: 90%;
   }
-`;
+`
 export const Button = styled.button`
   background-color: ${PColor};
   color: ${BGColor};
   padding: 4px;
   border-radius: 5px;
-`;
+`
 export const WrapperCard = styled.div`
   position: relative;
   margin: ${({ margin }) => {
-    return margin || "0";
+    return margin || '0'
   }};
 
   &&:hover ${OverlineFree} {
@@ -273,7 +266,7 @@ export const WrapperCard = styled.div`
     transform-origin: right center;
     transform: translateY(-50%) scaleX(0.7);
   }
-`;
+`
 export const ButtonCard = styled.button`
   font-size: 12px;
   font-family: PFont-Light;
@@ -287,13 +280,13 @@ export const ButtonCard = styled.button`
   height: 50px;
   z-index: 999;
   top: ${({ top }) => {
-    return top ? top : "20px";
+    return top ? top : '20px'
   }};
   right: ${({ right }) => {
-    return right ? "0" : "-50px";
+    return right ? '0' : '-50px'
   }};
   transition-delay: ${({ delay }) => {
-    return delay ? delay : "auto";
+    return delay ? delay : 'auto'
   }};
   max-height: 50px;
   max-width: 50px;
@@ -311,7 +304,7 @@ export const ButtonCard = styled.button`
     if (props?.tooltip) {
       return css`
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           width: 10px;
           height: 10px;
@@ -321,18 +314,18 @@ export const ButtonCard = styled.button`
           top: 12px;
           right: 13px;
         }
-      `;
+      `
     }
     return (
       props.grid &&
       css`
         top: ${({ top }) => {
-          return top ? top : "80px";
-        }};
+        return top ? top : '80px'
+      }};
       `
-    );
+    )
   }}
-`;
+`
 export const Card = styled.div`
     border: 1px solid #f2f2f2;
     box-shadow: 0 1px 4px rgba(0,0,0,.05);
@@ -360,13 +353,13 @@ export const Card = styled.div`
     align-items: baseline;
     top: 0;
     box-shadow: ${({ free }) => {
-      return free && `0 1px 4px ${PColor}`;
-    }};
+    return free && `0 1px 4px ${PColor}`
+  }};
     ${({ height }) => {
-      return css`
+    return css`
         height: ${height};
-      `;
-    }}};
+      `
+  }}};
 
     &:hover  ${ButtonCard} {
         right: 15px;
@@ -496,4 +489,4 @@ export const ContainerActions = styled.div`
   right: 25px;
   background-color: transparent;
   border-radius: 50%;
-`;
+`

@@ -1,5 +1,5 @@
-import styled, { css, keyframes } from "styled-components"
-import { BGColor, PColor } from './../../../assets/colors/index';
+import styled, { css, keyframes } from 'styled-components'
+import { BGColor, PColor } from './../../../assets/colors/index'
 
 export const onPulses = keyframes`
   from {
@@ -30,13 +30,13 @@ export const CircleDay = styled.div`
   display: grid;
   place-content: center;
   min-width: 50px;
-  ${props => {
+  ${(props) => {
     return props.pulse
       ? css`
-      animation: ${onPulses} 2s infinite;
-      background-color: ${`${PColor}`};
-      color: ${BGColor};
-  `
-      : css`
-  `}}
+          animation: ${onPulses} 2s infinite;
+          background-color: ${`${PColor}`};
+          color: ${BGColor};
+        `
+      : css``
+  }}
 `

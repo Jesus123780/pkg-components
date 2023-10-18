@@ -1,5 +1,5 @@
-import React from 'react';
-import { TagsInput } from './index';
+import React from 'react'
+import { TagsInput } from './index'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -7,15 +7,17 @@ export default {
   component: TagsInput,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-};
+    backgroundColor: { control: 'color' }
+  }
+}
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => <TagsInput {...args} />;
+const Template = (args) => {
+  return <TagsInput {...args} />
+}
 
-export const TemplateTagsInput = Template.bind({});
+export const TemplateTagsInput = Template.bind({})
 // More on args: https://storyb ook.js.org/docs/react/writing-stories/args
 TemplateTagsInput.args = {
   placeholder: 'Enter'
-};
+}

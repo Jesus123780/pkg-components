@@ -15,7 +15,6 @@
 .column-container *::before,
 .column-container::after {
   box-sizing: inherit;
-
 }
 
 .column-container .swiper-button-next {

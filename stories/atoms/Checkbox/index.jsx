@@ -1,11 +1,16 @@
-import PropTypes from "prop-types"
-import { PColor } from "../../../assets/colors"
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import styled, { css, keyframes } from "styled-components"
+import PropTypes from 'prop-types'
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import styled, { css, keyframes } from 'styled-components'
+import { PColor } from '../../../assets/colors'
 
 export const Checkbox = ({
   checked,
-  className = "",
+  className = '',
   disabled = false,
   id,
   indeterminate = false,
@@ -18,7 +23,7 @@ export const Checkbox = ({
   const [clickCount, setClickCount] = useState(0)
   const [lastClickTime, setLastClickTime] = useState(0)
 
-  const clickThreshold = 1000; // Umbral de tiempo en milisegundos
+  const clickThreshold = 1000 // Umbral de tiempo en milisegundos
 
   const syncIndeterminateState = useCallback(() => {
     if (inputEl && inputEl.current) {
@@ -35,28 +40,28 @@ export const Checkbox = ({
       syncIndeterminateState()
     }
 
-    const now = Date.now();
+    const now = Date.now()
 
     if (now - lastClickTime < clickThreshold) {
-      setClickCount(prevClickCount => prevClickCount + 1);
+      setClickCount(prevClickCount => {return prevClickCount + 1})
     } else {
-      setClickCount(1);
+      setClickCount(1)
     }
 
     if (clickCount >= 7) {
-      alert("¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.");
-      setClickCount(0);
+      alert('¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.')
+      setClickCount(0)
     }
 
-    setLastClickTime(now);
+    setLastClickTime(now)
     onChange(event, id)
   }
 
-  const disabledStyles = { color: "#CCC" }
+  const disabledStyles = { color: '#CCC' }
 
   return (
     <Span
-      className={className || ""}
+      className={className || ''}
       id={id}
       style={disabled ? disabledStyles : {}}
       {...restProps}
@@ -68,7 +73,7 @@ export const Checkbox = ({
         name={name}
         onChange={handleChange}
         ref={inputEl}
-        type="checkbox"
+        type='checkbox'
       />
       <CheckboxLabel checked={checked} htmlFor={`checkbox-${id}`}>
         {label}
@@ -85,6 +90,7 @@ Checkbox.propTypes = {
   id: PropTypes.any,
   indeterminate: PropTypes.bool,
   label: PropTypes.any,
+  name: PropTypes.any,
   onChange: PropTypes.func
 }
 const checkboxCheck = keyframes`

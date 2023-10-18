@@ -13,8 +13,8 @@ import {
   isPassword,
   onlyLetters,
   rangeLength,
-  validatePhoneNumber,
-  valNit
+  valNit,
+  validatePhoneNumber
 } from '../../../../utils'
 import {
   BoxInput,
@@ -346,6 +346,7 @@ export const InputHooks = ({
         : <TextAreaInput
           autoFocus={autoFocus}
           border={border}
+          data-required={required}
           disabled={disabled}
           error={errors}
           height={height}
@@ -353,7 +354,6 @@ export const InputHooks = ({
           minWidth={minWidth}
           name={name}
           numeric={numeric}
-          data-required={required}
           onBlur={onBlur}
           onChange={validations}
           padding={padding}
@@ -377,37 +377,41 @@ export const InputHooks = ({
 }
 
 InputHooks.propTypes = {
-  typeTextarea: PropTypes.any,
-  autoComplete: PropTypes.any,
-  border: PropTypes.any,
-  checked: PropTypes.any,
-  dataForm: PropTypes.any,
-  disabled: PropTypes.any,
-  display: PropTypes.any,
+  Cc: PropTypes.any,
+  autoComplete: PropTypes.string,
+  autoFocus: PropTypes.any,
+  border: PropTypes.string,
+  checked: PropTypes.bool,
+  dataForm: PropTypes.object,
+  disabled: PropTypes.bool,
+  display: PropTypes.string,
   email: PropTypes.shape({
     split: PropTypes.func
   }),
-  error: PropTypes.any,
-  fontSize: PropTypes.any,
+  error: PropTypes.string,
+  fontSize: PropTypes.string,
+  height: PropTypes.any,
   labelColor: PropTypes.any,
   letters: PropTypes.any,
-  margin: PropTypes.any,
-  maxWidth: PropTypes.any,
-  minWidth: PropTypes.any,
-  name: PropTypes.any,
-  numeric: PropTypes.any,
-  onBlur: PropTypes.any,
+  margin: PropTypes.string,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
+  name: PropTypes.string,
+  nit: PropTypes.bool,
+  numeric: PropTypes.bool,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
-  onFocus: PropTypes.any,
-  padding: PropTypes.any,
-  paddingInput: PropTypes.any,
+  onFocus: PropTypes.func,
+  onInvalid: PropTypes.func,
+  padding: PropTypes.string,
+  paddingInput: PropTypes.string,
   pass: PropTypes.any,
   passConfirm: PropTypes.shape({
     passValue: PropTypes.any,
     validate: PropTypes.any
   }),
-  placeholder: PropTypes.any,
-  radius: PropTypes.any,
+  placeholder: PropTypes.string,
+  radius: PropTypes.string,
   range: PropTypes.shape({
     max: PropTypes.any,
     min: PropTypes.any
@@ -417,6 +421,7 @@ InputHooks.propTypes = {
   setDataValue: PropTypes.func,
   title: PropTypes.string,
   type: PropTypes.string,
+  typeTextarea: PropTypes.bool,
   value: PropTypes.string,
-  width: PropTypes.any
+  width: PropTypes.string
 }

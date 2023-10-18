@@ -1,37 +1,37 @@
+import PropTypes from 'prop-types'
 import React, {
   useEffect,
-  useState,
-  useReducer
+  useReducer,
+  useState
 } from 'react'
-import PropTypes from 'prop-types'
+import { BColor } from '../../../assets/colors'
+import { IconArrowBottom, IconArrowTop } from '../../../assets/icons'
+import { orderColumn } from './orderColumn'
 import {
-  BtnIcon,
-  ContainerTable,
-  Content,
-  Section,
-  TableBtn,
-  Text,
-  Title,
-  CheckBoxWrapper,
-  CheckBox,
-  CheckBoxLabel,
-  TableResponsive,
-  StatusC,
-  EntryPerViewC,
-  EntryLabel,
-  EntryInput,
-  EntryPaginationC,
-  EntryButton,
-  CurrentPage,
   ArrowsCheck,
   ArrowsLabel,
-  Button
+  BtnIcon,
+  Button,
+  CheckBox,
+  CheckBoxLabel,
+  CheckBoxWrapper,
+  ContainerTable,
+  Content,
+  CurrentPage,
+  EntryButton,
+  EntryInput,
+  EntryLabel,
+  EntryPaginationC,
+  EntryPerViewC,
+  Section,
+  StatusC,
+  TableBtn,
+  TableResponsive,
+  Text,
+  Title
 } from './styled'
-import { orderColumn } from './orderColumn'
-import { IconArrowBottom, IconArrowTop } from '../../../assets/icons'
-import { BColor } from '../../../assets/colors'
 
-export { Section }  from './styled'
+export { Section } from './styled'
 
 export const Table = ({
   titles = [],

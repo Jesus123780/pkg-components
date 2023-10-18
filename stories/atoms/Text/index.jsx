@@ -1,8 +1,8 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import styled, { css } from 'styled-components'
 
-export const Text = ({ children, as='span', ...props }) => {
+export const Text = ({ children, as = 'span', ...props }) => {
   return (
     <View as={as} {...props}>
       {children}
@@ -11,6 +11,7 @@ export const Text = ({ children, as='span', ...props }) => {
 }
 
 Text.propTypes = {
+  as: PropTypes.string,
   children: PropTypes.node
 }
 

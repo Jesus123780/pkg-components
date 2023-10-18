@@ -1,26 +1,32 @@
-import PropTypes from "prop-types"
-import React from 'react';
-import { CircleDay } from './styled';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { CircleDay } from './styled'
 
 export const DaySelector = ({
   days = [],
   selectedDays = [],
-  handleDaySelection = () => { return },
+  handleDaySelection = () => {
+    return
+  }
 }) => {
   return (
     <>
-      {days.map((day) => (
-        <CircleDay
-          key={day.day}
-          onClick={() => handleDaySelection(day.day)}
-          pulse={selectedDays.includes(day.day)}
-        >
-          {day.name}
-        </CircleDay>
-      ))}
+      {days.map((day) => {
+        return (
+          <CircleDay
+            key={day.day}
+            onClick={() => {
+              return handleDaySelection(day.day)
+            }}
+            pulse={selectedDays.includes(day.day)}
+          >
+            {day.name}
+          </CircleDay>
+        )
+      })}
     </>
-  );
-};
+  )
+}
 
 DaySelector.propTypes = {
   days: PropTypes.arrayOf(
@@ -31,4 +37,4 @@ DaySelector.propTypes = {
   ),
   handleDaySelection: PropTypes.func,
   selectedDays: PropTypes.arrayOf(PropTypes.number)
-};
+}

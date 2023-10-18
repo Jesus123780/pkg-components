@@ -1,35 +1,48 @@
+import PropTypes from 'prop-types'
 import React from 'react'
-import styled, { css } from "styled-components"
+import styled, { css } from 'styled-components'
+import { PColor } from '../../../assets/colors'
 
 export const InputHookProducts = ({
-    placeholder,
-    borderRadius,
-    value,
-    onChange,
-    onFocus,
-    inputText,
-    type,
-    color,
-    ...props
-  }) => {
-    return (
-      <>
-        <Input
-          {...props}
-          borderRadius={borderRadius}
-          color={color}
-          inputText={inputText}
-          onChange={onChange ? e => { return onChange(e.target.value) } : undefined}
-          onFocus={onFocus}
-          placeholder={placeholder || ''}
-          type={type || 'text'}
-          value={value || ''}
-        />
-      </>
-    )
-  }
+  placeholder,
+  borderRadius,
+  value,
+  onChange,
+  onFocus,
+  inputText,
+  type,
+  color,
+  ...props
+}) => {
+  return (
+    <>
+      <Input
+        {...props}
+        borderRadius={borderRadius}
+        color={color}
+        inputText={inputText}
+        onChange={onChange ? e => { return onChange(e.target.value) } : undefined}
+        onFocus={onFocus}
+        placeholder={placeholder || ''}
+        type={type || 'text'}
+        value={value || ''}
+      />
+    </>
+  )
+}
+
+InputHookProducts.propTypes = {
+  borderRadius: PropTypes.any,
+  color: PropTypes.any,
+  inputText: PropTypes.any,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.any,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  value: PropTypes.string
+}
   
-  const Input = styled.input`
+const Input = styled.input`
     width: 100%;
     box-shadow: 0 0 0 1px rgb(0 0 0 / 25%);
     outline: none;

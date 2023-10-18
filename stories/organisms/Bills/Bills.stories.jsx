@@ -1,5 +1,5 @@
-import React from 'react';
-import { Example } from './index';
+import React from 'react'
+import { Example } from './index'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -7,15 +7,15 @@ export default {
   component: Example,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-};
+    backgroundColor: { control: 'color' }
+  }
+}
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => <Example {...args} />;
+const Template = (args) => {
+  return <Example {...args} />
+}
 
-export const TemplateExample = Template.bind({});
+export const TemplateExample = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-TemplateExample.args = {
-
-};
+TemplateExample.args = {}

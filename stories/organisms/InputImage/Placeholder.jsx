@@ -1,32 +1,32 @@
-import React from "react";
-import styled from "styled-components";
-import { PColor } from "../../../assets/colors";
-import Image from "next/image";
+import Image from 'next/image'
+import React from 'react'
+import styled from 'styled-components'
+import { PColor } from '../../../assets/colors'
 
 export const Placeholder = ({ onClick = () => { return } }) => {
   return (
     <Container>
-      <div className="container">
-        <div className="container--content__image">
+      <div className='container'>
+        <div className='container--content__image'>
           <Image
+            alt={''}
+            blurDataURL='/images/DEFAULTBANNER.png'
+            className='image_item'
             height={200}
+            src={'/images/DEFAULTBANNER.png'}
             width={200}
-            alt={""}
-            blurDataURL="/images/DEFAULTBANNER.png"
-            className="image_item"
-            src={"/images/DEFAULTBANNER.png"}
           />
         </div>
-        <button className="button" onClick={onClick}>
-          <div className="button_icon">
+        <button className='button' onClick={onClick}>
+          <div className='button_icon'>
             {/* ICon camera */}
             Escoge una imagen
           </div>
         </button>
       </div>
     </Container>
-  );
-};
+  )
+}
 const Container = styled.div`
   .container {
     display: flex;
@@ -55,4 +55,4 @@ const Container = styled.div`
     font-family: PFont-Light;
     text-align: center;
   }
-`;
+`

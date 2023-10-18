@@ -1,28 +1,24 @@
-import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import { PColor } from '../../../assets/colors'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { PColor } from '../../../assets/colors'
 
 export const LocationName = () => {
   const location = useRouter()
   const name = location?.pathname
   const position = name.indexOf('/')
-  return (<Search Text={name.substring(position + 1 || name.length)}/>
-  )
+  return <Search Text={name.substring(position + 1 || name.length)} />
 }
 
 const Search = ({ children, Text }) => {
-
   return (
     <ContainerSearch>
       <Link> Buscado por</Link>
       <span style={{ fontFamily: 'PFont-Regular', fontSize: '1.5625rem', color: PColor }}>
-                &nbsp;
+        &nbsp;
         {Text}
       </span>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </ContainerSearch>
   )
 }
@@ -32,18 +28,18 @@ Search.propTypes = {
   children: PropTypes.any
 }
 const ContainerSearch = styled.div`
-    text-align: start;
-    margin-bottom: 30px;
-    width: 100%;
-    margin: 40px 0;
-    border-bottom: .0625em solid #e6e6e6;
-    padding-bottom: 10px;
-    @media only screen and (max-width: 960px){
-        display: none;
-    }
+  text-align: start;
+  margin-bottom: 30px;
+  width: 100%;
+  margin: 40px 0;
+  border-bottom: 0.0625em solid #e6e6e6;
+  padding-bottom: 10px;
+  @media only screen and (max-width: 960px) {
+    display: none;
+  }
 `
 const Link = styled.span`
-    font-size: 1.5625rem;
-    color: black;
-    font-family: PFont-Regular;
+  font-size: 1.5625rem;
+  color: black;
+  font-family: PFont-Regular;
 `

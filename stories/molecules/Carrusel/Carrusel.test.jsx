@@ -1,10 +1,10 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { Carrusel3D } from './Carrusel3d'; // Asegúrate de importar el story correctamente
+import { render } from '@testing-library/react'
+import React from 'react'
+import { Carrusel3D } from './Carrusel3d'
 
 describe('Carrusel3D', () => {
   it('renders correctly', () => {
-    const { container } = render(<Carrusel3D />);
-    expect(container).toMatchSnapshot();
-  });
-});
+    const { container } = render(<Carrusel3D />)
+    expect(container).toMatchSnapshot()
+  })
+})

@@ -1,5 +1,5 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import styled, { css } from 'styled-components'
 import { IconArrowBottom } from '../../../assets/icons'
 
@@ -8,7 +8,11 @@ export const DropdownMenu = ({ options = [], show, position }) => {
   return <Container position={position}>
     {options?.map((x, i) => {
       return <DropdownItem key={'context_menu_option_' + i} onClick={x?.action || (() => { return true })}>
-        {x?.icon && <IconArrowBottom size={10} icon={x.icon} style={{ marginRight: '10px' }} />}
+        {x?.icon && <IconArrowBottom
+          icon={x.icon}
+          size={10}
+          style={{ marginRight: '10px' }}
+        />}
         {x?.optionName}
       </DropdownItem>
     })}

@@ -1,19 +1,9 @@
 import PropTypes from 'prop-types'
-import React, { memo, useState, useCallback } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import SingleInput, { Content } from './SingleInput'
 
 export const InputOTPHookMemo = (props) => {
-  const {
-    length,
-    isNumberInput,
-    autoFocus,
-    disabled,
-    onChangeOTP,
-    arrayCode,
-    inputClassName,
-    inputStyle,
-    ...rest
-  } = props
+  const { length, isNumberInput, autoFocus, disabled, onChangeOTP, arrayCode, inputClassName, inputStyle, ...rest } = props
 
   // Define state activeInput = 0
   const [activeInput, setActiveInput] = useState(0)
@@ -75,9 +65,11 @@ export const InputOTPHookMemo = (props) => {
 
   // Handle onFocus input
   const handleOnFocus = useCallback(
-    (index) => {return () => {
-      focusInput(index)
-    }},
+    (index) => {
+      return () => {
+        focusInput(index)
+      }
+    },
     [focusInput]
   )
 
@@ -137,42 +129,42 @@ export const InputOTPHookMemo = (props) => {
 
   const handleOnPaste = useCallback(
     (e) => {
-      e.preventDefault();
+      e.preventDefault()
       const pastedData = e.clipboardData
         .getData('text/plain')
         .trim()
         .slice(0, length - activeInput)
-        .split('');
+        .split('')
       if (pastedData) {
-        let nextFocusIndex = 0;
-        const updatedOTPValues = [...otpValues]; // Clonamos el estado actual
-  
+        let nextFocusIndex = 0
+        const updatedOTPValues = [...otpValues] // Clonamos el estado actual
+
         // Usamos un índice separado para rastrear el índice de los valores pegados
-        let pasteIndex = 0;
-  
+        let pasteIndex = 0
+
         // Iteramos sobre los valores existentes en updatedOTPValues
         for (let index = activeInput; index < length; index++) {
           // Si aún hay valores pegados, actualizamos el valor actual en updatedOTPValues
           if (pastedData[pasteIndex]) {
-            updatedOTPValues[index] = getRightValue(pastedData[pasteIndex]) || '';
-            pasteIndex++;
+            updatedOTPValues[index] = getRightValue(pastedData[pasteIndex]) || ''
+            pasteIndex++
           }
         }
-  
-        setOTPValues(updatedOTPValues); // Actualizamos el estado
-        handleOtpChange(updatedOTPValues); // Notificamos el cambio del OTP completo
-        setActiveInput(Math.min(activeInput + pasteIndex, length - 1)); // Ajustamos el índice activo
+
+        setOTPValues(updatedOTPValues) // Actualizamos el estado
+        handleOtpChange(updatedOTPValues) // Notificamos el cambio del OTP completo
+        setActiveInput(Math.min(activeInput + pasteIndex, length - 1)) // Ajustamos el índice activo
       }
     },
     [activeInput, getRightValue, handleOtpChange, length, otpValues]
-  );
-  
+  )
+
   return (
     <Content {...rest}>
       {Array(length)
         .fill('')
-        .map((_, index) => {return (
-          <SingleInput
+        .map((_, index) => {
+          return <SingleInput
             autoFocus={autoFocus}
             className={inputClassName}
             disabled={disabled}
@@ -186,7 +178,7 @@ export const InputOTPHookMemo = (props) => {
             style={inputStyle}
             value={otpValues && otpValues[index]}
           />
-        )})}
+        })}
     </Content>
   )
 }

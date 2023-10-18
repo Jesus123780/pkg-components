@@ -1,12 +1,11 @@
-import React, { useRef } from 'react';
+import React from 'react'
 // import { useReactToPrint } from 'react-to-print';
 
-
-export const Example = ({children}) => {
-//   const componentRef = useRef();
-//   const handlePrint = useReactToPrint({
-//     content: () => componentRef.current,
-//   });
+export const Example = () => {
+  //   const componentRef = useRef();
+  //   const handlePrint = useReactToPrint({
+  //     content: () => componentRef.current,
+  //   });
 
   return (
     <div>
@@ -15,5 +14,5 @@ export const Example = ({children}) => {
       </div>
       <button onClick={handlePrint}>Print this out!</button> */}
     </div>
-  );
-};
+  )
+}

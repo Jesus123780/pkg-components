@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styles from './styles.module.css'
 
@@ -14,7 +15,7 @@ export const Carrusel3D = (props) => {
   return (
     <>
       <div className={styles['carousel']}>
-        {React.Children.map(children, (child, i) => (
+        {React.Children.map(children, (child, i) => {return (
           <div
             className={styles['card-container']}
             style={{
@@ -24,24 +25,24 @@ export const Carrusel3D = (props) => {
               '--abs-offset': Math.abs(active - i) / 3,
               pointerEvents: active === i ? 'auto' : 'none',
               opacity: Math.abs(active - i) >= MAX_VISIBILITY ? '0' : '1',
-              display: Math.abs(active - i) > MAX_VISIBILITY ? 'none' : 'block',
+              display: Math.abs(active - i) > MAX_VISIBILITY ? 'none' : 'block'
             }}
           >
             {child}
           </div>
-        ))}
+        )})}
       </div>
       <div>
-        <div item>
-          <button onClick={moveLeft} disabled={active === 0}>
+        <div>
+          <button disabled={active === 0} onClick={moveLeft}>
             Click
           </button>
         </div>
 
-        <div item>
+        <div>
           <button
-            onClick={moveRight}
             disabled={active === count - 1}
+            onClick={moveRight}
           >
             Click
           </button>
@@ -51,4 +52,10 @@ export const Carrusel3D = (props) => {
   )
 }
 
-Carrusel3D.propTypes = {}
+Carrusel3D.propTypes = {
+  active: PropTypes.number,
+  children: PropTypes.any,
+  maxView: PropTypes.number,
+  moveLeft: PropTypes.any,
+  moveRight: PropTypes.any
+}

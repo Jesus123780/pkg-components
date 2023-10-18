@@ -7,6 +7,7 @@ module.exports = {
     "@storybook/addon-interactions",
     "storybook-addon-next-router",
     "@storybook/addon-jest",
+    // "@storybook/preset-create-react-app",
     "storybook-css-modules"
   ],
 

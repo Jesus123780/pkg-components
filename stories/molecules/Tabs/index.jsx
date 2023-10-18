@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { PColor } from '../../../assets/colors';
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { PColor } from '../../../assets/colors'
 
-const TabPanel = ({ children }) => (
-  <TabContent role='tabpanel' tabIndex='0'>
-    {children}
-  </TabContent>
-);
+const TabPanel = ({ children }) => {
+  return (
+    <TabContent role='tabpanel' tabIndex='0'>
+      {children}
+    </TabContent>
+  )
+}
 
 TabPanel.propTypes = {
   children: PropTypes.any.isRequired
-};
+}
 
 export const Tabs = ({ children, tabBreak, width }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0)
 
-  const selectTab = tabIndex => {
-    setSelectedTab(tabIndex);
-  };
+  const selectTab = (tabIndex) => {
+    setSelectedTab(tabIndex)
+  }
 
   return (
     <TabsWrapper>
@@ -27,42 +29,46 @@ export const Tabs = ({ children, tabBreak, width }) => {
         columnWidth={width}
         role='tablist'
       >
-        {React.Children.map(children, ({ props: { label } }, index) => (
-          <TabButton
-            aria-selected={selectedTab === index ? 'true' : 'false'}
-            onClick={() => selectTab(index)}
-            role='tab'
-            selected={selectedTab === index}
-          >
-            {label}
-          </TabButton>
-        ))}
+        {React.Children.map(children, ({ props: { label } }, index) => {
+          return (
+            <TabButton
+              aria-selected={selectedTab === index ? 'true' : 'false'}
+              onClick={() => {
+                return selectTab(index)
+              }}
+              role='tab'
+              selected={selectedTab === index}
+            >
+              {label}
+            </TabButton>
+          )
+        })}
       </TabList>
 
       <Content>
-        {React.Children.map(children, (comp, index) => (
-          selectedTab === index ? comp : undefined
-        ))}
+        {React.Children.map(children, (comp, index) => {
+          return selectedTab === index ? comp : undefined
+        })}
       </Content>
     </TabsWrapper>
-  );
-};
+  )
+}
 
 Tabs.propTypes = {
   children: PropTypes.any.isRequired,
   tabBreak: PropTypes.string,
   width: PropTypes.any
-};
+}
 
 Tabs.defaultProps = {
   tabBreak: '200px'
-};
+}
 
 const TabsWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-`;
+`
 
 const TabButton = styled.button`
   height: 50px;
@@ -76,41 +82,54 @@ const TabButton = styled.button`
 
   transition: border-color 0.2s ease-in;
   border: none;
-  border-bottom: 4px solid ${props => (props.selected ? PColor : '#eee')};
+  border-bottom: 4px solid
+    ${(props) => {
+    return props.selected ? PColor : '#eee'
+  }};
   &:hover,
   &:focus,
   &:active {
-    border-bottom: 4px solid ${props => (props.selected ? PColor : '#c0bebe')};
+    border-bottom: 4px solid
+      ${(props) => {
+    return props.selected ? PColor : '#c0bebe'
+  }};
   }
-`;
+`
 
 const TabList = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
   display: grid;
-  grid-template-columns: ${({ columnWidth }) =>
-    columnWidth ? columnWidth.map(x => `${x} `) : '1fr'};
+  grid-template-columns: ${({ columnWidth }) => {
+    return columnWidth
+      ? columnWidth.map((x) => {
+        return `${x} `
+      })
+      : '1fr'
+  }};
   height: auto;
   align-items: center;
   margin: 0 auto;
   outline: none;
-  @media (max-width: ${props => props.breakPoint}) {
+  @media (max-width: ${(props) => {
+    return props.breakPoint
+  }}) {
     flex-direction: column;
     & > div,
     & > div > button {
       width: 100%;
     }
   }
-`;
+`
 
 const Content = styled.div`
   flex: 1;
   width: 100%;
   padding-top: 16px;
-`;
+`
 
 const TabContent = styled.div`
   flex: 1;
   width: 100%;
-`;
+`

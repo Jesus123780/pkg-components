@@ -5,11 +5,19 @@ export const FlipCard = ({
   backChild = null,
   flipped = false,
   frontChild = null,
-  onClick = () => { return },
-  setFlipped = () => { return }
+  onClick = () => {
+    return
+  },
+  setFlipped = () => {
+    return
+  }
 }) => {
   return (
-    <CardContainer onClick={() => { return onClick() }}>
+    <CardContainer
+      onClick={() => {
+        return onClick()
+      }}
+    >
       <div className={`flip-card ${flipped ? 'flipped' : ''}`}>
         <div className='flip-card-inner'>
           <div className='flip-card-front'>
@@ -35,9 +43,12 @@ export const FlipCard = ({
           </div>
           <div className='flip-card-back'>
             {backChild}
-            <div className='flip-icon icon-back' onClick={() => { setFlipped(!flipped) }} >
-
-            </div>
+            <div
+              className='flip-icon icon-back'
+              onClick={() => {
+                setFlipped(!flipped)
+              }}
+            ></div>
           </div>
         </div>
       </div>
@@ -52,7 +63,6 @@ FlipCard.propTypes = {
   onClick: PropTypes.func,
   setFlipped: PropTypes.func
 }
-
 
 const CardContainer = styled.div`
   cursor: pointer;

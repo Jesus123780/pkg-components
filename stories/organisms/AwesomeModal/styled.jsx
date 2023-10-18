@@ -2,9 +2,8 @@
 import styled, { css, keyframes } from 'styled-components'
 import {
     BGColor,
-    SECColor,
-    SEGColor,
-    DarkSilver
+    DarkSilver,
+    SEGColor
 } from '../../../assets/colors'
 import { MODAL_SIZES } from './constanst'
 

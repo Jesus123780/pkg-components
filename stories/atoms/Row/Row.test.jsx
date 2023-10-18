@@ -1,6 +1,6 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { Row } from './index';
+import { render } from '@testing-library/react'
+import React from 'react'
+import { Row } from './index'
 
 describe('Row', () => {
   it('should render children correctly', () => {
@@ -9,18 +9,18 @@ describe('Row', () => {
         <div>Child 1</div>
         <div>Child 2</div>
       </Row>
-    );
+    )
 
-  });
+  })
 
   it('should accept custom "as" prop', () => {
     const { container } = render(
-      <Row as="section">
+      <Row as='section'>
         <div>Child 1</div>
         <div>Child 2</div>
       </Row>
-    );
+    )
 
-    const sectionElement = container.querySelector('section');
-  });
-});
+    const sectionElement = container.querySelector('section')
+  })
+})

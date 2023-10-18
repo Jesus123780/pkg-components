@@ -4,6 +4,7 @@ module.exports = {
       {
         test: /\.(js|jsx|ts|tsx|mjs)$/,
         exclude: /node_modules/,
+        type: 'javascript/auto', // Corregido: Utilizar 'javascript/esm'
         use: {
           loader: 'babel-loader',
           options: {
@@ -22,6 +23,7 @@ module.exports = {
       {
         test: /\.js$/,
         include: /@storybook\/addon-jest/,
+        type: 'javascript/auto', // Corregido: Utilizar 'javascript/auto'
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env']

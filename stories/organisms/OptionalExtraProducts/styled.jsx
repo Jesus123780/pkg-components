@@ -1,10 +1,5 @@
 import styled from 'styled-components'
-import {
-  BColor,
-  BGColor,
-  NorthTexasGreen,
-  PColor
-} from '../../../assets/colors'
+import { BColor, BGColor, NorthTexasGreen, PColor } from '../../../assets/colors'
 
 export const Div = styled.div`
   width: 30%;
@@ -75,7 +70,7 @@ export const GarnishChoicesHeader = styled.div`
     height: 20px;
     text-transform: uppercase;
     font-weight: 500;
-    font-feature-settings: "tnum";
+    font-feature-settings: 'tnum';
     font-variant-numeric: tabular-nums;
     font-size: 0.5625rem;
     line-height: 1;
@@ -167,7 +162,7 @@ export const BodyDnd = styled.div`
     place-content: space-between;
     padding: 0 10px;
   }
-  
+
   .tooltip {
     position: absolute;
     top: 50px;
@@ -179,13 +174,13 @@ export const BodyDnd = styled.div`
     padding: 20px 30px 10px;
     box-shadow: 0 2px 43px rgba(0, 0, 0, 0.24);
     .btn-ok {
-    background-color: transparent;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    width: 100%;
+      background-color: transparent;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      width: 100%;
     }
-    }
+  }
 `
 export const ContentLinesItems = styled.div`
   display: flex;

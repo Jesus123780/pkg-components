@@ -4,6 +4,10 @@ import React, {
   useEffect,
   useState
 } from 'react'
+import { PColor } from '../../../assets/colors'
+import { IconClose } from '../../../assets/icons'
+import { RippleButton } from '../../atoms'
+import { Button } from '../../atoms/Button'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
 import {
   BtnClose,
@@ -15,10 +19,6 @@ import {
   ModalTitle,
   Wrapper
 } from './styled'
-import { Button } from '../../atoms/Button'
-import { IconClose } from '../../../assets/icons'
-import { RippleButton } from '../../atoms'
-import { PColor } from '../../../assets/colors'
 
 export const AwesomeModal = ({
   backgroundColor,
@@ -71,27 +71,27 @@ export const AwesomeModal = ({
   useEffect(() => {
     const handleKeyUp = (e) => {
       if (e.code === 'Escape') {
-        setSModal(true);
+        setSModal(true)
       }
-    };
+    }
   
     if (question && backdrop === 'static' && state && show) {
-      window.addEventListener('keyup', handleKeyUp);
+      window.addEventListener('keyup', handleKeyUp)
       return () => {
-        if (keyboard) window.removeEventListener('keyup', handleKeyUp);
-      };
+        if (keyboard) window.removeEventListener('keyup', handleKeyUp)
+      }
     }
   
     if (backdrop !== 'static' && keyboard && show) {
-      window.addEventListener('keyup', handleKeyUp);
+      window.addEventListener('keyup', handleKeyUp)
       return () => {
-        window.removeEventListener('keyup', handleKeyUp);
-      };
+        window.removeEventListener('keyup', handleKeyUp)
+      }
     }
   
     // Cleanup for other cases
-    return () => {};
-  }, [keyboard, hide, show, backdrop, question, modal, state]);
+    return () => {}
+  }, [keyboard, hide, show, backdrop, question, modal, state])
   
   useEffect(() => {
     setState(show)
@@ -103,7 +103,7 @@ export const AwesomeModal = ({
     } else {
       hide()
     }
-    setTimeout(() => setAnimationBackdrop(false), 100);
+    setTimeout(() => {return setAnimationBackdrop(false)}, 100)
   }
   useEffect(() => {
     if (show && useScroll) {
@@ -130,9 +130,9 @@ export const AwesomeModal = ({
   }
   const onClickBackdrop = () => {
     if (backdropAnimation) {
-      setAnimationBackdrop(false);
+      setAnimationBackdrop(false)
     }
-  };
+  }
 
   return (
     <Container
@@ -159,13 +159,13 @@ export const AwesomeModal = ({
             <>
               <ModalHeader>
                 <ModalTitle>{title}</ModalTitle>
-                <BtnClose onClick={() => { return question ? onShowQuestion() : hide() }}><IconClose size={sizeIconClose} color={PColor} /></BtnClose>
+                <BtnClose onClick={() => { return question ? onShowQuestion() : hide() }}><IconClose color={PColor} size={sizeIconClose} /></BtnClose>
               </ModalHeader>
             </>
           }
           <ModalBody
-            borderRadius={borderRadius}
             backgroundColor={backgroundColor}
+            borderRadius={borderRadius}
             display={display}
             height={customHeight || 'calc(100vh - 82px)'}
             padding={padding}
@@ -196,12 +196,12 @@ export const AwesomeModal = ({
             <ModalFooter backgroundColor={backgroundColor}>
               {btnCancel && (
                 <Button
-                  border
                   backgroundColor={PColor}
-                  widthButton='200px'
+                  border
                   disabled={disabled}
                   onClick={clickCancel}
                   type='button'
+                  widthButton='200px'
                 >
                   {cancel || BUTTONS_TEXT.cancel}
                 </Button>
@@ -210,9 +210,9 @@ export const AwesomeModal = ({
                 <Button
                   backgroundColor={PColor}
                   border
-                  widthButton='200px'
                   onClick={clickConfirm}
                   type={submit ? 'submit' : 'button'}
+                  widthButton='200px'
                 >
                   {confirm || BUTTONS_TEXT.confirm}
                   {iconConfirm}
@@ -229,6 +229,8 @@ export const AwesomeModal = ({
 
 AwesomeModal.propTypes = {
   backdrop: PropTypes.string,
+  backdropAnimation: PropTypes.bool,
+  backgroundColor: PropTypes.any,
   bgColor: PropTypes.any,
   borderRadius: PropTypes.string,
   btnCancel: PropTypes.bool,
@@ -237,23 +239,27 @@ AwesomeModal.propTypes = {
   children: PropTypes.any,
   closeIcon: PropTypes.bool,
   confirm: PropTypes.any,
+  customHeight: PropTypes.bool,
   disabled: PropTypes.any,
   display: PropTypes.any,
   footer: PropTypes.bool,
   header: PropTypes.bool,
   height: PropTypes.any,
   hideOnConfirm: PropTypes.bool,
+  iconConfirm: PropTypes.any,
   keyboard: PropTypes.bool,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
   onHide: PropTypes.func,
   openLateral: PropTypes.any,
   padding: PropTypes.any,
+  question: PropTypes.bool,
   show: PropTypes.any,
   size: PropTypes.any,
+  sizeIconClose: PropTypes.string,
   submit: PropTypes.bool,
   timeOut: PropTypes.number,
-  title: PropTypes.any,
+  title: PropTypes.string,
   useScroll: PropTypes.bool,
   zIndex: PropTypes.any
 }

@@ -1,24 +1,24 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { Button, Tag, RippleButton, Column, Text } from '../../atoms'
-import { ResisesColumns, List, AwesomeModal } from '../../organisms'
-import { InputHooks } from '../../molecules'
 import {
   EColor,
   NorthTexasGreen,
   PColor
 } from '../../../assets/colors'
 import {
-  IconEdit,
   IconDelete,
+  IconEdit,
   IconMiniCheck,
   IconQuestion
 } from '../../../assets/icons'
-import { BodyDnd, GarnishChoicesHeader } from './styled'
+import { Button, Column, RippleButton, Tag, Text } from '../../atoms'
+import { InputHooks } from '../../molecules'
+import { AwesomeModal, List, ResisesColumns } from '../../organisms'
 import { FormExtra } from './FormExtra'
+import { BodyDnd, GarnishChoicesHeader } from './styled'
 
 export const OptionalExtraProducts = ({
-  title = "",
+  title = '',
   dataListIds = [],
   data,
   isCustomSubOpExPid,
@@ -58,13 +58,9 @@ export const OptionalExtraProducts = ({
   setData = () => {
     return
   },
-  sendNotification = () => {
-    return
-  },
   editOneExtra = () => {
     return
-  },
-  ...props
+  }
 }) => {
   // STATES
   const [numberLimit, setNumberLimit] = useState(1)
@@ -76,108 +72,108 @@ export const OptionalExtraProducts = ({
   return (
     <BodyDnd>
       <ResisesColumns
-        backgroundColor="transparent"
+        backgroundColor='transparent'
         initialDividerPosition={{ __0: 70, __1: 30 }}
-        lastMinWidth="auto"
-        padding="0"
+        lastMinWidth='auto'
+        padding='0'
       >
-        <div className="first-column">
+        <div className='first-column'>
           {dataListIds?.map((listID, index) => {
             const list = data.lists[listID]
             const numberLimit = list?.numberLimit
             const incompleteList = list.numberLimit === list.cards.length
             const messageLimit = `${numberLimit} ${
-              numberLimit > 1 ? "opciones" : "opción"
+              numberLimit > 1 ? 'opciones' : 'opción'
             }`
             return (
               <Column
-                style={{ minWidth: "100%", height: 'max-content' }}
                 border={`2px solid ${
-                  incompleteList ? NorthTexasGreen : "transparent"
+                  incompleteList ? NorthTexasGreen : 'transparent'
                 }`}
                 key={listID}
-                role="list"
+                role='list'
+                style={{ minWidth: '100%', height: 'max-content' }}
               >
                 <GarnishChoicesHeader
                   style={{
-                    padding: "10px",
-                    marginBottom: "20px",
-                    display: "flex",
-                    alignItems: "center",
+                    padding: '10px',
+                    marginBottom: '20px',
+                    display: 'flex',
+                    alignItems: 'center'
                   }}
                 >
                   <div>
-                    <p className="garnish-choices__title">{list?.title}</p>
-                    <p className="garnish-choices__title-desc">
+                    <p className='garnish-choices__title'>{list?.title}</p>
+                    <p className='garnish-choices__title-desc'>
                       Escoge hasta {messageLimit}.
                     </p>
                     {list?.required === 1 && <Tag />}
                   </div>
                   <RippleButton
-                    bgColor="transparent"
-                    margin="0px"
+                    bgColor='transparent'
+                    margin='0px'
                     onClick={() => {
                       return handleRemoveList(index, listID)
                     }}
-                    type="button"
-                    widthButton="min-content"
+                    type='button'
+                    widthButton='min-content'
                   >
-                    <IconDelete color={EColor} size="25px" />
+                    <IconDelete color={EColor} size='25px' />
                   </RippleButton>
                   <RippleButton
-                    bgColor="transparent"
-                    margin="0px"
+                    bgColor='transparent'
+                    margin='0px'
                     onClick={() => {
                       setOpenModalEditExtra(!openModalEditExtra)
                       return setSelectedExtra(list)
                     }}
-                    type="button"
-                    widthButton="min-content"
+                    type='button'
+                    widthButton='min-content'
                   >
-                    <IconEdit color={EColor} size="25px" />
+                    <IconEdit color={EColor} size='25px' />
                   </RippleButton>
-                  <div style={{ position: "relative", width: "min-content" }}>
+                  <div style={{ position: 'relative', width: 'min-content' }}>
                     <Button
-                      backgroundColor="transparent"
-                      border="none"
+                      backgroundColor='transparent'
+                      border='none'
                       onClick={() => {
                         return handleShowTooltip(listID)
                       }}
                       primary
                     >
                       {showTooltip === listID && (
-                        <div className="tooltip">
+                        <div className='tooltip'>
                           <Text
-                            fontSize=".75rem"
-                            color="var(--color-neutral-black)"
+                            color='var(--color-neutral-black)'
+                            fontSize='.75rem'
                           >
                             Si no completas el numero de items no se mostraran a
                             los clientes
                           </Text>
                           <Button
                             Button
-                            className="btn-ok"
-                            backgroundColor="transparent"
-                            border="none"
+                            backgroundColor='transparent'
+                            border='none'
+                            className='btn-ok'
                             onClick={() => {
                               return setShowTooltip(false)
                             }}
                             primary
                           >
-                            <Text color={PColor} fontWeight="600">
+                            <Text color={PColor} fontWeight='600'>
                               Ok, entendí
                             </Text>
                           </Button>
                         </div>
                       )}
                       <IconQuestion
-                        color={incompleteList ? "gray" : PColor}
+                        color={incompleteList ? 'gray' : PColor}
                         size={30}
                       />
                     </Button>
                   </div>
                 </GarnishChoicesHeader>
-                <div className="contain-check-item">
+                <div className='contain-check-item'>
                   <Tag
                     label={`Total de items ${list?.cards?.length} / ${numberLimit}`}
                   />
@@ -187,40 +183,40 @@ export const OptionalExtraProducts = ({
                 </div>
                 <List
                   data={data}
+                  editOneItem={editOneItem}
                   index={index}
                   isCustomSubOpExPid={isCustomSubOpExPid}
                   list={list}
-                  selectedItem={selectedItem}
                   listID={listID}
                   loadingEditSubOptional={loadingEditSubOptional}
                   removeOneItem={removeOneItem}
-                  editOneItem={editOneItem}
+                  selectedItem={selectedItem}
                   setData={setData}
                 />
                 <InputHooks
                   autoFocus={true}
-                  margin="5px 0"
-                  name="list_value"
+                  margin='5px 0'
+                  name='list_value'
                   onChange={(value) => {
                     return handleChangeItems({
                       listID,
                       id: list.id,
                       value,
-                      name: "list_value",
+                      name: 'list_value'
                     })
                   }}
                   onFocus={true}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && !incompleteList) {
+                    if (e.key === 'Enter' && !incompleteList) {
                       handleAdd({ listId: listID })
                     }
                   }}
-                  title="Añade un item"
+                  title='Añade un item'
                   value={list?.value}
                 />
                 <RippleButton
                   disabled={incompleteList}
-                  margin="16px 0 auto"
+                  margin='16px 0 auto'
                   onClick={() => {
                     if (!incompleteList) {
                       return handleAdd({ listId: listID })
@@ -228,11 +224,11 @@ export const OptionalExtraProducts = ({
                     return null
                   }}
                   onKeyPress={(e) => {
-                    if (e.key === "Enter" && !incompleteList) {
+                    if (e.key === 'Enter' && !incompleteList) {
                       handleAdd({ listId: listID })
                     }
                   }}
-                  widthButton="100%"
+                  widthButton='100%'
                 >
                   Adicionar
                 </RippleButton>
@@ -242,23 +238,23 @@ export const OptionalExtraProducts = ({
         </div>
         <FormExtra
           handleAddList={handleAddList}
-          handleShowTooltip={handleShowTooltip}
-          setShowTooltip={setShowTooltip}
-          setNumberLimit={setNumberLimit}
           handleCheck={handleCheck}
+          handleShowTooltip={handleShowTooltip}
+          numberLimit={numberLimit}
+          setCheck={setCheck}
+          setNumberLimit={setNumberLimit}
+          setShowTooltip={setShowTooltip}
           setTitle={setTitle}
           showTooltip={showTooltip}
-          setCheck={setCheck}
           title={title}
-          numberLimit={numberLimit}
         />
       </ResisesColumns>
       <AwesomeModal
-        borderRadius="4px"
-        customHeight="auto"
+        borderRadius='4px'
+        customHeight='auto'
         footer={false}
         header={false}
-        height="auto"
+        height='auto'
         onCancel={() => {
           setSelectedExtra({})
           return false
@@ -270,36 +266,36 @@ export const OptionalExtraProducts = ({
         padding={0}
         question={false}
         show={openModalEditExtra}
-        size="600px"
-        sizeIconClose="30px"
-        zIndex="9999"
+        size='600px'
+        sizeIconClose='30px'
+        zIndex='9999'
       >
         <FormExtra
-          isEdit={true}
-          selectedExtra={selectedExtra}
           handleAddList={handleAddList}
-          setSelectedExtra={setSelectedExtra}
           handleShowTooltip={handleShowTooltip}
+          isEdit={true}
+          numberLimit={numberLimit}
+          selectedExtra={selectedExtra}
+          setCheck={setCheck}
+          setSelectedExtra={setSelectedExtra}
           setShowTooltip={setShowTooltip}
           setTitle={setTitle}
           showTooltip={showTooltip}
-          setCheck={setCheck}
           title={title}
-          numberLimit={numberLimit}
         />
         <RippleButton
-          widthButton="80%"
           onClick={() => {
             editOneExtra({
-              ...selectedExtra,
+              ...selectedExtra
             })
           }}
           style={{
-            margin: "15px auto",
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
+            margin: '15px auto',
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex'
           }}
+          widthButton='80%'
         >
           Guardar
         </RippleButton>
@@ -310,19 +306,26 @@ export const OptionalExtraProducts = ({
 
 OptionalExtraProducts.propTypes = {
   data: PropTypes.shape({
-    lists: PropTypes.any,
+    lists: PropTypes.any
   }),
   dataListIds: PropTypes.array,
+  editOneExtra: PropTypes.func,
+  editOneItem: PropTypes.func,
   handleAdd: PropTypes.func,
   handleAddList: PropTypes.func,
   handleChangeItems: PropTypes.func,
   handleCheck: PropTypes.func,
   handleRemoveList: PropTypes.func,
   isCustomSubOpExPid: PropTypes.any,
+  loadingEditSubOptional: PropTypes.any,
+  openModalEditExtra: PropTypes.any,
   removeOneItem: PropTypes.func,
-  sendNotification: PropTypes.func,
+  selectedExtra: PropTypes.any,
+  selectedItem: PropTypes.object,
   setCheck: PropTypes.func,
   setData: PropTypes.func,
+  setOpenModalEditExtra: PropTypes.func,
+  setSelectedExtra: PropTypes.func,
   setTitle: PropTypes.func,
-  title: PropTypes.string,
+  title: PropTypes.string
 }

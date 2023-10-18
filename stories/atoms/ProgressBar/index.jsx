@@ -1,5 +1,5 @@
-import { EColor, PColor } from '../../../assets/colors'
 import styled, { css, keyframes } from 'styled-components'
+import { EColor, PColor } from '../../../assets/colors'
 
 export const width = keyframes`
  0% {

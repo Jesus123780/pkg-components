@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { IconSearch } from '../../../assets/icons'
 import { PColor } from '../../../assets/colors'
+import { IconSearch } from '../../../assets/icons'
 
 const SearchBarContainer = styled.div`
   align-items: center;
@@ -32,8 +32,12 @@ export const SearchBar = ({
   placeholder = 'Search...',
   padding = '0px 30px 0',
   margin = '0',
-  handleChange = () => { return },
-  handleSubmit = () => { return }
+  handleChange = () => {
+    return
+  },
+  handleSubmit = () => {
+    return
+  }
 }) => {
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -51,7 +55,7 @@ export const SearchBar = ({
     <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin }}>
       <SearchBarContainer>
         <SearchIcon>
-          <IconSearch size='25px' color={PColor} />
+          <IconSearch color={PColor} size='25px' />
           <i className='fas fa-search' />
         </SearchIcon>
         <SearchInput
@@ -68,6 +72,7 @@ export const SearchBar = ({
 SearchBar.propTypes = {
   handleChange: PropTypes.func,
   handleSubmit: PropTypes.func,
+  margin: PropTypes.string,
+  padding: PropTypes.string,
   placeholder: PropTypes.string
 }
-

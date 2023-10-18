@@ -1,7 +1,8 @@
-export * from './InputHooks/InputHooks'
-export * from './InputSelect.js/NewSelect'
-export * from './InputRange/index'
-export * from './InputTags'
 export * from './InputCustomRange'
-export { InputOTPHook } from './InputOTPHook'
 export { InputHookProducts } from './InputHookProducts'
+export * from './InputHooks/InputHooks'
+export { InputOTPHook } from './InputOTPHook'
+export * from './InputRange/index'
+export * from './InputSelect.js/NewSelect'
+export * from './InputTags'
+

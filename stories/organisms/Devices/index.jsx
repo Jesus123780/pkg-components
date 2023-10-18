@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { CardDevice, ContainerDevices } from './styled'
-import { platformIcons } from './PlatformIcons'
+import PropTypes from 'prop-types'
+import React from 'react'
 import { Skeleton } from '../../molecules/Skeleton'
+import { platformIcons } from './PlatformIcons'
+import { CardDevice, ContainerDevices } from './styled'
 /**
  * Function to get the platform icon based on the platform name.
  * @param {string} platform - The platform name.
@@ -10,7 +10,7 @@ import { Skeleton } from '../../molecules/Skeleton'
  */
 const getPlatformIcon = (platform) => {
   return platformIcons[platform] || ''
-};
+}
 
 /**
  * Function to prioritize the current device in the data array.
@@ -20,8 +20,8 @@ const getPlatformIcon = (platform) => {
  */
 const prioritizeCurrentDevice = (data, deviceId) => {
   if (Array.isArray(data) && deviceId) {
-    const newData = [...data]  // Create a new array to avoid modifying the original
-    const currentDeviceIndex = newData.findIndex(device => device?.deviceId === deviceId)
+    const newData = [...data] // Create a new array to avoid modifying the original
+    const currentDeviceIndex = newData.findIndex(device => {return device?.deviceId === deviceId})
 
     if (currentDeviceIndex !== -1) {
       const currentDevice = newData[currentDeviceIndex]
@@ -30,29 +30,30 @@ const prioritizeCurrentDevice = (data, deviceId) => {
     }
 
     return newData
-  } else {
-    return data
   }
-
-  return data;
-};
+  return data
+}
 
 export const Devices = ({
-    data = [],
-    deviceId = null,
-    loading = false
+  data = [],
+  deviceId = null,
+  loading = false
 }) => {
-  const prioritizedData = prioritizeCurrentDevice(data, deviceId);
+  const prioritizedData = prioritizeCurrentDevice(data, deviceId)
 
   if (loading) return (
     <ContainerDevices>
-      <Skeleton numberObject={4} height={75} margin={'10px 0'} />
+      <Skeleton
+        height={75}
+        margin={'10px 0'}
+        numberObject={4}
+      />
     </ContainerDevices>
-  );
+  )
 
   return (
     <ContainerDevices>
-      {prioritizedData?.map(x => (
+      {prioritizedData?.map(x => {return (
         <CardDevice key={x.dId}>
           <span className='device__icon'>
             {getPlatformIcon(x.platform)}
@@ -67,16 +68,16 @@ export const Devices = ({
             <span className='device__localization' tabIndex='0'> {x?.DatCre} </span>
           </div>
         </CardDevice>
-      ))}
+      )})}
     </ContainerDevices>
-  );
-};
+  )
+}
 
 // Prop types for the Devices component
 Devices.propTypes = {
   data: PropTypes.array,
   deviceId: PropTypes.string,
   loading: PropTypes.bool
-};
+}
 
-export default Devices;
+export default Devices

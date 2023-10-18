@@ -1,9 +1,9 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { Loading } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
+import styles from './button.module.css'
 import { CustomButton } from './styled'
-import styles from './button.module.css';
 
 /**
  * Primary UI component for user interaction
@@ -30,13 +30,11 @@ export const Button = ({
   return (
     <CustomButton
       c={loading || disabled}
-      width={width}
-      loading={loading}
-      padding={padding}
-      type="button"
       className={
         [styles['storybook-button'], styles[`storybook-button--${size}`], styles[`storybook-button--${loading && 'loading'}`], mode].join(' ')
       }
+      loading={loading}
+      padding={padding}
       style={{
         backgroundColor: disabled ? '#ff000069' : backgroundColor,
         color,
@@ -45,9 +43,11 @@ export const Button = ({
         fontFamily,
         ...props
       }}
+      type='button'
+      width={width}
       {...props}
     >
-      {loading  ? <Loading color={getGlobalStyle('--color-base-white')}  size={20} /> : label }
+      {loading ? <Loading color={getGlobalStyle('--color-base-white')} size={20} /> : label }
       {child}
       {props.children}
     </CustomButton>
@@ -55,31 +55,27 @@ export const Button = ({
 }
 
 Button.propTypes = {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary: PropTypes.bool,
-  /**
-   * What background color to use
-   */
-  backgroundColor: PropTypes.string,
-  /**
-   * How large should the button be?
-   */
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  /**
-   * Button contents
-   */
-  label: PropTypes.string.isRequired,
-  /**
-   * Optional click handler
-   */
+  backgroundColor: PropTypes.string, //*
+  borderRadius: PropTypes.any,
+  child: PropTypes.any,
+  color: PropTypes.any,
+  disabled: PropTypes.any,
+  fontFamily: PropTypes.any,
+  fontWeight: PropTypes.any,
+  label: PropTypes.string.isRequired, //*
+  loading: PropTypes.string,
   onClick: PropTypes.func,
+  padding: PropTypes.any,
+  children: PropTypes.any,
+  primary: PropTypes.bool, //*
+  ripple: PropTypes.any,
+  size: PropTypes.oneOf(['small', 'medium', 'large']), //*
+  width: PropTypes.any
 }
 
 Button.defaultProps = {
   backgroundColor: null,
   primary: false,
   size: 'medium',
-  onClick: undefined,
+  onClick: undefined
 }

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { IconCancel } from 'public/icons'
+import React, { useState } from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { MODAL_SIZES } from './constanst'
 import { BtnClose, ModalHeader, ModalTitle } from './styled'
-import { IconCancel } from 'public/icons'
 
 const ScaleModal = ({ show, children, size, title, height }) => {
   const [state, setState] = useState(show)

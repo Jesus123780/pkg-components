@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
-import { IconRate } from '../../../assets/icons';
-import { ContentIcon } from './styled';
+import PropTypes from 'prop-types'
+import React, { useMemo, useState } from 'react'
+import { IconRate } from '../../../assets/icons'
+import { ContentIcon } from './styled'
 
 /**
  * Displays a rating component with interactive stars.
@@ -18,55 +18,55 @@ import { ContentIcon } from './styled';
  * @param {Function} props.onRating - Callback function when a star is clicked.
  * @returns {JSX.Element} Rating component.
  */
-export const Rate = ({
-  count,
-  rating,
-  color,
-  size,
-  noHover,
-  onRating = () => {},
-}) => {
-  const [hoverRating, setHoverRating] = useState(0);
+export const Rate = ({ count, rating, color, size, noHover, onRating = () => {} }) => {
+  const [hoverRating, setHoverRating] = useState(0)
 
   const getColor = (index) => {
     if (hoverRating >= index || (!hoverRating && rating >= index)) {
-      return color?.filled;
+      return color?.filled
     }
-  
-    return color.unfilled;
-  };
-  
+
+    return color.unfilled
+  }
 
   const starRating = useMemo(() => {
     return (
       <ContentIcon>
         {Array(count)
           .fill(0)
-          .map((_, i) => i + 1)
-          .map((idx) => (
-            <div
-              icon='star'
-              key={idx}
-              onClick={() => (onRating ? onRating(idx) : {})}
-              onMouseEnter={() =>
-                onRating ? (!noHover && setHoverRating(idx)) : {}
-              }
-              onMouseLeave={() => (onRating ? setHoverRating(0) : {})}
-            >
-              <IconRate color={getColor(idx)} size={size} />
-            </div>
-          ))}
+          .map((_, i) => {
+            return i + 1
+          })
+          .map((idx) => {
+            return (
+              <div
+                icon='star'
+                key={idx}
+                onClick={() => {
+                  return onRating ? onRating(idx) : {}
+                }}
+                onMouseEnter={() => {
+                  return onRating ? !noHover && setHoverRating(idx) : {}
+                }}
+                onMouseLeave={() => {
+                  return onRating ? setHoverRating(0) : {}
+                }}
+              >
+                <IconRate color={getColor(idx)} size={size} />
+              </div>
+            )
+          })}
       </ContentIcon>
-    );
-  }, [count, getColor, size, onRating, noHover]);
+    )
+  }, [count, getColor, size, onRating, noHover])
 
-  return <div>{starRating}</div>;
-};
+  return <div>{starRating}</div>
+}
 
 Rate.propTypes = {
   color: PropTypes.shape({
     filled: PropTypes.string,
-    unfilled: PropTypes.string,
+    unfilled: PropTypes.string
   }),
   count: PropTypes.number,
   filled: PropTypes.string,
@@ -74,14 +74,14 @@ Rate.propTypes = {
   onRating: PropTypes.func,
   rating: PropTypes.number,
   size: PropTypes.any,
-  unfilled: PropTypes.string,
-};
+  unfilled: PropTypes.string
+}
 
 Rate.defaultProps = {
   count: 5,
   rating: 0,
   color: {
     filled: '#ffbc00',
-    unfilled: '#DCDCDC',
-  },
-};
+    unfilled: '#DCDCDC'
+  }
+}

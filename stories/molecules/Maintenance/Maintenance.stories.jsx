@@ -1,5 +1,5 @@
-import React from 'react';
-import { Maintenance } from './index';
+import React from 'react'
+import { Maintenance } from './index'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -7,15 +7,17 @@ export default {
   component: Maintenance,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-};
+    backgroundColor: { control: 'color' }
+  }
+}
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => <Maintenance {...args} />;
+const Template = (args) => {
+  return <Maintenance {...args} />
+}
 
-export const TemplateMaintenance = Template.bind({});
+export const TemplateMaintenance = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TemplateMaintenance.args = {
   label: 'Maintenance'
-};
+}

@@ -1,36 +1,36 @@
-import React from 'react';
-import { Checkbox } from './index';
+import React from 'react'
+import { Checkbox } from './index'
 
 export default {
   title: 'atoms/Checkbox',
-  component: Checkbox,
-};
+  component: Checkbox
+}
 
-const Template = (args) => <Checkbox {...args} />;
+const Template = (args) => { return <Checkbox {...args} /> }
 
-export const Default = Template.bind({});
+export const Default = Template.bind({})
 Default.args = {
   checked: false,
   disabled: false,
   id: 'checkbox1',
   label: 'Checkbox Label',
-  onChange: () => {},
-};
+  onChange: () => {}
+}
 
-export const Checked = Template.bind({});
+export const Checked = Template.bind({})
 Checked.args = {
   ...Default.args,
-  checked: true,
-};
+  checked: true
+}
 
-export const Disabled = Template.bind({});
+export const Disabled = Template.bind({})
 Disabled.args = {
   ...Default.args,
-  disabled: true,
-};
+  disabled: true
+}
 
-export const Indeterminate = Template.bind({});
+export const Indeterminate = Template.bind({})
 Indeterminate.args = {
   ...Default.args,
-  indeterminate: true,
-};
+  indeterminate: true
+}

@@ -1,6 +1,6 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 import { PColor, SEGColor } from '../../../assets/colors'
-import Link from 'next/link'
 
 export const Span = styled.span`
     color: ${ props => {return props.active ? '#a6b0cf' : 'red'} };

@@ -5,11 +5,11 @@ import { SEGColor, SFVColor } from '../../../../assets/colors'
 import { IconCancel } from '../../../../assets/icons'
 
 export const InputTags = ({
-    disabled = false,
-    setTags,
-    tags,
-    width,
-    ...props
+  disabled = false,
+  setTags,
+  tags,
+  width,
+  ...props
 }) => {
   const refBox = useRef()
   const removeTags = (indexToRemove) => {

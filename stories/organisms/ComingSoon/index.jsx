@@ -1,8 +1,8 @@
 
+import { useRouter } from 'next/router'
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { RippleButton } from '../../atoms'
-import { useRouter } from 'next/router'
 
 // Estilos usando styled-components
 const Container = styled.div`
@@ -75,22 +75,22 @@ const SpinningIcon = styled.span`
 `
 
 const style = {
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column'
+  justifyContent: 'center',
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column'
 }
 export const ComingSoon = () => {
-    const router = useRouter()
+  const router = useRouter()
 
-    return (
-        <Container>
-            <Card></Card>
-            <div style={style}>
-                <Message>Muy pronto <SpinningIcon>🚀</SpinningIcon></Message>
-                <RippleButton widthButton='200px' onClick={() => { return router.back() }} >Regresar</RippleButton>
-            </div>
-        </Container>
-    )
+  return (
+    <Container>
+      <Card></Card>
+      <div style={style}>
+        <Message>Muy pronto <SpinningIcon>🚀</SpinningIcon></Message>
+        <RippleButton onClick={() => { return router.back() }} widthButton='200px' >Regresar</RippleButton>
+      </div>
+    </Container>
+  )
 }
 

@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable consistent-return */
 
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
 const THUMB_LENGTH = 16
 const THUMB_BORDER_RADIUS = THUMB_LENGTH / 2

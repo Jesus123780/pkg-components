@@ -6,9 +6,12 @@ import React, { useState } from 'react'
 import {
   IconComment,
   IconDelete,
-  IconEdit,
-  IconPlus,
+  IconEdit
 } from '../../../assets/icons'
+import { Tag } from '../../atoms'
+import { RippleButton } from '../../atoms/Ripple'
+import { BGColor, PColor } from './../../../assets/colors/index'
+import { numberFormat } from './../../../utils/index'
 import {
   ActionName,
   Button,
@@ -20,12 +23,8 @@ import {
   OverlineCategory,
   OverlineFree,
   WrapperButton,
-  WrapperCard,
+  WrapperCard
 } from './styled'
-import { RippleButton } from '../../atoms/Ripple'
-import { numberFormat } from './../../../utils/index'
-import { PColor, BGColor } from './../../../assets/colors/index'
-import { Tag } from '../../atoms'
 
 export const MemoCardProductSimple = ({
   del,
@@ -46,11 +45,9 @@ export const MemoCardProductSimple = ({
   pName,
   ProDescription,
   ProDescuento = 0,
-  ProImage,
   ProPrice,
   ProQuantity,
   render = null,
-  src,
   sum,
   margin,
   tag,
@@ -76,7 +73,7 @@ export const MemoCardProductSimple = ({
   },
   onTargetClick = () => {
     return
-  },
+  }
 }) => {
   const router = useRouter()
   const [startAnimateUp, setStartAnimateUp] = useState('')
@@ -116,11 +113,11 @@ export const MemoCardProductSimple = ({
   const showCategories = dataExtra.length > 0 || dataOptional.length > 0
   const formatter = new Intl.ListFormat('es', {
     style: 'long',
-    type: 'conjunction',
+    type: 'conjunction'
   })
   const formatterOptional = new Intl.ListFormat('es', {
     style: 'narrow',
-    type: 'unit',
+    type: 'unit'
   })
   const ListFormat = dataExtra
     .map((product) => {
@@ -159,7 +156,11 @@ export const MemoCardProductSimple = ({
             <span>Gratis</span>
           </OverlineFree>
         )}
-        <Card free={free} height={height} radius='15px'>
+        <Card
+          free={free}
+          height={height}
+          radius='15px'
+        >
           {del && (
             <ButtonCard grid={false} onClick={handleDelete}>
               <IconDelete color={PColor} size={20} />
@@ -168,11 +169,11 @@ export const MemoCardProductSimple = ({
           )}
           {buttonComment && (
             <ButtonCard
-              tooltip={asComment}
               delay='.1s'
               grid={false}
               onClick={handleComment}
               right={buttonComment && activeComment}
+              tooltip={asComment}
               top='90px'
             >
               <IconComment
@@ -266,8 +267,8 @@ export const MemoCardProductSimple = ({
                           value: event.target.value,
                           name: 'name',
                           index: index,
-                          id: pId,
-                        },
+                          id: pId
+                        }
                       })
                     }}
                     onFocus={(event) => {
@@ -277,8 +278,8 @@ export const MemoCardProductSimple = ({
                           value: event.target.value,
                           name: 'name',
                           index: index,
-                          id: pId,
-                        },
+                          id: pId
+                        }
                       })
                     }}
                     onKeyDown={(event) => {
@@ -344,11 +345,11 @@ export const MemoCardProductSimple = ({
               alt={pName || ''}
               blurDataURL={urlImage}
               className='store_image'
-              unoptimized
               layout='fill'
-              placeholder='empty'
               objectFit='cover'
+              placeholder='empty'
               src={urlImage}
+              unoptimized
             />
           </div>
           {!!tag?.tag && (
@@ -381,17 +382,43 @@ export const CardProductSimple = React.memo(MemoCardProductSimple)
 
 MemoCardProductSimple.propTypes = {
   ProDescription: PropTypes.any,
-  ProDescuento: PropTypes.number || PropTypes.string,
+  ProDescuento: PropTypes.number,
   ProImage: PropTypes.string,
   ProPrice: PropTypes.any,
+  ProQuantity: PropTypes.any,
   ValueDelivery: PropTypes.number,
+  activeComment: PropTypes.any,
+  asComment: PropTypes.bool,
+  buttonComment: PropTypes.bool,
+  dataExtra: PropTypes.array,
+  dataOptional: PropTypes.array,
+  decrement: PropTypes.bool,
   del: PropTypes.any,
+  dispatch: PropTypes.func,
   edit: PropTypes.any,
+  fileInputRef: PropTypes.any,
+  free: PropTypes.number,
+  handleComment: PropTypes.func,
+  handleDecrement: PropTypes.func,
   handleDelete: PropTypes.func,
+  handleFree: PropTypes.any,
+  handleFreeProducts: PropTypes.func,
+  handleIncrement: PropTypes.func,
+  height: PropTypes.any,
+  increment: PropTypes.bool,
+  index: PropTypes.any,
   key: PropTypes.any,
+  margin: PropTypes.any,
   onClick: PropTypes.func,
+  onFileInputChange: PropTypes.any,
+  onTargetClick: PropTypes.func,
   pId: PropTypes.any,
-  pName: PropTypes.any,
+  pName: PropTypes.string,
   render: PropTypes.any,
-  widthButton: PropTypes.any,
+  src: PropTypes.any,
+  sum: PropTypes.any,
+  tag: PropTypes.shape({
+    tag: PropTypes.any
+  }),
+  widthButton: PropTypes.any
 }

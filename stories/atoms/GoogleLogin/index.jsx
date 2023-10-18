@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { ButtonContent } from './ButtonContent'
+import React, { useState } from 'react'
 import { useGoogleLogin } from '../../../hooks/useGoogleLogin'
+import { ButtonContent } from './ButtonContent'
 
 export const GoogleLogin = ({
   onSuccess = () => {},
@@ -114,13 +114,13 @@ export const GoogleLogin = ({
   const googleLoginButton = React.createElement(
     tag,
     {
-      onMouseEnter: () => setHovered(true),
+      onMouseEnter: () => {return setHovered(true)},
       onMouseLeave: () => {
         setHovered(false)
         setActive(false)
       },
-      onMouseDown: () => setActive(true),
-      onMouseUp: () => setActive(false),
+      onMouseDown: () => {return setActive(true)},
+      onMouseUp: () => {return setActive(false)},
       onClick: signIn,
       style: defaultStyle,
       type,
@@ -128,7 +128,7 @@ export const GoogleLogin = ({
       className
     },
     [
-      icon && <div key={1} active={active} />,
+      icon && <div active={active} key={1} />,
       <ButtonContent icon={icon} key={2}>
         {children || buttonText}
       </ButtonContent>

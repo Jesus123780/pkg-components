@@ -6,14 +6,13 @@
     border-radius: 4px;
     z-index: 999;
   }
-  
+
   .tooltip-top {
     transform: translateY(-100%);
     bottom: 100%;
   }
-  
+
   .tooltip-bottom {
     transform: translateY(100%);
     top: 100%;
   }
-  

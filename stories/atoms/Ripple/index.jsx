@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
-import { PColor, BGColor } from './../../../assets/colors'
+import { BGColor, PColor } from './../../../assets/colors'
 
 export const RippleButton = props => {
   const {
@@ -84,11 +84,11 @@ const Button = styled.button`
   background-color: ${`${PColor}69`} !important;
 }
 
- padding: ${ ({ padding })=> {return padding ? padding: '1em'} };
- background-color: ${ ({ bgColor })=> {return bgColor ? bgColor: 'red'} };
- color: ${ ({ color })=> {return color ? color: BGColor} };
- font-family: ${ ({ family })=> {return family ? family: 'PFont-Light'} };
- width: ${ ({ widthButton })=> {return widthButton ? widthButton: '100%'} };
+ padding: ${ ({ padding }) => {return padding ? padding : '1em'} };
+ background-color: ${ ({ bgColor }) => {return bgColor ? bgColor : 'red'} };
+ color: ${ ({ color }) => {return color ? color : BGColor} };
+ font-family: ${ ({ family }) => {return family ? family : 'PFont-Light'} };
+ width: ${ ({ widthButton }) => {return widthButton ? widthButton : '100%'} };
  ${ ({ margin }) => {return margin && css`margin: ${ margin };`} }
  ${ ({ border }) => {return border && css`border: ${ border };`}}
  ${ ({ radius }) => {return radius && css`border-radius: ${ radius };`}}

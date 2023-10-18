@@ -2,10 +2,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-const SkeletonComponent = ({ height, width='100%', margin, numberObject }) => {
+const SkeletonComponent = ({ height, width = '100%', margin, numberObject }) => {
   return (
     <React.Fragment>
-      {Array.from(Array(numberObject || 1).keys()).map(value => {
+      {Array.from(Array(numberObject || 1).keys()).map((value) => {
         return (
           <Container
             height={`${height}px`}
@@ -21,6 +21,13 @@ const SkeletonComponent = ({ height, width='100%', margin, numberObject }) => {
   )
 }
 
+SkeletonComponent.propTypes = {
+  height: PropTypes.any,
+  margin: PropTypes.any,
+  numberObject: PropTypes.number,
+  width: PropTypes.string
+}
+
 export const Skeleton = React.memo(SkeletonComponent)
 
 Skeleton.propTypes = {
@@ -29,48 +36,51 @@ Skeleton.propTypes = {
   width: PropTypes.number
 }
 const Container = styled.div`
-.card-loader {
-  background-color: #fff;
-  position: relative;
-  margin: ${({ margin }) => { return margin || 0 }};
-  border-radius: 2px;
-  height: ${({ height }) => { return height || '150px' }};
-  overflow: hidden;
-  padding: 0;
-  &:after {
-    content: '';
-    background-color: #636363;
-    border-radius: 10px;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    animation-duration: .8s;
-    animation-iteration-count: infinite;
-    animation-name: loader-animate;
-    animation-timing-function: linear;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0) 81%);
-  }
-  &:before {
-    content: '';
-    display: block;
-    background-color: #ededed;
-    border-radius: 6px;
-    box-shadow: -48px 78px 0 -48px #ededed, -51px 102px 0 -51px #ededed;
-    height: ${({ height }) => { return height || '150px' }};
+  .card-loader {
+    background-color: #fff;
+    position: relative;
+    margin: ${({ margin }) => {
+    return margin || 0
+  }};
+    border-radius: 2px;
+    height: ${({ height }) => {
+    return height || '150px'
+  }};
+    overflow: hidden;
+    padding: 0;
+    &:after {
+      content: '';
+      background-color: #636363;
+      border-radius: 10px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation-duration: 0.8s;
+      animation-iteration-count: infinite;
+      animation-name: loader-animate;
+      animation-timing-function: linear;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0) 81%);
+    }
+    &:before {
+      content: '';
+      display: block;
+      background-color: #ededed;
+      border-radius: 6px;
+      box-shadow: -48px 78px 0 -48px #ededed, -51px 102px 0 -51px #ededed;
+      height: ${({ height }) => {
+    return height || '150px'
+  }};
+    }
   }
 
-
-  
-}
-
-@keyframes loader-animate{
- 0%{
-    transform: translate3d(-100%, 0, 0);
+  @keyframes loader-animate {
+    0% {
+      transform: translate3d(-100%, 0, 0);
+    }
+    100% {
+      transform: translate3d(100%, 0, 0);
+    }
   }
- 100%{
-    transform: translate3d(100%, 0, 0);
-  }
-}
 `

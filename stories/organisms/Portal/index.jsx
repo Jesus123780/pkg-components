@@ -1,8 +1,8 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable consistent-return */
+import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
+// eslint-disable-next-line consistent-return
 export const Portal = ({ children, selector = 'portal' }) => {
   const [dom, setDom] = useState(undefined)
   useEffect(() => {
@@ -14,5 +14,10 @@ export const Portal = ({ children, selector = 'portal' }) => {
     }
     return ReactDOM.createPortal(children, dom || 'portal')
   }
+}
+
+Portal.propTypes = {
+  children: PropTypes.any,
+  selector: PropTypes.string
 }
 

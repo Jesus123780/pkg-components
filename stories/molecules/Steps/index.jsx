@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import * as Styled from './styled'
 
 export const StepsComponent = ({ current, status, titles }) => {
@@ -20,13 +20,11 @@ export const StepsComponent = ({ current, status, titles }) => {
       title={title}
     />
   })
-  return (
-    <Styled.Steps>
-      {steps}
-    </Styled.Steps>
-  )
+  return <Styled.Steps>{steps}</Styled.Steps>
 }
-const formatNumber = (n) => {return n > 9 ? `${n}` : `0${n}`}
+const formatNumber = (n) => {
+  return n > 9 ? `${n}` : `0${n}`
+}
 const StepIcon = ({ status, children }) => {
   let IconComponent
   switch (status) {
@@ -44,17 +42,19 @@ const StepIcon = ({ status, children }) => {
   }
   return <IconComponent>{children}</IconComponent>
 }
-const Step = ({ stepNumber, title, status }) => {return (
-  <Styled.Step>
-    <Styled.Tail finished={status === 'finish'} />
-    <StepIcon status={status}>
-      <Styled.StepNumber>{formatNumber(stepNumber)}</Styled.StepNumber>
-    </StepIcon>
-    <Styled.Content>
-      <Styled.Title>{title}</Styled.Title>
-    </Styled.Content>
-  </Styled.Step>
-)}
+const Step = ({ stepNumber, title, status }) => {
+  return (
+    <Styled.Step>
+      <Styled.Tail finished={status === 'finish'} />
+      <StepIcon status={status}>
+        <Styled.StepNumber>{formatNumber(stepNumber)}</Styled.StepNumber>
+      </StepIcon>
+      <Styled.Content>
+        <Styled.Title>{title}</Styled.Title>
+      </Styled.Content>
+    </Styled.Step>
+  )
+}
 
 Step.propTypes = {
   title: PropTypes.string,

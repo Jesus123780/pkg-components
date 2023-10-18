@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import {
-  Line,
-  Pie,
+  Bar,
   Doughnut,
-  Bar
+  Line,
+  Pie
 } from 'react-chartjs-2'
 
 

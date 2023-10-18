@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import React, { 
-  memo, 
-  useRef, 
-  useLayoutEffect, 
-  useEffect
+import React, {
+  memo,
+  useEffect,
+  useLayoutEffect,
+  useRef
 } from 'react'
 import styled from 'styled-components'
 

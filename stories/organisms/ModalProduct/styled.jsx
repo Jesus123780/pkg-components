@@ -1,16 +1,16 @@
+import styled, { css } from 'styled-components'
 import {
-    BColor,
-    BGColor,
-    BGVColor,
-    DarkSilver,
-    PColor
-  } from '../../../assets/colors'
-  import styled, { css } from 'styled-components'
-  
-  export const ContainerButtonAction = styled.div`
+  BColor,
+  BGColor,
+  BGVColor,
+  DarkSilver,
+  PColor
+} from '../../../assets/colors'
+
+export const ContainerButtonAction = styled.div`
   `
-  export const CardProductsContent = styled.div`
-      width: 100%;  
+export const CardProductsContent = styled.div`
+      width: 100%;
       border: 1px solid #ccc;
       height: min-content;
       padding: 10px;
@@ -33,7 +33,7 @@ import {
         box-shadow: 1px 1px 10px #00000012;
       }
       `
-  export const CardProductsModal = styled(CardProductsContent)`
+export const CardProductsModal = styled(CardProductsContent)`
     padding: 0px;
     grid-template-columns: 1fr 50%;
     background-color: ${BGColor};
@@ -45,7 +45,7 @@ import {
   
     }
   `
-  export const ContentInfo = styled.div` 
+export const ContentInfo = styled.div` 
     width: 100%;
     flex-direction: column;
     padding: 24px 16px;
@@ -86,7 +86,7 @@ import {
       margin: ${({ margin }) => { return margin || '0px' }};
     }
   `
-  export const HeadSticky = styled.div`
+export const HeadSticky = styled.div`
       position: sticky;
       display: flex;
       top: -30px;
@@ -95,7 +95,7 @@ import {
       width: 100%;
       z-index: 9989;
   `
-  export const Text = styled.span`
+export const Text = styled.span`
       font-size: ${({ size }) => { return size || '12px' }};
       text-align:  ${({ align }) => { return align || 'start' }};
       ${({ lineHeight }) => { return lineHeight && css`line-height: ${lineHeight};` }}
@@ -107,7 +107,7 @@ import {
       font-family: ${({ font }) => { return font || 'PFont-Regular' }};
       word-break: break-word;
       ${props => {
-      return props.description && css`
+    return props.description && css`
       
       font-family: SulSans,Helvetica,sans-serif;
       list-style: none;
@@ -124,9 +124,9 @@ import {
       display: -webkit-box;
       -webkit-line-clamp: 3;
       `
-    }}
+  }}
   `
-  export const Flex = styled.div`
+export const Flex = styled.div`
     display: flex;
     width: 100%;
     align-items: center;
@@ -143,7 +143,7 @@ import {
           border: 1px solid #f2f2f2;
       }
     `
-  export const DisRestaurant = styled.div`
+export const DisRestaurant = styled.div`
     display: flex;
     flex-direction: column;
     border: 1px solid rgba(63,62,62,.1);
@@ -177,7 +177,7 @@ import {
     }
   `
   
-  export const GarnishChoicesHeader = styled.div`
+export const GarnishChoicesHeader = styled.div`
       padding: 12px 20px 10px;
       display: flex;
       place-content: center;
@@ -231,7 +231,7 @@ import {
               display: flex;
       }
   `
-  export const CardsComponent = styled.div`
+export const CardsComponent = styled.div`
       background-color: ${BGColor};
       padding: 10px;
       margin: 15px 0;
@@ -259,7 +259,7 @@ import {
           font-weight: 600;
       }
   `
-  export const ContainerShare = styled.div`
+export const ContainerShare = styled.div`
     position: absolute;
     height: 200px;
     display: none;
@@ -319,7 +319,7 @@ import {
       background-color: #ededed69;
     }
     `
-  export const ContentShare = styled.div`
+export const ContentShare = styled.div`
       position: relative;
       cursor: pointer;
       color: red;
@@ -335,7 +335,7 @@ import {
           display: block;
       }
   `
-  export const ActionButton = styled.div`
+export const ActionButton = styled.div`
     /* position: absolute; */
     display: grid;
     position: absolute;
@@ -345,7 +345,7 @@ import {
     place-content: center;
     grid-template-columns: 60% 40%;
   `
-  export const BtnClose = styled.button`
+export const BtnClose = styled.button`
       position: absolute;
       right: 19px;
       top: 20px;
@@ -355,7 +355,7 @@ import {
         display: none;
       }
   `
-  export const Header = styled.div`
+export const Header = styled.div`
     position: absolute;
     top: 0;
     left: 0;
@@ -367,11 +367,11 @@ import {
         display: none;
       }
   `
-  export const BtnCloseMobile = styled.button`
+export const BtnCloseMobile = styled.button`
       background-color: ${BGColor};
    
   `
-  export const Modal = styled.div`
+export const Modal = styled.div`
       width: 700px;
       border-radius: 10px;
       z-index: 999999;
@@ -388,14 +388,14 @@ import {
       height: calc(100vh - 100px);
       top: 80px;
       ${({ showModal }) => {
-      return showModal
-        ? css`  
+    return showModal
+      ? css`  
         transform: translateY(0%);
         `
-        : css`
+      : css`
         transform: translateY(50%);
                 `
-    }}
+  }}
       @media (max-width: 960px) {
         top: 0;
         /* 700px */
@@ -405,7 +405,7 @@ import {
       }
   
   `
-  export const ContainerModal = styled.div`
+export const ContainerModal = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -414,17 +414,17 @@ import {
       transition: 150ms ease-in-out;
       z-index: 99999;
       ${({ showModal }) => {
-      return showModal
-        ? css`  
+    return showModal
+      ? css`  
           top: 0;
           
           `
-        : css`
+      : css`
             z-index: -10000;
             visibility: hidden;
             opacity: 0;
                 `
-    }}
+  }}
     .container-modal__actions {
       display: flex;
     padding: 10px;

@@ -1,5 +1,5 @@
-import { PColor } from '../../../../assets/colors'
 import styled from 'styled-components'
+import { PColor } from '../../../../assets/colors'
 
 export const Svg = styled.svg`
   width: 30px;
@@ -11,7 +11,7 @@ export const Progress = styled.div`
   position: relative;
   background: hsl(0, 0%, 100%);
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 26px;
     height: 26px;
@@ -21,24 +21,23 @@ export const Progress = styled.div`
     left: 50%;
   }
 `
-export const Circle = styled.circle.attrs(props => {
+export const Circle = styled.circle.attrs((props) => {
   return {
     strokeDasharray: `${props.dashValue}px 88px`
   }
 })`
-    r: 14;
-    cx: 15;
-    cy: 15;
-    stroke: hsla(254, 85%, 55%, 1);
-    stroke-width: 2px;
-    fill: none;
-    transform: rotate(-95deg);
-    transform-origin: 50% 50%;
-  `
+  r: 14;
+  cx: 15;
+  cy: 15;
+  stroke: hsla(254, 85%, 55%, 1);
+  stroke-width: 2px;
+  fill: none;
+  transform: rotate(-95deg);
+  transform-origin: 50% 50%;
+`
 
 export const ContainerRange = styled.div`
   position: relative;
-
 `
 const height = '36px'
 const thumbHeight = 31
@@ -106,7 +105,6 @@ export const Input = styled.input`
   }
 
   &::-moz-range-progress {
-
     background: ${lowerBackground};
   }
 
@@ -133,8 +131,6 @@ export const Input = styled.input`
 
   &::-ms-fill-lower {
     background: ${lowerBackground};
-
-
   }
 
   &::-ms-fill-upper {
@@ -168,12 +164,12 @@ export const Input = styled.input`
     &::-ms-thumb {
       background-color: ${thumbHoverColor};
     }
-}
-&::-webkit-slider-thumb {
+  }
+  &::-webkit-slider-thumb {
     border-radius: 50% !important;
     border: 2px solid hsl(0, 0%, 100%);
   }
-width: ${({ width }) => { return width ? width : '100%' }}
-
+  width: ${({ width }) => {
+    return width ? width : '100%'
+  }};
 `
-

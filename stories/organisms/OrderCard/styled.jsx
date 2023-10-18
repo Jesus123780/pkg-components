@@ -1,9 +1,5 @@
 import styled, { css, keyframes } from 'styled-components'
-import {
-  APColor,
-  BGColor,
-  SFVColor
-} from './../../../assets/colors/index'
+import { APColor, BGColor, SFVColor } from './../../../assets/colors/index'
 
 const pulse = keyframes`
   0% {
@@ -109,7 +105,7 @@ export const FeedItem = styled.div`
     }
   }
   &:after {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 0;
@@ -121,13 +117,12 @@ export const FeedItem = styled.div`
     height: 0;
   }
   ${(props) => {
-    if (props.rejected) 
-      return (
-        css`
+    if (props.rejected)
+      return css`
         border: 1px solid ${SFVColor};
         animation: ${pulse} 2s infinite;
         background-color: ${SFVColor};
-      `)
+      `
     return (
       props.pulse &&
       css`
