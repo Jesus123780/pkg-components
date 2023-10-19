@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Loading } from '../../../assets/icons'
+import { IconLoading } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
 import styles from './button.module.css'
-import { CustomButton } from './styled'
+import { CustomButton, LoadingWrapper } from './styled'
 
 /**
  * Primary UI component for user interaction
@@ -47,9 +47,16 @@ export const Button = ({
       width={width}
       {...props}
     >
-      {loading ? <Loading color={getGlobalStyle('--color-base-white')} size={20} /> : label }
+      {loading ?
+        <LoadingWrapper>
+          <IconLoading color={getGlobalStyle('--color-base-white')} size={20} />
+        </LoadingWrapper>
+        : label
+      }
       {child}
-      {props.children}
+      <div className={loading ? styles['hidden-while-loading'] : ''}>
+        {props.children}
+      </div>
     </CustomButton>
   )
 }

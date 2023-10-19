@@ -1,75 +1,75 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { BColor, BGColor, EColor, PColor, PLColor, PVColor, SECColor, SEGColor, SFColor, SFVColor } from '../../../../assets/colors'
-import { IconArrowBottom, IconFolder, IconPlus, IconCancel as IconWarning } from '../../../../assets/icons'
+import { IconArrowBottom, IconFolder, IconLoading, IconPlus, IconCancel as IconWarning } from '../../../../assets/icons'
 import { Overline } from '../../../atoms/Overline'
+import { changeSearch, changeValue, findOptionById, renderVal } from './helpers'
 
-// eslint-disable-next-line
 export const NewSelect = ({
-  options,
-  beforeLabel,
-  noLabel,
-  disabled,
-  id,
-  idD,
-  icon,
-  sideLabel,
-  name,
-  onChange,
-  action,
-  optionName,
-  topTitle,
+  options = [],
+  beforeLabel = '',
+  noLabel = false,
+  disabled = false,
+  id = '',
+  icon = true,
+  loading = false,
+  sideLabel = '',
+  name = '',
+  action = false,
+  optionName = '',
+  topTitle = '15px',
   value = '',
   border,
-  width,
+  width = '100%',
   search = ' ',
   title = '',
-  padding,
-  margin,
+  padding = '',
+  margin = '',
   heightBody,
-  minWidth,
-  error,
+  minWidth = '',
+  error = false,
   required = false,
   overLine = false,
   accessor,
   fullName,
+  onChange = () => {
+    return
+  },
   handleClickAction = () => {
     return
   }
 }) => {
   /** Hooks */
+  const bodyHeight = 100
   const [select, setSelect] = useState(false)
   const [selectRef, setSelectRef] = useState(0)
   const [valueInput, setValueInput] = useState()
   const [selectBody, setSelectBody] = useState(0)
   const [newOption, setNewOption] = useState(false)
-  const bodyHeight = 100
   const inputSearch = useRef(null)
   const [refSelect, setRefSelect] = useState(false)
+  const refComponente = useRef(null)
 
-  // Renderiza el valor
-  const renderVal = (data) => {
-    if (!data) return ''
-    if (Array.isArray(optionName)) {
-      let valueRender = ''
-      //eslint-disable-next-line
-      optionName.forEach((x) => (valueRender = `${valueRender} ${accessor && data[accessor] ? data[accessor][x] : data[x]}`))
-      return valueRender
-    }
-    return data[optionName]
-  }
-  /** Use Effect */
   useEffect(() => {
-    setNewOption(options)
-  }, [options])
+    const handleDocumentClick = (event) => {
+      if (refComponente.current && !refComponente.current.contains(event.target)) {
+        setSelect(false)
+      }
+    }
 
-  /** Use Effect */
-  useEffect(() => {
-    if (search) {
-      select && inputSearch.current.focus()
+    const handleWindowBlur = () => {
+      setSelect(false)
     }
-  }, [select, search])
+
+    document.addEventListener('mousedown', handleDocumentClick)
+    window.addEventListener('blur', handleWindowBlur)
+
+    return () => {
+      document.removeEventListener('mousedown', handleDocumentClick)
+      window.removeEventListener('blur', handleWindowBlur)
+    }
+  }, [])
 
   // guarda la referencia de la caja */
   const changeRef = (v) => {
@@ -77,22 +77,6 @@ export const NewSelect = ({
     setRefSelect(v)
   }
 
-  // Valor selecionado
-  const changeValue = (v) => {
-    setSelect(false)
-    onChange({ target: { name, value: v[id] } }, !v[id], refSelect)
-  }
-
-  // Busqueda
-  const changeSearch = (v) => {
-    setValueInput(v.target.value)
-    const fil = options.filter((x) => {
-      return renderVal(x)?.toUpperCase()?.indexOf(v.target?.value?.toUpperCase()) > -1
-    })
-    setNewOption(fil)
-  }
-
-  // Función al hacer click sobre el select
   const handleClick = (e) => {
     e.preventDefault()
     setSelect(!select)
@@ -102,18 +86,22 @@ export const NewSelect = ({
   }
 
   const handleBlur = () => {
-    setTimeout(() => {
-      return setSelect(false)
-    }, 400)
-    setTimeout(() => {
-      return setNewOption(options)
-    }, 300)
+    return setSelect(false)
   }
-  // eslint-disable-next-line
-  const val = options?.find((x) => x[id] === value)
+  const val = findOptionById(options, id, value)
+
+  useEffect(() => {
+    setNewOption(options)
+  }, [options])
+
+  useEffect(() => {
+    if (search) {
+      select && inputSearch.current.focus()
+    }
+  }, [select, search])
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div ref={refComponente} style={{ position: 'relative' }}>
       <LabelInput
         error={error}
         noLabel={noLabel}
@@ -123,7 +111,6 @@ export const NewSelect = ({
         {title}
       </LabelInput>
       <BoxSelect
-        id={idD}
         margin={margin}
         minWidth={minWidth}
         padding={padding}
@@ -153,11 +140,18 @@ export const NewSelect = ({
           value={value}
         >
           <SpanText noLabel={noLabel}>
-            {renderVal(val)} {val && sideLabel}
+            {renderVal(val, optionName, accessor)} {val && sideLabel}
           </SpanText>
           {icon && (
-            <IconSel>
-              <IconArrowBottom color={error ? BGColor : SEGColor} size='15px' />
+            <IconSel
+              loading={loading}
+              style={{
+                top: '13px',
+                width: '20px',
+                right: '15px'
+              }}
+            >
+              {loading ? <IconLoading color={PColor} size='15px' /> : <IconArrowBottom color={error ? BGColor : SEGColor} size='15px' />}
             </IconSel>
           )}
         </MainButton>
@@ -166,7 +160,17 @@ export const NewSelect = ({
           {search && (
             <>
               <InputText
-                onChange={changeSearch}
+                onChange={(e) => {
+                  const value = e.target.value
+                  changeSearch({
+                    value,
+                    options,
+                    optionName,
+                    accessor,
+                    setValueInput,
+                    setNewOption
+                  })
+                }}
                 placeholder='Buscar'
                 ref={inputSearch}
                 value={valueInput || ''}
@@ -193,10 +197,9 @@ export const NewSelect = ({
               autoHideTimeout={1500}
               bottom={selectRef > bodyHeight}
               fullName={fullName}
-              nodata={newOption.length > 0}
               onBlur={handleBlur}
               ref={(v) => {
-                return setSelectBody(!!v && v.offsetHeight)
+                return setSelectBody(v?.offsetHeight)
               }}
               search={search}
               style={{ width: '100%', overflowY: 'auto' }}
@@ -208,12 +211,19 @@ export const NewSelect = ({
                     <CustomButtonS
                       key={x[id]}
                       onClick={() => {
-                        return changeValue(x)
+                        return changeValue({
+                          v: x,
+                          id,
+                          name,
+                          refSelect,
+                          setSelect,
+                          onChange
+                        })
                       }}
                       option
                       type='button'
                     >
-                      {beforeLabel} {`${renderVal(x)}`} {sideLabel}
+                      {beforeLabel} {`${renderVal(x, optionName, accessor)}`} {sideLabel}
                     </CustomButtonS>
                   )
                 })
@@ -241,6 +251,37 @@ export const NewSelect = ({
       </BoxSelect>
     </div>
   )
+}
+
+NewSelect.propTypes = {
+  accessor: PropTypes.any,
+  action: PropTypes.bool,
+  beforeLabel: PropTypes.string,
+  border: PropTypes.any,
+  disabled: PropTypes.bool,
+  error: PropTypes.bool,
+  fullName: PropTypes.any,
+  handleClickAction: PropTypes.func,
+  heightBody: PropTypes.any,
+  icon: PropTypes.bool,
+  id: PropTypes.string,
+  loading: PropTypes.bool,
+  margin: PropTypes.string,
+  minWidth: PropTypes.string,
+  name: PropTypes.string,
+  noLabel: PropTypes.bool,
+  onChange: PropTypes.func,
+  optionName: PropTypes.string,
+  options: PropTypes.array,
+  overLine: PropTypes.bool,
+  padding: PropTypes.string,
+  required: PropTypes.bool,
+  search: PropTypes.string,
+  sideLabel: PropTypes.string,
+  title: PropTypes.string,
+  topTitle: PropTypes.string,
+  value: PropTypes.string,
+  width: PropTypes.string
 }
 
 const BoxSelect = styled.div`
@@ -387,13 +428,31 @@ const Tooltip = styled.div`
     margin-left: -1px;
   }
 `
+const rotate = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`
+
 const IconSel = styled.div`
   position: absolute;
   right: 8px;
   top: 30%;
   width: min-content;
   pointer-events: none;
+
+  ${({ loading }) => 
+  {return loading && css`
+      & > svg {
+        animation: ${rotate} 1s linear infinite;
+      }
+    `}
+}
 `
+
 // Select
 const MainButton = styled.button`
   position: relative;
@@ -453,9 +512,6 @@ const MainButton = styled.button`
   }
   &:hover ~ ${Tooltip} {
     display: block;
-  }
-  &:focus {
-    border: 2px solid ${PColor};
   }
   &:focus > svg {
     fill: ${PLColor};
@@ -564,35 +620,3 @@ export const InputText = styled.input`
   border: 1px solid #ccc;
   font-size: 12px;
 `
-NewSelect.propTypes = {
-  accessor: PropTypes.string,
-  action: PropTypes.any,
-  beforeLabel: PropTypes.any,
-  border: PropTypes.string,
-  disabled: PropTypes.bool,
-  error: PropTypes.bool,
-  fullName: PropTypes.bool,
-  handleClickAction: PropTypes.func,
-  heightBody: PropTypes.any,
-  icon: PropTypes.any,
-  id: PropTypes.any.isRequired,
-  idD: PropTypes.any,
-  margin: PropTypes.string,
-  minWidth: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  noLabel: PropTypes.any,
-  onChange: PropTypes.func.isRequired,
-  optionName: PropTypes.shape({
-    forEach: PropTypes.func
-  }),
-  options: PropTypes.array,
-  overLine: PropTypes.bool,
-  padding: PropTypes.string,
-  required: PropTypes.bool,
-  search: PropTypes.bool,
-  sideLabel: PropTypes.any,
-  title: PropTypes.string,
-  topTitle: PropTypes.any,
-  value: PropTypes.string,
-  width: PropTypes.string
-}

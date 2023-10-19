@@ -1,24 +1,11 @@
 import PropTypes from 'prop-types'
-import React, {
-  useCallback,
-  useEffect,
-  useState
-} from 'react'
-import { PColor } from '../../../assets/colors'
+import React, { useCallback, useEffect, useState } from 'react'
+import { BGColor, PColor } from '../../../assets/colors'
 import { IconClose } from '../../../assets/icons'
 import { RippleButton } from '../../atoms'
 import { Button } from '../../atoms/Button'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
-import {
-  BtnClose,
-  Container,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  ModalTitle,
-  Wrapper
-} from './styled'
+import { BtnClose, Container, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle, Wrapper } from './styled'
 
 export const AwesomeModal = ({
   backgroundColor,
@@ -51,9 +38,15 @@ export const AwesomeModal = ({
   header = true,
   sizeIconClose = '30px',
   borderRadius = '.3rem',
-  onHide = () => { return },
-  onCancel = () => { return },
-  onConfirm = () => { return }
+  onHide = () => {
+    return
+  },
+  onCancel = () => {
+    return
+  },
+  onConfirm = () => {
+    return
+  }
 }) => {
   const [state, setState] = useState(show)
   const [modal, setSModal] = useState(false)
@@ -64,7 +57,9 @@ export const AwesomeModal = ({
     setSModal(false)
     setTimeout(onHide, timeOut)
   }, [onCancel, onHide, timeOut])
-  const onShowQuestion = () => { return setSModal(!modal) }
+  const onShowQuestion = () => {
+    return setSModal(!modal)
+  }
   // eslint-disable-next-line consistent-return
 
   // eslint-disable-next-line consistent-return
@@ -74,36 +69,38 @@ export const AwesomeModal = ({
         setSModal(true)
       }
     }
-  
+
     if (question && backdrop === 'static' && state && show) {
       window.addEventListener('keyup', handleKeyUp)
       return () => {
         if (keyboard) window.removeEventListener('keyup', handleKeyUp)
       }
     }
-  
+
     if (backdrop !== 'static' && keyboard && show) {
       window.addEventListener('keyup', handleKeyUp)
       return () => {
         window.removeEventListener('keyup', handleKeyUp)
       }
     }
-  
+
     // Cleanup for other cases
     return () => {}
   }, [keyboard, hide, show, backdrop, question, modal, state])
-  
+
   useEffect(() => {
     setState(show)
   }, [show])
-  const onBackdropHide = e => {
+  const onBackdropHide = (e) => {
     e.preventDefault()
     if (backdrop === 'static') {
       setAnimationBackdrop(true)
     } else {
       hide()
     }
-    setTimeout(() => {return setAnimationBackdrop(false)}, 100)
+    setTimeout(() => {
+      return setAnimationBackdrop(false)
+    }, 100)
   }
   useEffect(() => {
     if (show && useScroll) {
@@ -149,20 +146,28 @@ export const AwesomeModal = ({
           backdropA={backdropA}
           borderRadius={borderRadius}
           height={height}
-          onMouseDown={e => { return e.stopPropagation() }}
+          onMouseDown={(e) => {
+            return e.stopPropagation()
+          }}
           show={show}
           showLateral={show}
           size={size}
           state={state}
         >
-          {header &&
+          {header && (
             <>
               <ModalHeader>
                 <ModalTitle>{title}</ModalTitle>
-                <BtnClose onClick={() => { return question ? onShowQuestion() : hide() }}><IconClose color={PColor} size={sizeIconClose} /></BtnClose>
+                <BtnClose
+                  onClick={() => {
+                    return question ? onShowQuestion() : hide()
+                  }}
+                >
+                  <IconClose color={PColor} size={sizeIconClose} />
+                </BtnClose>
               </ModalHeader>
             </>
-          }
+          )}
           <ModalBody
             backgroundColor={backgroundColor}
             borderRadius={borderRadius}
@@ -170,26 +175,33 @@ export const AwesomeModal = ({
             height={customHeight || 'calc(100vh - 82px)'}
             padding={padding}
           >
-            {(modal && show) &&
+            {modal && show && (
               <div className='modal-wrapper'>
-                <h2>
-                  {`¿Seguro que quieres cerrar ${title ?? ''}?`}
-                </h2>
+                <h2>{`¿Seguro que quieres cerrar ${title ?? ''}?`}</h2>
                 <div className='modal-confirm'>
                   <RippleButton
                     border
                     disabled={disabled}
-                    onClick={() => { return setSModal(false) }}
+                    onClick={() => {
+                      return setSModal(false)
+                    }}
                     type='button'
-                  >{cancel || BUTTONS_TEXT.cancel}</RippleButton>
+                  >
+                    {cancel || BUTTONS_TEXT.cancel}
+                  </RippleButton>
                   <RippleButton
                     border
-                    onClick={() => { hide() }}
+                    color={BGColor}
+                    onClick={() => {
+                      hide()
+                    }}
                     type={submit ? 'submit' : 'button'}
-                  >{confirm || BUTTONS_TEXT.confirm}</RippleButton>
+                  >
+                    {confirm || BUTTONS_TEXT.confirm}
+                  </RippleButton>
                 </div>
               </div>
-            }
+            )}
             {children}
           </ModalBody>
           {footer && (
@@ -220,7 +232,6 @@ export const AwesomeModal = ({
               )}
             </ModalFooter>
           )}
-
         </Modal>
       </Wrapper>
     </Container>

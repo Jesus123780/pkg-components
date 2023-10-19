@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BGColor, PColor } from '../../../assets/colors'
 import { IconClose } from './../../../assets/icons/index'
 import styles from './styles.module.css'
@@ -54,37 +54,33 @@ export const Toast = (props) => {
     warning: '#ebbc26',
     error: `${PColor}69`
   }
+
   return (
-    <>
-      <div className={styles[`notification-container ${position}`]}>
-        {list.map((toast, i) => {return (
-          <div
-            className={styles[`notification toast ${position}`]}
-            draggable
-            key={i}
-            onDrag={handleDrag}
-            onDragEnd={(e) => {
-              return handleDragEnd(e, toast.id)
-            }}
-            style={{
-              position: 'relative',
-              left: `${divPosition}px`,
-              transition: 'left 0.5s ease-in-out',
-              className: styles[`notification toast ${position}`],
-              backgroundColor: backgroundColor[toast?.backgroundColor] ?? '#50a773'
-            }}
-          >
-            <button className={styles['notification-button']} onClick={() => {return deleteToast(toast.id)}}>
-              <IconClose color={BGColor} size={30} />
-            </button>
-            <div>
-              <p className={styles['notification-title']}>{toast.title}</p>
-              <p className={styles['notification-message']}>{toast.description}</p>
-            </div>
+    <div className={styles[`notification-container ${ position }`]}>
+      {list.map((toast, i) => {return (
+        <div
+          className={`${ styles.notification } ${ styles.toast } ${ styles[position] }`}
+          draggable
+          key={i}
+          onDrag={handleDrag}
+          onDragEnd={(e) => {return handleDragEnd(e, toast.id)}}
+          style={{
+            position: 'relative',
+            left: `${ divPosition }px`,
+            transition: 'left 0.5s ease-in-out',
+            backgroundColor: backgroundColor[toast?.backgroundColor] ?? '#50a773'
+          }}
+        >
+          <button className={styles['notification-button']} onClick={() => {return deleteToast(toast.id)}}>
+            <IconClose color={BGColor} size={30} />
+          </button>
+          <div>
+            <p className={styles['notification-title']}>{toast.title}</p>
+            <p className={styles['notification-message']}>{toast.description}</p>
           </div>
-        )})}
-      </div>
-    </>
+        </div>
+      )})}
+    </div>
   )
 }
 

@@ -11,9 +11,19 @@ import {
   IconMiniCheck,
   IconQuestion
 } from '../../../assets/icons'
-import { Button, Column, RippleButton, Tag, Text } from '../../atoms'
+import {
+  Button,
+  Column,
+  RippleButton,
+  Tag,
+  Text
+} from '../../atoms'
 import { InputHooks } from '../../molecules'
-import { AwesomeModal, List, ResisesColumns } from '../../organisms'
+import {
+  AwesomeModal,
+  List,
+  ResisesColumns
+} from '../../organisms'
 import { FormExtra } from './FormExtra'
 import { BodyDnd, GarnishChoicesHeader } from './styled'
 
@@ -26,7 +36,9 @@ export const OptionalExtraProducts = ({
   selectedItem = {},
   selectedExtra,
   openModalEditExtra,
-  setSelectedExtra,
+  setSelectedExtra = () => {
+    return
+  },
   setOpenModalEditExtra = () => {
     return
   },
