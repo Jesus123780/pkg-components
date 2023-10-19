@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { IconDelete, IconEdit, IconMiniCheck, Loading } from '../../../assets/icons'
+import { IconDelete, IconEdit, IconLoading, IconMiniCheck } from '../../../assets/icons'
 import { Column } from '../../atoms/Column'
 import styles from './styles.module.css'
 
@@ -69,7 +69,7 @@ export const Card = ({
                 }
             }
           >
-            {loadingEditSubOptional ? <Loading /> : isEditing ? <IconMiniCheck color='var(--color-alvi-icons-success)' size='23px' /> : <IconEdit color='var(--color-primary-red)' size='23px' />}
+            {loadingEditSubOptional ? <IconLoading /> : isEditing ? <IconMiniCheck color='var(--color-alvi-icons-success)' size='23px' /> : <IconEdit color='var(--color-primary-red)' size='23px' />}
           </button>
         </div>
       </div>
