@@ -15,6 +15,10 @@
   display: block;
 
 }
+.children-align {
+  text-align: center;
+}
+
 .hidden-while-loading {
   opacity: 0.5;         /* Make it translucent */
   visibility: hidden;   /* Ensure it doesn't occupy space or is interactable */

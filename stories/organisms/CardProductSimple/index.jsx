@@ -110,32 +110,25 @@ export const MemoCardProductSimple = ({
   }
 
   const urlImage = '/images/DEFAULTBANNER.png'
+
+  // Determina si mostrar las categorías
   const showCategories = dataExtra.length > 0 || dataOptional.length > 0
-  const formatter = new Intl.ListFormat('es', {
-    style: 'long',
-    type: 'conjunction'
-  })
-  const formatterOptional = new Intl.ListFormat('es', {
-    style: 'narrow',
-    type: 'unit'
-  })
-  const ListFormat = dataExtra
-    .map((product) => {
-      return `$ ${numberFormat(product?.extraPrice)}, ${product.extraName}`
-    })
+
+  // Crea los formateadores
+  const conjunctionFormatter = new Intl.ListFormat('es', { style: 'long', type: 'conjunction' })
+  const unitFormatter = new Intl.ListFormat('es', { style: 'narrow', type: 'unit' })
+  // Formatea los datos extras
+  const formattedExtraData = dataExtra
     .slice(0, 4)
-  const ListFormatOptional = dataOptional
-    ?.map((product) => {
-      return product?.ExtProductFoodsSubOptionalAll?.map((subProduct) => {
-        return `${subProduct.OptionalSubProName}` || ''
-      })
-    })
+    .map(product => {return `$ ${numberFormat(product?.extraPrice)}, ${product.extraName}`})
+  const finalExtraFormat = conjunctionFormatter.format(formattedExtraData)
+  // Formatea los datos opcionales
+  const formattedOptionalData = dataOptional
     .slice(0, 4)
-  const finalListFormat = formatter?.format(ListFormat) || ''
-  const finalOptional = [...ListFormatOptional]
-  const finalListFormatOptional =
-    formatterOptional?.format(finalOptional[0]) || ''
-  const listCategories = `${finalListFormat}, ${finalListFormatOptional}`
+    .map(product => {return product?.ExtProductFoodsSubOptionalAll?.map(subProduct => {return subProduct.OptionalSubProName}).join(', ')})
+  const finalOptionalFormat = unitFormatter.format(formattedOptionalData)
+  // Une las dos listas
+  const listCategories = `${finalExtraFormat}, ${finalOptionalFormat}`
 
   return (
     <>
@@ -207,7 +200,7 @@ export const MemoCardProductSimple = ({
 
             <div className='flex-wrap'>
               <span className='price'>
-                $ {ProPrice ? numberFormat(ProPrice) || free === 1 : 'Gratis'}
+                { free === 1 ? 'Gratis' : (ProPrice > 0 ? `$ ${numberFormat(ProPrice)}` : 'Gratis') }
               </span>
               {ProDescuento > 0 && (
                 <span className='price discount'>{` $ ${numberFormat(

@@ -40,6 +40,7 @@ export const FormExtra = ({
 }) => {
   const defaultTitle = 'Escoge tu... '
   const finalTitle = title || defaultTitle
+  const emptyTitle = title?.trim() === ''
 
   return (
     <div style={{ height: '100%' }}>
@@ -164,9 +165,11 @@ export const FormExtra = ({
               backgroundColor={PColor}
               borderRadius='0'
               color={BGColor}
+              disabled={emptyTitle}
               fontWeight='300'
+              margin='0 0 0 10px'
               onClick={() => {
-                if (title.trim() === '') {
+                if (emptyTitle) {
                   return sendNotification({
                     description: 'hace falta el titulo de la sobremesa',
                     title: 'Error',
@@ -197,6 +200,7 @@ FormExtra.propTypes = {
   isEdit: PropTypes.bool,
   numberLimit: PropTypes.string,
   selectedExtra: PropTypes.object,
+  sendNotification: PropTypes.func,
   setCheck: PropTypes.shape({
     exState: PropTypes.bool
   }),

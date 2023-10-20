@@ -54,7 +54,7 @@ export const Button = ({
         : label
       }
       {child}
-      <div className={loading ? styles['hidden-while-loading'] : ''}>
+      <div className={loading ? styles['hidden-while-loading'] : styles['children-align']}>
         {props.children}
       </div>
     </CustomButton>

@@ -30,7 +30,9 @@ import { BodyDnd, GarnishChoicesHeader } from './styled'
 export const OptionalExtraProducts = ({
   title = '',
   dataListIds = [],
-  data,
+  data = {
+    lists: []
+  },
   isCustomSubOpExPid,
   loadingEditSubOptional,
   selectedItem = {},

@@ -11,6 +11,7 @@ export const CardProductsComponent = ({
   food,
   setRef,
   isEdit = true,
+  showDiscount = true,
   onClick = () => {
     return
   },
@@ -21,6 +22,23 @@ export const CardProductsComponent = ({
     return
   }
 }) => {
+  const calculateDiscountPercentage = (price, discount) => {
+    if (!price || !discount) return 0
+
+    const value = typeof price === 'string' ? parseFloat(price.replace(/\./g, '')) : parseFloat(price)
+    const valueDiscount = typeof discount === 'string' ? parseFloat(discount.replace(/\./g, '')) : parseFloat(discount)
+
+    if (value && value > 0) {
+      const percentage = (valueDiscount / value) * 100
+      return Math.round(percentage)
+    }
+    return 0
+  }
+
+
+  const discountPercentage = calculateDiscountPercentage(food?.ProPrice, food?.ProDescuento)
+
+
   return (
     <div ref={setRef}>
       {
@@ -50,8 +68,18 @@ export const CardProductsComponent = ({
                   <h3 className='card__description'>{food?.pName || ''}</h3>
                   <h3 className='card__description'>{food?.ProDescription || ''}</h3>
                   <div className='footer'>
-                    <span className='card__price'>$ {food?.ProPrice || 0}</span>
-                    <span className='card__des'>$ {food?.ProDescuento}</span>
+                    <span className={food?.ProPrice > 0 ? 'card__price' : 'card__price free'}>
+                      {food?.ProPrice > 0 ? `$ ${food?.ProPrice}` : 'Gratis'}
+                    </span>
+
+                    <span className='card__des'>
+                      {food?.ProDescuento > 0 ? `$ ${food?.ProDescuento}` : null}
+                    </span>
+                    {showDiscount && food?.ProDescuento > 0 && (
+                      <span className={discountPercentage > 100 ? 'discount red' : 'discount green'}>
+                        {discountPercentage > 100 ? '+100' : discountPercentage}%
+                      </span>
+                    )}
                   </div>
                 </>
               )}
@@ -78,7 +106,7 @@ export const CardProductsComponent = ({
 CardProductsComponent.propTypes = {
   food: PropTypes.shape({
     ProDescription: PropTypes.string,
-    ProDescuento: PropTypes.any,
+    ProDescuento: PropTypes.number,
     ProImage: PropTypes.any,
     ProPrice: PropTypes.number,
     pName: PropTypes.string
@@ -89,6 +117,7 @@ CardProductsComponent.propTypes = {
   isVisible: PropTypes.any,
   onClick: PropTypes.func,
   redirect: PropTypes.func,
-  setRef: PropTypes.any
+  setRef: PropTypes.any,
+  showDiscount: PropTypes.bool
 }
 export const CardProducts = React.memo(CardProductsComponent)

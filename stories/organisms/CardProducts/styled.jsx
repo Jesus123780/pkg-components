@@ -8,6 +8,26 @@ export const CtnBox = styled.div`
     height: 170px;
     object-fit: contain;
   }
+  .free {
+    color: #21b478 !important;
+  }
+  .discount {
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 0.9em;
+  }
+
+  .discount.red {
+    background-color: red;
+  }
+
+  .discount.green {
+    background-color: green;
+  }
 `
 
 export const TooltipCardProduct = styled.div`
