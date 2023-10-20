@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types'
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
+import { Devices } from '../Devices'
+import { ProfileInfo } from './ProfileInfo'
+import { RestaurantInfo } from './RestaurantInfo'
 import {
+  Button,
   Container,
   ContainerColumn,
-  Text,
-  Button
+  Text
 } from './styled'
-import { ProfileInfo } from './ProfileInfo'
-import { Devices } from '../Devices'
-import { RestaurantInfo } from './RestaurantInfo'
 
 export const UserProfile = ({
   dataForm = {},
@@ -18,21 +18,19 @@ export const UserProfile = ({
   loading = false,
   loadingSubmit = false,
   handleSubmit = () => { return },
-  useFormatDate = () => { return },
   onChange = () => { return }
 }) => {
-  const formatDate = useFormatDate({ date: dataForm?.upDateBir })
   const [editingProfile, setEditingProfile] = useState(false)
   const [editingDataProfile, setEditingDataProfile] = useState(false)
   const [editingAddress, setEditingAddress] = useState(false)
   const [currentView, setCurrentView] = useState('Perfil')
 
   const handleViewChange = useCallback((tabKey) => {
-    setCurrentView(tabKey);
-  }, []);
+    setCurrentView(tabKey)
+  }, [])
 
   const handleProfileDataEditClick = () => {
-    setEditingDataProfile(!editingDataProfile);
+    setEditingDataProfile(!editingDataProfile)
     if (editingDataProfile) {
       handleSubmit()
     }
@@ -51,11 +49,11 @@ export const UserProfile = ({
       handleSubmit()
     }
   }
+  console.log('🚀 ~ file: index.jsx:74 ~ dataDevice:', dataDevice)
   const memoizedComponents = {
     Perfil: (
       <ProfileInfo
         dataForm={dataForm}
-        loadingSubmit={loadingSubmit}
         editingAddress={editingAddress}
         editingDataProfile={editingDataProfile}
         editingProfile={editingProfile}
@@ -63,19 +61,20 @@ export const UserProfile = ({
         handleProfileDataEditClick={handleProfileDataEditClick}
         handleProfileEditClick={handleProfileEditClick}
         loading={loading}
+        loadingSubmit={loadingSubmit}
         onChange={onChange}
       />
     ),
     Dispositivos: (
       <div style={{ width: '90%', margin: '0 30px' }}>
-      <Text fSize='1.5rem'>
+        <Text fSize='1.5rem'>
         Mis dispositivos
-      </Text>
+        </Text>
         <Devices
           data={dataDevice}
           deviceId={deviceId}
-          loadingSubmit={loadingSubmit}
           loading={loading}
+          loadingSubmit={loadingSubmit}
         />
       </div>
     ),
@@ -88,11 +87,15 @@ export const UserProfile = ({
   return <div style={{ backgroundColor: '#f6f6f6', padding: '30px' }}>
     <Container>
       <ContainerColumn width='25%'>
-        {Object.keys(memoizedComponents).map(view => (
-          <Button isActive={view === currentView} key={view} onClick={() => handleViewChange(view)}>
+        {Object.keys(memoizedComponents).map(view => {return (
+          <Button
+            isActive={view === currentView}
+            key={view}
+            onClick={() => {return handleViewChange(view)}}
+          >
             {view.charAt(0).toUpperCase() + view.slice(1)}
           </Button>
-        ))}
+        )})}
       </ContainerColumn>
       <ContainerColumn width='75%'>
         {memoizedComponents[currentView]}
@@ -102,6 +105,7 @@ export const UserProfile = ({
 }
 
 UserProfile.propTypes = {
+  dataDevice: PropTypes.array,
   dataForm: PropTypes.shape({
     email: PropTypes.string,
     lastName: PropTypes.string,
@@ -111,7 +115,12 @@ UserProfile.propTypes = {
     upZipCode: PropTypes.any,
     username: PropTypes.string
   }),
-  handleSubmit: PropTypes.any,
-  onChange: PropTypes.any
+  dataStore: PropTypes.object,
+  deviceId: PropTypes.any,
+  handleSubmit: PropTypes.func,
+  loading: PropTypes.bool,
+  loadingSubmit: PropTypes.bool,
+  onChange: PropTypes.func,
+  useFormatDate: PropTypes.func
 }
 
