@@ -112,10 +112,10 @@ export const LabelInput = styled.span`
     return value ? '1rem' : '16px'
   }};
   top: ${({ value }) => {
-    return value ? '-5px' : '30px'
+    return value ? '7px' : '35px'
   }};
   left: ${({ value }) => {
-    return value ? '-4px' : '20px'
+    return value ? '10px' : '20px'
   }};
   color: ${({ value, error }) => {
     return value ? SFColor : error ? EColor : SFVColor
@@ -125,9 +125,7 @@ export const LabelInput = styled.span`
   text-overflow: ellipsis;
   overflow: hidden;
   font-family: PFont-Light;
-  padding-left: ${({ value }) => {
-    return value ? '10px' : '0px'
-  }};
+  background-color: var(--color-base-white);
   ${({ type }) => {
     return (
       type === 'date' &&
@@ -217,28 +215,71 @@ export const TextAreaInput = styled.textarea`
     )
   }}
 `
+/**
+ * Styled input component
+ * @component
+ */
 export const InputV = styled.input`
-  color: ${(props) => {
-    return props.type === 'date' && !props.value ? '#0f0e0e' : '#272323'
+  outline: none;
+  font-family: PFont-Light;
+  font-weight: 500;
+  padding: 20px 10px;
+  border: none;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 0px 1px inset;
+    ${({ border = '#524e4e' }) => {
+    return border
   }};
-  padding: ${(props) => {
-    return props.type === 'date' ? '12px' : props.paddingInput ? props.paddingInput : '15px 10px'
+  font-size: ${({ size = '15px' }) => {
+    return size
   }};
-  outline: 0;
-  border: ${({ border }) => {
-    return border || '1px solid #ccc'
+  width: ${({ width = '100%' }) => {
+    return width
   }};
-  font-weight: 600;
-  font-size: ${({ size }) => {
-    return size || '13px'
-  }};
-  width: ${({ width }) => {
-    return width || '-webkit-fill-available'
-  }};
-  border-radius: ${({ radius }) => {
-    return radius || '2px'
+  border-radius: ${({ radius = '5px' }) => {
+    return radius
   }};
 
+  // Conditional Styles
+  color: ${({ type, value }) => {
+    return type === 'date' && !value ? '#0f0e0e' : '#272323'
+  }};
+  padding: ${({ type, paddingInput }) => {
+    return type === 'date' ? '12px' : paddingInput || '20px 10px'
+  }};
+
+  // Focus Styles
+  &:focus {
+    ~ ${LabelInput} {
+      top: -6px;
+      left: 0px;
+      font-size: 14px;
+      color: #ccc;
+      background-color: ${BGColor};
+      padding: 0px 5px;
+    }
+  }
+
+  // Disabled Styles
+  &:disabled {
+    cursor: no-drop;
+  }
+
+  // Hover Styles
+  &:hover ~ ${Tooltip} {
+    display: block;
+  }
+
+  // Error Styles
+  ${({ error }) => {
+    return (
+      error &&
+      css`
+        border: 0.5px solid ${EColor};
+      `
+    )
+  }}
+
+  // Margins
   ${({ margin }) => {
     return (
       !!margin &&
@@ -248,36 +289,12 @@ export const InputV = styled.input`
     )
   }}
 
+  // Minimum Width
   ${({ minWidth }) => {
     return (
       minWidth &&
       css`
         min-width: ${minWidth};
-      `
-    )
-  }}
-    &:focus ~ ${LabelInput} {
-    top: -6px;
-    left: 0px;
-    font-size: 14px;
-    color: #ccc;
-    background-color: ${BGColor};
-    padding: 0px 5px;
-  }
-  &:focus {
-    border: 1px solid '#35a8df';
-  }
-  &:disabled {
-    cursor: no-drop;
-  }
-  &:hover ~ ${Tooltip} {
-    display: block;
-  }
-  ${({ error }) => {
-    return (
-      error &&
-      css`
-        border: 0.5px solid ${EColor};
       `
     )
   }}

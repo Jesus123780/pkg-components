@@ -6,31 +6,33 @@ import { IconSearch } from '../../../assets/icons'
 
 const SearchBarContainer = styled.div`
   align-items: center;
-  background-color: #fff;
+  background-color: var(--color-base-white);
   border-radius: 4px;
-  border: 1px solid #f2f2f2;
+  border: 1px solid ${({ border = '#f2f2f2' }) => {return border}};
   display: flex;
-  padding: 4px 8px;
+  padding: ${({ padding = '10px 8px' }) => {return padding}};
 `
 
 const SearchInput = styled.input`
   width: 100%;
   font-size: 16px;
   border: none;
-  padding: 8px;
+  padding: ${({ padding = '10px 8px' }) => {return padding}};
   &:focus {
     outline: none;
   }
 `
 
 const SearchIcon = styled.span`
-  padding: 8px;
+  padding: 0px;
   color: #5f6368;
 `
 
 export const SearchBar = ({
   placeholder = 'Search...',
+  width = '100%',
   padding = '0px 30px 0',
+  border,
   margin = '0',
   handleChange = () => {
     return
@@ -52,8 +54,8 @@ export const SearchBar = ({
   }
 
   return (
-    <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin }}>
-      <SearchBarContainer>
+    <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin, width }}>
+      <SearchBarContainer border={border} padding={padding}>
         <SearchIcon>
           <IconSearch color={PColor} size='25px' />
           <i className='fas fa-search' />
@@ -73,6 +75,8 @@ SearchBar.propTypes = {
   handleChange: PropTypes.func,
   handleSubmit: PropTypes.func,
   margin: PropTypes.string,
+  border: PropTypes.string,
   padding: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  width: PropTypes.string
 }

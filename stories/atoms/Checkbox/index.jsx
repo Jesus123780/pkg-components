@@ -118,25 +118,26 @@ const Span = styled.span`
   display: grid;
 `
 const CheckboxLabel = styled.label`
-  position: relative;
-  display: flex;
-  margin: 0.6em 0;
   align-items: center;
   color: #9e9e9e;
+  display: flex;
+  margin: 0.6em 0;
+  position: relative;
   transition: color 250ms cubic-bezier(0.4,0,0.23,1);
   &&::before {
-    content: "";
     align-items: center;
     background: transparent;
     border-radius: 50%;
     box-shadow: 0 0 0 2px #9e9e9e inset;
+    content: "";
     cursor: pointer;
     display: flex;
     height: 2em;
     justify-content: center;
     margin-right: 1em;
+    min-width: 2em;
     transition: all 250ms cubic-bezier(0.4,0,0.23,1);
-    width:2em;
+    width: 2em;
 }
 ${props => {
     return props.checked && css`

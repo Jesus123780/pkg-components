@@ -49,7 +49,6 @@ export const UserProfile = ({
       handleSubmit()
     }
   }
-  console.log('🚀 ~ file: index.jsx:74 ~ dataDevice:', dataDevice)
   const memoizedComponents = {
     Perfil: (
       <ProfileInfo

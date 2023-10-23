@@ -217,7 +217,7 @@ export const InputHooks = ({
     }
     // Valida que el campo esté en el rango correcto
     if (range) {
-      if (rangeLength(e.target.value, range.min, range.max)) return errorFunc(e, true, `El rango de carácteres es de ${range.min} a ${range.max}`)
+      if (rangeLength(e.target.value, range.min, range.max)) return errorFunc(e, true, `El rango de caracteres es de ${range.min} a ${range.max}`)
       errorFunc(e, false, '')
     }
     // Valida si el campo tiene un formato de email correcto

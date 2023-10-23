@@ -466,7 +466,7 @@ const MainButton = styled.button`
   }};
   text-align: left;
   height: ${({ height }) => {
-    return height || '45px'
+    return height || '50px'
   }};
   white-space: nowrap;
   border-radius: 2px;

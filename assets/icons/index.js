@@ -1,5 +1,173 @@
 import PropTypes from 'prop-types'
 import * as React from 'react'
+export const IconLogout = ({ size, color }) => {
+  return <svg
+    height={size}
+    version='1.1'
+    viewBox='0 0 512 512'
+    width={size}
+    x='0px'
+    xmlSpace='preserve'
+    xmlns='http://www.w3.org/2000/svg'
+    xmlnsXlink='http://www.w3.org/1999/xlink'
+    y='0px'
+  >
+    <g>
+      <g>
+        <path d='M255.15,468.625H63.787c-11.737,0-21.262-9.526-21.262-21.262V64.638c0-11.737,9.526-21.262,21.262-21.262H255.15 c11.758,0,21.262-9.504,21.262-21.262S266.908,0.85,255.15,0.85H63.787C28.619,0.85,0,29.47,0,64.638v382.724 c0,35.168,28.619,63.787,63.787,63.787H255.15c11.758,0,21.262-9.504,21.262-21.262 C276.412,478.129,266.908,468.625,255.15,468.625z' fill={color} />
+      </g>
+    </g>
+    <g>
+      <g>
+        <path d='M505.664,240.861L376.388,113.286c-8.335-8.25-21.815-8.143-30.065,0.213s-8.165,21.815,0.213,30.065l92.385,91.173H191.362c-11.758,0-21.262,9.504-21.262,21.262c0,11.758,9.504,21.263,21.262,21.263h247.559l-92.385,91.173c-8.377,8.25-8.441,21.709-0.213,30.065c4.167,4.21,9.653,6.336,15.139,6.336c5.401,0,10.801-2.041,14.926-6.124l129.276-127.575c4.04-3.997,6.336-9.441,6.336-15.139C512,250.302,509.725,244.88,505.664,240.861z' fill={color} />
+      </g>
+    </g>
+  </svg>
+}
+
+IconLogout.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any
+}
+
+export const IconMessageMain = ({ style = {}, size, color }) => {
+  return <svg
+    fill={color}
+    height={size}
+    style={style}
+    viewBox='0 0 28 28'
+    width={size}
+  ><path d='M14 2.042c6.76 0 12 4.952 12 11.64S20.76 25.322 14 25.322a13.091 13.091 0 0 1-3.474-.461.956 .956 0 0 0-.641.047L7.5 25.959a.961.961 0 0 1-1.348-.849l-.065-2.134a.957.957 0 0 0-.322-.684A11.389 11.389 0 0 1 2 13.682C2 6.994 7.24 2.042 14 2.042ZM6.794 17.086a.57.57 0 0 0 .827.758l3.786-2.874a.722.722 0 0 1 .868 0l2.8 2.1a1.8 1.8 0 0 0 2.6-.481l3.525-5.592a.57.57 0 0 0-.827-.758l-3.786 2.874a.722.722 0 0 1-.868 0l-2.8-2.1a1.8 1.8 0 0 0-2.6.481Z'></path></svg>
+}
+
+IconMessageMain.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
+export const IconNotification = ({ style = {}, size, color }) => {
+  return <svg
+    fill={color}
+    height={size}
+    style={style}
+    viewBox='0 0 32 32'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  ><path
+      d='M28.2267 12.4802C28.7734 12.4802 29.2267 12.0268 29.2267 11.4802V6.48016C29.2267 5.20016 28.1867 4.16016 26.8934 4.16016H4.9334C3.6534 4.16016 2.6134 5.20016 2.6134 6.48016V18.8535C2.6134 20.1335 3.66674 21.1868 4.94674 21.1868H8.94674V26.8402C8.94674 27.2402 9.1734 27.6002 9.54674 27.7602C9.68007 27.8135 9.8134 27.8402 9.94674 27.8402C10.1867 27.8402 10.4267 27.7468 10.6134 27.5735L17.6401 21.1868H26.9067C28.1867 21.1868 29.2267 20.1468 29.2267 18.8668V17.9335C29.2267 17.3868 28.7734 16.9335 28.2267 16.9335C27.6801 16.9335 27.2267 17.3868 27.2267 17.9335V18.8668C27.2267 19.0402 27.0801 19.1868 26.9067 19.1868H17.2534C17.0001 19.1868 16.7601 19.2802 16.5867 19.4535L10.9467 24.5868V20.2002C10.9467 19.6535 10.4934 19.2002 9.94674 19.2002H4.94674C4.76007 19.2002 4.6134 19.0535 4.6134 18.8668V6.49349C4.6134 6.32016 4.76007 6.17349 4.9334 6.17349H26.8934C27.0667 6.17349 27.2134 6.32016 27.2134 6.49349V11.4802C27.2267 12.0268 27.6667 12.4802 28.2267 12.4802Z'
+      fill='red'
+      height={size}
+      width={size}
+  ></path><path d='M11.9334 14.2132C12.6256 14.2132 13.1867 13.6521 13.1867 12.9599C13.1867 12.2677 12.6256 11.7065 11.9334 11.7065C11.2412 11.7065 10.6801 12.2677 10.6801 12.9599C10.6801 13.6521 11.2412 14.2132 11.9334 14.2132Z'></path><path d='M19.9335 14.1862C20.6109 14.1862 21.1601 13.637 21.1601 12.9596C21.1601 12.2821 20.6109 11.7329 19.9335 11.7329C19.256 11.7329 18.7068 12.2821 18.7068 12.9596C18.7068 13.637 19.256 14.1862 19.9335 14.1862Z'></path><path d='M15.9333 14.2532C16.6476 14.2532 17.2267 13.6741 17.2267 12.9598C17.2267 12.2455 16.6476 11.6665 15.9333 11.6665C15.2191 11.6665 14.64 12.2455 14.64 12.9598C14.64 13.6741 15.2191 14.2532 15.9333 14.2532Z'></path></svg>
+}
+
+IconNotification.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
+export const IconWallet = ({ style = {}, color, size }) => {
+  return <svg
+    height={size}
+    style={style}
+    viewBox='0 0 54.01 39.97'
+    width={size}
+  ><path d='M17.38,22.99c0,1.54-0.46,2.7-1.39,3.49s-2.15,1.18-3.65,1.18h-0.02l-0.33,2.61 c-1.09-0.04-1.64-0.1-1.64-0.16l0.31-2.57c-1.09-0.13-2.01-0.29-2.74-0.46L7.47,27l0.29-2.3c1.17,0.16,2.24,0.27,3.23,0.33 l0.49-3.85c-1.52-0.46-2.6-1.01-3.23-1.66c-0.63-0.65-0.95-1.53-0.95-2.66c0-1.46,0.44-2.55,1.33-3.26 c0.89-0.72,2.1-1.07,3.65-1.07h0.29l0.4-3.05h1.64l-0.4,3.19c0.91,0.09,1.76,0.21,2.52,0.35l0.38,0.09l-0.24,2.35 c-1.08-0.12-2.07-0.21-2.99-0.27l-0.44,3.56c1.53,0.49,2.58,1.02,3.13,1.6C17.1,20.93,17.38,21.81,17.38,22.99z M10.23,16.67 c0,0.35,0.11,0.64,0.33,0.86c0.22,0.22,0.65,0.45,1.28,0.69l0.38-3.08C10.9,15.2,10.23,15.71,10.23,16.67z M14.44,23.19 c0-0.35-0.1-0.64-0.3-0.87c-0.2-0.23-0.56-0.45-1.07-0.65l-0.42,3.39C13.84,24.92,14.44,24.3,14.44,23.19z' fill={color} /><path d='M38.53,20.14c0,1.77,1.44,3.22,3.22,3.22c1.77,0,3.22-1.44,3.22-3.22c0-1.77-1.44-3.22-3.22-3.22 C39.98,16.92,38.53,18.36,38.53,20.14z M41.75,18.48c0.91,0,1.66,0.74,1.66,1.66c0,0.91-0.74,1.66-1.66,1.66s-1.66-0.74-1.66-1.66 C40.09,19.22,40.84,18.48,41.75,18.48z' fill={color} /><path d='M54.01,13.79h-1.84V6.27v-1.1C52.17,2.32,49.85,0,47,0H5.17C2.32,0,0,2.32,0,5.17v1.1v27.89v0.63 c0,2.85,2.32,5.17,5.17,5.17H47c2.85,0,5.17-2.32,5.17-5.17v-0.63v-8.22h1.84V13.79z M1.54,5.17c0-2,1.63-3.64,3.63-3.64H47 c2,0,3.64,1.63,3.64,3.64v1.1H1.54V5.17z M50.63,34.79c0,2-1.63,3.64-3.64,3.64H5.17c-2,0-3.63-1.63-3.63-3.64v-0.63h49.1V34.79z  M50.63,32.63H1.54V7.81h49.1v5.97h-9.39c-3.35,0-6.08,2.73-6.08,6.08s2.73,6.08,6.08,6.08h9.39V32.63z M50.63,15.34v9.04h-9.39 c-2.49,0-4.52-2.03-4.52-4.52s2.03-4.52,4.52-4.52H50.63z M52.46,24.39h-0.29v-9.04h0.29V24.39z' fill={color} /></svg>
+}
+
+IconWallet.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
+export const IconUser = ({ style = {}, size, color }) => {
+  return <svg
+    fill={color}
+    height={size}
+    style={style}
+    viewBox='0 0 24 24'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  ><path d='M12 12.5C9 12.5 6.5 10 6.5 7S9 1.5 12 1.5 17.5 4 17.5 7 15 12.5 12 12.5zM12 3C9.8 3 8 4.8 8 7s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zM17 15.5c1.4 0 2.5 1.1 2.5 2.5v2.5h-15V18c0-1.4 1.1-2.5 2.5-2.5h10m0-1.5H7c-2.2 0-4 1.8-4 4v4h18v-4c0-2.2-1.8-4-4-4z'></path></svg>
+}
+
+IconUser.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
+export const IconHorario = ({ style = {}, size, color }) => {
+  return <svg
+    fill={color}
+    height={size}
+    style={style}
+    viewBox='0 0 23 23'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <circle
+      cx='11.5'
+      cy='11.5'
+      fill='none'
+      r='10.5'
+      stroke={color || '#5e5f5f'}
+      strokeMiterlimit='10'
+      strokeWidth='2px'
+    />
+    <polyline
+      fill={color || '#5e5f5f'}
+      points='11 7 11 12.57 15.69 12.57'
+      stroke={color || '#5e5f5f'}
+      strokeMiterlimit='10'
+    />
+  </svg>
+}
+
+IconHorario.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
+export const IconLogo = ({ style = {}, color, size }) => {
+  return <svg
+    fill={color}
+    height={size}
+    style={style}
+    viewBox='0 0 80 43'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  ><path d='M0 24.258h6.09L9.498 7.472h-6.09L0 24.258zM3.947 4.836h6.087L11.016 0H4.922l-.975 4.836zM8.498 28.985h6.09l3.695-18.167h4.444l.7-3.346h-4.482l.154-.776c.286-1.431.751-3.096 3.047-3.096 1.361 0 2.665.148 3.93.68L26.77.744A13.22 13.22 0 0 0 22.381 0c-4.894 0-8.265 2.914-9.499 7.472h-2.114l-.662 3.346h2.084L8.498 28.985z'></path><path d='M27.79 24.633c7.19 0 12.18-6.569 12.18-11.927 0-3.902-3.688-5.608-7.195-5.608-7.89 0-12.183 7.063-12.183 11.927 0 3.902 3.726 5.608 7.198 5.608zM47 24.633c7.192 0 12.181-6.569 12.181-11.927 0-3.902-3.696-5.608-7.199-5.608-7.886 0-12.186 7.063-12.186 11.927 0 3.902 3.73 5.608 7.202 5.608M69.082 24.258h6.055L80 .374h-6.09l-1.451 7.097a12.51 12.51 0 0 0-2.46-.281c-5.966 0-11.391 7.588-11.391 13.011 0 2.231 1.45 4.43 3.912 4.43 3.5 0 5.921-1.712 6.932-3.317h.378l-.748 2.944zM50.322 36.91c-4.454 3.792-10.408 5.739-16.879 5.337-8.16-.502-13.816-6.82-14.954-13.227h.387c1.836 4.091 6.304 7.869 11.911 8.49 5.475.604 12.184-1.87 15.866-5.402l-4.13-3.124 12.263.036-2.639 12.983-1.825-5.093z'></path></svg>
+}
+
+IconLogo.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
+export const IconHome = ({ style = {}, color, size }) => {
+  return <svg
+    fill={color}
+    height={size}
+    style={style}
+    viewBox='0 1 511 511.999'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path d='m498.699219 222.695312c-.015625-.011718-.027344-.027343-.039063-.039062l-208.855468-208.847656c-8.902344-8.90625-20.738282-13.808594-33.328126-13.808594-12.589843 0-24.425781 4.902344-33.332031 13.808594l-208.746093 208.742187c-.070313.070313-.144532.144531-.210938.214844-18.28125 18.386719-18.25 48.21875.089844 66.558594 8.378906 8.382812 19.441406 13.234375 31.273437 13.746093.484375.046876.96875.070313 1.457031.070313h8.320313v153.695313c0 30.417968 24.75 55.164062 55.167969 55.164062h81.710937c8.285157 0 15-6.71875 15-15v-120.5c0-13.878906 11.292969-25.167969 25.171875-25.167969h48.195313c13.878906 0 25.167969 11.289063 25.167969 25.167969v120.5c0 8.28125 6.714843 15 15 15h81.710937c30.421875 0 55.167969-24.746094 55.167969-55.164062v-153.695313h7.71875c12.585937 0 24.421875-4.902344 33.332031-13.8125 18.359375-18.367187 18.367187-48.253906.027344-66.632813zm-21.242188 45.421876c-3.238281 3.238281-7.542969 5.023437-12.117187 5.023437h-22.71875c-8.285156 0-15 6.714844-15 15v168.695313c0 13.875-11.289063 25.164062-25.167969 25.164062h-66.710937v-105.5c0-30.417969-24.746094-55.167969-55.167969-55.167969h-48.195313c-30.421875 0-55.171875 24.75-55.171875 55.167969v105.5h-66.710937c-13.875 0-25.167969-11.289062-25.167969-25.164062v-168.695313c0-8.285156-6.714844-15-15-15h-22.328125c-.234375-.015625-.464844-.027344-.703125-.03125-4.46875-.078125-8.660156-1.851563-11.800781-4.996094-6.679688-6.679687-6.679688-17.550781 0-24.234375.003906 0 .003906-.003906.007812-.007812l.011719-.011719 208.847656-208.839844c3.234375-3.238281 7.535157-5.019531 12.113281-5.019531 4.574219 0 8.875 1.78125 12.113282 5.019531l208.800781 208.796875c.03125.03125.066406.0625.097656.09375 6.644531 6.691406 6.632813 17.539063-.03125 24.207032zm0 0' /></svg>
+}
+
+IconHome.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
 export const IconMiniCheck = ({ style = {}, size, color }) => {
   return <svg
     fill={color}
@@ -13,6 +181,12 @@ export const IconMiniCheck = ({ style = {}, size, color }) => {
       d='M2.59 6.57A1 1 0 0 0 1.19 8l5.16 5.09L16.72 2.36A1 1 0 1 0 15.28.97l-8.96 9.28-3.73-3.68z'
       fillRule='evenodd'
     ></path></svg>
+}
+
+IconMiniCheck.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 export const IconArrowTop = ({ size, style = {}, color }) => {
   return <svg
@@ -32,6 +206,12 @@ C307.322,253.536,311.161,255,315,255c3.839,0,7.678-1.464,10.607-4.394C331.464,24
       fill={color}
     />
   </svg>
+}
+
+IconArrowTop.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const IconSearch = ({ style = {}, size, color, props }) => {
@@ -59,6 +239,13 @@ export const IconSearch = ({ style = {}, size, color, props }) => {
       x='-39.59'
       y='7.49'
     /></svg>
+}
+
+IconSearch.propTypes = {
+  color: PropTypes.any,
+  props: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const IconRate = ({ style = {}, size, color }) => {
@@ -143,7 +330,7 @@ IconShowEye.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconPizza = ({ color, size, ...props }) => {
+export const IconPizza = ({ ...props }) => {
   return (
     <svg
       fill='none'
@@ -222,6 +409,12 @@ export const IconShopping = ({ style = {}, size, color }) => {
     width={size}
     xmlns='http://www.w3.org/2000/svg'
   ><path d='M8.7.2c-1.1 0-2 .3-2.6.9-.6.6-1 1.4-1.2 2.2-.2.6-.3 1.1-.3 1.7H2C.9 5 0 5.9 0 7l.1 13c0 1.7 1.3 3 3 3H15c1.7 0 3-1.3 3-3V7c0-1.1-.9-2-2-2h-3.2c-.1-.6-.1-1.1-.3-1.6-.2-.8-.6-1.7-1.2-2.2-.7-.6-1.5-1-2.6-1zm2.7 6.3v2.6c0 .4.3.7.8.7.4 0 .7-.3.7-.8v-.8-1.8H16c.3 0 .5.2.5.5l-.1 13c0 .8-.7 1.5-1.5 1.5H3.1c-.8 0-1.5-.7-1.5-1.5L1.5 7c0-.3.2-.5.5-.5h2.5v2.6c0 .4.3.8.7.8.4 0 .8-.4.8-.8v-.8-1.8h5.4zM11.3 5c0-.4-.1-.8-.2-1.2-.2-.7-.4-1.2-.8-1.5-.4-.3-.8-.5-1.6-.5s-1.3.2-1.6.5c-.4.3-.6.8-.8 1.5-.1.4-.2.8-.2 1.2h5.2z'></path></svg>
+}
+
+IconShopping.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const IconCarrot = (props) => {return (
@@ -330,6 +523,12 @@ export const IconSales = ({ style = {}, size, color }) => {
     ></path></svg>
 }
 
+IconSales.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
 export const IconDelete = ({ style = {}, size, color }) => {
   return (
     <svg
@@ -350,6 +549,12 @@ export const IconDelete = ({ style = {}, size, color }) => {
       ></path>
     </svg>
   )
+}
+
+IconDelete.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const IconComment = (props) => {return (
@@ -399,6 +604,12 @@ export const IconCancel = ({ style = {}, size, color }) => {
     />
   </svg>
 }
+
+IconCancel.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
 // Icon de Arrow
 export const IconArrowBottom = ({ style = {}, color, size }) => {
   return <svg
@@ -411,6 +622,12 @@ export const IconArrowBottom = ({ style = {}, color, size }) => {
   >
     <path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill={color} />
   </svg>
+}
+
+IconArrowBottom.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 
@@ -432,6 +649,11 @@ export const IconFolder = ({ style = {}, size }) => {
     /></svg>
 }
 
+IconFolder.propTypes = {
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
 export const IconPlus = ({ style = {}, size, color }) => {
   return <svg
     fill={color}
@@ -444,6 +666,12 @@ export const IconPlus = ({ style = {}, size, color }) => {
       fill={color}
       transform='translate(-41.94 -229.01)'
   /></svg>
+}
+
+IconPlus.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const IconPromo = ({ style = {}, size, color }) => {
@@ -461,6 +689,12 @@ export const IconPromo = ({ style = {}, size, color }) => {
       width={size}
   ></path><path d='M11.9334 14.2132C12.6256 14.2132 13.1867 13.6521 13.1867 12.9599C13.1867 12.2677 12.6256 11.7065 11.9334 11.7065C11.2412 11.7065 10.6801 12.2677 10.6801 12.9599C10.6801 13.6521 11.2412 14.2132 11.9334 14.2132Z'></path><path d='M19.9335 14.1862C20.6109 14.1862 21.1601 13.637 21.1601 12.9596C21.1601 12.2821 20.6109 11.7329 19.9335 11.7329C19.256 11.7329 18.7068 12.2821 18.7068 12.9596C18.7068 13.637 19.256 14.1862 19.9335 14.1862Z'></path><path d='M15.9333 14.2532C16.6476 14.2532 17.2267 13.6741 17.2267 12.9598C17.2267 12.2455 16.6476 11.6665 15.9333 11.6665C15.2191 11.6665 14.64 12.2455 14.64 12.9598C14.64 13.6741 15.2191 14.2532 15.9333 14.2532Z'></path></svg>
 }
+
+IconPromo.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
 export const IconEdit = ({ style = {}, size, color }) => {
   return <svg
     fill={color}
@@ -470,6 +704,12 @@ export const IconEdit = ({ style = {}, size, color }) => {
     width={size}
     xmlns='http://www.w3.org/2000/svg'
   ><path d='M20.76 1.24a4.25 4.25 0 0 0-6.012 0l-.487.488L2.658 13.33a.854.854 0 0 0-.188.3c0 .01-.012.01-.012.021L.045 20.904a.83.83 0 0 0 1.052 1.052l7.252-2.413c.01 0 .01-.011.022-.011.11-.045.21-.1.299-.189l3.1-3.1a.835.835 0 0 0 0-1.173.835.835 0 0 0-1.174 0l-2.513 2.513-3.665-3.665 10.43-10.43 1.827 1.827 1.827 1.827-4.23 4.23a.836.836 0 0 0 0 1.173.835.835 0 0 0 1.174 0l4.816-4.816.487-.487a4.23 4.23 0 0 0 1.24-3A4.174 4.174 0 0 0 20.76 1.24zm-1.173 1.174c.487.488.753 1.14.753 1.827 0 .642-.233 1.251-.654 1.727L17.86 4.142l-1.827-1.827a2.591 2.591 0 0 1 3.554.1zM3.61 15.457l2.934 2.934-4.407 1.473 1.473-4.407z' fill={color}></path></svg>
+}
+
+IconEdit.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const IconSendMessage = ({ size, color }) => {
@@ -504,7 +744,12 @@ export const IconSendMessage = ({ size, color }) => {
       y2='28.11'
   /></g></g></svg>
 }
-export const IconClose = ({ style = {}, size, color }) => {
+
+IconSendMessage.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any
+}
+export const IconClose = ({ size, color }) => {
   return (
     <svg
       fill={color || '#717171'}
@@ -533,6 +778,11 @@ export const IconClose = ({ style = {}, size, color }) => {
   )
 }
 
+IconClose.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.any
+}
+
 
 export const IconArrowLeft = ({ style = {}, size, color }) => {
   return <svg
@@ -555,7 +805,13 @@ export const IconArrowLeft = ({ style = {}, size, color }) => {
   </svg>
 }
 
-export const IconChart = ({ style = {}, size = 24, color, ...props }) => {
+IconArrowLeft.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
+export const IconChart = ({ size = 24, color, ...props }) => {
   return <svg
     fill={color}
     height={size}
@@ -566,6 +822,12 @@ export const IconChart = ({ style = {}, size = 24, color, ...props }) => {
   >
     <path d='M19.293 8H16.5a.5.5 0 1 1 0-1h4a.5.5 0 0 1 .5.5v4a.5.5 0 1 1-1 0V8.707l-5.146 5.147a.5.5 0 0 1-.708 0L11.5 11.207l-3.646 3.647a.5.5 0 0 1-.708-.708l4-4a.5.5 0 0 1 .708 0l2.646 2.647L19.293 8ZM20.5 18a.5.5 0 1 1 0 1h-15A2.5 2.5 0 0 1 3 16.5v-9a.5.5 0 0 1 1 0v9A1.5 1.5 0 0 0 5.5 18h15Z' />
   </svg>
+}
+
+IconChart.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.number,
+  style: PropTypes.object
 }
 
 export const IconQuestion = (props) => {return (
@@ -585,3 +847,8 @@ export const IconQuestion = (props) => {return (
     />
   </svg>
 )}
+
+IconQuestion.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.any
+}

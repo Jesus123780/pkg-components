@@ -1,0 +1,41 @@
+.container {
+  border: 1px solid #ccc;
+  width: 255px;
+  background-color: var(--color-base-white);
+  border: none;
+}
+
+.menuHeader {
+  padding: 10px;
+  background-color: var(--color-base-white);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  max-width: 255px;
+  height: 34px;
+}
+
+.menuItems {
+  max-width: 1000px;
+  display: flex;
+  min-width: 255px;
+  box-shadow: 4px 4px 16px rgba(0,0,0,.05);
+  position: absolute;
+  top: 62px;
+  flex-direction: column;
+  background-color: var(--color-base-white);
+}
+
+.item {
+  font-family: PFont-Light;
+  padding: 10px;
+  font-weight: 400;
+  border-top: 1px solid #eee;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.item:hover {
+  background-color: #e5e5e5;
+}
