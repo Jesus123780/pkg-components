@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import { BGColor, PColor } from '../../../assets/colors'
 import { IconClose } from '../../../assets/icons'
 import { RippleButton } from '../../atoms'
@@ -172,7 +176,7 @@ export const AwesomeModal = ({
             backgroundColor={backgroundColor}
             borderRadius={borderRadius}
             display={display}
-            height={customHeight || 'calc(100vh - 82px)'}
+            height={customHeight || 'calc(100vh - 50px)'}
             padding={padding}
           >
             {modal && show && (

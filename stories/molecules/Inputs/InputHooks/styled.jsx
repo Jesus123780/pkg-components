@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { BGColor, EColor, SEGColor, SFColor, SFVColor } from '../../../../assets/colors'
+import { BGColor, EColor, SEGColor, SFColor } from '../../../../assets/colors'
 
 export const BoxInput = styled.div`
   position: relative;
@@ -111,14 +111,15 @@ export const LabelInput = styled.span`
   font-size: ${({ value }) => {
     return value ? '1rem' : '16px'
   }};
-  top: ${({ value }) => {
-    return value ? '7px' : '35px'
+  top: ${({ value, labelTop }) => {
+    return value ? '7px' : labelTop || '35px'
   }};
   left: ${({ value }) => {
-    return value ? '10px' : '20px'
+    return value ? '10px' : '25px'
   }};
   color: ${({ value, error }) => {
-    return value ? SFColor : error ? EColor : SFVColor
+    const errorColor = error ? EColor : SFColor
+    return value ? SFColor : errorColor
   }};
   pointer-events: none;
   white-space: nowrap;
@@ -223,7 +224,6 @@ export const InputV = styled.input`
   outline: none;
   font-family: PFont-Light;
   font-weight: 500;
-  padding: 20px 10px;
   border: none;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 0px 1px inset;
     ${({ border = '#524e4e' }) => {
@@ -244,7 +244,7 @@ export const InputV = styled.input`
     return type === 'date' && !value ? '#0f0e0e' : '#272323'
   }};
   padding: ${({ type, paddingInput }) => {
-    return type === 'date' ? '12px' : paddingInput || '20px 10px'
+    return type === 'date' ? '15px' : paddingInput || '20px 10px'
   }};
 
   // Focus Styles

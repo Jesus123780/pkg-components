@@ -51,12 +51,55 @@ export const TooltipCardProduct = styled.div`
     cursor: pointer;
   }
 `
+
 export const WrapperCard = styled.div`
   position: relative;
   z-index: 99;
+
   &&:hover > ${TooltipCardProduct} {
     transform: translateY(-30px);
   }
+
+  &:before,
+  &:after {
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    transform: scale(0);
+    border-radius: 0;
+    transition: transform 0.2s ease, border-radius 0.1s ease 0.1s;
+  }
+
+  &:before {
+    border-bottom: 1px solid #ea1d2c;
+    border-left: 1px solid #ea1d2c;
+    transform-origin: 0 100%;
+  }
+  &:after {
+    border-top: 1px solid #ea1d2c;
+    border-right: 1px solid #ea1d2c;
+    transform-origin: 100% 0;
+  }
+
+  ${({ loading }) => {
+    return (
+      loading &&
+      css`
+        &&:before,
+        &&:after {
+          transform: scale(1);
+          border-radius: 4px;
+          color: #ea1d2c;
+        }
+      `
+    )
+  }}
 `
 
 export const CardProductsContent = styled.div`

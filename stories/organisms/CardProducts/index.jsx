@@ -12,6 +12,7 @@ export const CardProductsComponent = ({
   setRef,
   isEdit = true,
   showDiscount = true,
+  loading = false,
   onClick = () => {
     return
   },
@@ -42,7 +43,7 @@ export const CardProductsComponent = ({
   return (
     <div ref={setRef}>
       {
-        <WrapperCard>
+        <WrapperCard loading={loading}>
           {isEdit && (
             <>
               <TooltipCardProduct>
@@ -115,6 +116,7 @@ CardProductsComponent.propTypes = {
   image: PropTypes.any,
   isEdit: PropTypes.bool,
   isVisible: PropTypes.any,
+  loading: PropTypes.bool,
   onClick: PropTypes.func,
   redirect: PropTypes.func,
   setRef: PropTypes.any,

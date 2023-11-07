@@ -5,7 +5,9 @@ import React, {
   useRef,
   useState
 } from 'react'
+import { IconArrowBottom, IconArrowTop } from '../../../assets/icons'
 import {
+  ContainerBurger,
   MenuLeft,
   OptionMenu,
   Row,
@@ -14,57 +16,95 @@ import {
 
 export const Options = ({
   index,
-  active,
+  active = false,
   children,
   label,
   path,
-  handleClick,
-  icon
+  icon: IconComponent,
+  handleClick = () => { return }
 }) => {
-
-  const [height, setHeight] = useState(0)
-  const [heightMenu, setHeightMenu] = useState(0)
   const refButton = useRef()
   const refMenu = useRef()
   const location = useRouter()
 
+  const [menuState, setMenuState] = useState({
+    height: 0,
+    heightMenu: 0,
+    status: 'close'
+  })
+
   useEffect(() => {
-    setHeight(refButton.current.clientHeight - refMenu.current.clientHeight)
-    setHeightMenu(refMenu.current.clientHeight)
-    !!location?.pathname?.includes(path) && handleClick(index)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    const initialHeight = refButton.current.clientHeight - refMenu.current.clientHeight
+    const initialHeightMenu = refMenu.current.clientHeight
+
+    setMenuState(prevState => {return {
+      ...prevState,
+      height: initialHeight,
+      heightMenu: initialHeightMenu
+    }})
+
+    if (location.pathname.includes(path)) {
+      handleClick(index)
+    }
   }, [])
 
   useEffect(() => {
-    setHeight(active ? (height + heightMenu) : refButton.current.clientHeight - refMenu.current.clientHeight)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active])
+    const updatedHeight = active
+      ? (menuState.height + menuState.heightMenu)
+      : (refButton.current.clientHeight - refMenu.current.clientHeight)
+    const updatedStatus = active ? 'open' : 'close'
 
+    setMenuState(prevState => {return {
+      ...prevState,
+      height: updatedHeight,
+      status: updatedStatus
+    }})
+  }, [active])
   return (
-    <MenuLeft
-      active={active}
-      height={height}
-      onClick={e => {return handleClick(e)}}
-      ref={refButton}
-      type='button'
-    >
-      <Row active={active}>
-        {icon}
-        <Span active={active}>{label}</Span>
-      </Row>
-      <OptionMenu active={active} ref={refMenu}>
-        {children}
-      </OptionMenu>
-    </MenuLeft>
+    <>
+      <MenuLeft
+        active={active}
+        height={menuState.height}
+        id={`menu-id__${index}`}
+        index={index}
+        onClick={handleClick}
+        ref={refButton}
+      >
+        <Row active={active}>
+          <div style={{ display: 'flex' }}>
+
+            <IconComponent size={20} style={{ marginRight: '10px' }} />
+
+            <Span active={active}>{label}</Span>
+          </div>
+          <ContainerBurger>
+            <div
+              className='BurgerMenu__container'
+              onClick={() => {return handleClick(index)}}
+              role='button'
+            >
+              {active
+                ? <IconArrowTop color={'#252525'} size={15} />
+                : <IconArrowBottom color={'#25252569'} size={15} />
+              }
+            </div>
+          </ContainerBurger>
+        </Row>
+        <OptionMenu active={active} ref={refMenu}>
+          {children}
+        </OptionMenu>
+      </MenuLeft>
+    </>
   )
 }
+
 
 Options.propTypes = {
   active: PropTypes.bool,
   children: PropTypes.node,
-  handleClick: PropTypes.func,
-  icon: PropTypes.node,
-  index: PropTypes.number,
-  label: PropTypes.string,
-  path: PropTypes.string
+  handleClick: PropTypes.func.isRequired,
+  icon: PropTypes.any,
+  index: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired
 }

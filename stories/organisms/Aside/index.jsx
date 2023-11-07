@@ -7,28 +7,23 @@ import React, {
 import {
   IconChart,
   IconHome,
-  IconHorario,
   IconLogo,
   IconShopping,
   IconUser,
   IconWallet
 } from '../../../assets/icons'
 import {
-  ActiveLink,
   Button,
-  Overline,
-  Tooltip
+  Overline
 } from '../../atoms'
 
 import Link from 'next/link'
-import { BGColor } from '../../../assets/colors'
+import { Options } from '../../molecules'
+import { CustomLinkAside } from '../Aside/helpers'
 import {
-  AnchorRouter,
   ButtonGlobalCreate,
   Card,
   ContainerAside,
-  ContentAction,
-  DynamicNav,
   Info,
   LeftNav,
   Router
@@ -53,9 +48,11 @@ const MemoAside = ({
   setSalesOpen = () => { return },
   setShowComponentModal = () => { return }
 }) => {
+  const [show, setShow] = useState(false)
+  const [active, setActive] = useState(null)
+
   const pathname = location?.pathname === '/dashboard/[...name]'
 
-  const [show, setShow] = useState(false)
 
   const {
     storeName,
@@ -67,6 +64,70 @@ const MemoAside = ({
     handleClick(3)
     setShow(!show)
   }
+
+  const links = [
+    { href: '/dashboard',
+      icon: IconHome,
+      size: '15px',
+      label: 'Inicio'
+    },
+    { href: '/pedidos',
+      icon: IconShopping,
+      size: '15px',
+      label: 'Pedidos',
+      count: countPedido
+    },
+    { href: '/horarios',
+      icon: IconShopping,
+      size: '15px',
+      label: 'Horarios'
+    },
+    { href: '/ventas',
+      icon: IconShopping,
+      size: '15px',
+      label: 'Ventas'
+    },
+    { href: '/informes',
+      icon: IconChart,
+      size: '20px',
+      label: 'Informes'
+    },
+    { href: '/clientes',
+      icon: IconUser,
+      size: '20px',
+      label: 'Clientes'
+    },
+    { href: '/compras',
+      icon: IconUser,
+      size: '20px',
+      label: 'Compras'
+    },
+    { href: '/categorias',
+      icon: IconWallet,
+      size: '20px',
+      label: 'Categorías'
+    },
+    { href: '/products',
+      icon: IconShopping,
+      size: '20px',
+      label: 'Productos',
+      multiple: [
+        {
+          href: '/products',
+          icon: IconShopping,
+          size: '20px',
+          label: 'Productos',
+          subLinks: [
+            { href: '/products',
+              icon: IconShopping,
+              size: '20px',
+              label: 'Productos'
+            }
+          ]
+        }
+      ]
+    }
+  ]
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -80,7 +141,12 @@ const MemoAside = ({
       document.removeEventListener('keydown', handleKeyDown)
     }
   }, [salesOpen, setSalesOpen])
-
+  const handleMenu = (index) => {
+    setActive((prev) => {
+      const state = index === prev ? false : index
+      return state
+    })
+  }
   return (
     <>
       {isMobile &&
@@ -89,7 +155,8 @@ const MemoAside = ({
             onClick={() => { return setCollapsed(!collapsed) }}
             show={collapsed}
             zIndex='999'
-          />}
+          />
+      }
       <ContainerAside collapsed={isMobile ? collapsed : false}>
         <Card>
           <Info>
@@ -115,64 +182,70 @@ const MemoAside = ({
             </LeftNav>
             {(loading) ? null : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
               <a>
-                <h1 className='title_store'>{storeName}</h1>
+                <h1 className='title_store'>
+                  {storeName}
+                </h1>
               </a>
-            </Link>)}
+            </Link>)
+            }
             {pathname &&
                 <h1 className='title_store'>{storeName}</h1>
             }
             {uState == 1 &&
                 <div className='program_state'>
-                  <IconLogo color={'var(--color-icons-primary)'} size='20px' />
+                  <IconLogo color='var(--color-icons-primary)' size='20px' />
                   <h3 className='sub_title_store'>En pausa programada</h3>
                 </div>
             }
           </Info>
           <Router>
-            <ActiveLink activeClassName='active' href='/dashboard'>
-              <AnchorRouter><IconHome size='15px' />Inicio</AnchorRouter>
-            </ActiveLink>
-            <ActiveLink activeClassName='active' href='/pedidos'>
-              <AnchorRouter>
-                <div className='count_pedidos'>{countPedido}</div>
-                <IconShopping size='15px' />Pedidos
-              </AnchorRouter>
-            </ActiveLink>
-            <DynamicNav>
-              <ActiveLink activeClassName='active' href='/horarios'>
-                <AnchorRouter><IconHorario size='15px' />Horarios</AnchorRouter>
-              </ActiveLink>
-              <ContentAction onClick={() => { return setShowComponentModal(1) }}>
-                <IconHorario color={BGColor} size='15px' />
-              </ContentAction>
-            </DynamicNav>
-            <ActiveLink activeClassName='active' href='/ventas'>
-              <AnchorRouter><IconShopping size='15px' />Ventas</AnchorRouter>
-            </ActiveLink>
-            <ActiveLink activeClassName='active' href='/informes'>
-              <AnchorRouter><IconChart size='20px' />Informes</AnchorRouter>
-            </ActiveLink>
-            <ActiveLink activeClassName='active' href='/clientes'>
-              <AnchorRouter>  <IconUser size='20px' />Clientes</AnchorRouter>
-            </ActiveLink>
-            <Tooltip
-              borderRadius='20px'
-              bottom='35%'
-              left='65%'
-              position='top'
-              rotate='0deg'
-              text='Pronto'
-            >
-              <ActiveLink activeClassName='active' href='/compras'>
-                <AnchorRouter>  <IconUser size='20px' />Compras</AnchorRouter>
-              </ActiveLink>
-            </Tooltip>
-            <ActiveLink activeClassName='active' href='/categorias'>
-              <AnchorRouter>  <IconWallet size='20px' />Categorías</AnchorRouter>
-            </ActiveLink>
-            <ActiveLink activeClassName='active' href='/products'>
-              <AnchorRouter>  <IconShopping size='20px' />Productos</AnchorRouter>
-            </ActiveLink>
+            {links.map(link => {
+              const multiple = link.multiple || []
+              return (
+                <div key={link.href}>
+                  {!multiple.length > 0 &&
+                    <CustomLinkAside
+                      count={link.count}
+                      href={link.href}
+                      icon={link.icon}
+                      label={link.label}
+                      size={link.size}
+                    />
+                  }
+                  {Array.isArray(multiple) &&
+                    multiple.map((item, index) => {
+                      const {
+                        label,
+                        href,
+                        icon,
+                        size
+                      } = item || {}
+                      return (
+                        <Options
+                          active={index === active}
+                          handleClick={() => { return handleMenu(index) }}
+                          icon={icon}
+                          index={index}
+                          key={href}
+                          label={label}
+                          path={href}
+                        >
+                          {item.subLinks?.map((subLink) => {
+                            return (<CustomLinkAside
+                              href={subLink.href}
+                              icon={subLink.icon}
+                              key={subLink.href}
+                              label={subLink.label}
+                              size={size}
+                            />)
+                          })}
+                        </Options>
+
+                      )
+                    })
+                  }
+                </div>
+              )})}
           </Router>
         </Card>
       </ContainerAside>

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import * as React from 'react'
+
 export const IconLogout = ({ size, color }) => {
   return <svg
     height={size}
@@ -666,6 +667,31 @@ export const IconPlus = ({ style = {}, size, color }) => {
       fill={color}
       transform='translate(-41.94 -229.01)'
   /></svg>
+}
+export const IconLinePart = ({
+  size = 2,
+  color
+}) => {return (
+  <svg
+    fill='none'
+    height={size}
+    width={16}
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path
+      d='M1 1h14'
+      stroke={color}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      strokeMiterlimit={10}
+      strokeWidth={2}
+    />
+  </svg>
+)}
+
+IconLinePart.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.number
 }
 
 IconPlus.propTypes = {

@@ -1,0 +1,40 @@
+.ContentQuery {
+    height: 100px;
+  }
+  
+  .containerCard {
+    background-color: var(--bg-color);
+    cursor: pointer;
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    height: 90%;
+    border-bottom: 5px solid var(--primary-color);
+  }
+  
+  .card {
+    width: 50%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: var(--font-light);
+    color: #272323;
+  }
+  
+  .cardContentPrice {
+    display: flex;
+  }
+  
+  .cardTitle,
+  .cardPrice {
+    font-size: 16px;
+  }
+  
+  .cardTitle span {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  

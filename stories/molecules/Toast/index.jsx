@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BGColor, PColor } from '../../../assets/colors'
 import { IconClose } from './../../../assets/icons/index'
 import styles from './styles.module.css'

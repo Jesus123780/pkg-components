@@ -29,8 +29,6 @@ export const Header = ({
   onClickAskUserPermission = () => { return },
   setSalesOpen = () => { return }
 }) => {
-
-
   return (
     <HeaderC scrollNav={scrollNav} style={style} >
       <AwesomeModal

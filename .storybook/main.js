@@ -18,6 +18,11 @@ module.exports = {
       rules: [
         ...config.module.rules,
         {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: "javascript/auto",
+        },
+        {
           test: /\.(js|jsx|ts|tsx|mjs)$/,
           exclude: /node_modules/,
           use: {

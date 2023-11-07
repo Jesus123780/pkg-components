@@ -1,6 +1,7 @@
 export * from './Acordion'
 export * from './AlertBox'
 export * from './Carrusel'
+export * from './ContentQueryCard'
 export * from './DaySelector'
 export * from './Draggable'
 export * from './DropDownMenuHeader'

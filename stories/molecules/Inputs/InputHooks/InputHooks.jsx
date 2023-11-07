@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import React, {
   useEffect,
   useReducer,
@@ -16,6 +17,7 @@ import {
   valNit,
   validatePhoneNumber
 } from '../../../../utils'
+import { simpleVerifyEmail } from './helpers'
 import {
   BoxInput,
   InputV,
@@ -26,6 +28,7 @@ import {
   TextAreaInput,
   Tooltip
 } from './styled'
+
 
 export const InputHooks = ({
   autoComplete = 'off',
@@ -38,6 +41,7 @@ export const InputHooks = ({
   display = '',
   email = false,
   error = '',
+  labelTop = '',
   fontSize = '14px',
   height,
   labelColor,
@@ -75,7 +79,8 @@ export const InputHooks = ({
   const [errors, setError] = useState(error)
   const [isPasswordShown, setIsPasswordShown] = useState(false)
   const [message, setMessage] = useState('El campo no debe estar vacío')
-  // HM
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [suggestionList, setSuggestionList] = useState([])
   const errorFunc = (e, v, m) => {
     setError(v)
     v && setMessage(m)
@@ -84,9 +89,7 @@ export const InputHooks = ({
   useEffect(() => {
     setError(error)
   }, [error])
-  const [showSuggestions, setShowSuggestions] = useState(false)
-  const [suggestionList, setSuggestionList] = useState([])
-  // Validation email
+
   const topLevelEmailDomainList = [
     'gmail.com',
     'outlook.com',
@@ -132,10 +135,10 @@ export const InputHooks = ({
         setShowSuggestions(true)
         setSuggestionList(suggestionList)
       } else {
-        const errorMessage = simpleVerifyEmail(email)
+        const errorMessage = simpleVerifyEmail(email, setMessage)
         // eslint-disable-next-line no-empty
         if (errorMessage) {
-          // mysql.services.clever-cloud.co     
+          // mysql.services.clever-cloud.co
         }
       }
     }
@@ -152,13 +155,11 @@ export const InputHooks = ({
     switch (action.type) {
       case 'arrowUp':
         return {
-          selectedIndex:
-            state.selectedIndex !== 0 ? state.selectedIndex - 1 : topLevelEmailDomainList.length - 1
+          selectedIndex: state.selectedIndex !== 0 ? state.selectedIndex - 1 : topLevelEmailDomainList.length - 1
         }
       case 'arrowDown':
         return {
-          selectedIndex:
-            state.selectedIndex !== topLevelEmailDomainList.length - 1 ? state.selectedIndex + 1 : 0
+          selectedIndex: state.selectedIndex !== topLevelEmailDomainList.length - 1 ? state.selectedIndex + 1 : 0
         }
       case 'Backspace':
         return {
@@ -242,35 +243,16 @@ export const InputHooks = ({
       if (validatePhoneNumber(e.target.value, passConfirm?.passValue)) { return errorFunc(e, true, 'Las contraseñas no coinciden.') } errorFunc(e, false, '')
     }
     if (e) {
-      return errorFunc(e, false, '') 
+      return errorFunc(e, false, '')
     }
-  }
-  const simpleVerifyEmail = (email) => {
-    const emailParts = email.split('@')
-    const emailDomain = emailParts[1]
-    let errorMessage = ''
-    if (emailDomain !== undefined) {
-      if (emailDomain === '') {
-        errorMessage = 'please provide email address domain'
-        setMessage(errorMessage)
-      } else {
-        // eslint-disable-next-line no-useless-escape
-        const validDomainRegExp = /^((?:(?:(?:\w[\.\-\+]?)*)\w)+)((?:(?:(?:\w[\.\-+]?){0,62})\w)+)\.(\w{2,6})$/
-        if (!emailDomain.match(validDomainRegExp)) {
-          errorMessage = 'please verify email address domain'
-          setMessage(errorMessage)
-        }
-      }
-    }
-    return errorMessage
   }
   const isAutoComplete = !autoComplete ? 'off' : autoComplete
   const isEmailValue = email ? 'off' : isAutoComplete
   const handleBlur = () => {
-    // setTimeout(() => setShowSuggestions(false))
+    setTimeout(() => {return setShowSuggestions(false)})
   }
   const handleFocus = () => {
-    // setTimeout(() => setShowSuggestions(true))
+    setTimeout(() => {return setShowSuggestions(true)})
   }
   const asType = numeric ? 'number' : type
   return (
@@ -288,7 +270,7 @@ export const InputHooks = ({
         ? <div>
           <InputV
             {...rest}
-            autoComplete={type === 'password' ? 'current-password' : isEmailValue }
+            autoComplete={type === 'password' ? 'current-password' : isEmailValue}
             autoFocus={autoFocus}
             border={border}
             checked={checked}
@@ -314,7 +296,7 @@ export const InputHooks = ({
           />
           {(email && !!showSuggestions) && (
             <div>
-              <Listbox role='listbox' >
+              <Listbox role='listbox'>
                 {suggestionList.map((suggestion, index) => {
                   return (
                     <List
@@ -368,9 +350,13 @@ export const InputHooks = ({
       {<LabelInput
         error={error}
         labelColor={labelColor}
+        labelTop={labelTop}
+        onClick={() => { return refInput.current.focus() }}
         type={type}
         value={value}
-      >{title}</LabelInput>}
+      >
+        {title}
+      </LabelInput>}
       {errors && <Tooltip>{message}</Tooltip>}
     </BoxInput>
   )
@@ -392,6 +378,7 @@ InputHooks.propTypes = {
   fontSize: PropTypes.string,
   height: PropTypes.any,
   labelColor: PropTypes.any,
+  labelTop: PropTypes.any,
   letters: PropTypes.any,
   margin: PropTypes.string,
   maxWidth: PropTypes.string,

@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-
 import React, { useState } from 'react'
 import {
   IconComment,
@@ -30,23 +29,20 @@ export const MemoCardProductSimple = ({
   del,
   edit,
   fileInputRef,
-  free,
+  free = false,
   buttonComment = false,
   asComment = false,
   decrement = true,
   increment = true,
-  handleDecrement,
   handleFree,
-  handleIncrement,
   height,
-  index,
-  onFileInputChange,
+  index = 0,
   pId,
-  pName,
-  ProDescription,
+  pName = '',
+  ProDescription = '',
   ProDescuento = 0,
-  ProPrice,
-  ProQuantity,
+  ProPrice = 0,
+  ProQuantity = 0,
   render = null,
   sum,
   margin,
@@ -56,24 +52,15 @@ export const MemoCardProductSimple = ({
   activeComment,
   dataExtra = [],
   dataOptional = [],
-  dispatch = () => {
-    return
-  },
-  handleComment = () => {
-    return
-  },
-  handleDelete = () => {
-    return
-  },
-  handleFreeProducts = () => {
-    return
-  },
-  onClick = () => {
-    return
-  },
-  onTargetClick = () => {
-    return
-  }
+  dispatch = () => { return },
+  handleComment = () => { return },
+  handleDecrement = () => { return },
+  handleDelete = () => { return },
+  handleFreeProducts = () => { return },
+  handleIncrement = () => { return },
+  onClick = () => { return },
+  onFileInputChange = () => { return },
+  onTargetClick = () => { return }
 }) => {
   const router = useRouter()
   const [startAnimateUp, setStartAnimateUp] = useState('')
@@ -114,7 +101,7 @@ export const MemoCardProductSimple = ({
   // Determina si mostrar las categorías
   const showCategories = dataExtra.length > 0 || dataOptional.length > 0
 
-  // Crea los formateadores
+  // Crea los formateados
   const conjunctionFormatter = new Intl.ListFormat('es', { style: 'long', type: 'conjunction' })
   const unitFormatter = new Intl.ListFormat('es', { style: 'narrow', type: 'unit' })
   // Formatea los datos extras
@@ -129,6 +116,8 @@ export const MemoCardProductSimple = ({
   const finalOptionalFormat = unitFormatter.format(formattedOptionalData)
   // Une las dos listas
   const listCategories = `${finalExtraFormat}, ${finalOptionalFormat}`
+
+  const priceOrFree = ProPrice > 0 ? `$ ${numberFormat(ProPrice)}` : 'Gratis'
 
   return (
     <>
@@ -200,7 +189,7 @@ export const MemoCardProductSimple = ({
 
             <div className='flex-wrap'>
               <span className='price'>
-                { free === 1 ? 'Gratis' : (ProPrice > 0 ? `$ ${numberFormat(ProPrice)}` : 'Gratis') }
+                { free === 1 ? 'Gratis' : priceOrFree }
               </span>
               {ProDescuento > 0 && (
                 <span className='price discount'>{` $ ${numberFormat(

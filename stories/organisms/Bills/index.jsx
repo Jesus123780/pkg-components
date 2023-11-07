@@ -13,7 +13,7 @@ import styles from './Bill.module.css'
  */
 export const Bill = ({
   client,
-  urlStore = new URL(process.env.MAIN_URL_BASE),
+  urlStore = null,
   bill = {},
   products = [],
   restaurant = {},
@@ -30,11 +30,12 @@ export const Bill = ({
       <h2 className={styles.title} style={{ margin: '0 0 20px 0' }}>{process.env.BUSINESS_TITLE}</h2>
       <div className={styles.columns} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <span style={{ margin: '0 0 20px 0' }}>No dejes de comprar</span>
+        {urlStore &&
         <QRCode
           size={100}
           value={urlStore}
           viewBox={`0 0 256 256`}
-        />
+        />}
       </div>
       <div className={styles['logo']}>
         <Image

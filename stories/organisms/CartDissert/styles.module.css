@@ -1,4 +1,4 @@
-.content-card {
+.contentCard {
   position: relative;
   display: flex;
   -webkit-flex-direction: space-between;
@@ -17,20 +17,21 @@
   cursor: pointer;
   box-shadow: 0px 4px 10px rgb(0 0 0 / 5%), 0px 4px 16px rgb(0 0 0 / 8%);
 }
-.content-card__input {
+.contentCard__input {
   padding: 10px;
-  width: 80%;
+  width: 65%;
 }
 
-.content-card:hover .content-card__actions {
+.contentCard:hover .contentCard__actions {
   right: -20px;
 }
-.content-card__button {
+
+.contentCard__button {
   background-color: transparent;
   cursor: pointer;
 }
 
-.content-card__actions {
+.contentCard__actions {
   transition: 0.1s;
 
   margin: auto;
@@ -40,7 +41,7 @@
   width: 100px;
 }
 
-.content-card-flex {
+.contentCard-flex {
   display: flex;
 }
 
@@ -63,4 +64,8 @@
   font-size: 1rem;
   line-height: 1.25em;
   font-weight: 600;
+}
+
+.contentCardFlex {
+  display: flex;
 }

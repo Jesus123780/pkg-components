@@ -101,6 +101,7 @@ export const OptionalExtraProducts = ({
             }`
             return (
               <Column
+                as='ul'
                 border={`2px solid ${
                   incompleteList ? NorthTexasGreen : 'transparent'
                 }`}
@@ -113,6 +114,7 @@ export const OptionalExtraProducts = ({
                     padding: '10px',
                     marginBottom: '20px',
                     display: 'flex',
+                    zIndex: 999,
                     alignItems: 'center'
                   }}
                 >

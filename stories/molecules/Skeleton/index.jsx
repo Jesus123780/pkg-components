@@ -2,12 +2,21 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-const SkeletonComponent = ({ height, width = '100%', margin, numberObject }) => {
+const SkeletonComponent = ({
+  height,
+  width = '100%',
+  margin,
+  className,
+  borderRadius,
+  numberObject = 1
+}) => {
   return (
-    <React.Fragment>
-      {Array.from(Array(numberObject || 1).keys()).map((value) => {
+    <>
+      {Array.from(Array(numberObject).keys()).map((value) => {
         return (
           <Container
+            className={className}
+            borderRadius={borderRadius}
             height={`${height}px`}
             key={value + 1}
             margin={`${margin}`}
@@ -17,22 +26,22 @@ const SkeletonComponent = ({ height, width = '100%', margin, numberObject }) => 
           </Container>
         )
       })}
-    </React.Fragment>
+    </>
   )
 }
 
 SkeletonComponent.propTypes = {
-  height: PropTypes.any,
-  margin: PropTypes.any,
+  height: PropTypes.number,
+  margin: PropTypes.string,
   numberObject: PropTypes.number,
-  width: PropTypes.string
+  width: PropTypes.number
 }
 
 export const Skeleton = React.memo(SkeletonComponent)
 
 Skeleton.propTypes = {
   height: PropTypes.number,
-  numberObject: PropTypes.number,
+  numberObject: PropTypes.string,
   width: PropTypes.number
 }
 const Container = styled.div`
@@ -42,7 +51,8 @@ const Container = styled.div`
     margin: ${({ margin }) => {
     return margin || 0
   }};
-    border-radius: 2px;
+    border-radius: ${({ borderRadius }) => { return borderRadius || '2px' }};
+    width: ${({ width }) => { return width || 'auto' }};
     height: ${({ height }) => {
     return height || '150px'
   }};

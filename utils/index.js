@@ -5,8 +5,35 @@ export const validateEmail = email => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
 }
-export const numberFormat = value => { return value ? (parseInt(value) ? new Intl.NumberFormat('es-CO').format(parseFloat(`${value}`.replace(/\./g, ''))) : value) : (value) }
+/**
+ * Formatea un valor como un número siguiendo el formato de Colombia.
+ * Si el valor no es un número válido, lo devuelve tal como está.
+ *
+ * @param {string|number} value - El valor a formatear.
+ * @returns {string} El valor formateado como número o el valor original si no es numérico.
+ */
+export const numberFormat = value => {
+  // Verifica si el valor es nulo o indefinido, devolviendo el mismo valor.
+  if (value === null || value === undefined) {
+    return value
+  }
 
+  // Convierte el valor a string y elimina puntos.
+  const stringValue = `${value}`.replace(/\./g, '')
+
+  // Intenta convertir a número y formatear si es posible.
+  const numberValue = parseFloat(stringValue)
+  if (!isNaN(numberValue)) {
+    return new Intl.NumberFormat('es-CO', {
+      minimumFractionDigits: 0,
+      style: 'decimal',
+      maximumFractionDigits: 0
+    }).format(numberValue)
+  }
+
+  // Devuelve el valor original si no es un número.
+  return value
+}
 /**
  * Description
  * @param {any} phoneNumber type number or string

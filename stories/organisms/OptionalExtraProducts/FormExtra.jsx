@@ -50,7 +50,7 @@ export const FormExtra = ({
             <div>
               <p className='garnish-choices__title'>{finalTitle}</p>
               <p className='garnish-choices__title-desc'>
-                Escoge hasta {isEdit ? selectedExtra?.numberLimit : numberLimit}{' '}
+                Escoge hasta  {isEdit ? selectedExtra?.numberLimit : numberLimit}{' '}
                 opciones.
               </p>
             </div>

@@ -15,19 +15,17 @@ export const InputHookProducts = ({
   ...props
 }) => {
   return (
-    <>
-      <Input
-        {...props}
-        borderRadius={borderRadius}
-        color={color}
-        inputText={inputText}
-        onChange={onChange ? e => { return onChange(e.target.value) } : undefined}
-        onFocus={onFocus}
-        placeholder={placeholder || ''}
-        type={type || 'text'}
-        value={value || ''}
-      />
-    </>
+    <Input
+      {...props}
+      borderRadius={borderRadius}
+      color={color}
+      inputText={inputText}
+      onChange={onChange ? e => { return onChange(e.target.value) } : undefined}
+      onFocus={onFocus}
+      placeholder={placeholder || ''}
+      type={type || 'text'}
+      value={value || ''}
+    />
   )
 }
 
