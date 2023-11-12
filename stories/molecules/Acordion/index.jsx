@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import React, {
+import {
   useEffect,
   useRef,
   useState
