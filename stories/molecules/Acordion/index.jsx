@@ -34,7 +34,8 @@ export const Options = ({
   })
 
   useEffect(() => {
-    const initialHeight = refButton.current.clientHeight - refMenu.current.clientHeight
+    if (!refButton?.current || !refMenu?.current) return
+    const initialHeight = refButton?.current?.clientHeight - refMenu?.current?.clientHeight
     const initialHeightMenu = refMenu.current.clientHeight
 
     setMenuState(prevState => {return {
@@ -51,7 +52,7 @@ export const Options = ({
   useEffect(() => {
     const updatedHeight = active
       ? (menuState.height + menuState.heightMenu)
-      : (refButton.current.clientHeight - refMenu.current.clientHeight)
+      : (refButton?.current?.clientHeight - refMenu?.current?.clientHeight)
     const updatedStatus = active ? 'open' : 'close'
 
     setMenuState(prevState => {return {
@@ -60,41 +61,40 @@ export const Options = ({
       status: updatedStatus
     }})
   }, [active])
+
   return (
-    <>
-      <MenuLeft
-        active={active}
-        height={menuState.height}
-        id={`menu-id__${index}`}
-        index={index}
-        onClick={handleClick}
-        ref={refButton}
-      >
-        <Row active={active}>
-          <div style={{ display: 'flex' }}>
+    <MenuLeft
+      active={active}
+      height={menuState?.height}
+      id={`menu-id__${index}`}
+      index={index}
+      onClick={handleClick}
+      ref={refButton}
+    >
+      <Row active={active}>
+        <div style={{ display: 'flex' }}>
 
-            <IconComponent size={20} style={{ marginRight: '10px' }} />
+          {IconComponent && <IconComponent size={20} style={{ marginRight: '10px' }} />}
 
-            <Span active={active}>{label}</Span>
+          <Span active={active}>{label}</Span>
+        </div>
+        <ContainerBurger>
+          <div
+            className='BurgerMenu__container'
+            onClick={() => {return handleClick(index)}}
+            role='button'
+          >
+            {active
+              ? <IconArrowTop color={'#252525'} size={15} />
+              : <IconArrowBottom color={'#25252569'} size={15} />
+            }
           </div>
-          <ContainerBurger>
-            <div
-              className='BurgerMenu__container'
-              onClick={() => {return handleClick(index)}}
-              role='button'
-            >
-              {active
-                ? <IconArrowTop color={'#252525'} size={15} />
-                : <IconArrowBottom color={'#25252569'} size={15} />
-              }
-            </div>
-          </ContainerBurger>
-        </Row>
-        <OptionMenu active={active} ref={refMenu}>
-          {children}
-        </OptionMenu>
-      </MenuLeft>
-    </>
+        </ContainerBurger>
+      </Row>
+      <OptionMenu active={active} ref={refMenu}>
+        {children}
+      </OptionMenu>
+    </MenuLeft>
   )
 }
 

@@ -1,0 +1,71 @@
+.header {
+    color: #fff;
+    text-align: center;
+    background-image: url('/Images/DEFAULTBANNER.png');
+    background-size: cover;
+    background-position: center;
+  }
+.wrapperHeader {
+    color: #fff;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    padding: 50px 0;
+    margin: auto;
+    max-width: 800px;
+  }
+  
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 50px 0;
+  }
+  
+  .categoryTag {
+    background-color: #0062ff;
+    color: white;
+    padding: 5px 15px;
+    display: inline-block;
+    width: max-content;
+    border-radius: 15px;
+    font-size: 0.8em;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 2.5em;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    text-wrap: wrap;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    font-size: 1.2em;
+    margin: 0;
+    flex-wrap: wrap;
+    display: block;
+    text-align: center;
+    padding: 0;
+  }
+  
+  .date {
+    margin-top: 20px;
+    font-size: 0.9em;
+  }
+  
+  @media (max-width: 960px) {
+    .title {
+      font-size: 1.5em;
+    }
+  
+    .subtitle {
+      font-size: 1em;
+      display: none;
+    }
+
+    .date {
+      font-size: 0.8em;
+      text-align: center;
+    }
+  }

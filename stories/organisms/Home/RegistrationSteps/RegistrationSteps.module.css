@@ -1,0 +1,59 @@
+.container {
+    max-width: 750px; /* Ajusta según tu diseño */
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif; /* Ajusta la fuente según tu preferencia */
+  }
+  
+  .title {
+    font-size: 34px;
+    color: #333;
+    text-wrap: wrap;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .description {
+    font-size: 16px;
+    color: #666;
+    text-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  
+  .listItem {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .listItem::before {
+    content: '• ';
+    color: #FF4500; /* Color del bullet, ajusta según tu diseño */
+  }
+  
+  .imageContainer {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Añade estilos responsivos si es necesario */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .title {
+      font-size: 20px;
+    }
+  
+    .description, .listItem {
+      font-size: 14px;
+    }
+  }
+  

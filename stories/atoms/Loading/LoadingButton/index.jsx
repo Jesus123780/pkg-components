@@ -1,16 +1,12 @@
 import PropTypes from 'prop-types'
-import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { PColor } from '../../../../assets/colors'
-
+import styles from './Loader.module.css'
 export const LoadingButton = ({ color }) => {
   return (
-    <EllipsisSpinner color={color}>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </EllipsisSpinner>
+    <div className={styles.loader}>
+      <div className={styles.spinner} style={{ backgroundColor: color }}></div>
+    </div>
   )
 }
 

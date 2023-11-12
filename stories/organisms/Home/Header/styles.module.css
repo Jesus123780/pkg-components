@@ -1,0 +1,44 @@
+/* Header.module.css */
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    z-index: 99;
+    height: 100px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .logo {
+    cursor: pointer;
+  }
+  
+  .nav {
+    display: flex;
+    list-style: none;
+  }
+  
+  .navItem {
+    padding: 0 15px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  .navItem a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 960px) {
+    .navItem a {
+      display: none;
+    }
+  }

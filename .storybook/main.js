@@ -13,10 +13,29 @@ module.exports = {
 
   // Modify webpackFinal to use your custom webpack configuration
   webpackFinal: async (config) => {
+    const fileLoaderRule = config.module.rules.find(rule =>
+      rule.test && rule.test.test('.svg')
+    )
+      // Sobrescribe la regla para excluir archivos SVG
+      fileLoaderRule.exclude = /\.svg$/;
+
     config.module = {
       ...config.module,
       rules: [
         ...config.module.rules,
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[ext]',
+                publicPath: '/', // Ajusta según tus necesidades
+                context: 'public', // Ajusta según tus necesidades
+              },
+            },
+          ],
+        },
         {
           test: /\.mjs$/,
           include: /node_modules/,
