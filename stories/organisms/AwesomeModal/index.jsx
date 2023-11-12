@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, {
+import {
   useCallback,
   useEffect,
   useState
@@ -159,18 +159,16 @@ export const AwesomeModal = ({
           state={state}
         >
           {header && (
-            <>
-              <ModalHeader>
-                <ModalTitle>{title}</ModalTitle>
-                <BtnClose
-                  onClick={() => {
-                    return question ? onShowQuestion() : hide()
-                  }}
-                >
-                  <IconClose color={PColor} size={sizeIconClose} />
-                </BtnClose>
-              </ModalHeader>
-            </>
+            <ModalHeader>
+              <ModalTitle>{title}</ModalTitle>
+              <BtnClose
+                onClick={() => {
+                  return question ? onShowQuestion() : hide()
+                }}
+              >
+                <IconClose color={PColor} size={sizeIconClose} />
+              </BtnClose>
+            </ModalHeader>
           )}
           <ModalBody
             backgroundColor={backgroundColor}

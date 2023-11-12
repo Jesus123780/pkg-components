@@ -55,13 +55,11 @@ const optionsTest = {
 }
 
 export const HorizontalBarChart = ({ data, options }) => {return (
-  <>
-    <div className='header'>
-      <div className='links'>
-      </div>
-      <Line data={data || dataTest} options={options || optionsTest} />
+  <div className='header'>
+    <div className='links'>
     </div>
-  </>
+    <Line data={data || dataTest} options={options || optionsTest} />
+  </div>
 )}
 
 HorizontalBarChart.propTypes = {
@@ -70,13 +68,11 @@ HorizontalBarChart.propTypes = {
 }
 
 export const Circle = ({ data, options }) => {return (
-  <>
-    <div className='header'>
-      <div className='links'>
-      </div>
-      <Pie data={data || dataTest} options={options || optionsTest} />
+  <div className='header'>
+    <div className='links'>
     </div>
-  </>
+    <Pie data={data || dataTest} options={options || optionsTest} />
+  </div>
 )}
 
 Circle.propTypes = {
@@ -85,13 +81,11 @@ Circle.propTypes = {
 }
 
 export const DoughnutChar = ({ data, options }) => {return (
-  <>
-    <div className='header'>
-      <div className='links'>
-      </div>
-      <Doughnut data={data || dataTest} options={options || optionsTest} />
+  <div className='header'>
+    <div className='links'>
     </div>
-  </>
+    <Doughnut data={data || dataTest} options={options || optionsTest} />
+  </div>
 )}
 
 DoughnutChar.propTypes = {
@@ -99,13 +93,11 @@ DoughnutChar.propTypes = {
   options: PropTypes.any
 }
 export const BarChat = ({ data, options }) => {return (
-  <>
-    <div className='header'>
-      <div className='links'>
-      </div>
-      <Bar data={data || dataTest} options={options || optionsTest} />
+  <div className='header'>
+    <div className='links'>
     </div>
-  </>
+    <Bar data={data || dataTest} options={options || optionsTest} />
+  </div>
 )}
 
 BarChat.propTypes = {

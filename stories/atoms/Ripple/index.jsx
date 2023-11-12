@@ -16,12 +16,11 @@ export const RippleButton = props => {
     widthButton
   } = props
   const button = useRef(null)
-
   const handleRippleEffect = (e) => {
-    const button = e.currentTarget
+    const button = e?.currentTarget
 
     const ripple = document.createElement('span')
-    const rect = button.getBoundingClientRect()
+    const rect = button?.getBoundingClientRect()
     const size = Math.max(rect.width, rect.height)
     const left = e.pageX - rect.left - size / 2 - window.pageXOffset
     const top = e.pageY - rect.top - size / 2 - window.pageYOffset
@@ -47,7 +46,7 @@ export const RippleButton = props => {
     }
   }
 
-
+  if (!button) return <></>
   return (
     <Button
       active={active}

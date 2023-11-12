@@ -68,10 +68,10 @@ export const LabelInput = styled.label`
     const errorColor = error ? PColor : SFVColor
     return value ? SFColor : errorColor
   }};
+  font-family: PFont-Light;
   pointer-events: none;
   white-space: nowrap;
   width: min-content;
-  font-family: PFont-Light;
   background-color: ${({ value }) => {
     return value ? BGColor : 'transparent'
   }};
@@ -79,7 +79,7 @@ export const LabelInput = styled.label`
     return value ? '16px' : '0px'
   }};
   @media only screen and (max-width: 960px) {
-    top: 12px;
+    top: ${({ value }) => { return value ? '0px' : '25px' }};
   }
   ${(props) => {
     return (
