@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
+import Sales from '../../../../assets/images/sales.webp'
 import styles from './RegistrationSteps.module.css'
 
 export const RegistrationSteps = () => {
@@ -24,7 +25,7 @@ export const RegistrationSteps = () => {
           height={700}
           layout='responsive'
           objectFit='cover'
-          src='/Images/sales.webp'
+          src={Sales}
           width={1000}
         />
       </div>

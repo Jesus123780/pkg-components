@@ -1,7 +1,7 @@
 .header {
     color: #fff;
     text-align: center;
-    background-image: url('/Images/DEFAULTBANNER.png');
+    background-image: url('../../../../assets/images/DEFAULTBANNER.png');
     background-size: cover;
     background-position: center;
   }
