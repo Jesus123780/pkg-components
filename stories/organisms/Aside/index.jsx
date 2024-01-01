@@ -59,6 +59,7 @@ const MemoAside = ({
     idStore,
     uState
   } = dataStore || {}
+
   const handleOpenCreateProduct = () => {
     setShowComponentModal(3)
     handleClick(3)

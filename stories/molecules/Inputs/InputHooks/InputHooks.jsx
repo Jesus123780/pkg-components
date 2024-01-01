@@ -249,10 +249,8 @@ export const InputHooks = ({
   const isAutoComplete = !autoComplete ? 'off' : autoComplete
   const isEmailValue = email ? 'off' : isAutoComplete
   const handleBlur = () => {
-    setTimeout(() => {return setShowSuggestions(false)})
   }
   const handleFocus = () => {
-    setTimeout(() => {return setShowSuggestions(true)})
   }
   const asType = numeric ? 'number' : type
   return (
@@ -294,7 +292,7 @@ export const InputHooks = ({
             type={isPasswordShown ? 'text' : asType}
             value={value}
           />
-          {(email && !!showSuggestions) && (
+          {(!!showSuggestions) && (
             <div>
               <Listbox role='listbox'>
                 {suggestionList.map((suggestion, index) => {

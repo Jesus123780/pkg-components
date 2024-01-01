@@ -174,7 +174,7 @@ export const MemoModalDetailOrder = ({
                 ) : (
                   getAllPedidoStore?.map((sale, index) => {
                     const producto = sale?.getAllShoppingCard?.productFood || {}
-                    const priceTotal = sale?.getAllShoppingCard?.cantProducts * producto.ProPrice
+                    const priceTotal = sale?.getAllShoppingCard?.cantProducts * sale.getAllShoppingCard.priceProduct || 0
                     const activeComment = sale?.getAllShoppingCard?.comments?.length > 0
                     return (
                       <div key={index}>
