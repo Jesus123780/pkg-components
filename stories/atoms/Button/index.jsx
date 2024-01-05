@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { IconLoading } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
-import styles from './button.module.css'
 import { CustomButton, LoadingWrapper } from './styled'
+import styles from './button.module.css'
 
 /**
  * Primary UI component for user interaction

@@ -1,16 +1,18 @@
 import link from 'next/link'
 import styled, { css } from 'styled-components'
 import {
-    BColor,
-    BGColor,
-    PColor,
-    PLVColor,
-    SFVColor
+  BColor,
+  BGColor,
+  PColor,
+  PLVColor,
+  SFVColor
 } from '../../../assets/colors'
 
 export const Router = styled.div`
     background-color: ${`${SFVColor}69`};
     height: 100vw;
+    overflow-y: auto;
+    max-height: 70vh;
     @media (max-width: 768px){
         height: auto;
     }

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { PColor } from '../../../assets/colors'
 import { IconSearch } from '../../../assets/icons'
+import styled from 'styled-components'
 
 const SearchBarContainer = styled.div`
   align-items: center;
-  background-color: var(--color-base-white);
+  background-color: ${({ backgroundColor }) => { return backgroundColor  || 'var(--color-base-white)' }};
   border-radius: 4px;
   border: 1px solid ${({ border = '#f2f2f2' }) => {return border}};
   display: flex;
@@ -33,6 +33,7 @@ export const SearchBar = ({
   width = '100%',
   padding = '0px 30px 0',
   border,
+  backgroundColor,
   margin = '0',
   handleChange = () => {
     return
@@ -55,7 +56,7 @@ export const SearchBar = ({
 
   return (
     <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin, width }}>
-      <SearchBarContainer border={border} padding={padding}>
+      <SearchBarContainer backgroundColor={backgroundColor} border={border} padding={padding}>
         <SearchIcon>
           <IconSearch color={PColor} size='25px' />
           <i className='fas fa-search' />

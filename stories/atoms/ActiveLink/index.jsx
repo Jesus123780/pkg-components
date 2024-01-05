@@ -25,5 +25,5 @@ ActiveLink.propTypes = {
   activeClassName: PropTypes.string.isRequired,
   children: PropTypes.object.isRequired,
   href: PropTypes.string.isRequired,
-  asPath: PropTypes.string.isRequired
+  asPath: PropTypes.string
 }

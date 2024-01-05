@@ -181,20 +181,20 @@ export const ModalBody = styled.div`
     min-height: ${({ height }) => { return height || 'auto' }};
     padding: ${({ padding }) => { return padding || '0' }};
 .modal-wrapper {
-    width: 300px;
-    min-width: 300px;
     background-color: #FFFFFF;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    height: 140px;
-    box-shadow: -1px -1px 15px -6px rgba(0,0,0,0.75);
     border-radius: 5px;
+    bottom: 0;
+    box-shadow: -1px -1px 15px -6px rgba(0,0,0,0.75);
+    height: 140px;
+    left: 0;
+    margin: auto;
+    min-width: 300px;
     padding: 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    z-index: 91000;
     h2 {
         text-align: center;
         font-size: 15px;
@@ -229,7 +229,7 @@ export const BtnConfirm = styled.button`
     flex-direction: row;
     padding: ${({ padding }) => { return padding || '5px' }};
     cursor: pointer;
-    border: ${({ border }) => { return border ? `${`1px solid ${SEGColor}`}` : 'none' }};
+    border: ${({ border }) => { return border ? `1px solid  ${SEGColor}` : 'none' }};
     border-radius: 30px;
     font-size: 12px;
     display: flex;
