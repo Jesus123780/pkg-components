@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styles from './ContentQueryCard.module.css'
+import { IconStore, IconLogo, PColor } from '../../../assets'
 
 export const ContentQueryCard = ({
   day = 'hoy',
@@ -18,15 +19,21 @@ export const ContentQueryCard = ({
           <div className={styles.cardHeader}>
             <div className={styles.cardTitle}>Total Pedidos de {day}</div>
           </div>
-          <div className={styles.cardTitle}>
-            <span>0</span> Pedidos
-          </div>
           <div className={styles.cardContentPrice}>
-            <div className={styles.cardPrice}>
-              <span>Deli</span> ${numberFormat(delivery) || '0.00'}
+            <div
+              className={styles.cardPrice}
+              title={process.env.BUSINESS_TITLE}
+              style={{
+                marginBottom: '5px',
+                borderBottom: '1px solid var(--color-neutral-gray)',
+                paddingBottom: '5px'
+              }}>
+              <IconLogo color={PColor} size='25px' />
+              $ {numberFormat(delivery) || '0.00'}
             </div>
-            <div className={styles.cardPrice}>
-              <span>Restaurante</span> ${numberFormat(restaurant) || '0.00'}
+            <div className={styles.cardPrice} title={process.env.BUSINESS_TITLE}>
+              <IconStore color={PColor} size='35px' />
+              $ {numberFormat(restaurant) || '0.00'}
             </div>
           </div>
         </div>

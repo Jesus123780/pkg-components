@@ -12,7 +12,6 @@ export const Router = styled.div`
     background-color: ${`${SFVColor}69`};
     height: 100vw;
     overflow-y: auto;
-    max-height: 70vh;
     @media (max-width: 768px){
         height: auto;
     }

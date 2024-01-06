@@ -16,6 +16,7 @@ export const UserProfile = ({
   dataDevice = [],
   deviceId = null,
   loading = false,
+  asEdited = false,
   loadingSubmit = false,
   handleSubmit = () => { return },
   onChange = () => { return }
@@ -49,10 +50,12 @@ export const UserProfile = ({
       handleSubmit()
     }
   }
+  console.log(editingProfile)
   const memoizedComponents = {
     Perfil: (
       <ProfileInfo
         dataForm={dataForm}
+        asEdited={asEdited}
         editingAddress={editingAddress}
         editingDataProfile={editingDataProfile}
         editingProfile={editingProfile}
@@ -116,6 +119,7 @@ UserProfile.propTypes = {
   }),
   dataStore: PropTypes.object,
   deviceId: PropTypes.any,
+  asEdited: PropTypes.bool,
   handleSubmit: PropTypes.func,
   loading: PropTypes.bool,
   loadingSubmit: PropTypes.bool,

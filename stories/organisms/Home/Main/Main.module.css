@@ -18,6 +18,7 @@
   .overlay {
     background-color: rgba(0, 0, 0, 0.5);
     padding: 50px 0;
+    height: 100%;
   }
   
   .categoryTag {

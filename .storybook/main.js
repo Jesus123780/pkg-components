@@ -15,9 +15,18 @@ module.exports = {
   webpackFinal: async (config) => {
     const fileLoaderRule = config.module.rules.find(rule =>
       rule.test && rule.test.test('.svg')
-    )
+    );
       // Sobrescribe la regla para excluir archivos SVG
-      fileLoaderRule.exclude = /\.svg$/;
+      if (fileLoaderRule) {
+        // Sobrescribe la regla para excluir archivos SVG
+        fileLoaderRule.exclude = /\.svg$/;
+      } else {
+        // Si no encuentra la regla, crea una nueva
+        config.module.rules.push({
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
+        });
+      }
 
     config.module = {
       ...config.module,

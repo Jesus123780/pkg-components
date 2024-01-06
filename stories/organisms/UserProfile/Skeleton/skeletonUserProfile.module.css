@@ -1,0 +1,12 @@
+.skeleton_container {
+    margin: 0;
+    position: relative;
+}
+
+.skeleton_container_circle {
+    margin: 0;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: min-content;
+}
