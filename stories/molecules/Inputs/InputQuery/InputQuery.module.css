@@ -19,22 +19,23 @@
 }
 
 .searchContainer {
-  display: flex;
-  height: 50px;
-  width: min-content;
-  margin-top: 15px;
   align-items: center;
-  border: 1px solid var(--color-neutral-gray);
-  padding: 3px;
   background-color: var(--color-base-white);
   border-radius: 8px;
+  border: 1px solid var(--color-neutral-gray);
+  display: flex;
+  height: 50px;
+  margin-top: 15px;
+  padding-right: 8px;
+  padding: 3px;
+  width: min-content;
 }
 
 .searchInput {
+  border: none;
   flex: 1;
+  font-size: 16px;
   height: 40px;
   outline: 0;
-  border: none;
   padding: 8px 12px;
-  font-size: 16px;
 }

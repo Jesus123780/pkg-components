@@ -3,11 +3,14 @@ import React, { useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { BGColor, PColor } from './../../../assets/colors'
 import styles from './RippleButton.module.css'
+import { getGlobalStyle } from '../../../utils'
+import { IconLoading } from '../../../assets'
 
 export const RippleButton = props => {
   const {
     label,
     onClick,
+    loading,
     style,
     family,
     standard,
@@ -66,7 +69,14 @@ export const RippleButton = props => {
       {...props}
     >
       <span id='ripple-button-label'>{label}</span>
-      {props.children}
+      {loading &&
+        <LoadingWrapper>
+          <IconLoading color={getGlobalStyle('--color-base-white')} size={20} />
+        </LoadingWrapper>
+      }
+       <span style={loading ? { opacity: 0 } : {}} >
+        {props.children}
+      </span>
     </Button>
   )
 }
@@ -88,6 +98,26 @@ RippleButton.propTypes = {
   widthButton: PropTypes.any
 
 }
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: -5px;
+  padding: 1em;
+  bottom: 0;
+  position: absolute;
+  svg {
+  animation: rotator 1.4s linear infinite;
+  fill: #fff;
+}
+
+@keyframes rotator {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+`
+
 const Button = styled.button`
 &:disabled {
   background-color: ${`${PColor}69`} !important;

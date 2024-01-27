@@ -11,11 +11,13 @@ export const LoadingWrapper = styled.div`
 `
 export const CustomButton = styled.button`
   width: ${({ width }) => {
-    return width ? width : 'auto'
+    return width || 'auto'
   }};
   cursor: pointer;
   position: relative;
   padding: ${({ padding }) => {
-    return padding ? padding : 'auto'
+  }};
+  margin: ${({ margin }) => {
+    return margin || '0'
   }};
 `

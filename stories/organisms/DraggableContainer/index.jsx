@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
-// import styles from './DraggableContainer.module.css';
-
+import styles from './DraggableContainer.module.css'
 
 export const DraggableContainer = ({
   children,
@@ -13,7 +12,6 @@ export const DraggableContainer = ({
   onClose,
   ...props
 }) => {
-
   const dragProps = useRef()
 
   const handleDragStart = (e) => {
@@ -38,11 +36,14 @@ export const DraggableContainer = ({
   const handleDragEnd = () => {
     document.body.style.overflowY = 'scroll'
     const translateAmount = dragProps.current.transalteY
-    const bodyHeight = halfScreen ? document.body.clientHeight / 4 : document.body.clientHeight
+    const bodyHeight = halfScreen
+      ? document.body.clientHeight / 4
+      : document.body.clientHeight
     const maxTranslation = dragRatio * bodyHeight
 
     if (minFullscreenTranslation && translateAmount > maxTranslation) {
-      const originTranslateAmount = minFullscreenTranslation !== 0 ? translateAmount : minFullscreenTranslation
+      const originTranslateAmount =
+        minFullscreenTranslation !== 0 ? translateAmount : minFullscreenTranslation
 
       const animation = modalRef.current.animate(
         [
@@ -79,9 +80,10 @@ export const DraggableContainer = ({
         modalRef.current.style.transform = 'translateY(0px)'
       })
     }
-    const minBottomDrag = window.screen.height - (window.screen.height * 0.3)
-    if (translateAmount > minBottomDrag)
-      onClose()
+
+    const minBottomDrag = window.screen.height - window.screen.height * 0.3
+    if (translateAmount > minBottomDrag) onClose()
+
     window.removeEventListener('touchmove', handleDrag, false)
     window.removeEventListener('touchend', handleDragEnd, false)
   }
@@ -92,7 +94,7 @@ export const DraggableContainer = ({
 
     const { clientY } = e.touches[0]
     dragProps.current.transalteY =
-            dragProps.current.dragStartTop + clientY - dragProps.current.dragStartY
+      dragProps.current.dragStartTop + clientY - dragProps.current.dragStartY
 
     if (dragProps.current.transalteY < 0) dragProps.current.transalteY = 0
 
@@ -100,9 +102,25 @@ export const DraggableContainer = ({
   }
 
   return (
-    <div>{children}</div>
+    isOpen ? (
+      <>
+        <div className={styles.draggable__fullScreen} onClick={() => {return onClose()}} />
+        <div
+          className={styles.draggable__container}
+          onTouchStart={handleDragStart}
+          ref={modalRef}
+          style={{ padding: props.padding }}
+        >
+          <div className={styles.drop__container}>
+            <div className={styles.draggable_button}></div>
+          </div>
+          {children}
+        </div>
+      </>
+    ) : (
+      <div ref={modalRef} />
+    )
   )
-
 }
 
 DraggableContainer.propTypes = {
@@ -124,3 +142,4 @@ DraggableContainer.propTypes = {
   }),
   onClose: PropTypes.func
 }
+

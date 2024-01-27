@@ -23,12 +23,14 @@ export const Button = ({
   child,
   fontWeight,
   disabled,
+  margin,
   ...props
 }) => {
   const primitiveMode = primary ? styles['storybook-button--primary'] : styles['storybook-button--secondary']
   const mode = ripple ? styles['ripple-mode'] : primitiveMode
   return (
     <CustomButton
+      margin={margin}
       c={loading || disabled}
       className={
         [styles['storybook-button'], styles[`storybook-button--${size}`], styles[`storybook-button--${loading && 'loading'}`], mode].join(' ')
@@ -73,6 +75,7 @@ Button.propTypes = {
   loading: PropTypes.string,
   onClick: PropTypes.func,
   padding: PropTypes.any,
+  margin: PropTypes.string,
   children: PropTypes.any,
   primary: PropTypes.bool, //*
   ripple: PropTypes.any,

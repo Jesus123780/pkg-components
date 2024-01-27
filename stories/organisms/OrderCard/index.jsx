@@ -13,6 +13,7 @@ const labelStatusOrder = {
   5: 'Pedido Rechazado'
 }
 export const OrderCard = ({ storeOrder = [] }) => {
+  if (!storeOrder?.length) return <></>
   return (
     <CardOrder>
       {storeOrder?.length > 0
