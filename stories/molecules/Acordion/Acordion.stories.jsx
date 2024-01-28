@@ -1,4 +1,3 @@
-// Importa las dependencias necesarias
 import React, { useState } from 'react'
 import { Options } from './index'
 

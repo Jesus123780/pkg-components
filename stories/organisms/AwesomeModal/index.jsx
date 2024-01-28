@@ -37,7 +37,7 @@ export const AwesomeModal = ({
   height,
   bgColor,
   question = false,
-  customHeight = false,
+  customHeight = '',
   submit = false,
   header = true,
   sizeIconClose = '30px',

@@ -7,15 +7,13 @@ import {
   useJsApiLoader
 } from '@react-google-maps/api'
 import PropTypes from 'prop-types'
-import { IconDost } from 'public/icons'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete'
 import { PColor, SECBGColor } from '../../../assets/colors'
 import {
   Google,
   IconArrowLeft,
-  IconDelete,
-  IconGoogleFullColor,
+  IconDelete, IconDost, IconGoogleFullColor,
   IconLocationMap2,
   IconSearch
 } from '../../../assets/icons'

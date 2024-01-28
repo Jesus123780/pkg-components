@@ -1,5 +1,8 @@
 module.exports = {
-  stories: ["../stories/**/*.stories.mdx", "../stories/**/*.stories.@(js|jsx|ts|tsx)"],
+  stories: [
+    "../stories/**/*.stories.mdx",
+    "../stories/**/*.stories.@(js|jsx|ts|tsx)",
+  ],
   addons: [
     "@storybook/addon-actions",
     "@storybook/addon-links",
@@ -8,26 +11,36 @@ module.exports = {
     "storybook-addon-next-router",
     "@storybook/addon-jest",
     // "@storybook/preset-create-react-app",
-    "storybook-css-modules"
+    "storybook-css-modules",
   ],
 
   // Modify webpackFinal to use your custom webpack configuration
   webpackFinal: async (config) => {
-    const fileLoaderRule = config.module.rules.find(rule =>
-      rule.test && rule.test.test('.svg')
+    const fileLoaderRule = config.module.rules.find(
+      (rule) => rule.test && rule.test.test(".svg")
     );
+    // Sobrescribe la regla para excluir archivos SVG
+    if (fileLoaderRule) {
       // Sobrescribe la regla para excluir archivos SVG
-      if (fileLoaderRule) {
-        // Sobrescribe la regla para excluir archivos SVG
-        fileLoaderRule.exclude = /\.svg$/;
-      } else {
-        // Si no encuentra la regla, crea una nueva
-        config.module.rules.push({
-          test: /\.svg$/,
-          use: ['@svgr/webpack'],
-        });
-      }
-
+      fileLoaderRule.exclude = /\.svg$/;
+    } else {
+      // Si no encuentra la regla, crea una nueva
+      config.module.rules.push({
+        test: /\.svg$/,
+        use: ["@svgr/webpack"],
+      });
+    }
+    config.module.rules.push({
+      test: /\.js$/,
+      include: /@storybook\/addon-jest/,
+      type: "javascript/auto",
+      use: {
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-env"],
+        },
+      },
+    });
     config.module = {
       ...config.module,
       rules: [
@@ -36,11 +49,11 @@ module.exports = {
           test: /\.(png|jpe?g|gif|svg)$/i,
           use: [
             {
-              loader: 'file-loader',
+              loader: "file-loader",
               options: {
-                name: '[path][name].[ext]',
-                publicPath: '/', // Ajusta según tus necesidades
-                context: 'public', // Ajusta según tus necesidades
+                name: "[path][name].[ext]",
+                publicPath: "/", // Ajusta según tus necesidades
+                context: "public", // Ajusta según tus necesidades
               },
             },
           ],
@@ -54,26 +67,18 @@ module.exports = {
           test: /\.(js|jsx|ts|tsx|mjs)$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
               presets: [
-                '@babel/preset-env',
-                '@babel/preset-react',
-                '@babel/preset-typescript',
+                "@babel/preset-env",
+                "@babel/preset-react",
+                "@babel/preset-typescript",
               ],
               plugins: [
-                '@babel/plugin-proposal-class-properties',
-                '@babel/plugin-transform-runtime',
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-transform-runtime",
               ],
             },
-          },
-        },
-        {
-          test: /\.js$/,
-          include: /@storybook\/addon-jest/,
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
           },
         },
       ],

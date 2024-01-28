@@ -1,0 +1,262 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.screen {
+  width: 230px;
+  height: 50px;
+  font-size: 40px;
+  margin-bottom: 50px;
+  padding: 0;
+  text-align: right;
+  overflow: hidden;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.container {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(5, 50px);
+  grid-template-rows: auto;
+}
+
+.option-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(10px, 50px);
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.option-buttons-grid button {
+  background: orange;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 24px;
+  border: none;
+}
+
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(10px, 50px);
+  grid-row-start: 2;
+  grid-row-end: 5;
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.numbers-grid button {
+  background: #adadad;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 24px;
+  border: none;
+}
+
+.operators-grid {
+  display: grid;
+  grid-template-columns: 50px;
+  grid-gap: 10px;
+  grid-auto-rows: minmax(10px, 50px);
+  grid-row-start: 1;
+  grid-row-end: 5;
+  grid-column-start: 4;
+  grid-column-end: 5;
+}
+
+.operators-grid button {
+  background: black;
+  color: white;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 24px;
+  border: none;
+}
+
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  padding: 5px 20px;
+  text-transform: uppercase;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+.ripple-button .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgb(197, 197, 197);
+  z-index: 1;
+  animation: ripple-animation 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.ripple-button #ripple-button-label {
+  position: relative;
+  z-index: 2;
+  font-weight: bold;
+}
+
+@keyframes ripple-animation {
+  from {
+    transform: scale(0);
+    opacity: 1.2;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Inicio de Hoja de Normalización */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300&display=swap');
+/* Normalizes margin, padding */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, p, blockquote
+    { margin : 0; padding : 0; width: 100%;  text-align: start;  }
+
+/* Normalizes font-size for headers */
+h1,h2,h3,h4,h5,h6 { font-size : 100%; }
+/* Removes list-style from lists */
+ol,ul { list-style : none; }
+button{
+  outline: none;
+  border: none;
+}
+a{
+  text-decoration: none !important;
+}
+
+/* Normalizes font-style and font-weight to normal */
+address, caption, cite, code, dfn, em, strong, th, var
+{ font-style : normal; font-weight : normal; }
+
+/* Removes spacing in tables */
+table { border-collapse : collapse; border-spacing : 0; width: -webkit-fill-available; }
+
+/* Removes border from fieldset and img */
+fieldset,img { border : 0; }
+
+/* Left-aligns text in caption and th */
+caption,th { text-align : left; }
+
+/* Removes quotation marks from q */
+q:before, q:after { content :''; }
+
+/* Fin de Hoja de Normalización */
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@font-face {
+  font-family: PFont-Bold;
+  src: url('../fonts/Poppins-Bold.ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: PFont-Medium;
+  src: url('../fonts/Poppins-Medium.ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: PFont-Regular;
+  src: url('../fonts/Poppins-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: PFont-Light;
+  src: url('../fonts/Poppins-Light.ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@keyframes ripple-animation {
+  from {
+    transform: scale(0);
+    opacity: 1.2;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+.box-group {
+  background-color: rgb(136, 128, 114);
+  padding: 0.5rem;
+}
+
+.box-items  > .marmita-minitag {
+  font-size: 11px;
+}
+.box-items {
+  margin: 5px;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  background-color: white;
+  cursor: pointer;
+  width: 96%;
+  border-radius: 0.5rem;
+  transition: background-color 140ms ease-in-out,border-color 75ms ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(9, 30, 66, 0.062);
+}
+.ghx-summary {
+  font-family: PFont-Light,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143px;
+  max-height: 4.28571429em;
+}
+
+.box-items:not(:last-of-type) {
+  margin-bottom: 0.5rem;
+}
+
+.box-items:hover  {
+  background: #ebecf0;
+}
+.dragging {
+  background-color: #ff000026;
+  opacity: 1 !important;
+}
+
+.group-title {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: white;
+}
+
+.current {
+  background-color: #282c34;
+  color: #fff;
+  transition: 'all 0.3s ease-in-out';
+  border-radius: 20px;
+  opacity: 1;
+}
