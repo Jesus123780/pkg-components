@@ -181,10 +181,6 @@ export const Main = styled.main`
     text-align: center;
     grid-gap: 0.25rem;
 
-    @media (max-width: 960px) {
-        grid-template-columns: min-content 1fr;
-    }
-
     @media (min-width: 960px) {
         ${props => {
     return !props.aside && css`

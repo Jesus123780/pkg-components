@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { IconLoading } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
-import { CustomButton, LoadingWrapper } from './styled'
 import styles from './button.module.css'
+import { CustomButton, LoadingWrapper } from './styled'
 
 /**
  * Primary UI component for user interaction
@@ -30,12 +30,12 @@ export const Button = ({
   const mode = ripple ? styles['ripple-mode'] : primitiveMode
   return (
     <CustomButton
-      margin={margin}
       c={loading || disabled}
       className={
         [styles['storybook-button'], styles[`storybook-button--${size}`], styles[`storybook-button--${loading && 'loading'}`], mode].join(' ')
       }
       loading={loading}
+      margin={margin}
       padding={padding}
       style={{
         backgroundColor: disabled ? '#ff000069' : backgroundColor,

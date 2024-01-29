@@ -1,5 +1,6 @@
 export * from './Acordion'
 export * from './AlertBox'
+export * from './CardOrder'
 export * from './Carrusel'
 export * from './ContentQueryCard'
 export * from './DaySelector'

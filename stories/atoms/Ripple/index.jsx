@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 import styled, { css } from 'styled-components'
+import { IconLoading } from '../../../assets'
+import { getGlobalStyle } from '../../../utils'
 import { BGColor, PColor } from './../../../assets/colors'
 import styles from './RippleButton.module.css'
-import { getGlobalStyle } from '../../../utils'
-import { IconLoading } from '../../../assets'
 
 export const RippleButton = props => {
   const {
@@ -74,7 +74,7 @@ export const RippleButton = props => {
           <IconLoading color={getGlobalStyle('--color-base-white')} size={20} />
         </LoadingWrapper>
       }
-       <span style={loading ? { opacity: 0 } : {}} >
+      <span style={loading ? { opacity: 0 } : {}} >
         {props.children}
       </span>
     </Button>

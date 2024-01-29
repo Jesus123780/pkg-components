@@ -1,0 +1,40 @@
+.wrapper_order {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  background-color: #fff;
+  border-left: 1px solid var(--color-background-gray);
+  border-top: none;
+  border: 1px solid var(--color-background-gray);
+  bottom: 0;
+  box-shadow: 0 8px 16px 0 rgb(0 0 0 / 10%);
+  height: calc(100vh - 80px);
+  left: 210px;
+  opacity: 1;
+  overflow-y: auto;
+  padding: 10px;
+  position: fixed;
+  right: 0;
+  transform: translateY(0);
+  transition: all 350ms cubic-bezier(.32,1.25,.32,1);
+  visibility: hidden;
+  width: 300px;
+  z-index: -99999999;
+  z-index: 900;
+}
+
+
+.slideIn {
+  visibility: visible;
+  z-index: 99999999;
+  animation: slideInAnimation 0.5s ease-out;
+}
+
+@keyframes slideInAnimation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
