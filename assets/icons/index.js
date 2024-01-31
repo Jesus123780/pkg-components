@@ -10,7 +10,7 @@ import React from 'react'
  * @param {Object} props... - Any other SVG attributes
  * @returns {JSX.Element} SVG icon
  */
-export const IconBuys = ({ style = {}, size, color, ...props }) => {return (
+export const IconBuys = ({ style = {}, size, color = 'var(--color-icons-black)', ...props }) => {return (
   <svg
     className='icon'
     height={size || 800}

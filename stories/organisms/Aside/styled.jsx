@@ -1,17 +1,18 @@
 import link from 'next/link'
 import styled, { css } from 'styled-components'
 import {
-  BColor,
-  BGColor,
-  PColor,
-  PLVColor,
-  SFVColor
+    BColor,
+    BGColor,
+    PColor,
+    PLVColor,
+    SFVColor
 } from '../../../assets/colors'
 
 export const Router = styled.div`
     background-color: ${`${SFVColor}69`};
     height: 100vw;
     overflow-y: auto;
+    height: 80%;
     @media (max-width: 768px){
         height: auto;
     }
@@ -130,9 +131,13 @@ export const ButtonGlobalCreate = styled.button`
     }
 `
 export const Info = styled.div`
-    position: relative;
+position: relative;
     display: flex;
     flex-direction: column;
+    background-color: #ffffff; 
+    overflow: hidden; 
+    height: 20%; 
+    min-height: 150px; 
     
     .program_state {
         align-items: center;
@@ -302,7 +307,6 @@ export const Card = styled.div`
     flex-direction: column;
     align-items: center;
     box-shadow: 2px -1rem 0rem 0px rgb(18 38 63 / 3%);
-    /* overflow-y: auto; */
-    transition: 300ms ease;
-    height: 100vw;
+    overflow: hidden;
+    height: 100vh;
 `
