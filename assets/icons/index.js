@@ -1,6 +1,265 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+/**
+ * IconBuys component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+export const IconBuys = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    className='icon'
+    height={size || 800}
+    viewBox='0 0 1024 1024'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <path
+      d='M687.7 833.8h-76.8c-16.6 0-30-13.4-30-30s13.4-30 30-30h76.8c16.6 0 30 13.4 30 30s-13.4 30-30 30zm-207 0H136.8c-16.6 0-30-13.4-30-30s13.4-30 30-30h343.9c16.6 0 30 13.4 30 30s-13.4 30-30 30z'
+      fill={color || '#3C9'}
+    />
+    <path
+      d='M880.8 931H207.9c-25.3 0-45.9-20.7-45.9-45.9 0-25.3 20.7-45.9 45.9-45.9h672.9c25.3 0 45.9 20.7 45.9 45.9S906 931 880.8 931z'
+      fill={color || '#FFB89A'}
+    />
+    <path
+      d='M703 122.7c20.9 0 40.6 8.2 55.5 23.2 14.9 14.9 23.2 34.7 23.2 55.5v2.8l.3 2.8 57.7 611.8c-.6 20-8.8 38.7-23.1 53.1-14.9 14.9-34.7 23.2-55.5 23.2H236c-20.9 0-40.6-8.2-55.5-23.2-14.4-14.4-22.6-33.2-23.1-53.2l54.7-612 .2-2.7v-2.7c0-20.9 8.2-40.6 23.2-55.5 14.9-14.9 34.7-23.2 55.5-23.2h412m0-59.9H291c-76.3 0-138.7 62.4-138.7 138.7l-55 615c0 76.3 62.4 138.7 138.7 138.7h525c76.3 0 138.7-62.4 138.7-138.7l-58-615c0-76.3-62.4-138.7-138.7-138.7z'
+      fill={color || '#45484C'}
+    />
+    <path
+      d='M712.6 228.8c0-24.9-20.1-45-45-45s-45 20.1-45 45c0 13.5 6 25.6 15.4 33.9-.3 1.6-.4 3.3-.4 5v95.9c0 23.5-9.2 45.7-26 62.5-16.8 16.8-39 26-62.5 26h-88.5c-23.5 0-45.7-9.2-62.5-26-16.8-16.8-26-39-26-62.5v-95.9c0-1.7-.1-3.4-.4-5 9.4-8.2 15.4-20.4 15.4-33.9 0-24.9-20.1-45-45-45s-45 20.1-45 45c0 13.5 6 25.6 15.4 33.9-.3 1.6-.4 3.3-.4 5v95.9c0 81.9 66.6 148.6 148.6 148.6h88.5c81.9 0 148.6-66.6 148.6-148.6v-95.9c0-1.7-.1-3.4-.4-5 9.3-8.3 15.2-20.4 15.2-33.9z'
+      fill={color || '#45484C'}
+    />
+  </svg>
+)}
+
+IconBuys.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+
+/**
+ * IconTime component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+export const IconTime = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    fill='none'
+    height={size || 800}
+    viewBox='0 0 24 24'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <path
+      clipRule='evenodd'
+      d='M12 2.75a9.25 9.25 0 1 0 0 18.5 9.25 9.25 0 0 0 0-18.5ZM1.25 12C1.25 6.063 6.063 1.25 12 1.25S22.75 6.063 22.75 12 17.937 22.75 12 22.75 1.25 17.937 1.25 12ZM12 7.25a.75.75 0 0 1 .75.75v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1-.22-.53V8a.75.75 0 0 1 .75-.75Z'
+      fill={color || '#1C274C'}
+      fillRule='evenodd'
+    />
+  </svg>
+)}
+
+IconTime.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+
+/**
+ * iconHome component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+export const IconHome = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    fill='none'
+    height={size || 800}
+    viewBox='0 0 24 24'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <path
+      d='M9 16c.85.63 1.885 1 3 1s2.15-.37 3-1'
+      stroke={color || '#1C274C'}
+      strokeLinecap='round'
+      strokeWidth={1.5}
+    />
+    <path
+      d='M22 12.204v1.521c0 3.9 0 5.851-1.172 7.063C19.657 22 17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212C2 19.576 2 17.626 2 13.725v-1.521c0-2.289 0-3.433.52-4.381.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2c1.108 0 2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715'
+      stroke={color || '#1C274C'}
+      strokeLinecap='round'
+      strokeWidth={1.5}
+    />
+  </svg>
+)}
+
+
+/**
+ * IconInformationProduct component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+
+export const IconInformationProduct = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    className='icon'
+    height={size || 800}
+    viewBox='0 0 1024 1024'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <path
+      d='m533 1024-147.7-84.8-136.4 78.3h-11.3c-17.3 0-34.2-3.4-50.1-10.1-15.3-6.5-29.1-15.7-40.8-27.6-11.7-11.7-21-25.5-27.5-40.8-6.7-15.9-10.1-32.7-10.1-50.1V128.5c0-17.4 3.4-34.2 10.1-50.1 6.5-15.3 15.8-29.1 27.6-40.8 11.7-11.8 25.5-21 40.8-27.5C203.3 3.4 220.2 0 237.5 0h590.9c17.3 0 34.2 3.4 50.1 10.1 15.3 6.5 29.1 15.7 40.8 27.6 11.7 11.7 21 25.5 27.5 40.8 6.7 15.9 10.1 32.7 10.1 50.1V889c0 17.4-3.4 34.2-10.1 50.1-6.5 15.3-15.8 29.1-27.6 40.8-11.7 11.8-25.5 21-40.8 27.5-15.8 6.7-32.7 10.1-50 10.1h-11.3l-136.4-78.3L533 1024zm147.7-182.6 157.2 90.3c2.5-.6 5-1.4 7.5-2.4 5.2-2.2 9.9-5.4 13.9-9.4 4.1-4.1 7.2-8.7 9.4-14 2.3-5.3 3.4-11.1 3.4-17V128.5c0-5.9-1.1-11.7-3.4-17-2.2-5.2-5.4-9.9-9.4-13.9-4.1-4.1-8.7-7.2-13.9-9.4-5.4-2.3-11.1-3.4-17-3.4H237.5c-5.9 0-11.6 1.1-17 3.4-5.2 2.2-9.9 5.4-13.9 9.4-4.1 4.1-7.2 8.7-9.4 14-2.3 5.3-3.4 11.1-3.4 17V889c0 5.9 1.1 11.7 3.4 17 2.2 5.2 5.4 9.9 9.4 13.9 4.1 4.1 8.7 7.2 13.9 9.4 2.4 1 4.9 1.8 7.5 2.4l157.2-90.3L533 926.2l147.7-84.8z'
+      fill='#3688FF'
+    />
+    <path
+      d='M490.6 310.9H321c-23.4 0-42.4-19-42.4-42.4s19-42.4 42.4-42.4h169.6c23.4 0 42.4 19 42.4 42.4s-19 42.4-42.4 42.4zm211.9 176.7H321c-23.4 0-42.4-19-42.4-42.4s19-42.4 42.4-42.4h381.6c23.4 0 42.4 19 42.4 42.4-.1 23.4-19 42.4-42.5 42.4z'
+      fill='#5F6379'
+    />
+  </svg>
+)}
+
+IconInformationProduct.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+
+/**
+ * IconChart component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+
+export const IconChart = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    height={size || 800}
+    viewBox='0 0 24 24'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <defs>
+      <style>
+        {
+          '.a{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd}'
+        }
+      </style>
+    </defs>
+    <path className='a' d='M12 2a10 10 0 1 0 10 10H12Z' />
+    <path className='a' d='M15 9h6.54A10.022 10.022 0 0 0 15 2.46Z' />
+  </svg>
+)}
+
+
+/**
+ * IconCategorie component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+
+export const IconCategorie = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    fill='none'
+    height={size || 800}
+    viewBox='0 0 24 24'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <path
+      d='M4 7.657c0-.818 0-1.226.152-1.594.152-.367.442-.657 1.02-1.235l.656-.656c.578-.578.868-.868 1.235-1.02C7.431 3 7.84 3 8.657 3h6.686c.818 0 1.226 0 1.594.152.367.152.656.442 1.235 1.02l.656.656c.579.578.867.868 1.02 1.235.152.368.152.776.152 1.594V17c0 1.886 0 2.828-.586 3.414C18.828 21 17.886 21 16 21H8c-1.886 0-2.828 0-3.414-.586C4 19.828 4 18.886 4 17V7.657Z'
+      stroke={color || '#33363F'}
+      strokeWidth={2}
+    />
+    <path
+      d='M4 7h16M9 11a3 3 0 0 0 6 0'
+      stroke={color || '#33363F'}
+      strokeLinecap='round'
+      strokeWidth={2}
+    />
+  </svg>
+)}
+
+IconCategorie.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+/**
+ * IconStore component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+
+export const IconStore = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    fill='none'
+    height={size || 800}
+    stroke={color || '#000'}
+    strokeWidth={3}
+    viewBox='0 0 64 64'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <path d='M52 27.18v25.58a2.92 2.92 0 0 1-3 2.84H15a2.92 2.92 0 0 1-3-2.84V27.17' />
+    <path d='M26.26 55.52V38.45h11.58v17.07M8.44 19.18s-1.1 7.76 6.45 8.94a7.17 7.17 0 0 0 6.1-2A7.43 7.43 0 0 0 32 26a7.4 7.4 0 0 0 5 2.49 11.82 11.82 0 0 0 5.9-2.15 6.66 6.66 0 0 0 4.67 2.15 8 8 0 0 0 7.93-9.3L50.78 9.05a1 1 0 0 0-.94-.65H14a1 1 0 0 0-.94.66ZM8.44 19.18h47.1M21.04 19.18V8.4M32.05 19.18V8.4M43.01 19.18V8.4' />
+  </svg>
+)}
+
+IconStore.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+
 export const IconColombia = ({ style = {}, size }) => {
   return <svg
     height={size}
@@ -30,6 +289,11 @@ export const IconColombia = ({ style = {}, size }) => {
   </svg>
 }
 
+IconColombia.propTypes = {
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
 export const IconArrowRight = ({ style = {}, size, color, ...props }) => {
   return <svg
     fill='none'
@@ -48,6 +312,50 @@ export const IconArrowRight = ({ style = {}, size, color, ...props }) => {
     />
   </svg>
 }
+
+IconArrowRight.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+/**
+ * IconTicket component
+ * @param {Object} props - Component props
+ * @param {Object} props.style - Inline styles for the SVG
+ * @param {number} props.size - Size of the SVG
+ * @param {string} props.color - Color of the SVG
+ * @param {Object} props... - Any other SVG attributes
+ * @returns {JSX.Element} SVG icon
+ */
+
+export const IconTicket = ({ style = {}, size, color, ...props }) => {return (
+  <svg
+    className='icon'
+    height={size || 800}
+    viewBox='0 0 1024 1024'
+    width={size || 800}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+    style={{...style, color: color}}
+  >
+    <path
+      d='m533 1024-147.7-84.8-136.4 78.3h-11.3c-17.3 0-34.2-3.4-50.1-10.1-15.3-6.5-29.1-15.7-40.8-27.6-11.7-11.7-21-25.5-27.5-40.8-6.7-15.9-10.1-32.7-10.1-50.1V128.5c0-17.4 3.4-34.2 10.1-50.1 6.5-15.3 15.8-29.1 27.6-40.8 11.7-11.8 25.5-21 40.8-27.5C203.3 3.4 220.2 0 237.5 0h590.9c17.3 0 34.2 3.4 50.1 10.1 15.3 6.5 29.1 15.7 40.8 27.6 11.7 11.7 21 25.5 27.5 40.8 6.7 15.9 10.1 32.7 10.1 50.1V889c0 17.4-3.4 34.2-10.1 50.1-6.5 15.3-15.8 29.1-27.6 40.8-11.7 11.8-25.5 21-40.8 27.5-15.8 6.7-32.7 10.1-50 10.1h-11.3l-136.4-78.3L533 1024zm147.7-182.6 157.2 90.3c2.5-.6 5-1.4 7.5-2.4 5.2-2.2 9.9-5.4 13.9-9.4 4.1-4.1 7.2-8.7 9.4-14 2.3-5.3 3.4-11.1 3.4-17V128.5c0-5.9-1.1-11.7-3.4-17-2.2-5.2-5.4-9.9-9.4-13.9-4.1-4.1-8.7-7.2-13.9-9.4-5.4-2.3-11.1-3.4-17-3.4H237.5c-5.9 0-11.6 1.1-17 3.4-5.2 2.2-9.9 5.4-13.9 9.4-4.1 4.1-7.2 8.7-9.4 14-2.3 5.3-3.4 11.1-3.4 17V889c0 5.9 1.1 11.7 3.4 17 2.2 5.2 5.4 9.9 9.4 13.9 4.1 4.1 8.7 7.2 13.9 9.4 2.4 1 4.9 1.8 7.5 2.4l157.2-90.3L533 926.2l147.7-84.8z'
+      fill='var(--color-icons-black)'
+    />
+    <path
+      d='M490.6 310.9H321c-23.4 0-42.4-19-42.4-42.4s19-42.4 42.4-42.4h169.6c23.4 0 42.4 19 42.4 42.4s-19 42.4-42.4 42.4zm211.9 176.7H321c-23.4 0-42.4-19-42.4-42.4s19-42.4 42.4-42.4h381.6c23.4 0 42.4 19 42.4 42.4-.1 23.4-19 42.4-42.5 42.4z'
+      fill='var(--color-icons-black)'
+    />
+  </svg>
+)}
+
+IconTicket.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+
 export const IconDost = ({ style = {}, size, color }) => {
   return <svg
     fill={color}
@@ -57,6 +365,12 @@ export const IconDost = ({ style = {}, size, color }) => {
     width={size}
     xmlns='http://www.w3.org/2000/svg'
   ><path d='M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'></path></svg>
+}
+
+IconDost.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const Google = ({
@@ -250,17 +564,6 @@ IconLogo.propTypes = {
   style: PropTypes.object
 }
 
-export const IconHome = ({ style = {}, color, size }) => {
-  return <svg
-    fill={color}
-    height={size}
-    style={style}
-    viewBox='0 1 511 511.999'
-    width={size}
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <path d='m498.699219 222.695312c-.015625-.011718-.027344-.027343-.039063-.039062l-208.855468-208.847656c-8.902344-8.90625-20.738282-13.808594-33.328126-13.808594-12.589843 0-24.425781 4.902344-33.332031 13.808594l-208.746093 208.742187c-.070313.070313-.144532.144531-.210938.214844-18.28125 18.386719-18.25 48.21875.089844 66.558594 8.378906 8.382812 19.441406 13.234375 31.273437 13.746093.484375.046876.96875.070313 1.457031.070313h8.320313v153.695313c0 30.417968 24.75 55.164062 55.167969 55.164062h81.710937c8.285157 0 15-6.71875 15-15v-120.5c0-13.878906 11.292969-25.167969 25.171875-25.167969h48.195313c13.878906 0 25.167969 11.289063 25.167969 25.167969v120.5c0 8.28125 6.714843 15 15 15h81.710937c30.421875 0 55.167969-24.746094 55.167969-55.164062v-153.695313h7.71875c12.585937 0 24.421875-4.902344 33.332031-13.8125 18.359375-18.367187 18.367187-48.253906.027344-66.632813zm-21.242188 45.421876c-3.238281 3.238281-7.542969 5.023437-12.117187 5.023437h-22.71875c-8.285156 0-15 6.714844-15 15v168.695313c0 13.875-11.289063 25.164062-25.167969 25.164062h-66.710937v-105.5c0-30.417969-24.746094-55.167969-55.167969-55.167969h-48.195313c-30.421875 0-55.171875 24.75-55.171875 55.167969v105.5h-66.710937c-13.875 0-25.167969-11.289062-25.167969-25.164062v-168.695313c0-8.285156-6.714844-15-15-15h-22.328125c-.234375-.015625-.464844-.027344-.703125-.03125-4.46875-.078125-8.660156-1.851563-11.800781-4.996094-6.679688-6.679687-6.679688-17.550781 0-24.234375.003906 0 .003906-.003906.007812-.007812l.011719-.011719 208.847656-208.839844c3.234375-3.238281 7.535157-5.019531 12.113281-5.019531 4.574219 0 8.875 1.78125 12.113282 5.019531l208.800781 208.796875c.03125.03125.066406.0625.097656.09375 6.644531 6.691406 6.632813 17.539063-.03125 24.207032zm0 0' /></svg>
-}
 
 IconHome.propTypes = {
   color: PropTypes.any,
@@ -509,38 +812,6 @@ export const IconShopping = ({ style = {}, size, color }) => {
     width={size}
     xmlns='http://www.w3.org/2000/svg'
   ><path d='M8.7.2c-1.1 0-2 .3-2.6.9-.6.6-1 1.4-1.2 2.2-.2.6-.3 1.1-.3 1.7H2C.9 5 0 5.9 0 7l.1 13c0 1.7 1.3 3 3 3H15c1.7 0 3-1.3 3-3V7c0-1.1-.9-2-2-2h-3.2c-.1-.6-.1-1.1-.3-1.6-.2-.8-.6-1.7-1.2-2.2-.7-.6-1.5-1-2.6-1zm2.7 6.3v2.6c0 .4.3.7.8.7.4 0 .7-.3.7-.8v-.8-1.8H16c.3 0 .5.2.5.5l-.1 13c0 .8-.7 1.5-1.5 1.5H3.1c-.8 0-1.5-.7-1.5-1.5L1.5 7c0-.3.2-.5.5-.5h2.5v2.6c0 .4.3.8.7.8.4 0 .8-.4.8-.8v-.8-1.8h5.4zM11.3 5c0-.4-.1-.8-.2-1.2-.2-.7-.4-1.2-.8-1.5-.4-.3-.8-.5-1.6-.5s-1.3.2-1.6.5c-.4.3-.6.8-.8 1.5-.1.4-.2.8-.2 1.2h5.2z'></path></svg>
-}
-
-export const IconStore = ({ style = {}, size, color }) => {
-  return <svg
-    height={size || 53}
-    style={style}
-    viewBox='0 0 53 53'
-    width={size || 53}
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <g fill={color || 'red'} transform='translate(1 1)'>
-      <path d='M34.514 35.105 32.649 37v-1.895h1.865zM18.35 37l-1.865-1.895h1.865V37zm14.3-13.263h1.865V37H16.486V23.737h1.865v11.368H32.65V23.737zM18.35 37l-1.865-1.895h1.865V37zm16.163-1.895L32.649 37v-1.895h1.865zm-16.163 0h14.3V23.737h1.865V37H16.486V23.737h1.865v11.368z' />
-      <rect
-        height={1.895}
-        rx={0.947}
-        width={20.514}
-        x={15.243}
-        y={35.105}
-      />
-      <rect
-        height={1.895}
-        rx={0.947}
-        width={10.568}
-        x={20.216}
-        y={30.684}
-      />
-      <path d='M21.359 14.895h-3.974l-1.19 5.875a1.91 1.91 0 0 0-.04.392c0 1.073.857 1.943 1.913 1.943 1.606 0 2.932-1.277 3.016-2.907l.275-5.303zM15.865 13h7.46l-.379 7.298C22.81 22.934 20.666 25 18.068 25c-2.086 0-3.778-1.718-3.778-3.838 0-.26.026-.52.078-.774L15.865 13z' />
-      <path d='M22.945 20.37a2.64 2.64 0 0 0-.003.136c0 1.435 1.145 2.6 2.558 2.6.045 0 .09-.002.134-.004 1.411-.076 2.495-1.3 2.42-2.733l-.283-5.474H23.23l-.284 5.474zM21.46 13h8.082l.376 7.27c.129 2.478-1.745 4.593-4.185 4.724A4.354 4.354 0 0 1 25.5 25c-2.443 0-4.423-2.012-4.423-4.494 0-.079.002-.158.006-.236l.376-7.27z' />
-      <path d='M29.915 20.17c.085 1.646 1.423 2.935 3.044 2.935.133 0 .266-.014.396-.042 1.036-.221 1.7-1.255 1.481-2.308l-1.214-5.86h-3.98l.273 5.275zM27.675 13h7.46l1.526 7.365c.43 2.077-.878 4.115-2.922 4.553a3.725 3.725 0 0 1-.78.082c-2.613 0-4.77-2.079-4.907-4.73L27.676 13z' />
-    </g>
-  </svg> 
-
 }
 
 IconShopping.propTypes = {
@@ -1010,19 +1281,6 @@ IconArrowLeft.propTypes = {
   color: PropTypes.any,
   size: PropTypes.any,
   style: PropTypes.object
-}
-
-export const IconChart = ({ size = 24, color, ...props }) => {
-  return <svg
-    fill={color}
-    height={size}
-    viewBox='0 0 24 24'
-    width={size}
-    xmlns='http://www.w3.org/2000/svg'
-    {...props}
-  >
-    <path d='M19.293 8H16.5a.5.5 0 1 1 0-1h4a.5.5 0 0 1 .5.5v4a.5.5 0 1 1-1 0V8.707l-5.146 5.147a.5.5 0 0 1-.708 0L11.5 11.207l-3.646 3.647a.5.5 0 0 1-.708-.708l4-4a.5.5 0 0 1 .708 0l2.646 2.647L19.293 8ZM20.5 18a.5.5 0 1 1 0 1h-15A2.5 2.5 0 0 1 3 16.5v-9a.5.5 0 0 1 1 0v9A1.5 1.5 0 0 0 5.5 18h15Z' />
-  </svg>
 }
 
 IconChart.propTypes = {

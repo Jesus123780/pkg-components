@@ -5,12 +5,15 @@ import React, {
   useState
 } from 'react'
 import {
+  IconBuys,
+  IconCategorie,
   IconChart,
-  IconHome,
   IconLogo,
   IconShopping,
-  IconUser,
-  IconWallet
+  IconStore,
+  IconTicket,
+  IconTime,
+  IconUser
 } from '../../../assets/icons'
 import {
   Button,
@@ -44,9 +47,9 @@ const MemoAside = ({
     uState: 1
   },
   loading,
-  handleClick = () => { return },
-  setSalesOpen = () => { return },
-  setShowComponentModal = () => { return }
+  handleClick = (state) => { return state },
+  setSalesOpen = (state) => { return state },
+  setShowComponentModal = (state) => { return state }
 }) => {
   const [show, setShow] = useState(false)
   const [active, setActive] = useState(null)
@@ -68,59 +71,59 @@ const MemoAside = ({
 
   const links = [
     { href: '/dashboard',
-      icon: IconHome,
-      size: '15px',
-      label: 'Inicio'
+      icon: IconStore,
+      size: '25px',
+      label: 'Perfil'
     },
     { href: '/pedidos',
-      icon: IconShopping,
-      size: '15px',
+      icon: IconTicket,
+      size: '25px',
       label: 'Pedidos',
       count: countPedido
     },
     { href: '/horarios',
-      icon: IconShopping,
-      size: '15px',
+      icon: IconTime,
+      size: '25px',
       label: 'Horarios'
     },
     { href: '/ventas',
-      icon: IconShopping,
-      size: '15px',
+      icon: IconTicket,
+      size: '25px',
       label: 'Ventas'
     },
     { href: '/informes',
       icon: IconChart,
-      size: '20px',
+      size: '25px',
       label: 'Informes'
     },
     { href: '/clientes',
       icon: IconUser,
-      size: '20px',
+      size: '25px',
       label: 'Clientes'
     },
     { href: '/compras',
-      icon: IconUser,
-      size: '20px',
+      icon: IconBuys,
+      size: '25px',
       label: 'Compras'
     },
     { href: '/categorias',
-      icon: IconWallet,
-      size: '20px',
+      icon: IconCategorie,
+      size: '25px',
       label: 'Categorías'
     },
     { href: '/products',
       icon: IconShopping,
-      size: '20px',
+      size: '25px',
       label: 'Productos',
       multiple: [
         {
           href: '/products',
-          icon: IconShopping,
+          icon: IconTicket,
           size: '20px',
           label: 'Productos',
           subLinks: [
             { href: '/products',
-              icon: IconShopping,
+              icon: IconTicket,
               size: '20px',
               label: 'Productos'
             }
