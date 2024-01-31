@@ -1,0 +1,35 @@
+.dateRange {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-family: PFont-Regular;
+    line-height: 1.5;
+    font-size: 16px;
+    color: #333;
+}
+
+.label {
+    color: var(--color-neutral-gray-silver);
+}
+
+.boxRange {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100px;
+    height: auto;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.date {
+    line-height: 1.5;
+    margin: 0;
+    color: var(--color-text-gray-light);
+    font-family: PFont-Regular;
+  }
+  
+  .separator {
+    margin: auto 5px;
+  }
+  

@@ -1,6 +1,53 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+export const IconColombia = ({ style = {}, size }) => {
+  return <svg
+    height={size}
+    id='Capa_1'
+    style={style}
+    version='1.1'
+    viewBox='0 0 450 300'
+    width={size}
+    x='0px'
+    y='0px'
+  >
+    <rect
+      fill='#CE1126'
+      height='300'
+      width='450'
+    />
+    <rect
+      fill='#003893'
+      height='225'
+      width='450'
+    />
+    <rect
+      fill='#FCD116'
+      height='150'
+      width='450'
+    />
+  </svg>
+}
+
+export const IconArrowRight = ({ style = {}, size, color, ...props }) => {
+  return <svg
+    fill='none'
+    height={size}
+    viewBox='0 0 24 24'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+    {...props}
+  >
+    <path
+      d='M6 12h12m0 0-5-5m5 5-5 5'
+      stroke='#000'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      strokeWidth={2}
+    />
+  </svg>
+}
 export const IconDost = ({ style = {}, size, color }) => {
   return <svg
     fill={color}

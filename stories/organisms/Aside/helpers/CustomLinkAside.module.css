@@ -1,0 +1,44 @@
+.wrapper_custom_link {
+    position: relative;
+}
+
+.wrapper_custom_link .active {
+    border-left: 3px solid var(--color-primary-red);
+}
+.containerOption_count--notification {
+    background-color: var(--color-primary-red);
+    width: 20px;
+    color: var(--color-text-white);
+    display: inline-block;
+    height: 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    position: absolute;
+    right: 40px;
+    top: 0px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.button {
+    cursor: pointer;
+    padding: 10px 3px;
+    text-align: start;
+    width: 100%;
+    word-break: break-word;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #3e3e3e;
+    font-weight: 500;
+    font-size: 1.1rem;
+    background-color: transparent;
+    line-height: 0.875rem;
+    border-left: 2px solid transparent;
+    margin-bottom: 7px;
+    position: relative;
+}
+.button svg {
+    margin-right: 10px;
+    margin-left: 5px;
+}
