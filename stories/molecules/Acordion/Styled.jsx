@@ -63,7 +63,7 @@ export const MenuLeft = styled.button`
   border: none;
   outline: 0;
   position: relative;
-  font-family: Poppins;
+  font-family: PFont-Regular;
   border-bottom: 1px solid #52525242;
   padding: 0;
   background: transparent;

@@ -31,7 +31,7 @@ export const CtnAnchor = styled(link)`
     border: none;
     outline: 0;
     position: relative;
-    font-family: Poppins;
+    font-family: PFont-Regular;
     background-color: transparent;
     align-self: auto;
     transition: .4s;

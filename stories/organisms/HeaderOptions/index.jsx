@@ -3,20 +3,18 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { PColor, SECColor } from '../../../assets/colors'
 import {
-    IconChart,
-    IconLogout,
-    IconMessageMain,
-    IconNotification,
-    IconShopping,
-    IconUser
+  IconLogout,
+  IconNotification,
+  IconShopping,
+  IconUser
 } from '../../../assets/icons'
 import {
-    ActiveLink,
-    Button,
-    Column,
-    Overline,
-    Row,
-    Text
+  ActiveLink,
+  Button,
+  Column,
+  Overline,
+  Row,
+  Text
 } from '../../atoms'
 import { ButtonOption, FloatingBoxTwo } from './styled'
 
@@ -46,7 +44,7 @@ export const Options = ({
     setShow(index === show ? false : index)
   }
   const handleSignOut = async () => {
-    await onClickLogout()
+    return await onClickLogout()
   }
 
   const isConsentGranted = userConsent === 'granted'
@@ -59,13 +57,9 @@ export const Options = ({
         show={show}
       />
       <ButtonOption>
-        <Enlace href='/messages'>
-          <a>
-            <IconMessageMain color={PColor} size='25px' />
-          </a>
-        </Enlace>
+        <IconNotification color={PColor} size='25px' />
       </ButtonOption>
-      <ButtonOption onClick={handleSignOut}>
+      <ButtonOption onClick={() => { return handleSignOut() }}>
         <IconLogout color={PColor} size='20px' />
       </ButtonOption>
       <ButtonOption
@@ -74,11 +68,6 @@ export const Options = ({
         }}
       >
         <IconShopping color={PColor} size='25px' />
-      </ButtonOption>
-      <ButtonOption>
-        <Enlace href='/informes'>
-          <IconChart color={PColor} size='29px' />
-        </Enlace>
       </ButtonOption>
       <ContainerOption>
         <FloatingBoxTwo show={show === 2}>

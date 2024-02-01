@@ -10,6 +10,7 @@ import {
 } from './styled'
 
 import Image from 'next/image'
+import React from 'react'
 import { PColor } from '../../../assets/colors'
 import {
   IconDelete,
@@ -17,6 +18,7 @@ import {
   IconPromo,
   IconStore
 } from '../../../assets/icons'
+import { getGlobalStyle } from '../../../utils'
 import { Skeleton } from '../../molecules/Skeleton'
 
 export const BannerStore = ({
@@ -33,9 +35,12 @@ export const BannerStore = ({
   path = '',
   src = '/images/DEFAULTBANNER.png',
   srcLogo = '/images/DEFAULTBANNER.png',
-  store = {},
+  store = {
+    Image: '/images/DEFAULTBANNER.png',
+    storeName: ''
+  },
   handleInputChangeLogo = () => { return },
-  onTargetClickLogo = () => { return },
+  onTargetClickLogo = (event) => { return event },
   handleUpdateBanner = () => { return },
   HandleDeleteBanner = () => { return },
   onTargetClick = () => { return }
@@ -64,9 +69,9 @@ export const BannerStore = ({
       }
       {isLoading
         ? <Skeleton height={isMobile ? 118 : 250} />
-        : <MerchantBannerWrapperInfo Open={isEmtySchedules ? true : openNow} bannerImage={(path || src) ? `url(${path || src})` : `url('/images/DEFAULTBANNER.png')`} >
+        : <MerchantBannerWrapperInfo bannerImage={(path || src) ? `url(${path || src})` : `url('/images/DEFAULTBANNER.png')`} open={isEmtySchedules ? true : openNow} >
           <span>
-          <IconStore />
+            <IconStore color={getGlobalStyle('--color-icons-white')} size={40} />
           </span>
           <div className='merchant-banner__status-description' data-test-id='merchant-banner-status-description'>
             <h2 className='merchant-banner__status-title'>{isEmtySchedules ? `Restaurante ${store?.storeName || ''}` : `Restaurante  ${open}`}</h2>
