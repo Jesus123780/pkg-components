@@ -19,7 +19,7 @@ export const Button = ({
   padding,
   ripple,
   fontFamily,
-  loading,
+  loading = false,
   child,
   fontWeight,
   disabled,

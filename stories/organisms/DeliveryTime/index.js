@@ -1,33 +1,32 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Column, Row, Text } from '../../atoms'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import styles from './DeliveryTime.module.css'
+import { TimeInput } from './Input'
 
 export const DeliveryTime = ({
   isOpen = false,
-  setDeliveryTime = (value) => {
-    return {
-      ...value
-    }
+  handleDeliveryTimeChange = (value) => {
+    return value
   },
   deliveryTime = '',
+  loadingDeliveryTime = false,
   setDeliveryTimeOpen = (state) => {
     return state
+  },
+  createDeliveryTime = (number) => {
+    return number
   }
 }) => {
-  const [time, setTime] = useState('12:00 AM')
 
-  const handleChange = (newValue) => {
-    setTime(newValue)
-  }
   return (
     <div>
       <AwesomeModal
         borderRadius='10px'
         btnCancel={false}
         btnConfirm={false}
-        customHeight='50vh'
+        customHeight='60vh'
         footer={false}
         header={true}
         height='auto'
@@ -40,6 +39,7 @@ export const DeliveryTime = ({
         padding='30px'
         show={isOpen}
         size='20%'
+        title='Tiempo de entrega'
         zIndex='9999'
       >
         <div className={styles['content']}>
@@ -50,15 +50,22 @@ export const DeliveryTime = ({
             </Text>
             <Text className={styles['label']}>Tiempo de entrega</Text>
             <Row className={styles['container_input']}>
-              <h1>Time Input Example</h1>
-              {/* <TimeInput value={time} onChange={handleChange} /> */}
-              <p>Selected Time: {time}</p>
-              <Text className={styles['label']}>minutos</Text>
+              <TimeInput onChange={handleDeliveryTimeChange} value={deliveryTime} />
             </Row>
           </Column>
           <Column className={styles['actions']}>
-            <Button primary>Guardar</Button>
-            <Button>Cancelar</Button>
+            <Button loading={loadingDeliveryTime} primary onClick={() => {
+              return createDeliveryTime(deliveryTime)
+            }}>
+              Guardar
+            </Button>
+            <Button
+              onClick={() => {
+                return setDeliveryTimeOpen()
+              }}
+            >
+              Cancelar
+            </Button>
           </Column>
         </div>
       </AwesomeModal>
@@ -67,8 +74,10 @@ export const DeliveryTime = ({
 }
 
 DeliveryTime.propTypes = {
+  createDeliveryTime: PropTypes.func,
   deliveryTime: PropTypes.object,
+  handleDeliveryTimeChange: PropTypes.func,
   isOpen: PropTypes.bool,
-  setDeliveryTime: PropTypes.func,
+  loadingDeliveryTime: PropTypes.bool,
   setDeliveryTimeOpen: PropTypes.func
 }
