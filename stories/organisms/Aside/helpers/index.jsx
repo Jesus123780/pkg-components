@@ -3,6 +3,7 @@ import React from 'react'
 import { ActiveLink } from '../../../atoms'
 import { AnchorRouter } from '../styled'
 import styles from './CustomLinkAside.module.css'
+
 export const CustomLinkAside = ({
   href,
   icon: IconComponent,
@@ -11,7 +12,6 @@ export const CustomLinkAside = ({
   label = '',
   onClick = () => { return }
 }) => {
-  console.log('🚀 ~ onClick:', onClick)
   return (
     <>
       {href ? (
