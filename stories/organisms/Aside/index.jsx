@@ -37,7 +37,7 @@ const MemoAside = ({
   location = {
     pathname: '/'
   },
-  countPedido = 0,
+  countOrders = 0,
   setCollapsed,
   salesOpen,
   collapsed = false,
@@ -48,12 +48,13 @@ const MemoAside = ({
   },
   loading,
   handleClick = (state) => { return state },
+  handleOpenDeliveryTime = () => { return },
   setSalesOpen = (state) => { return state },
   setShowComponentModal = (state) => { return state }
 }) => {
   const [show, setShow] = useState(false)
   const [active, setActive] = useState(null)
-
+  console.log(handleOpenDeliveryTime)
   const pathname = location?.pathname === '/dashboard/[...name]'
 
 
@@ -79,12 +80,17 @@ const MemoAside = ({
       icon: IconTicket,
       size: '25px',
       label: 'Pedidos',
-      count: countPedido
+      count: countOrders ?? 0
     },
     { href: '/horarios',
       icon: IconTime,
       size: '25px',
       label: 'Horarios'
+    },
+    { icon: IconTime,
+      size: '35px',
+      label: 'Tiempo de entrega',
+      onClick: handleOpenDeliveryTime
     },
     { href: '/ventas',
       icon: IconTicket,
@@ -214,6 +220,7 @@ const MemoAside = ({
                       icon={link.icon}
                       label={link.label}
                       size={link.size}
+                      {...link}
                     />
                   }
                   {Array.isArray(multiple) &&
@@ -240,7 +247,9 @@ const MemoAside = ({
                               icon={subLink.icon}
                               key={subLink.href}
                               label={subLink.label}
-                              size={size}
+                              size={subLink.size}
+                              {...subLink}
+
                             />)
                           })}
                         </Options>
@@ -258,8 +267,7 @@ const MemoAside = ({
 }
 
 MemoAside.propTypes = {
-  collapsed: PropTypes.any,
-  countPedido: PropTypes.any,
+  collapsed: PropTypes.bool,
   dataStore: PropTypes.object,
   handleClick: PropTypes.func,
   isMobile: PropTypes.any,
@@ -269,6 +277,7 @@ MemoAside.propTypes = {
   }),
   salesOpen: PropTypes.any,
   setCollapsed: PropTypes.func,
+  handleOpenDeliveryTime: PropTypes.func,
   setSalesOpen: PropTypes.func,
   setShowComponentModal: PropTypes.func
 }
