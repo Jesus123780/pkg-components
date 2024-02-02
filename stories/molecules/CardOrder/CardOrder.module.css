@@ -1,6 +1,5 @@
 .card {
-    border-radius: 5px;
-    border: 1px solid var(--color-icons-gray-light);
+    border: .5px solid var(--color-neutral-gray);
     box-shadow: var(--box-shadow-xs);
     margin-bottom: 10px;
     overflow: hidden;
@@ -55,7 +54,6 @@
 
 .content__delivery_time {
     border-top: 1px solid var(--color-icons-gray-light);
-    border-bottom: 1px solid var(--color-icons-gray-light);
     padding-top: var(--spacing-md);
     padding-bottom: var(--spacing-md);
     

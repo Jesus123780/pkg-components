@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { IconMiniCheck, IconTime } from '../../../assets'
+import {
+  IconInformationProduct,
+  IconMiniCheck,
+  IconTime
+} from '../../../assets'
+import { getGlobalStyle } from '../../../utils'
 import { Button, Row, Text } from '../../atoms'
 import style from './CardOrder.module.css'
 import { calculateRemainingTime, color } from './helpers'
@@ -10,37 +15,54 @@ export const CardOrder = ({
   pCodeRef = '',
   view = true,
   pDatCre = '',
-  deliveryTimeMinutes = null
-}) => {
-  const {
-    minutes,
-    hour,
-    remainingTimeText,
-    entregaText,
-    delay
-  } = deliveryTimeMinutes ? calculateRemainingTime(pDatCre, deliveryTimeMinutes) : {
-    minutes: '',
-    hour: '',
-    remainingTimeText: '',
-    entregaText: '',
-    delay: false
+  deliveryTimeMinutes = null,
+  handleViewOrder = (pCodeRef) => {
+    return pCodeRef
   }
+}) => {
+  const label = 'Nuevo Pedido'
+  const { minutes, hour, remainingTimeText, entregaText, delay } =
+    deliveryTimeMinutes
+      ? calculateRemainingTime(pDatCre, deliveryTimeMinutes)
+      : {
+        minutes: '',
+        hour: '',
+        remainingTimeText: '',
+        entregaText: '',
+        delay: false
+      }
   return (
-    <div className={style.card} style={view ? { border: '1px solid var(--color-feedback-warning-light)' } : {}}>
+    <div
+      className={style.card}
+      style={
+        view
+          ? { borderLeft: '5px solid var(--color-feedback-warning-light)' }
+          : {}
+      }
+    >
       <div className={style.card_header}>
         <div className={style.card_header_content}>
           <Text className={style.card_header_title}>
-            Nuevo Pedido
+            <div style={{ width: '20px', marginRight: '20px' }}>
+              <IconInformationProduct
+                color={getGlobalStyle('--color-icons-black')}
+                size={25}
+              />
+            </div>
+            {label}
           </Text>
-          <IconMiniCheck color={color[1]} size={10} />
+          <IconMiniCheck color={color[1]} size={20} />
         </div>
       </div>
       <div className={style.card_content}>
         <div className={style.card_content_action}>
-          <Text className={style.card_text_code}>
-            # {pCodeRef}
-          </Text>
-          <Button primary={true}>
+          <Text className={style.card_text_code}># {pCodeRef}</Text>
+          <Button
+            onClick={() => {
+              return handleViewOrder(pCodeRef)
+            }}
+            primary={true}
+          >
             Ver
           </Button>
         </div>
@@ -49,9 +71,7 @@ export const CardOrder = ({
             <span className='bubble-inner-dot'></span>
           </span>
         </Bubble>
-        <Text className={style.card_text_content}>
-          Confirmar pedido
-        </Text>
+        <Text className={style.card_text_content}>Confirmar pedido</Text>
         <div className={style.content__delivery_time}>
           {Boolean(delay) && (
             <Text className={style.card_text_content}>
@@ -59,16 +79,24 @@ export const CardOrder = ({
             </Text>
           )}
           <Row alignItems='center'>
-            <IconTime size='35px' />
-            {Boolean(!delay) && <Text className={style.card_text_content}>
-              {`Tiempo de entrega: ${hour ? `${hour}h` : ''} ${minutes ? minutes : ''}`}
-            </Text>}
+            <div style={{ width: '20px', marginRight: '20px' }}>
+              <IconTime size={25} />
+            </div>
+            {Boolean(!delay) && (
+              <Text className={style.card_text_content}>
+                {`Tiempo de entrega: ${hour ? `${hour}h` : ''} ${
+                  minutes || ''
+                }`}
+              </Text>
+            )}
           </Row>
           <Row alignItems='center'>
-            <IconTime size='25px' /> 
-            {Boolean(!delay) && <Text className={style.card_text_content}>
-              {entregaText}
-            </Text>}
+            <div style={{ width: '20px', marginRight: '20px' }}>
+              <IconTime size={25} />
+            </div>
+            {Boolean(!delay) && (
+              <Text className={style.card_text_content}>{entregaText}</Text>
+            )}
           </Row>
         </div>
       </div>
@@ -95,12 +123,16 @@ export const Bubble = styled.div`
   position: relative;
   margin: 0;
   &:hover:after {
-    background-color:  ${({ color }) => {return color || '' }};
+    background-color: ${({ color }) => {
+    return color || ''
+  }};
   }
 
   &:after {
     content: "";
-    background-color:  ${({ color }) => {return color || '' }};
+    background-color: ${({ color }) => {
+    return color || ''
+  }};
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -115,7 +147,9 @@ export const Bubble = styled.div`
     display: block;
     text-align: center;
     opacity: 1;
-    background-color:  ${({ color }) => {return color || '' }};
+    background-color: ${({ color }) => {
+    return color || ''
+  }};
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -126,7 +160,9 @@ export const Bubble = styled.div`
     display: block;
     text-align: center;
     opacity: 1;
-    background-color:  ${({ color }) => {return color || '' }};
+    background-color: ${({ color }) => {
+    return color || ''
+  }};
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -138,7 +174,9 @@ export const Bubble = styled.div`
     display: block;
     text-align: center;
     opacity: 1;
-    background-color:  ${({ color }) => {return color || '' }};
+    background-color: ${({ color }) => {
+    return color || ''
+  }};
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -153,5 +191,6 @@ CardOrder.propTypes = {
     PropTypes.number,
     PropTypes.oneOf([null])
   ]),
-  view: PropTypes.bool
+  view: PropTypes.bool,
+  handleViewOrder: PropTypes.func
 }
