@@ -5,6 +5,7 @@ import style from './Orders.module.css'
 
 export const Orders = ({
   isOpen = false,
+  deliveryTimeMinutes = null,
   orders = []
 }) => {
 
@@ -12,7 +13,11 @@ export const Orders = ({
     <div className={`${style.wrapper_order} ${isOpen ? style.slideIn : ''}`}>
       {orders?.map((order, index) => {
         return (
-          <CardOrder key={index} {...order} />
+          <CardOrder
+            key={index}
+            {...order}
+            deliveryTimeMinutes={deliveryTimeMinutes}
+          />
         )
       })}
     </div>
@@ -20,5 +25,9 @@ export const Orders = ({
 }
 Orders.propTypes = {
   isOpen: PropTypes.bool,
+  deliveryTimeMinutes: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.oneOf([null])
+  ]),
   orders: PropTypes.array
 }
