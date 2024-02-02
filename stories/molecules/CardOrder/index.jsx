@@ -78,7 +78,7 @@ export const CardOrder = ({
               {`Retrasado: ${remainingTimeText}`}
             </Text>
           )}
-          <Row alignItems='center'>
+          {Boolean(!delay) && <Row alignItems='center'>
             <div style={{ width: '20px', marginRight: '20px' }}>
               <IconTime size={25} />
             </div>
@@ -89,15 +89,15 @@ export const CardOrder = ({
                 }`}
               </Text>
             )}
-          </Row>
-          <Row alignItems='center'>
+          </Row>}
+          {Boolean(!delay) && <Row alignItems='center'>
             <div style={{ width: '20px', marginRight: '20px' }}>
               <IconTime size={25} />
             </div>
             {Boolean(!delay) && (
               <Text className={style.card_text_content}>{entregaText}</Text>
             )}
-          </Row>
+          </Row>}
         </div>
       </div>
     </div>

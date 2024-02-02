@@ -113,5 +113,5 @@
     "test:coverage": "rm -rf coverage && jest --coverage",
     "test:watch": "jest --watch"
   },
-  "version": "1.5.7"
+  "version": "1.6.0"
 }

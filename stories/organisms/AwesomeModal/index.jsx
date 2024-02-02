@@ -1,15 +1,20 @@
 import PropTypes from 'prop-types'
-import React, {
-  useCallback,
-  useEffect,
-  useState
-} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { BGColor, PColor } from '../../../assets/colors'
 import { IconClose } from '../../../assets/icons'
 import { RippleButton } from '../../atoms'
 import { Button } from '../../atoms/Button'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
-import { BtnClose, Container, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle, Wrapper } from './styled'
+import {
+  BtnClose,
+  Container,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+  Wrapper
+} from './styled'
 
 export const AwesomeModal = ({
   backgroundColor,
@@ -187,6 +192,7 @@ export const AwesomeModal = ({
                     onClick={() => {
                       return setSModal(false)
                     }}
+                    style={{ fontSize: '14px', fontWeight: '400' }}
                     type='button'
                   >
                     {cancel || BUTTONS_TEXT.cancel}
@@ -197,6 +203,7 @@ export const AwesomeModal = ({
                     onClick={() => {
                       hide()
                     }}
+                    style={{ fontSize: '14px', fontWeight: '400' }}
                     type={submit ? 'submit' : 'button'}
                   >
                     {confirm || BUTTONS_TEXT.confirm}

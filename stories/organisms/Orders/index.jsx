@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { IconClose } from '../../../assets'
 import { getGlobalStyle } from '../../../utils'
-import { CardOrder } from '../../molecules'
+import { CardOrder, EmptyData } from '../../molecules'
 import style from './Orders.module.css'
 
 export const Orders = ({
@@ -29,7 +29,8 @@ export const Orders = ({
         </button>
 
       </div>
-      {orders?.map((order, index) => {
+
+      {(Array.isArray(orders) && orders.length > 0) ? orders?.map((order, index) => {
         return (
           <CardOrder
             key={index}
@@ -38,7 +39,7 @@ export const Orders = ({
             handleViewOrder={handleViewOrder}
           />
         )
-      })}
+      }) : <EmptyData height={300} width={300} />}
     </div>
   )
 }
