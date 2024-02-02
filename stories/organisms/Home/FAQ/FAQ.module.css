@@ -8,7 +8,7 @@
   .faqTitle {
     font-size: 32px;
     text-align: center;
-    color: #333;
+    color: var(--color-neutral-gray-dark);
     margin-bottom: 24px;
   }
   

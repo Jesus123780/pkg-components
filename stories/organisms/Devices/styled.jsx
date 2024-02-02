@@ -11,7 +11,7 @@ export const CardDevice = styled.div`
     background: none;
     border-radius: 5px;
     border: 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-neutral-gray-silver);
     display: flex;
     min-height: 69px;
     padding: 0.9375rem 1.25rem;
@@ -36,7 +36,7 @@ export const CardDevice = styled.div`
         display: flex;
     }
     .device__description{
-        color: #3e3e3e;
+        color: var(--color-text-gray-light);
         font-size: 1rem;
         line-height: 1.375rem;
         margin-right: 0.5rem;

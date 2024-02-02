@@ -59,11 +59,11 @@ export const ContainerAside = styled.div`
 export const LeftNav = styled.div`
     display: grid;
     padding: 10px;
-    grid-template-columns: 30% repeat(auto-fill, 30%);
+    grid-template-columns: 50% repeat(auto-fill, 50%);
     position: absolute;
     background-color: ${BGColor};
     transition: all 200ms ease 0s;
-    background-color: #fff;
+    background-color: var(--color-base-white);
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
     z-index: 999;
     border-radius: 5px;
@@ -128,13 +128,12 @@ export const ButtonGlobalCreate = styled.button`
     }
 `
 export const Info = styled.div`
-position: relative;
+    background-color: var(--color-base-white); 
     display: flex;
     flex-direction: column;
-    background-color: #ffffff; 
-    overflow: hidden; 
-    height: 20%; 
     max-height: 150px; 
+    overflow: hidden; 
+    position: relative;
     
     .program_state {
         align-items: center;
@@ -146,7 +145,7 @@ position: relative;
         border: 1px solid ${PLVColor};
     }
     .title_store {
-        color: #3e3e3e;
+        color: var(--color-text-gray-light);
         font-weight: 500;
         font-size: 1.5rem;
         text-align: center;
@@ -155,7 +154,7 @@ position: relative;
         word-break: break-word;
     }
     .sub_title_store {
-        color: #3e3e3e;
+        color: var(--color-text-gray-light);
         font-weight: 500;
         margin-left: 5px;
         font-size: .9rem;
@@ -251,7 +250,7 @@ export const ButtonActionLink = styled.button`
         margin-left: 5px;
     }
     margin-bottom: 5px;
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     font-weight: 500;
 
 `
@@ -275,7 +274,7 @@ cursor: pointer;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     font-weight: 500;
     font-size: 1.1rem;
     line-height: 0.875rem;

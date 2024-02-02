@@ -1,11 +1,11 @@
 .dateRange {
+    color: var(--color-neutral-gray-dark);
     display: flex;
-    margin-top: 10px;
-    margin-left: 10px;
     font-family: PFont-Regular;
-    line-height: 1.5;
     font-size: 16px;
-    color: #333;
+    line-height: 1.5;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 .label {
@@ -13,23 +13,22 @@
 }
 
 .boxRange {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100px;
-    height: auto;
     border-radius: 4px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: flex-start;
+    width: 100px;
 }
 
 .date {
-    line-height: 1.5;
-    margin: 0;
     color: var(--color-text-gray-light);
     font-family: PFont-Regular;
-  }
-  
-  .separator {
+    line-height: 1.5;
+    margin: 0;
+}
+
+.separator {
     margin: auto 5px;
-  }
-  
+}

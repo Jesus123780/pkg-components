@@ -1,6 +1,5 @@
 
 import { useRouter } from 'next/router'
-import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { RippleButton } from '../../atoms'
 
@@ -15,7 +14,7 @@ const Container = styled.div`
 
 const Message = styled.h1`
   font-size: 3rem;
-  color: #333;
+  color: var(--color-neutral-gray-dark);
   text-align: center;
 `
 

@@ -33,7 +33,7 @@
   
   .navItem a {
     text-decoration: none;
-    color: #333;
+    color: var(--color-neutral-gray-dark);
     font-weight: 500;
   }
   

@@ -337,6 +337,7 @@ OptionalExtraProducts.propTypes = {
   openModalEditExtra: PropTypes.any,
   removeOneItem: PropTypes.func,
   selectedExtra: PropTypes.any,
+  pId: PropTypes.string,
   selectedItem: PropTypes.object,
   setCheck: PropTypes.func,
   setData: PropTypes.func,

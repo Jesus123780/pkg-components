@@ -20,6 +20,20 @@ export const ButtonOption = styled.button`
     `}}
     @media only screen and (min-width: 960px){
     }
+    .notification_count {
+        background-color: var(--color-primary-red);
+        width: var(--spacing-xl);
+        color: var(--color-text-white);
+        display: inline-block;
+        height: var(--spacing-xl);
+        border-radius: 20px;
+        font-size: 13px;
+        position: absolute;
+        right: -5px;
+        top: -10px;
+        line-height: 20px;
+        text-align: center;
+    }
 `
 
 export const FloatingBox = styled.div`

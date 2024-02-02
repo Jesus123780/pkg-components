@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, {
+import {
   memo,
   useEffect,
   useState
@@ -8,6 +8,7 @@ import {
   IconBuys,
   IconCategorie,
   IconChart,
+  IconHome,
   IconLogo,
   IconShopping,
   IconStore,
@@ -23,6 +24,7 @@ import {
 import Link from 'next/link'
 import { Options } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
+import { Portal } from '../Portal'
 import {
   ButtonGlobalCreate,
   Card,
@@ -71,15 +73,20 @@ const MemoAside = ({
 
   const links = [
     { href: '/dashboard',
-      icon: IconStore,
-      size: '25px',
-      label: 'Perfil'
+      icon: IconHome,
+      size: '30px',
+      label: 'Home'
     },
     { href: '/pedidos',
       icon: IconTicket,
       size: '25px',
       label: 'Pedidos',
       count: countOrders ?? 0
+    },
+    { href: idStore ? `/dashboard/${storeName}/${idStore}` : '/dashboard',
+      icon: IconStore,
+      size: '30px',
+      label: 'Perfil'
     },
     { href: '/horarios',
       icon: IconTime,
@@ -149,13 +156,16 @@ const MemoAside = ({
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [salesOpen, setSalesOpen])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [salesOpen])
+
   const handleMenu = (index) => {
     setActive((prev) => {
       const state = index === prev ? false : index
       return state
     })
   }
+
   return (
     <>
       {isMobile &&
@@ -172,23 +182,20 @@ const MemoAside = ({
             <ButtonGlobalCreate onClick={() => { return setShow(!show) }}>
                 Agregar Nuevo
             </ButtonGlobalCreate>
-            <LeftNav show={show}>
-              {location.pathname !== '/products' && <Info>
-                <Button onClick={() => { return handleOpenCreateProduct() }}>
-                    Productos
-                </Button>
-              </Info>}
-              <Info>
-                <Button onClick={() => { return setSalesOpen(!salesOpen) }}>
-                    Ventas
-                </Button>
-              </Info>
-              <Info>
-                <Button onClick={() => { return setShowComponentModal(4) }}>
-                    Categorías
-                </Button>
-              </Info>
-            </LeftNav>
+            <Portal>
+              <LeftNav show={show}>
+                {location.pathname !== '/products' && <Info>
+                  <Button onClick={() => { return handleOpenCreateProduct() }}>
+                      Productos
+                  </Button>
+                </Info>}
+                <Info>
+                  <Button onClick={() => { return setSalesOpen(!salesOpen) }}>
+                      Ventas
+                  </Button>
+                </Info>
+              </LeftNav>
+            </Portal>
             {(loading) ? null : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
               <a>
                 <h1 className='title_store'>
@@ -212,7 +219,7 @@ const MemoAside = ({
               const multiple = link.multiple || []
               return (
                 <div key={link.href}>
-                  {!multiple.length > 0 &&
+                  {Boolean(!multiple.length) &&
                     <CustomLinkAside
                       count={link.count}
                       href={link.href}
@@ -227,8 +234,7 @@ const MemoAside = ({
                       const {
                         label,
                         href,
-                        icon,
-                        size
+                        icon
                       } = item || {}
                       return (
                         <Options
@@ -270,7 +276,8 @@ MemoAside.propTypes = {
   dataStore: PropTypes.object,
   handleClick: PropTypes.func,
   isMobile: PropTypes.any,
-  loading: PropTypes.any,
+  loading: PropTypes.bool,
+  countOrders: PropTypes.number,
   location: PropTypes.shape({
     pathname: PropTypes.string
   }),

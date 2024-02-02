@@ -130,7 +130,7 @@ export const CardProductsContent = styled.div`
     font-size: 1rem;
     line-height: 1.25rem;
     font-weight: 400;
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     &:nth-child(2) {
       margin-left: 10px;
     }
@@ -141,7 +141,7 @@ export const CardProductsContent = styled.div`
   .card__description {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     cursor: pointer;
     display: -webkit-box;
     font-family: SulSans, Helvetica, sans-serif;

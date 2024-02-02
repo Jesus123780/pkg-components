@@ -64,22 +64,22 @@ export const Button = ({
 }
 
 Button.propTypes = {
-  backgroundColor: PropTypes.string, //*
+  backgroundColor: PropTypes.string,
   borderRadius: PropTypes.any,
   child: PropTypes.any,
+  children: PropTypes.any,
   color: PropTypes.any,
   disabled: PropTypes.any,
   fontFamily: PropTypes.any,
   fontWeight: PropTypes.any,
-  label: PropTypes.string.isRequired, //*
+  label: PropTypes.string.isRequired,
   loading: PropTypes.string,
+  margin: PropTypes.string,
   onClick: PropTypes.func,
   padding: PropTypes.any,
-  margin: PropTypes.string,
-  children: PropTypes.any,
-  primary: PropTypes.bool, //*
+  primary: PropTypes.bool,
   ripple: PropTypes.any,
-  size: PropTypes.oneOf(['small', 'medium', 'large']), //*
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   width: PropTypes.any
 }
 

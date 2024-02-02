@@ -56,7 +56,7 @@ export const Anchor = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #3e3e3e;
+  color: var(--color-text-gray-light);
   font-weight: 300;
   font-size: 0.75rem;
   line-height: 0.875rem;

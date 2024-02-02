@@ -22,9 +22,11 @@ export const Header = ({
   location = {},
   style = {},
   count = 0,
+  countOrders = 0,
   isMobile = false,
   loadingCount = false,
   onClickLogout = () => { return },
+  setIsOpenOrder = (boolean) => { return boolean },
   handleOpenMenu = () => { return },
   onClickAskUserPermission = () => { return },
   setSalesOpen = () => { return }
@@ -71,6 +73,7 @@ export const Header = ({
       <CtnItemOps>
         {!isMobile
           && <Options
+            countOrders={countOrders}
             error={false}
             errorPush={errorPush}
             loading={false}
@@ -79,6 +82,7 @@ export const Header = ({
             onClickAskUserPermission={onClickAskUserPermission}
             onClickLogout={onClickLogout}
             pushNotificationSupported={pushNotificationSupported}
+            setIsOpenOrder={setIsOpenOrder}
           />
         }
         <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }} style={style}>
@@ -94,20 +98,21 @@ export const Header = ({
 }
 Header.propTypes = {
   count: PropTypes.number,
-  error: PropTypes.bool,
+  countOrders: PropTypes.number,
   errorPush: PropTypes.any,
   handleOpenMenu: PropTypes.func,
   isMobile: PropTypes.bool,
   loading: PropTypes.bool,
   loadingCount: PropTypes.bool,
-  loadingPush: PropTypes.any,
+  loadingPush: PropTypes.bool,
   location: PropTypes.object,
   onClickAskUserPermission: PropTypes.func,
+  setIsOpenOrder: PropTypes.func,
   onClickLogout: PropTypes.func,
   pushNotificationSupported: PropTypes.any,
   salesOpen: PropTypes.bool,
   scrollNav: PropTypes.any,
-  setAlertBox: PropTypes.any,
+  setAlertBox: PropTypes.func,
   setSalesOpen: PropTypes.func,
   style: PropTypes.object
 }

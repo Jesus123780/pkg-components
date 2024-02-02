@@ -187,7 +187,7 @@ export const OverlineCategory = styled.button`
   & > span {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     display: flex;
     font-size: 0.675rem;
     font-weight: 400;
@@ -421,7 +421,7 @@ export const Card = styled.div`
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         box-sizing: border-box;
-        color: #3e3e3e;
+        color: var(--color-text-gray-light);
         cursor: pointer;
         display: -webkit-box;
         font-family: SulSans,Helvetica,sans-serif;
@@ -468,7 +468,7 @@ export const Card = styled.div`
     }
 
     .discount {
-      color: #3e3e3e;
+      color: var(--color-text-gray-light);
       text-decoration-line: line-through;
     }
 

@@ -11,7 +11,7 @@ export const Span = styled.span`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     font-weight: 500;
     font-size: 1.1rem;
     line-height: 0.875rem;

@@ -9,7 +9,6 @@ import {
   IconUser
 } from '../../../assets/icons'
 import {
-  ActiveLink,
   Button,
   Column,
   Overline,
@@ -23,6 +22,7 @@ export const Options = ({
   pushNotificationSupported,
   onClickSusbribeToPushNotification,
   userSubscription,
+  countOrders,
   pushServerSubscriptionId,
   onClickSendNotification,
   onClickSendSubscriptionToPushServer,
@@ -33,6 +33,9 @@ export const Options = ({
   },
   onClickAskUserPermission = () => {
     return
+  },
+  setIsOpenOrder = (state) => {
+    return state
   },
   onClickLogout = () => {
     return
@@ -48,6 +51,7 @@ export const Options = ({
   }
 
   const isConsentGranted = userConsent === 'granted'
+
   return (
     <ContainerOption>
       <Overline
@@ -56,10 +60,19 @@ export const Options = ({
         }}
         show={show}
       />
-      <ButtonOption>
+      <ButtonOption
+        onClick={() => {
+          return setIsOpenOrder(true)
+        }}
+      >
         <IconNotification color={PColor} size='25px' />
+        <span className='notification_count'>{countOrders}</span>
       </ButtonOption>
-      <ButtonOption onClick={() => { return handleSignOut() }}>
+      <ButtonOption
+        onClick={async () => {
+          return await handleSignOut()
+        }}
+      >
         <IconLogout color={PColor} size='20px' />
       </ButtonOption>
       <ButtonOption
@@ -70,7 +83,7 @@ export const Options = ({
         <IconShopping color={PColor} size='25px' />
       </ButtonOption>
       <ContainerOption>
-        <FloatingBoxTwo show={show === 2}>
+        <FloatingBoxTwo show={Boolean(show === 2)}>
           <Row alignItems={'center'}>
             <Column
               display={'grid'}
@@ -95,8 +108,15 @@ export const Options = ({
                   Habilita las notificaciones
                 </Text>
               )}
-              {isConsentGranted && <Text textAlign='start'>Las notificaciones están activas</Text>}
-              {!pushNotificationSupported && <Text>Las notificaciones {!pushNotificationSupported && 'No'} son compatibles con este dispositivo.</Text>}
+              {isConsentGranted && (
+                <Text textAlign='start'>Las notificaciones están activas</Text>
+              )}
+              {!pushNotificationSupported && (
+                <Text>
+                  Las notificaciones {!pushNotificationSupported && 'No'} son
+                  compatibles con este dispositivo.
+                </Text>
+              )}
               <Text
                 color={SECColor}
                 fontSize='.60rem'
@@ -104,7 +124,8 @@ export const Options = ({
                 textAlign='start'
               >
                 {' '}
-                Consentimiento del usuario para recibir notificaciones {userConsent}.
+                Consentimiento del usuario para recibir notificaciones{' '}
+                {userConsent}.
               </Text>
               <Button
                 background='transparent'
@@ -119,16 +140,32 @@ export const Options = ({
               >
                 {!isConsentGranted && 'Activar'}
               </Button>
-              <button disabled={!pushNotificationSupported || !isConsentGranted || userSubscription} onClick={onClickSusbribeToPushNotification}>
-                {userSubscription ? 'Push subscription created' : 'Create Notification subscription'}
+              <button
+                disabled={
+                  !pushNotificationSupported ||
+                  !isConsentGranted ||
+                  userSubscription
+                }
+                onClick={onClickSusbribeToPushNotification}
+              >
+                {userSubscription
+                  ? 'Push subscription created'
+                  : 'Create Notification subscription'}
               </button>
-              <button disabled={!userSubscription || pushServerSubscriptionId} onClick={onClickSendSubscriptionToPushServer}>
-                {pushServerSubscriptionId ? 'Subscrption sent to the server' : 'Send subscription to push server'}
+              <button
+                disabled={!userSubscription || pushServerSubscriptionId}
+                onClick={onClickSendSubscriptionToPushServer}
+              >
+                {pushServerSubscriptionId
+                  ? 'Subscrption sent to the server'
+                  : 'Send subscription to push server'}
               </button>
               {pushServerSubscriptionId && (
                 <div>
                   <p>The server accepted the push subscrption!</p>
-                  <button onClick={onClickSendNotification}>Send a notification</button>
+                  <button onClick={onClickSendNotification}>
+                    Send a notification
+                  </button>
                 </div>
               )}
               {/* <section>
@@ -173,6 +210,7 @@ Options.propTypes = {
     push: PropTypes.func
   }),
   onClickAskUserPermission: PropTypes.func,
+  setIsOpenOrder: PropTypes.func,
   onClickLogout: PropTypes.func,
   onClickSendNotification: PropTypes.any,
   onClickSendSubscriptionToPushServer: PropTypes.any,
@@ -180,24 +218,15 @@ Options.propTypes = {
   pushNotificationSupported: PropTypes.any,
   pushServerSubscriptionId: PropTypes.any,
   userConsent: PropTypes.string,
+  countOrders: PropTypes.number,
   userSubscription: PropTypes.any
 }
 
 const ContainerOption = styled.div`
   position: relative;
-  width: ${({ width }) => {
-    return width ? width : 'max-content'
+  width: ${({ width = 'max-content' }) => {
+    return width ?? 'max-content'
   }};
-`
-const Enlace = styled(ActiveLink)`
-  position: relative;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  border-radius: 10px;
-  &:hover {
-    background-color: #1b18181a;
-  }
 `
 const Option = styled.div`
   padding: 15px 0px;

@@ -26,7 +26,7 @@ export const DeliveryTime = ({
         borderRadius='10px'
         btnCancel={false}
         btnConfirm={false}
-        customHeight='60vh'
+        customHeight='auto'
         footer={false}
         header={true}
         height='auto'
@@ -55,8 +55,12 @@ export const DeliveryTime = ({
           </Column>
           <Column className={styles['actions']}>
             <Button
+              disabled={loading || (!deliveryTime || deliveryTime === '0')}
               loading={loading}
               onClick={() => {
+                if (!deliveryTime || deliveryTime === '0') {
+                  return null
+                }
                 return createDeliveryTime(deliveryTime)
               }}
               primary

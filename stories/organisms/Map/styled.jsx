@@ -66,7 +66,7 @@ export const Select = styled.select`
   border: 1px solid #dcdcdc;
   padding: 13px 20px;
   height: 48px;
-  color: #3e3e3e;
+  color: var(--color-text-gray-light);
   width: 100%;
   background-color: #fff;
 `
@@ -168,7 +168,7 @@ ${({ modal }) => {
   opacity: 1;
   overflow: visible;
   h2 {
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     font-size: 1.125rem;
     line-height: 22px;
     font-family: PFont-Light;
@@ -218,7 +218,7 @@ ${({ modal }) => {
 export const Text = styled.span`
     width: 100%;
     font-family: PFont-Regular;
-    color: #3e3e3e;
+    color: var(--color-text-gray-light);
     font-size: ${({ size }) => { return size || '1.125rem' }};
     line-height: 22px;
     text-align: center;

@@ -64,7 +64,7 @@ export const CardOrder = styled.div`
     margin-bottom: 10px;
     font-size: 16px;
     font-family: PFont-Light;
-    color: #333;
+    color: var(--color-neutral-gray-dark);
     font-size: 20px;
     line-height: 1.2;
     padding-right: 10px;
