@@ -9,8 +9,6 @@ import {
 } from '../../../assets/colors'
 
 export const Router = styled.div`
-    background-color: ${`${SFVColor}69`};
-    height: 100vw;
     overflow-y: auto;
     height: 80%;
     @media (max-width: 768px){
@@ -69,7 +67,6 @@ export const LeftNav = styled.div`
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
     z-index: 999;
     border-radius: 5px;
-    // overflow: hidden;
     width: 400px;
     place-content: center;
     gap: 10px;
@@ -137,7 +134,7 @@ position: relative;
     background-color: #ffffff; 
     overflow: hidden; 
     height: 20%; 
-    min-height: 150px; 
+    max-height: 150px; 
     
     .program_state {
         align-items: center;
@@ -309,4 +306,5 @@ export const Card = styled.div`
     box-shadow: 2px -1rem 0rem 0px rgb(18 38 63 / 3%);
     overflow: hidden;
     height: 100vh;
+    background-color: ${`${SFVColor}69`};
 `

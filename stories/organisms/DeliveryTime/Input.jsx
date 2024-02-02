@@ -6,8 +6,8 @@ export const TimeInput = ({ value, onChange }) => {
 
   const handleChange = (event) => {
     const inputValue = event.target.value
-    if (inputValue === '' || (!isNaN(inputValue) && parseInt(inputValue) >= 1 && parseInt(inputValue) <= 60)) {
-      onChange(inputValue === '' ? null : parseInt(inputValue))
+    if (inputValue === '' || (!isNaN(inputValue) && (parseInt(inputValue) >= 1 && parseInt(inputValue) <= 60))) {
+      onChange(inputValue === '' ? null : parseInt(inputValue, 10))
     }
   }
   
@@ -29,5 +29,5 @@ export const TimeInput = ({ value, onChange }) => {
 
 TimeInput.propTypes = {
   onChange: PropTypes.func,
-  value: PropTypes.string
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 }

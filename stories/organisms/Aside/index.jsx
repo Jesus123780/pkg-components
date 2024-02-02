@@ -54,7 +54,6 @@ const MemoAside = ({
 }) => {
   const [show, setShow] = useState(false)
   const [active, setActive] = useState(null)
-  console.log(handleOpenDeliveryTime)
   const pathname = location?.pathname === '/dashboard/[...name]'
 
 

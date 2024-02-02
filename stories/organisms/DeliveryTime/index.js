@@ -11,7 +11,7 @@ export const DeliveryTime = ({
     return value
   },
   deliveryTime = '',
-  loadingDeliveryTime = false,
+  loading = false,
   setDeliveryTimeOpen = (state) => {
     return state
   },
@@ -54,9 +54,13 @@ export const DeliveryTime = ({
             </Row>
           </Column>
           <Column className={styles['actions']}>
-            <Button loading={loadingDeliveryTime} primary onClick={() => {
-              return createDeliveryTime(deliveryTime)
-            }}>
+            <Button
+              loading={loading}
+              onClick={() => {
+                return createDeliveryTime(deliveryTime)
+              }}
+              primary
+            >
               Guardar
             </Button>
             <Button
@@ -75,9 +79,10 @@ export const DeliveryTime = ({
 
 DeliveryTime.propTypes = {
   createDeliveryTime: PropTypes.func,
-  deliveryTime: PropTypes.object,
+  deliveryTime: PropTypes.string,
   handleDeliveryTimeChange: PropTypes.func,
   isOpen: PropTypes.bool,
+  loading: PropTypes.bool,
   loadingDeliveryTime: PropTypes.bool,
   setDeliveryTimeOpen: PropTypes.func
 }
