@@ -25,13 +25,14 @@
   visibility: visible;
   animation: slideInAnimation 0.5s ease-out;
 }
+
 .button_cancel {
   background-color: var(--color-base-transparent);
   border: none;
   color: var(--color-text-gray-light);
   font-family: PFont-Light;
   font-size: 1em;
-  padding: 10px 20px;
+  padding: 0;
   text-align: end;
   width: 100%;
 }

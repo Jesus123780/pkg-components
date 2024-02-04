@@ -18,7 +18,10 @@ export const Main = () => {
           <div className={styles.categoryTag}>Gestión</div>
           <h1 className={styles.title}>Pasos para registrar un restaurante en {BUSINESS_TITLE}</h1>
           <p className={styles.subtitle}>
-          Es muy fácil registrar un restaurante en {BUSINESS_TITLE}, ten a mano los documentos de tu negocio y
+          Es muy fácil registrar un restaurante en {BUSINESS_TITLE}, 
+          </p>
+          <p className={styles.subtitle}>
+          ten a mano los documentos de tu negocio y
           formaliza la inscripción
           </p>
           <p className={styles.date}>{formattedDate}</p>
