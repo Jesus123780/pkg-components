@@ -66,7 +66,7 @@ export const WrapperCard = styled.div`
     width: 100%;
     height: 100%;
     z-index: 1;
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -107,15 +107,15 @@ export const CardProductsContent = styled.div`
   grid-gap: 15px;
   padding: 15px;
   min-width: 320px;
-  border: 1px solid #f2f2f2;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 5%);
+  border: 1px solid var(--color-neutral-gray);
+  box-shadow: var(--box-shadow-lg);
   border-radius: 4px;
   position: relative;
   display: grid;
   min-height: 190px;
   width: 100%;
   height: 147px;
-  background: #fff;
+  background: var(--color-base-white);
   padding: 20px;
   text-decoration: none;
   transition: 0.2s;

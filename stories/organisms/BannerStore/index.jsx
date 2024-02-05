@@ -137,9 +137,11 @@ export const BannerStore = ({
           <MerchantInfoTitle >
             {store?.storeName}
           </MerchantInfoTitle>
-          <button className='details__button' onClick={handleClose} >
-            ver más
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button className='details__button' onClick={handleClose} >
+              ver más
+            </button>
+          </div>
         </div>
       </MerchantInfo>
     </Section>

@@ -3,12 +3,13 @@ import React, { useState } from 'react'
 import { PColor } from '../../../assets/colors'
 import { IconSearch } from '../../../assets/icons'
 import styled from 'styled-components'
+import { getGlobalStyle } from '../../../utils'
 
 const SearchBarContainer = styled.div`
   align-items: center;
-  background-color: ${({ backgroundColor }) => { return backgroundColor  || 'var(--color-base-white)' }};
+  background-color: ${({ backgroundColor }) => { return backgroundColor || getGlobalStyle('--color-base-white') }};
   border-radius: 4px;
-  border: 1px solid ${({ border = '#f2f2f2' }) => {return border}};
+  border: 1px solid ${({ border = getGlobalStyle('--color-neutral-gray-silver') }) => {return border}};
   display: flex;
   padding: ${({ padding = '10px 8px' }) => {return padding}};
 `
@@ -29,11 +30,11 @@ const SearchIcon = styled.span`
 `
 
 export const SearchBar = ({
+  backgroundColor = '',
   placeholder = 'Search...',
   width = '100%',
   padding = '0px 30px 0',
   border,
-  backgroundColor,
   margin = '0',
   handleChange = () => {
     return
@@ -56,7 +57,11 @@ export const SearchBar = ({
 
   return (
     <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin, width }}>
-      <SearchBarContainer backgroundColor={backgroundColor} border={border} padding={padding}>
+      <SearchBarContainer
+        backgroundColor={backgroundColor}
+        border={border}
+        padding={padding}
+      >
         <SearchIcon>
           <IconSearch color={PColor} size='25px' />
           <i className='fas fa-search' />
@@ -76,6 +81,7 @@ SearchBar.propTypes = {
   handleChange: PropTypes.func,
   handleSubmit: PropTypes.func,
   margin: PropTypes.string,
+  backgroundColor: PropTypes.string,
   border: PropTypes.string,
   padding: PropTypes.string,
   placeholder: PropTypes.string,
