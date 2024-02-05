@@ -25,6 +25,7 @@ export const QuantityButton = ({
   ...props
 }) => {
   const validateZero = validationZero && quantity >= 0
+
   return (
     <div {...props}>
       <ContainerQuantity

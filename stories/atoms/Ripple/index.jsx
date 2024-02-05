@@ -88,15 +88,15 @@ RippleButton.propTypes = {
   color: PropTypes.any,
   family: PropTypes.any,
   label: PropTypes.any,
+  loading: PropTypes.bool,
   margin: PropTypes.any,
-  onClick: PropTypes.any,
+  onClick: PropTypes.func,
   padding: PropTypes.any,
   radius: PropTypes.any,
   standard: PropTypes.any,
   style: PropTypes.any,
   type: PropTypes.any,
   widthButton: PropTypes.any
-
 }
 const LoadingWrapper = styled.div`
   display: flex;

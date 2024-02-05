@@ -103,24 +103,27 @@ export const WrapperCard = styled.div`
 `
 
 export const CardProductsContent = styled.div`
-  grid-template-columns: 1fr 146px;
-  grid-gap: 15px;
-  padding: 15px;
-  min-width: 320px;
+  background: var(--color-base-white);
+  border-radius: 4px;
   border: 1px solid var(--color-neutral-gray);
   box-shadow: var(--box-shadow-lg);
-  border-radius: 4px;
-  position: relative;
+  cursor: pointer;
   display: grid;
-  min-height: 190px;
-  width: 100%;
+  grid-gap: 15px;
+  grid-template-columns: 1fr 146px;
+  height: 100%;
   height: 147px;
-  background: var(--color-base-white);
+  min-height: 190px;
+  min-width: 320px;
+  overflow: hidden;
   padding: 20px;
+  position: relative;
   text-decoration: none;
   transition: 0.2s;
-  overflow: hidden;
-  height: 100%;
+  width: 100%;
+  &:hover {
+    border: 1px solid var(--color-neutral-gray-silver);
+  }
   .footer {
     position: absolute;
     bottom: 15px;

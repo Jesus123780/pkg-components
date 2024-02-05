@@ -33,7 +33,7 @@ export const MarmitaCounter = styled.div`
   align-items: center;
   position: relative;
   ${({ padding }) => {
-    return padding ? padding : '10px'
+    return `padding: ${padding ?? '10px'}`
   }}
 `
 
