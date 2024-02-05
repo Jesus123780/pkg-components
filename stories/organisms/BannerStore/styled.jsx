@@ -201,6 +201,20 @@ export const MerchantInfo = styled.div`
       }
     }
   }
+  .details__button {
+    font-size: var(--font-size-xl);
+    line-height: 19.79px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    outline: none;
+    border: 0;
+    background-color: transparent;
+    color: var(--color-primary-red);
+    padding: 0;
+    font-weight: 400;
+    cursor: pointer;
+  }
 `
 export const MerchantBannerWrapperInfo = styled.div`
   line-height: 1.15;

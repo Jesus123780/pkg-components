@@ -1,0 +1,43 @@
+.header_step {
+    border-bottom: 0.5px solid var(--color-neutral-gray);
+    display: flex;
+    margin-bottom: 30px;
+    padding: 5px;
+    position: relative;
+}
+
+.tabs {
+    cursor: pointer;
+    flex: 1;
+    position: relative;
+}
+
+.slider__active::before {
+    background-color: var(--color-primary-pink-light);
+    bottom: -5px;
+    content: "";
+    height: 3px;
+    left: 0;
+    position: absolute;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.slider {
+    background-color: var(--color-primary-red);
+    bottom: 0;
+    height: 3px;
+    position: absolute;
+    transition: all 0.3s ease;
+    width: 80%;
+}
+
+.text {
+    -webkit-line-clamp: 2;
+    color: var(--color-text-gray-light);
+    justify-content: center;
+    line-height: 1.5rem;
+    margin-bottom: 9px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

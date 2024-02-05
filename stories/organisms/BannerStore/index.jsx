@@ -41,6 +41,7 @@ export const BannerStore = ({
   },
   handleInputChangeLogo = () => { return },
   onTargetClickLogo = (event) => { return event },
+  handleClose = () => { return },
   handleUpdateBanner = () => { return },
   HandleDeleteBanner = () => { return },
   onTargetClick = () => { return }
@@ -132,9 +133,14 @@ export const BannerStore = ({
             src={srcLogo ?? '/images/DEFAULTBANNER.png'}
             width={70}
           />}
-        <MerchantInfoTitle >
-          {store?.storeName}
-        </MerchantInfoTitle>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <MerchantInfoTitle >
+            {store?.storeName}
+          </MerchantInfoTitle>
+          <button className='details__button' onClick={handleClose} >
+            ver más
+          </button>
+        </div>
       </MerchantInfo>
     </Section>
   )
@@ -153,6 +159,7 @@ BannerStore.propTypes = {
   onTargetClick: PropTypes.func,
   onTargetClickLogo: PropTypes.func,
   HandleDeleteBanner: PropTypes.func,
+  handleClose: PropTypes.func,
   open: PropTypes.any,
   openNow: PropTypes.bool,
   path: PropTypes.string,

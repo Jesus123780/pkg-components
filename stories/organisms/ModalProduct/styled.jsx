@@ -35,6 +35,7 @@ export const CardProductsContent = styled.div`
       `
 export const CardProductsModal = styled(CardProductsContent)`
     padding: 0px;
+    overflow: auto;
     grid-template-columns: 1fr 50%;
     background-color: ${BGColor};
     @media (max-width: 960px) {
