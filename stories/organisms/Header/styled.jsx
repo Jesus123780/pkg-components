@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components'
 import {
-    BGColor,
-    DarkSilver,
-    PColor,
-    SECBGColor
+  BGColor,
+  DarkSilver,
+  PColor,
+  SECBGColor
 } from '../../../assets/colors'
 
 export const FooterComponent = styled.footer`
@@ -103,7 +103,7 @@ export const UseSize = styled.div`
 
 // options
 export const ButtonOption = styled.button`
-    margin: 0 0 0 30px;
+    margin: 10px;
     position: relative;
     cursor: pointer;
     /* z-index: 999; */
