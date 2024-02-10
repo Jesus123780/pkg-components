@@ -24,6 +24,7 @@ export const Button = ({
   fontWeight,
   disabled,
   margin,
+  style = {},
   ...props
 }) => {
   const primitiveMode = primary ? styles['storybook-button--primary'] : styles['storybook-button--secondary']
@@ -43,6 +44,7 @@ export const Button = ({
         fontWeight,
         borderRadius,
         fontFamily,
+        ...style,
         ...props
       }}
       type='button'
@@ -79,7 +81,8 @@ Button.propTypes = {
   padding: PropTypes.any,
   primary: PropTypes.bool,
   ripple: PropTypes.any,
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  size: PropTypes.oneOf(["small", "medium", "large"]),
+  style: PropTypes.object,
   width: PropTypes.any
 }
 

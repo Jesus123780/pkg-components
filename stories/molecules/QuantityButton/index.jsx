@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { ButtonDecrement, ButtonIncrement, ContainerQuantity, MarmitaCounter } from './styled'
+import { 
+  ButtonDecrement,
+  ButtonIncrement, 
+  ContainerQuantity, 
+  MarmitaCounter
+} from './styled'
 import styles from './styles.module.css'
 
 export const QuantityButton = ({

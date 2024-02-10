@@ -65,6 +65,7 @@ export const InputHooks = ({
   reference,
   required,
   title = '',
+  messageError = '',
   type = 'text',
   typeTextarea = false,
   value = '',
@@ -78,7 +79,7 @@ export const InputHooks = ({
   // STATE
   const [errors, setError] = useState(error)
   const [isPasswordShown, setIsPasswordShown] = useState(false)
-  const [message, setMessage] = useState('El campo no debe estar vacío')
+  const [message, setMessage] = useState(messageError || 'El campo no debe estar vacío')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestionList, setSuggestionList] = useState([])
   const errorFunc = (e, v, m) => {
@@ -182,7 +183,9 @@ export const InputHooks = ({
       dispatch({ type: 'Backspace' })
     }
   }, [arrowUpPressed, arrowDownPressed, backSpace])
-  const refInput = useRef()
+  const refInput = useRef({
+    focus: () => { return }
+  })
   const handleSuggestionOnClick = () => {
     // setEmail(suggestion)
     setShowSuggestions(!showSuggestions)
@@ -387,6 +390,7 @@ InputHooks.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
+  messageError: PropTypes.string,
   onInvalid: PropTypes.func,
   padding: PropTypes.string,
   paddingInput: PropTypes.string,

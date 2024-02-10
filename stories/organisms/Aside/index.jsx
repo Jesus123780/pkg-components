@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import {
+import React, {
   memo,
   useEffect,
   useState
@@ -33,6 +33,7 @@ import {
   LeftNav,
   Router
 } from './styled'
+import { getGlobalStyle } from '../../../utils'
 
 const MemoAside = ({
   isMobile = false,
@@ -170,12 +171,18 @@ const MemoAside = ({
     <>
       {isMobile &&
           <Overline
-            bgColor='rgba(0,0,0,.4)'
+            bgColor='rgba(0, 0, 0, 0.162)'
             onClick={() => { return setCollapsed(!collapsed) }}
             show={collapsed}
             zIndex='999'
           />
       }
+      <Overline
+        bgColor='rgba(0, 0, 0, 0.162)'
+        onClick={() => { return setShow(!show) }}
+        show={show}
+        zIndex={getGlobalStyle('--z-index-99999')}
+      />
       <ContainerAside collapsed={isMobile ? collapsed : false}>
         <Card>
           <Info>
@@ -183,7 +190,7 @@ const MemoAside = ({
                 Agregar Nuevo
             </ButtonGlobalCreate>
             <Portal>
-              <LeftNav show={show}>
+              <LeftNav show={show && !salesOpen}>
                 {location.pathname !== '/products' && <Info>
                   <Button onClick={() => { return handleOpenCreateProduct() }}>
                       Productos
@@ -282,6 +289,7 @@ MemoAside.propTypes = {
     pathname: PropTypes.string
   }),
   salesOpen: PropTypes.any,
+  loadingDeliveryTime: PropTypes.bool,
   setCollapsed: PropTypes.func,
   handleOpenDeliveryTime: PropTypes.func,
   setSalesOpen: PropTypes.func,

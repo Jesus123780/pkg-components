@@ -212,8 +212,8 @@ export const HeaderWrapperButton = styled.div`
     border-radius: 200px;
     transition: background-color .3s ease-in-out;
     border: 0;
+    background-color: var(--color-background-gray-light);
     cursor: pointer;
-    background-color: ${SECBGColor};
     margin-left: 30px;
     &:hover {
       background-color: ${SECBGColor};

@@ -65,7 +65,7 @@ export const LeftNav = styled.div`
     transition: all 200ms ease 0s;
     background-color: var(--color-base-white);
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
-    z-index: 999;
+    z-index: var(--z-index-99999);
     border-radius: 5px;
     width: 400px;
     place-content: center;

@@ -1,12 +1,9 @@
 .marmita-minitag {
-    --screen-x: 1495px;
-    --screen-y: 937px;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
     background-color: #717171;
     border-radius: 3px;
     border: none;
-    box-sizing: border-box;
     color: #f5f0eb;
     display: inline-block;
     font-family: SulSans,Helvetica,sans-serif;
@@ -20,4 +17,5 @@
     padding: 6px 6px 4px;
     text-rendering: optimizeLegibility;
     text-transform: uppercase;
+    text-wrap: nowrap;
 }

@@ -13,11 +13,23 @@ export const RippleButton = props => {
     loading,
     style,
     family,
+    disabled,
     standard,
     active,
     type,
     widthButton
-  } = props
+  } = props || {
+    label: '',
+    onClick: () => { return },
+    loading: false,
+    style: {},
+    family: 'PFont-Light',
+    disabled: false,
+    standard: false,
+    active: false,
+    type: 'button',
+    widthButton: '100%'
+  }
   const button = useRef(null)
   const handleRippleEffect = (e) => {
     const button = e?.currentTarget
@@ -56,6 +68,7 @@ export const RippleButton = props => {
       bgColor={ props.bgColor}
       className={`ripple-button`}
       color={ props.color }
+      disabled={disabled}
       family={family}
       margin={ props.margin }
       onClick={handleRippleEffect}
@@ -123,11 +136,11 @@ const Button = styled.button`
   background-color: ${`${PColor}69`} !important;
 }
 
- padding: ${ ({ padding }) => {return padding ? padding : '1em'} };
- background-color: ${ ({ bgColor }) => {return bgColor ? bgColor : 'red'} };
- color: ${ ({ color }) => {return color ? color : BGColor} };
- font-family: ${ ({ family }) => {return family ? family : 'PFont-Light'} };
- width: ${ ({ widthButton }) => {return widthButton ? widthButton : '100%'} };
+ padding: ${ ({ padding }) => {return padding || '1em'} };
+ background-color: ${ ({ bgColor }) => {return bgColor || 'red'} };
+ color: ${ ({ color }) => {return color || BGColor} };
+ font-family: ${ ({ family }) => {return family || 'PFont-Light'} };
+ width: ${ ({ widthButton }) => {return widthButton || '100%'} };
  ${ ({ margin }) => {return margin && css`margin: ${ margin };`} }
  ${ ({ border }) => {return border && css`border: ${ border };`}}
  ${ ({ radius }) => {return radius && css`border-radius: ${ radius };`}}

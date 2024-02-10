@@ -1,15 +1,23 @@
-import { AnimatePresence, motion, usePresence } from 'framer-motion'
+import { 
+  AnimatePresence, 
+  motion, 
+  usePresence
+} from 'framer-motion'
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 import { AwesomeModal } from '..'
 import { APColor, EColor } from '../../../assets/colors'
-import { IconDelete, IconEdit, IconMiniCheck } from '../../../assets/icons'
-import { numberFormat } from '../../../utils'
+import { 
+  IconDelete, 
+  IconEdit, 
+  IconMiniCheck
+} from '../../../assets/icons'
+import { getGlobalStyle, numberFormat } from '../../../utils'
 import {
-  Button,
   Checkbox,
   RippleButton,
-  Row
+  Row,
+  Tag
 } from '../../atoms'
 import { InputHooks, QuantityButton } from '../../molecules'
 import {
@@ -21,7 +29,7 @@ import {
 export const CreateExtra = ({
   LineItems = {
     Lines: []
-  },
+  },  
   loading = false,
   modal = false,
   inputRefs,
@@ -32,12 +40,12 @@ export const CreateExtra = ({
   },
   CleanLines = () => { return },
   handleAdd = () => { return },
-  handleEdit = () => { return },
-  handleFocusChange = () => { return },
-  handleSelect = () => { return },
-  handleLineChange = () => { return },
-  handleRemove = () => { return },
-  onSubmitUpdate = () => { return },
+  handleEdit = (i, item) => { return { i, item } },
+  handleFocusChange = (i) => { return i},
+  handleSelect = (item, index) => { return { item, index } },
+  handleLineChange = (i, extraName, value) => { return { i, extraName, value }},
+  handleRemove = (i, exPid) => { return { i, exPid } },
+  onSubmitUpdate = ({ pId }) => { return pId },
   setModal = () => { return }
 }) => {
   const disabled = false
@@ -59,7 +67,10 @@ export const CreateExtra = ({
     onAnimationComplete: () => {return !isPresent && safeToRemove()},
     transition
   }
-  const endOfListRef = useRef()
+  const endOfListRef = useRef({
+    scrollIntoView: (args) => { return args },
+    current: null
+  })
 
   return (
     <AwesomeModal
@@ -75,22 +86,22 @@ export const CreateExtra = ({
       padding={0}
       question={false}
       show={modal}
-      size='medium'
+      size='90%'
       sizeIconClose='30px'
       title='Añade Complementos'
-      zIndex='9999'
+      zIndex={getGlobalStyle('--z-index-99999')}
     >
       <ContentModal>
         <AnimatePresence>
           <div className='content'>
             {LineItems?.Lines?.length ? LineItems?.Lines?.map((extra, i) => {
               const price = numberFormat(extra?.extraPrice)
-              const exPid = extra?.exPid
-              const forEdit = extra?.forEdit
+              const exPid = extra?.exPid ?? null
+              const forEdit = extra?.forEdit || false
               const isSelect = selected.exPid === exPid
 
               return (
-                <motion.div {...animations} key={exPid} >
+                <motion.div {...animations} key={extra?.exPid || i} >
                   <ContentLinesItems loading={isSelect}>
                     <Row>
                       <InputHooks
@@ -105,6 +116,8 @@ export const CreateExtra = ({
                         value={extra?.extraName}
                       />
                       <InputHooks
+                        error={extra.error}
+                        messageError={extra.messageError}
                         name={extra?.extraPrice}
                         onChange={e => {
                           const value = e.target.value
@@ -124,7 +137,7 @@ export const CreateExtra = ({
                       onChange={value => { return handleLineChange(i, 'exState', value) }}
                     />
                     <RippleButton
-                      bgColor='transparent'
+                      bgColor={getGlobalStyle('--color-base-transparent')}
                       disabled={disabled}
                       margin='0px'
                       onClick={() => { return handleRemove(i, exPid) }}
@@ -134,20 +147,37 @@ export const CreateExtra = ({
                       <IconDelete color={EColor} size='25px' />
                     </RippleButton>
                     {forEdit ?
-                      <RippleButton
-                        bgColor='transparent'
-                        disabled={disabled}
-                        margin='0px'
-                        onClick={() => {
-                          if (isSelect) return handleEdit(i, exPid)
-                          return handleSelect(extra, i)
-                        }}
-                        type='button'
-                        widthButton='min-content'
-                      >
-                        {selected?.exPid === exPid ? <IconMiniCheck color={APColor} size='25px' /> : <IconEdit color={EColor} size='25px' />}
-                      </RippleButton>
-                      : <div style={{ padding: '25px', width: 'min-content' }}></div>
+                      <>
+                        <RippleButton
+                          bgColor='transparent'
+                          disabled={disabled}
+                          margin='0px'
+                          onClick={() => {
+                            if (isSelect) return handleEdit(i, exPid)
+                            return handleSelect(extra, i)
+                          }}
+                          type='button'
+                          widthButton='min-content'
+                        >
+                          {selected?.exPid === exPid ? <IconMiniCheck color={APColor} size='25px' /> : <IconEdit color={EColor} size='25px' />}
+                        </RippleButton>
+                        <span style={{ marginLeft: '15px' }}>
+                          <Tag label={'guardado'} />
+                        </span>
+                      </>
+                      : 
+                      <>
+                        <RippleButton
+                          bgColor='transparent'
+                          disabled={disabled}
+                          margin='0px'
+                          type='button'
+                          widthButton='min-content'
+                        >
+                          <IconEdit color={getGlobalStyle('--color-icons-gray-light')} size='25px' />
+                        </RippleButton>
+                        <Tag label='sin guardar' />
+                      </>
                     }
                   </ContentLinesItems>
                 </motion.div>
@@ -159,22 +189,15 @@ export const CreateExtra = ({
 
         </AnimatePresence>
         <Action>
-          <Button
-            bgColor='transparent'
-            borderRadius='5px'
-            disabled={disabled}
-            fontFamily='PFont-Light'
-            fontWeight='300'
+          <RippleButton
             margin='0px'
             onClick={CleanLines}
             padding='17px'
-            primary
-            size='large'
             type='button'
-            width='100px'
+            widthButton='140px'
           >
               Eliminar
-          </Button>
+          </RippleButton>
           <QuantityButton
             handleIncrement={() => {
               if (endOfListRef?.current) {
@@ -182,22 +205,20 @@ export const CreateExtra = ({
               }
               return handleAdd()
             }}
-            quantity={LineItems?.Lines?.length}
-            showNegativeButton
+            quantity={Number(LineItems?.Lines?.length || 0)}
+            showNegativeButton={true}
             style={{ margin: '0 20px 0 0', width: '60%' }}
           />
-          <Button
-            borderRadius='5px'
-            fontFamily='PFont-Light'
-            fontWeight='300'
-            label='Guardar'
+          <RippleButton
             loading={loading}
-            onClick={(e) => { e.preventDefault(); onSubmitUpdate({ pId }) }}
-            padding={loading ? '25px' : '17px'}
-            primary
-            size='large'
-            width='140px'
-          />
+            onClick={(e) => {
+              e.preventDefault()
+              return onSubmitUpdate({ pId })
+            }}
+            widthButton='140px'
+          >
+            Guardar
+          </RippleButton>
         </Action>
       </ContentModal>
     </AwesomeModal>
@@ -208,7 +229,7 @@ CreateExtra.propTypes = {
   CleanLines: PropTypes.func,
   LineItems: PropTypes.shape({
     Lines: PropTypes.shape({
-      length: PropTypes.number,
+      length: PropTypes.any,
       map: PropTypes.func
     })
   }),
@@ -231,3 +252,5 @@ CreateExtra.propTypes = {
   }),
   setModal: PropTypes.func
 }
+
+

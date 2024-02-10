@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { PColor } from '../../../assets/colors'
 import { IconLogo, IconSales } from '../../../assets/icons'
-import { Column, Row, Text } from '../../atoms'
+import { 
+  Column, 
+  Row, 
+  Text
+} from '../../atoms'
 import { AwesomeModal } from '../../organisms'
 import { Options } from '../../organisms/HeaderOptions'
 import { Burger } from './Burger'
@@ -29,7 +33,7 @@ export const Header = ({
   setIsOpenOrder = (boolean) => { return boolean },
   handleOpenMenu = () => { return },
   onClickAskUserPermission = () => { return },
-  setSalesOpen = () => { return }
+  setSalesOpen = (boolean) => { return boolean }
 }) => {
   return (
     <HeaderC scrollNav={scrollNav} style={style} >

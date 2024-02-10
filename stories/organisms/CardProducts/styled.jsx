@@ -40,7 +40,7 @@ export const TooltipCardProduct = styled.div`
       `
     )
   }}
-  z-index: -99;
+  z-index: var(--z-index-40);
   transition: 0.3s ease-in-out;
   transform: translateY(30px);
   button {
@@ -54,7 +54,7 @@ export const TooltipCardProduct = styled.div`
 
 export const WrapperCard = styled.div`
   position: relative;
-  z-index: 99;
+  z-index: var(--z-index-999);
 
   &&:hover > ${TooltipCardProduct} {
     transform: translateY(-30px);
@@ -70,20 +70,19 @@ export const WrapperCard = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    box-sizing: border-box;
     transform: scale(0);
     border-radius: 0;
     transition: transform 0.2s ease, border-radius 0.1s ease 0.1s;
   }
 
   &:before {
-    border-bottom: 1px solid #ea1d2c;
-    border-left: 1px solid #ea1d2c;
+    border-bottom: 1px solid var(--color-background-primary);
+    border-left: 1px solid var(--color-background-primary);
     transform-origin: 0 100%;
   }
   &:after {
-    border-top: 1px solid #ea1d2c;
-    border-right: 1px solid #ea1d2c;
+    border-top: 1px solid var(--color-background-primary);
+    border-right: 1px solid var(--color-background-primary);
     transform-origin: 100% 0;
   }
 
@@ -95,7 +94,7 @@ export const WrapperCard = styled.div`
         &&:after {
           transform: scale(1);
           border-radius: 4px;
-          color: #ea1d2c;
+          color: var(--color-background-primary);
         }
       `
     )
@@ -111,7 +110,6 @@ export const CardProductsContent = styled.div`
   display: grid;
   grid-gap: 15px;
   grid-template-columns: 1fr 146px;
-  height: 100%;
   height: 147px;
   min-height: 190px;
   min-width: 320px;
@@ -121,6 +119,7 @@ export const CardProductsContent = styled.div`
   text-decoration: none;
   transition: 0.2s;
   width: 100%;
+  z-index: var(--z-index-50);
   &:hover {
     border: 1px solid var(--color-neutral-gray-silver);
   }

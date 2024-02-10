@@ -8,7 +8,14 @@ import { CardProductsContent, CtnBox, TooltipCardProduct, WrapperCard } from './
 export const CardProductsComponent = ({
   isVisible,
   image,
-  food,
+  food = {
+    ProDescription: '',
+    ProDescuento: 0,
+    ProImage: '',
+    ProPrice: 0,
+    pName: '',
+    pId: null
+  },
   setRef,
   isEdit = true,
   showDiscount = true,
@@ -19,8 +26,8 @@ export const CardProductsComponent = ({
   redirect = () => {
     return
   },
-  handleDelete = () => {
-    return
+  handleDelete = (food) => {
+    return food
   }
 }) => {
   const calculateDiscountPercentage = (price, discount) => {
@@ -39,9 +46,8 @@ export const CardProductsComponent = ({
 
   const discountPercentage = calculateDiscountPercentage(food?.ProPrice, food?.ProDescuento)
 
-
   return (
-    <div ref={setRef}>
+    <div ref={setRef} >
       {
         <WrapperCard loading={loading}>
           {isEdit && (
@@ -113,9 +119,9 @@ CardProductsComponent.propTypes = {
     pName: PropTypes.string
   }),
   handleDelete: PropTypes.func,
-  image: PropTypes.any,
+  image: PropTypes.string,
   isEdit: PropTypes.bool,
-  isVisible: PropTypes.any,
+  isVisible: PropTypes.bool,
   loading: PropTypes.bool,
   onClick: PropTypes.func,
   redirect: PropTypes.func,

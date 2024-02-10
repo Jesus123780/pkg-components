@@ -33,16 +33,16 @@ export const calculateRemainingTime = (pDatCre, timeDelivery) => {
       }
     } else if (minutesDeRetraso === 0) {
       return {
-        hour: `${hourDeRetraso} hour`,
+        hour: `${hourDeRetraso} ${hourDeRetraso > 1 ? 'horas' : 'hora'}`,
         delay: true,
-        remainingTimeText: `${hourDeRetraso} hour de retraso`
+        remainingTimeText: `${hourDeRetraso} ${hourDeRetraso > 1 ? 'horas de retraso' : 'hora de retraso'}`
       }
     } 
     return {
       hour: hourDeRetraso,
       minutes: `${minutesDeRetraso} min`,
       delay: true,
-      remainingTimeText: `${hourDeRetraso} hour y ${minutesDeRetraso} min de retraso`
+      remainingTimeText: `${hourDeRetraso} horas y ${minutesDeRetraso} min de retraso`
     }
     
   }
