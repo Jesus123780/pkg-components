@@ -40,7 +40,7 @@ export const InputHooks = ({
   disabled = false,
   display = '',
   email = false,
-  error = '',
+  error = false,
   labelTop = '',
   fontSize = '14px',
   height,

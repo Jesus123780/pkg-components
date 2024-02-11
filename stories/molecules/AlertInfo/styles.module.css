@@ -25,6 +25,7 @@
   .message {
     display: inline-block;
     vertical-align: middle;
+    font-size: var(--font-size-base);
 
   }
   

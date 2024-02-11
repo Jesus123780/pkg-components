@@ -8,6 +8,7 @@ const colombianPhoneNumberRegex = /^(\+57)?([1-9]{1}[0-9]{0,9})$/
 
 export const PhoneInput = ({
   value,
+  required = false,
   onChange = (value) => { return value },
   defaultCountry = 'CO'
 }) => {
@@ -86,5 +87,6 @@ export const PhoneInput = ({
 PhoneInput.propTypes = {
   defaultCountry: PropTypes.string,
   onChange: PropTypes.func,
+  required: PropTypes.bool,
   value: PropTypes.any
 }
