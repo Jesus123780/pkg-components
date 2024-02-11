@@ -6,26 +6,28 @@
     justify-content: space-between;
     margin: auto;
     padding: 0;
+    grid-template-rows: 70px 70px 70px;
     width: 90%;
   }
   
   .card {
+    background-color: #e0f2df;
+    border-radius: 0;
+    box-shadow: var(--box-shadow-xs);
+    color: #26af48;
     display: flex;
-    font-family: PFont-Light;
+    flex-direction: row;
     flex-wrap: wrap;
-    height: min-content;
-    width: auto;
+    font-family: PFont-Light;
+    height: 100%;
     justify-content: initial;
+    margin: 0;
+    overflow: visible;
     padding: 1%;
     position: relative;
     transition: 0.5s ease;
-    margin: 0;
-    background-color: #e0f2df;
-    border-radius: 0;
-    color: #26af48;
-    overflow: visible;
-    box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.09);
-    flex-direction: row;
+    width: auto;
+
   }
   
   .active {

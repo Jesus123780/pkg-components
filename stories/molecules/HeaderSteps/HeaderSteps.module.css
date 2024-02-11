@@ -34,7 +34,6 @@
 
 .text {
     -webkit-line-clamp: 2;
-    color: var(--color-text-gray-light);
     justify-content: center;
     line-height: 1.5rem;
     margin-bottom: 9px;

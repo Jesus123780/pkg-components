@@ -1,0 +1,30 @@
+.alert {
+    border-radius: 0.625rem;
+    border-left: 5px solid;
+    padding: 0.625rem;
+    margin-bottom: 0.625rem;
+    align-items: center;
+    display: grid;
+    position: relative;
+    overflow: hidden;
+    grid-template-columns: 1fr 90%;
+  }
+  .dot {
+    width: 15px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .icon {
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+  }
+  
+  .message {
+    display: inline-block;
+    vertical-align: middle;
+
+  }
+  

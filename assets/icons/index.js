@@ -115,6 +115,17 @@ export const IconHome = ({ style = {}, size, color, ...props }) => {return (
   </svg>
 )}
 
+export const IconInfo = ({ style = {}, size, color }) => {
+  return <svg
+    fill={color}
+    height={size}
+    style={style}
+    viewBox='0 0 34 34'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+  ><path d='M15.333 21.999h3.333v3.333h-3.333v-3.333zm0-13.334h3.333v10h-3.333v-10zm1.65-8.333C7.783.332.333 7.799.333 16.999c0 9.2 7.45 16.666 16.65 16.666C26.2 33.665 33.666 26.2 33.666 17S26.2.332 16.983.332zm.017 30c-7.367 0-13.334-5.967-13.334-13.333C3.666 9.632 9.633 3.665 17 3.665c7.366 0 13.333 5.967 13.333 13.334 0 7.366-5.967 13.333-13.333 13.333z'></path></svg>
+}
+
 
 /**
  * IconInformationProduct component

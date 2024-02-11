@@ -18,6 +18,7 @@
     padding-right: 5px;
     position: relative;
     height: 50px;
+    font-size: var(--font-size-xs);
 }
 .time::after {
     content: '';
