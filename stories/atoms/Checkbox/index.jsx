@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { PColor } from '../../../assets/colors'
-
+import { getGlobalStyle } from '../../../utils'
 export const Checkbox = ({
   checked,
   className = '',
@@ -16,7 +16,12 @@ export const Checkbox = ({
   indeterminate = false,
   label,
   name,
-  onChange = () => {},
+  onChange = (event, id) => {
+    return {
+      event,
+      id
+    }
+  },
   ...restProps
 }) => {
   const inputEl = useRef(null)
@@ -49,7 +54,7 @@ export const Checkbox = ({
     }
 
     if (clickCount >= 7) {
-      alert('¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.')
+      // alert('¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.')
       setClickCount(0)
     }
 
@@ -57,7 +62,7 @@ export const Checkbox = ({
     onChange(event, id)
   }
 
-  const disabledStyles = { color: '#CCC' }
+  const disabledStyles = { color: getGlobalStyle('--color-text-inactive') }
 
   return (
     <Span

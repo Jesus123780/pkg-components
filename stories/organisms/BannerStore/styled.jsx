@@ -88,6 +88,13 @@ export const Section = styled.div`
   }
   @media only screen and (max-width: 960px) {
     padding: 0;
+    .basico_info {
+      flex-direction: column;
+    }
+    .wrapper_details__button {
+      justify-content: start;
+      margin: 0 40px;
+    }
   }
 `
 export const MerchantInfoTitle = styled.h1`

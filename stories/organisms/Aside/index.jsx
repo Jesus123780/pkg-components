@@ -196,6 +196,16 @@ const MemoAside = ({
                       Productos
                   </Button>
                 </Info>}
+                {location.pathname === '/products' && <Info>
+                  <Button
+                    onClick={() => { 
+                      setShowComponentModal(4)
+                      handleClick(4)
+                    }}
+                  >
+                      Categorias
+                  </Button>
+                </Info>}
                 <Info>
                   <Button onClick={() => { return setSalesOpen(!salesOpen) }}>
                       Ventas

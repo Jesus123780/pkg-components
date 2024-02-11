@@ -133,11 +133,11 @@ export const BannerStore = ({
             src={srcLogo ?? '/images/DEFAULTBANNER.png'}
             width={70}
           />}
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className='basico_info' style={{ display: 'flex', justifyContent: 'space-between' }}>
           <MerchantInfoTitle >
             {store?.storeName}
           </MerchantInfoTitle>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div className='wrapper_details__button' style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button className='details__button' onClick={handleClose} >
               ver más
             </button>

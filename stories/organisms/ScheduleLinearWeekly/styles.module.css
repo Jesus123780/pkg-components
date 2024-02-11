@@ -1,0 +1,92 @@
+.container {
+    display: flex;
+    margin-top: 50px;
+}
+
+.timeColumn {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-right: 10px;
+    width: 100px;
+    justify-content: space-between; /* Cambiar de 'center' a 'space-between' */
+}
+
+.time {
+    font-family: PFont-Light;
+    text-align: right;
+    padding-right: 5px;
+    position: relative;
+    height: 50px;
+}
+.time::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 1px;
+    border-top: 1px solid var(--color-neutral-gray);
+}
+.time:last-child {
+    height: 50px;
+}
+
+.scheduleGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    border-radius: 10px;
+    border: 1px solid var(--color-neutral-gray);
+}
+
+.dayColumn {
+    display: flex;
+    font-family: PFont-Light;
+    flex-direction: column;
+    border-left: 1px solid var(--color-neutral-gray);
+    position: relative;
+}
+.dayColumn:first-child {
+    border-left: none;
+}
+
+.dayLabel_action {
+    margin-bottom: 5px;
+    font-family: PFont-Light;
+    font-weight: 500;
+    position: absolute;
+    top: -70px;
+    padding: 10px;
+    font-size: var(--font-size-xs);
+    border-radius: 50px;
+    color: rgb(38, 175, 72)
+}
+
+.hourCell {
+    position: relative;
+    height: 50px;
+}
+
+.hourCell:first-child::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid gray;
+}
+
+.event {
+    background-color: rgb(224, 242, 223);
+    color: rgb(38, 175, 72);
+    margin-bottom: 3px;
+    font-size: var(--font-size-xs);
+    height: 50px;
+    display: flex; /* Hacer que el contenido sea flex */
+    align-items: center; /* Alinear verticalmente el contenido */
+    padding: 0 10px; /* Añadir espaciado interior */
+    width: -webkit-fill-available;
+    
+}

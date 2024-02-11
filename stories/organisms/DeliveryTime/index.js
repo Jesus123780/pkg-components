@@ -4,6 +4,7 @@ import { Button, Column, Row, Text } from '../../atoms'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import styles from './DeliveryTime.module.css'
 import { TimeInput } from './Input'
+import { getGlobalStyle } from '../../../utils'
 
 export const DeliveryTime = ({
   isOpen = false,
@@ -40,7 +41,7 @@ export const DeliveryTime = ({
         show={isOpen}
         size='20%'
         title='Tiempo de entrega'
-        zIndex='9999'
+        zIndex={getGlobalStyle('--z-index-99999')}
       >
         <div className={styles['content']}>
           <Column>

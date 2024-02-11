@@ -210,6 +210,7 @@ export const HeaderWrapperButton = styled.div`
     position: relative;
     padding: 8px 12px;
     border-radius: 200px;
+    box-shadow: var(--box-shadow-sm);
     transition: background-color .3s ease-in-out;
     border: 0;
     background-color: var(--color-background-gray-light);
