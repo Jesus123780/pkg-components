@@ -42,19 +42,21 @@ jobs:
           fi
         working-directory: ${{ github.workspace }}
 
-  publish_chromatic:
+
+  chromatic:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v4
         with:
-          node-version: 18
+          fetch-depth: 0
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
+        run: pnpm install
+        run: yarn install --immutable --immutable-cache --check-cache
 
       - name: Publish to Chromatic
-        run: npx chromatic --project-token=2f192326eb16
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
