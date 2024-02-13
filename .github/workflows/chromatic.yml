@@ -1,11 +1,11 @@
 # Workflow name
-name: 'Chromatic Deployment and NPM Publish'
+name: "Chromatic Deployment and NPM Publish"
 
 # Event for the workflow
 on:
   push:
     branches:
-      - main  # Puedes cambiar a la rama que desees
+      - main # Puedes cambiar a la rama que desees
 
 # List of jobs
 jobs:
@@ -41,22 +41,6 @@ jobs:
             exit 1
           fi
         working-directory: ${{ github.workspace }}
-
-  publish_npm:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Publish to npm
 
   publish_chromatic:
     runs-on: ubuntu-latest
