@@ -6,7 +6,32 @@ export default {
   title: 'organisms/Aside',
   component: Aside,
   argTypes: {
-    backgroundColor: { control: 'color' }
+    backgroundColor: { control: 'color' },
+    isMobile: { control: 'boolean' },
+    location: { control: 'object' },
+    setShowComponentModal: { control: 'function' },
+    countPedido: { control: 'number' },
+    handleClick: { control: 'function' },
+    setCollapsed: { control: 'function' },
+    setSalesOpen: { control: 'function' },
+    salesOpen: { control: 'boolean' },
+    collapsed: { control: 'boolean' },
+    dataStore: { control: 'object' },
+    loading: { control: 'boolean' }
+  },
+  args: {
+    backgroundColor: '#f5f5f5',
+    isMobile: false,
+    location: { pathname: '/dashboard' },
+    setShowComponentModal: () => {},
+    countPedido: 0,
+    handleClick: () => {},
+    setCollapsed: () => {},
+    setSalesOpen: () => {},
+    salesOpen: false,
+    collapsed: false,
+    dataStore: { storeName: 'Mi Tienda', idStore: '123', uState: 0 },
+    loading: false
   }
 }
 

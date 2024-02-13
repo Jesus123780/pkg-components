@@ -1,0 +1,9 @@
+.detail_info_client {
+    margin-top: 4.375rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.wrap-text {
+    text-wrap: nowrap;
+}

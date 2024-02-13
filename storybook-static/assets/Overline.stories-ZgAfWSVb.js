@@ -1,0 +1,3 @@
+import{j as n}from"./jsx-runtime-DI8_P1Ft.js";import{O as s}from"./index-DrTIMpa1.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./styled-components.browser.esm-CLTG7J5x.js";import"./tslib.es6-BF5GDGeg.js";const u={title:"atoms/Overline",component:s,argTypes:{backgroundColor:{control:"color"}},args:{zIndex:100,bgColor:"rgba(0, 0, 0, 0.5)",show:!0}},i=a=>n(s,{...a}),r=i.bind({});var e,o,t;r.parameters={...r.parameters,docs:{...(e=r.parameters)==null?void 0:e.docs,source:{originalSource:`(args: any) => {
+  return <Overline {...args} />;
+}`,...(t=(o=r.parameters)==null?void 0:o.docs)==null?void 0:t.source}}};const O=["OverLine"];export{r as OverLine,O as __namedExportsOrder,u as default};

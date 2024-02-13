@@ -1,0 +1,4 @@
+import{j as s}from"./jsx-runtime-DI8_P1Ft.js";import{s as l}from"./styled-components.browser.esm-CLTG7J5x.js";const d=l.img`
+  width: ${({width:e})=>e||"auto"};
+  height: ${({height:e})=>e||"auto"};
+`,t=({src:e,alt:a,width:r,height:i,className:n})=>s(d,{src:e,alt:a,width:r,height:i,className:n});try{t.displayName="Image",t.__docgenInfo={description:"",displayName:"Image",props:{src:{defaultValue:null,description:"",name:"src",required:!0,type:{name:"string"}},alt:{defaultValue:null,description:"",name:"alt",required:!0,type:{name:"string"}},width:{defaultValue:null,description:"",name:"width",required:!1,type:{name:"string"}},height:{defaultValue:null,description:"",name:"height",required:!1,type:{name:"string"}},className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{t as I};

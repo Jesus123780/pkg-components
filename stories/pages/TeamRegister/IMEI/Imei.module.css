@@ -1,0 +1,6 @@
+.container_imei {
+    background-color: var(--color-neutral-gray-white);
+    margin-top: 2.5625rem;
+    padding: 4.6875rem 2.9375rem;
+    width: 70%;
+}

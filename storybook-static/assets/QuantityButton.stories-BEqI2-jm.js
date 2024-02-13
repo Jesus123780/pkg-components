@@ -1,0 +1,3 @@
+import{j as s}from"./jsx-runtime-DI8_P1Ft.js";import{Q as e}from"./index-DVGXaJdU.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./index-B3IC6ylx.js";import"./styled-components.browser.esm-CLTG7J5x.js";import"./tslib.es6-BF5GDGeg.js";const Q={title:"molecules/QuantityButton",component:e,argTypes:{backgroundColor:{control:"color"}}},u=n=>s(e,{...n}),t=u.bind({});t.args={quantity:1};var o,r,a;t.parameters={...t.parameters,docs:{...(o=t.parameters)==null?void 0:o.docs,source:{originalSource:`args => {
+  return <QuantityButton {...args} />;
+}`,...(a=(r=t.parameters)==null?void 0:r.docs)==null?void 0:a.source}}};const g=["TemplateQuantityButton"];export{t as TemplateQuantityButton,g as __namedExportsOrder,Q as default};

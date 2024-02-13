@@ -1,3 +1,6 @@
+export * from './constanst'
+export * from './test/linkRedirect'
+
 export const getGlobalStyle = (token) => {
   return `var(${token})`
 }

@@ -37,6 +37,11 @@
     background-color: var(--color-base-transparent);
 }
 
+@media (max-width: 960px) {
+    .aside_content {
+        width: 100%;
+    }
+}
 @keyframes show {
     0% {
         transform: translate3d(120%, 0px, 0px);

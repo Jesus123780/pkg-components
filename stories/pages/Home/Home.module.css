@@ -1,0 +1,96 @@
+.container {
+  background-image: url('../../assets/public/Images/background_onboarding.webp');
+  background-repeat: round;
+  background-size: cover;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  place-content: center;
+  text-align: center;
+}
+
+.container_icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5.625rem;
+}
+
+.col-1 {
+  display: flex;
+  flex: 1 1 0%;
+  object-fit: cover;
+  opacity: 1;
+  place-content: center !important;
+  place-items: center !important;
+}
+
+.col-2 {
+  flex: 0.33 1 0%;
+  object-fit: cover;
+  opacity: 1;
+}
+
+.col-2 img {
+  height: 71%;
+  object-fit: contain;
+  padding-top: -3px;
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+  width: fit-content;
+}
+
+.text-container {
+  background-color: #024C16;
+  border-radius: 0.9375rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 50px;
+  text-align: start;
+  width: 70%;
+}
+
+.start-title {
+  color: #ffffff !important;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.description {
+  color: #FFFFFF;
+  font-size: 35px;
+  line-height: 35px;
+  margin-left: 1.25rem;
+}
+
+.row-1 {
+  align-items: center !important;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.col-2_lateral-column {
+  width: calc(100vw - 98.3%);
+  height: 100%;
+  right: 0;
+  position: absolute;
+  background-color: #116d22;
+  z-index: 99;
+}
+
+.contain_image_hand .image_hand {
+  width: 100%;
+  height: min-content;
+  object-fit: contain;
+}
+
+.contain_image_hand {
+  height: 94px;
+  left: -25px;
+  position: absolute;
+  width: 70px;
+  z-index: 99999;
+}

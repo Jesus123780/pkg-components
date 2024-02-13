@@ -1,0 +1,3 @@
+import{j as a}from"./jsx-runtime-DI8_P1Ft.js";import{P as n}from"./index-CU9ER8A5.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./index-B3IC6ylx.js";import"./index-RGaBZlDs.js";const P={title:"molecules/PhoneInput",component:n,argTypes:{backgroundColor:{control:"color"}}},p=s=>a(n,{...s}),o=p.bind({});o.args={value:"Hello, world",defaultCountry:"col",required:!0,countries:[["Colombia","col","57",".... ......"]]};var r,e,t;o.parameters={...o.parameters,docs:{...(r=o.parameters)==null?void 0:r.docs,source:{originalSource:`args => {
+  return <PhoneInput {...args} />;
+}`,...(t=(e=o.parameters)==null?void 0:e.docs)==null?void 0:t.source}}};const g=["TemplatePhoneInput"];export{o as TemplatePhoneInput,g as __namedExportsOrder,P as default};

@@ -1,0 +1,66 @@
+.paragraph {
+    font-size: var(--font-size-base);
+    color: var(--color-icons-black);
+    letter-spacing: var(--letter-spacing-wider);
+    font-weight: var(--font-weight-normal);
+}
+
+.color-default {
+  color: var(--color-text-black);
+}
+
+.color-back {
+  color: #000000;
+}
+
+.weight-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.weight-hairline {
+  font-weight: var(--font-weight-hairline);
+}
+
+.weight-thin {
+  font-weight: var(--font-weight-thin);
+}
+
+.weight-light {
+  font-weight: var(--font-weight-light);
+}
+
+.weight-normal {
+  font-weight: var(--font-weight-normal);
+}
+
+.weight-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.weight-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.weight-extrabold {
+  font-weight: var(--font-weight-extrabold);
+}
+
+.weight-black {
+  font-weight: var(--font-weight-black);
+}
+
+.color-primary {
+  color: var(--color-text-primary);
+}
+
+.size-sm {
+    font-size: var(--font-size-sm);
+}
+
+.size-md {
+    font-size: var(--font-size-md);
+}
+
+.size-lg {
+    font-size: var(--font-size-lg);
+}

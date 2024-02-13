@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 80px;
+
+}
+.col-1 {
+    margin: 10px;
+    display: flex;
+    flex: 1 1 0%;
+    object-fit: cover;
+    opacity: 1;
+    padding: 20px;
+    width: 80%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.content_carrusel {
+    width: 182px;
+}
+
+.col-2 {
+    width: 20%;
+    background-color: transparent;
+    padding: 20px;
+    margin: 10px;
+
+}

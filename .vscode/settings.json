@@ -1,13 +1,6 @@
 {
     "cSpell.words": [
-        "Anauthorized",
-        "deepmerge",
-        "Eliminado",
-        "gmail",
-        "Pedido"
-    ],
-    "editor.codeActionsOnSave": {
-        // "source.fixAll.eslint": "explicit",
-        // "source.organizeImports": "explicit"
-    }
+        "Imei",
+        "IMEI"
+    ]
 }

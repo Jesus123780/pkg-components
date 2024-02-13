@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
+}
+
+.col-1 {
+    display: flex;
+    flex: 1 1 0%;
+    height: 100%;
+    margin: 10px;
+    object-fit: cover;
+    opacity: 1;
+    padding: 20px;
+    width: 100%;
+}
+
+.content_carrusel {
+    width: 182px;
+}
+
+.container_terms {
+    max-height: 55%;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.container_action {
+    position: relative;
+}
+
+.content_button {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: max-content;
+}

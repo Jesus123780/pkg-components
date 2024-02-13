@@ -2,6 +2,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.pdf$/,
+        use: 'file-loader'
+      },
+      {
         test: /\.(js|jsx|ts|tsx|mjs)$/,
         exclude: /node_modules/,
         type: 'javascript/auto', // Corregido: Utilizar 'javascript/esm'
@@ -23,7 +27,7 @@ module.exports = {
       {
         test: /\.js$/,
         include: /@storybook\/addon-jest/,
-        type: 'javascript/auto', // Corregido: Utilizar 'javascript/auto'
+        type: 'javascript/auto',
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env']
