@@ -1,5 +1,6 @@
 import React from 'react'
 import { AsideInfoStore } from './index'
+import { Text } from '../../atoms'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -13,7 +14,13 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template = (args: any) => {
-  return <AsideInfoStore {...args} />
+
+  return (
+    <>
+    <Text>Hola</Text>
+    <AsideInfoStore {...args} />
+    </>
+  )
 }
 
 export const TemplateAsideInfoStore = Template.bind({})
