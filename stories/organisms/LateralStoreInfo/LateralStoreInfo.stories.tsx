@@ -6,7 +6,6 @@ const meta: Meta<typeof LateralStoreInfo> = {
     title: "atoms/LateralStoreInfo",
     parameters: {
       controls: { expanded: true },
-      chromatic: { viewports: [320, 1200] }
     },
     args: {
       show: true,
@@ -23,7 +22,6 @@ type Story = StoryObj<typeof LateralStoreInfo>;
 
 export const Default: Story = {
   parameters: {
-    chromatic: { viewports: [320, 1200] },
   },
   args: {
     show: true,
