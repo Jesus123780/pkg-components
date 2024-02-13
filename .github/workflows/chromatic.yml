@@ -1,8 +1,48 @@
-name: "Chromatic"
+# Workflow name
+name: "Chromatic Deployment and NPM Publish"
 
-on: push
+# Event for the workflow
+on:
+  push:
+    branches:
+      - main # Puedes cambiar a la rama que desees
 
+# List of jobs
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Instala las dependencias antes de la construcción
+      - name: Install dependencies
+        run: npm install
+
+  validate-commit:
+    name: Validate Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate commit messages
+        run: |
+          last_commit_message=$(git log -1 --pretty=format:%s)
+          if [[ ! "$last_commit_message" =~ ^(fix:|feat:) ]]; then
+            echo "Error: El mensaje de confirmación no cumple con el formato esperado (fix: o feat:)"
+            exit 1
+          fi
+        working-directory: ${{ github.workspace }}
+
+
   chromatic:
     runs-on: ubuntu-latest
     steps:
