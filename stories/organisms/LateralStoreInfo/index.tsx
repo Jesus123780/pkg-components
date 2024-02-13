@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Rate } from '../../molecules';
 import { AsideInfoStore } from '../../molecules/AsideInfoStore';
 import { HeaderSteps } from '../../molecules/HeaderSteps';
@@ -37,7 +36,7 @@ export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
   minOrder,
   overActive = 0,
   rating = 0,
-  show,
+  show = true,
   steps = [],
   schedulesStore = [],
   setRatingStar,

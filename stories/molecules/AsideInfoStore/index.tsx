@@ -9,7 +9,7 @@ interface AsideInfoStoreProps {
   show: boolean;
 }
 export const AsideInfoStore: React.FC<AsideInfoStoreProps> = ({ 
-  show = false, 
+  show = true, 
   children, 
   handleClose = () => { return } 
 }) => {
