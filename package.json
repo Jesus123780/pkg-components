@@ -78,7 +78,7 @@
   "scripts": {
     "build-storybook": "storybook build",
     "build": "storybook build",
-    "semantic-release": "semantic-release",
+    "semantic-release": "semantic-release --branches main",
     "build:components": "babel stories/** -d dist",
     "build:tokens": "node scripts/build-tokens.js",
     "prepare": "husky install || true",
