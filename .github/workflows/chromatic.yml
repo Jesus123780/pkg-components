@@ -42,10 +42,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-            # Instala las dependencias antes de la construcción
-    
-    - name: Install dependencies
-        run: npm install
+
+      - name: Install dependencies
+          run: npm install
 
   chromatic:
     runs-on: ubuntu-latest
