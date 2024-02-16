@@ -1,32 +1,29 @@
-import React from 'react'
-import { AsideInfoStore } from './index'
-import { Text } from '../../atoms'
+import React from "react"
+import { AsideInfoStore } from "./index"
+import { Text } from "../../atoms"
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'molecules/AsideInfoStore',
+  title: "molecules/AsideInfoStore",
   component: AsideInfoStore,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    backgroundColor: { control: 'color' }
-  }
+    backgroundColor: { control: "color" },
+  },
 }
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template = (args: any) => {
-
   return (
     <>
-    <Text>Hola</Text>
-    <AsideInfoStore {...args} />
+      <Text>Hola</Text>
+      <AsideInfoStore
+        handleClose={() => {
+          return
+        }}
+        show={true}
+        active={0}
+        children={<></>}
+      />
     </>
   )
 }
 
 export const TemplateAsideInfoStore = Template.bind({})
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-TemplateAsideInfoStore.args = {
-  show: true,
-  active: 0,
-  children: ''
-}

@@ -29,9 +29,7 @@ export const Options: React.FC<OptionsProps> = ({
   label,
   path
 }) => {
-  const refButton = useRef<HTMLDivElement>({
-    current: ''
-  });
+  const refButton = useRef<HTMLDivElement>(null);
   const refMenu = useRef<HTMLDivElement>(null);
   const location = useRouter();
 
@@ -86,7 +84,6 @@ export const Options: React.FC<OptionsProps> = ({
     >
       <Row active={active}>
         <div style={{ display: 'flex' }}>
-          {/* {IconComponent && <IconComponent size={20} style={{ marginRight: '10px' }} />} */}
           <Span active={active}>{label}</Span>
         </div>
         <ContainerBurger>

@@ -7,6 +7,7 @@ interface AsideInfoStoreProps {
   children: React.ReactNode;
   handleClose: () => void;
   show: boolean;
+  active?: number;
 }
 export const AsideInfoStore: React.FC<AsideInfoStoreProps> = ({ 
   show = true, 

@@ -1,9 +1,10 @@
 import styled from 'styled-components'
+import { QuantityButtonProps } from './types'
 
-export const ContainerQuantity = styled.div`
+export const ContainerQuantity = styled.div<QuantityButtonProps>`
   display: inline-flex;
   border: ${({ border }) => {
-    return border ? border : '1px solid #dcdcdc'
+    return border || '1px solid #dcdcdc'
   }};
   border-radius: 4px;
   margin-right: 10px;
@@ -15,10 +16,10 @@ export const ContainerQuantity = styled.div`
   border-radius: 4px;
   margin-right: 15px;
   width: ${({ width }) => {
-    return width ? width : '100%'
+    return width || '100%'
   }};
   margin: ${({ margin }) => {
-    return margin ? margin : 'auto'
+    return margin || 'auto'
   }};
   @media only screen and (min-width: 960px) {
     .dish-action__counter {
@@ -26,8 +27,10 @@ export const ContainerQuantity = styled.div`
     }
   }
 `
-
-export const MarmitaCounter = styled.div`
+interface MarmitaCounterProps {
+  padding?: string
+}
+export const MarmitaCounter = styled.div<MarmitaCounterProps>`
   display: inline-flex;
   display: flex;
   align-items: center;

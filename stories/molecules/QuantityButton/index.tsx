@@ -6,14 +6,15 @@ import {
   ContainerQuantity, 
   MarmitaCounter
 } from './styled'
+import { QuantityButtonProps } from './types'
 import styles from './styles.module.css'
 
-export const QuantityButton = ({
+export const QuantityButton: React.FC<QuantityButtonProps> = ({
   border,
   margin,
   padding,
   label = '',
-  quantity = null,
+  quantity = 0,
   disabled = false,
   showNegativeButton = false,
   showPositiveButton = false,
@@ -104,17 +105,17 @@ export const QuantityButton = ({
 
 QuantityButton.propTypes = {
   border: PropTypes.any,
-  classNameQuantity: PropTypes.string,
+  classNameQuantity: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   handleDecrement: PropTypes.func,
   handleIncrement: PropTypes.func,
   label: PropTypes.string,
   margin: PropTypes.any,
   padding: PropTypes.any,
-  quantity: PropTypes.number,
+  quantity: PropTypes.number.isRequired,
   showNegativeButton: PropTypes.bool,
   showPositiveButton: PropTypes.bool,
   validationOne: PropTypes.any,
   validationZero: PropTypes.bool,
-  width: PropTypes.any
+  width: PropTypes.string
 }

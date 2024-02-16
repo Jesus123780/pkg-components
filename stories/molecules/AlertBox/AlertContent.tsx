@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { ContainerToast, ContentToast } from './styled'
+import { AlertContentProps } from './types'
 
-export const AlertContent = ({ err, closed }) => {
+export const AlertContent: React.FC<AlertContentProps> = ({ err, closed }) => {
   return (
     <ContainerToast
       closed={closed}
@@ -14,13 +14,4 @@ export const AlertContent = ({ err, closed }) => {
       </ContentToast>
     </ContainerToast>
   )
-}
-
-AlertContent.propTypes = {
-  err: PropTypes.shape({
-    color: PropTypes.string,
-    duration: PropTypes.number,
-    message: PropTypes.string
-  }),
-  closed: PropTypes.bool.isRequired
 }

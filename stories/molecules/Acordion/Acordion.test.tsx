@@ -12,7 +12,7 @@ describe('Options Component', () => {
         handleClick={() => {
           return console.log('Option clicked')
         }}
-        icon={<YourIconComponent />}
+        icon={<></>}
         index={1}
         label='Option Label'
         path='/path'

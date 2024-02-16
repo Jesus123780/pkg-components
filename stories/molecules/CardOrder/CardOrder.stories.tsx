@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { CardOrder } from './index';
+import { CardOrder } from './index'
 
 const meta: Meta<typeof CardOrder> = {
   component: CardOrder,

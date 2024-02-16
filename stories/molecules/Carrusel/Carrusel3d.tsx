@@ -2,7 +2,22 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styles from './styles.module.css'
 
-export const Carrusel3D = (props) => {
+interface CustomHTMLAttributes extends React.HTMLAttributes<HTMLDivElement> {
+  '--active'?: number;
+  '--offset'?: number;
+  '--direction'?: number;
+  '--abs-offset'?: number;
+}
+
+interface Carrusel3DProps {
+  active: number
+  children: any
+  maxView?: number
+  moveLeft: any
+  moveRight: any
+}
+
+export const Carrusel3D: React.FC<Carrusel3DProps> = (props) => {
   const {
     children,
     active,
@@ -23,10 +38,12 @@ export const Carrusel3D = (props) => {
               '--offset': (active - i) / 3,
               '--direction': Math.sign(active - i),
               '--abs-offset': Math.abs(active - i) / 3,
-              pointerEvents: active === i ? 'auto' : 'none',
-              opacity: Math.abs(active - i) >= MAX_VISIBILITY ? '0' : '1',
-              display: Math.abs(active - i) > MAX_VISIBILITY ? 'none' : 'block'
-            }}
+              ...{
+                pointerEvents: active === i ? 'auto' : 'none',
+                opacity: Math.abs(active - i) >= MAX_VISIBILITY ? '0' : '1',
+                display: Math.abs(active - i) > MAX_VISIBILITY ? 'none' : 'block'
+              }
+            } as CustomHTMLAttributes}
           >
             {child}
           </div>
@@ -53,7 +70,7 @@ export const Carrusel3D = (props) => {
 }
 
 Carrusel3D.propTypes = {
-  active: PropTypes.number,
+  active: PropTypes.number.isRequired,
   children: PropTypes.any,
   maxView: PropTypes.number,
   moveLeft: PropTypes.any,
