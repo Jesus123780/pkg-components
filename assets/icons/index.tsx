@@ -3,6 +3,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { IconProps } from '../../stories/assets/public/Icons'
+import { getGlobalStyle } from '../../helpers'
 
 /**
  * IconBuys component
@@ -1163,18 +1164,19 @@ IconFolder.propTypes = {
   style: PropTypes.object
 }
 
-export const IconPlus = ({ style = {}, size, color }: IconProps) => {
+export const IconPlus = ({ style = {}, size = 24, color }: IconProps) => {
   return <svg
-    fill={color}
-    height={size}
-    style={style}
-    viewBox='0 0 79.46 81.92'
-    width={size}
-  ><path
-      d='M86.6,229V265.2h34.8v9.24H86.6v36.5H76.74v-36.5H41.94V265.2h34.8V229Z'
-      fill={color}
-      transform='translate(-41.94 -229.01)'
-    /></svg>
+  height={size || 24}
+  viewBox='0 0 24 24'
+  width={size || 24}
+  xmlns='http://www.w3.org/2000/svg'
+>
+  <path
+    d='M13 11h4.993c.556 0 1.007.444 1.007 1 0 .552-.45 1-1.007 1H13v4.993C13 18.55 12.556 19 12 19c-.552 0-1-.45-1-1.007V13H6.007A1.001 1.001 0 0 1 5 12c0-.552.45-1 1.007-1H11V6.007C11 5.45 11.444 5 12 5c.552 0 1 .45 1 1.007V11z'
+    fill={getGlobalStyle('--color-icons-primary')}
+    fillRule='evenodd'
+  ></path>
+</svg>
 }
 export const IconLinePart = ({
   size = 2,
@@ -1207,7 +1209,30 @@ IconPlus.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
+export const IconMinus = ({ style = {}, size = 24, color, ...props }: IconProps) => {
+  return <svg
+  height={size || 24}
+  viewBox='0 0 24 24'
+  width={size || 24}
+  style={style}
+  xmlns='http://www.w3.org/2000/svg'
+  {...props}
+>
+  <path
+    d='M17.993 11c.556 0 1.007.444 1.007 1 0 .552-.45 1-1.007 1H6.007A1.001 1.001 0 0 1 5 12c0-.552.45-1 1.007-1h11.986z'
+    fill={color ?? getGlobalStyle('--color-icons-primary')}
+    fillRule='evenodd'
+  >
+    {' '}
+  </path>
+</svg>
+}
 
+IconMinus.propTypes = {
+  color: PropTypes.func,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
 export const IconPromo = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}

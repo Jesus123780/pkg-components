@@ -1,8 +1,17 @@
 import React from "react";
 import styles from "./styles.module.css";
-import product from "../../../assets/images/product.png";
+import { MiniCardProductProps } from "./type";
+import productImg from "../../../assets/images/product.png";
+import { QuantityButtonFloat } from "../../molecules/QuantityButtonFloat";
 
-export const MiniCardProduct = () => {
+export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
+  ProPrice,
+  ProDescription = "",
+  pName = "",
+  withQuantity = false,
+  openQuantity = false,
+  ...props
+}) => {
   return (
     <div className={styles.productCardWrapper}>
       <div
@@ -13,34 +22,31 @@ export const MiniCardProduct = () => {
           className={styles["product-card-image__container"]}
           data-test-id="product-card-image"
         >
-          <div className={styles['wrapper-image']} >
-            <img
-              className={styles["product-card-image"]}
-              src={product}
-            />
+          <div className={styles["wrapper-image"]}>
+            <img className={styles["product-card-image"]} src={productImg} />
           </div>
-          
+          {withQuantity && (
+            <div className={styles["quantity_container"]}>
+              <QuantityButtonFloat open={openQuantity} />
+            </div>
+          )}
           <div className={styles["product-card-image__overlay"]}></div>
         </div>
         <div
-          className={styles['product-card__price']}
+          className={styles["product-card__price"]}
           data-test-id="product-card-price"
         >
-          $ 5000
+          {ProPrice}
         </div>
-        <span
-          className={styles['product-card__title']}
-          title="Cerveja Brahma Duplo Malte Puro Malte 350ml"
-        >
-          Cerveja Brahma Duplo Malte Puro Malte 350ml
+        <span className={styles["product-card__title"]} title={pName}>
+          {pName}
         </span>
         <span
-          className={styles['product-card__description']}
-          title="Produto para maiores de 18 anos"
+          className={styles["product-card__description"]}
+          title={ProDescription}
         >
-          Produto para maiores de 18 anos
+          {ProDescription}
         </span>
-       
       </div>
     </div>
   );
