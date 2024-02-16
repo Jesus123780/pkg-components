@@ -1,70 +1,45 @@
-# Workflow name
-name: Chromatic Deployment and NPM Publish
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-# Event for the workflow
+name: Node.js CI
+
 on:
+  push:
+    branches: [ main ]
   pull_request:
-    branches: [ main ]
-  push: 
-    branches: [ main ]
+    branches: '*'
 
-# List of jobs
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  quality:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
+        os: [ubuntu-latest, windows-latest]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Instala las dependencias antes de la construcción
-      - name: Install dependencies
-        run: npm install
-
-  validate-commit:
-    name: Validate Commit Message
-    if ${{ github.ref == 'refs/heads/main' }}
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm test
+  
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [quality]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20.8.1
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Semantic Release
-      - run: npm ci
-        run: npm run semantic-release
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Validate commit messages
-        run: |
-          last_commit_message=$(git log -1 --pretty=format:%s)
-          if [[ ! "$last_commit_message" =~ ^(fix:|feat:) ]]; then
-            echo "Error: El mensaje de confirmación no cumple con el formato esperado (fix: o feat:)"
-            exit 1
-          fi
-        working-directory: ${{ github.workspace }}
-
-  chromatic:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Install dependencies
-        run: |
-          npm ci && npm install && yarn install --immutable --immutable-cache --check-cache
-
-      - name: Publish to Chromatic
-        uses: chromaui/action@latest
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+    steps: 
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run semantic-release
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
