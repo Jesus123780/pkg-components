@@ -10,18 +10,8 @@ on:
 
 # List of jobs
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Instala las dependencias antes de la construcción
-      - name: Install dependencies
-        run: npm install
-
+  
   validate-commit:
-    needs: build
     name: Validate Commit Message
     runs-on: ubuntu-latest
     steps:
@@ -44,9 +34,22 @@ jobs:
             exit 1
           fi
         working-directory: ${{ github.workspace }}
+  
+  build:
+    needs: validate-commit
+    name: Build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        # Instala las dependencias antes de la construcción
+        - name: Install dependencies
+          run: npm install
 
   chromatic:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
