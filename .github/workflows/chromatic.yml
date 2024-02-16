@@ -21,6 +21,7 @@ jobs:
         run: npm install
 
   validate-commit:
+    needs: build
     name: Validate Commit Message
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +52,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          node-version: 20.8.1
 
       - name: Install dependencies
         run: |
