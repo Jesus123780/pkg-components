@@ -22,7 +22,7 @@ jobs:
 
   validate-commit:
     name: Validate Commit Message
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if ${{ github.ref == 'refs/heads/main' }}
     needs: [quality]
     runs-on: ubuntu-latest
     steps:
@@ -32,11 +32,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.8.1
 
       - name: Install dependencies
         run: npm install
-      
+
       - name: Run Semantic Release
       - run: npm ci
         run: npm run semantic-release
