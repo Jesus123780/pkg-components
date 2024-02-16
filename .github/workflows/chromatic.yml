@@ -37,7 +37,7 @@ jobs:
       - name: Run Semantic Release
         if: success()
         env:
-          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GH_TOKEN: ${{ secrets.TOKEN_GITHUB_2 }}
         run: npm run semantic-release
 
       - name: Validate commit messages
