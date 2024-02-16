@@ -10,7 +10,6 @@ on:
 
 # List of jobs
 jobs:
-  quality
   build:
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +64,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
-    needs: [quality]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
