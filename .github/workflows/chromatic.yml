@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-    validate-commit:
+  validate-commit:
     name: Validate Commit Message
     runs-on: ubuntu-latest
     steps:
@@ -40,6 +40,7 @@ jobs:
       - name: Run Semantic Release
         if: success()
         run: npm run semantic-release
+
 
       - name: Validate commit messages
         run: |
