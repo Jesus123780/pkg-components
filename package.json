@@ -91,7 +91,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
@@ -100,5 +102,9 @@
       "@semantic-release/git"
     ]
   },
-  "version": "1.8.6"
+  "version": "0.0.0-development",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foodi-app-org/pkg-components.git"
+  }
 }

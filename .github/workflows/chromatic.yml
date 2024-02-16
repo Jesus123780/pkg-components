@@ -4,11 +4,9 @@ name: Chromatic Deployment and NPM Publish
 # Event for the workflow
 on:
   pull_request:
-    branches:
-      - main # Puedes cambiar a la rama que desees
-  push:
-    branches:
-      - main # Puedes cambiar a la rama que desees
+    branches: [ main ]
+  push: 
+    branches: [ main ]
 
 # List of jobs
 jobs:
@@ -39,8 +37,6 @@ jobs:
 
       - name: Run Semantic Release
         if: success()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run semantic-release
 
       - name: Validate commit messages
