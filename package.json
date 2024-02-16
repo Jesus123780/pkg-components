@@ -74,7 +74,7 @@
   "license": "ISC",
   "main": "index.tsx",
   "name": "pkg-components",
-  "private": true,
+  "private": false,
   "scripts": {
     "build-storybook": "storybook build",
     "build": "storybook build",
