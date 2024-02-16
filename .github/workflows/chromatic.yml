@@ -69,7 +69,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.8.1
       - run: npm ci
       - run: npm run semantic-release
         env:
