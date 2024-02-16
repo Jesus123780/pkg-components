@@ -22,7 +22,7 @@ jobs:
 
   validate-commit:
     name: Validate Commit Message
-    if ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [quality]
     runs-on: ubuntu-latest
     steps:
