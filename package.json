@@ -26,6 +26,8 @@
     "@babel/eslint-parser": "7.23.3",
     "@babel/preset-env": "^7.23.9",
     "@commitlint/config-conventional": "^18.6.2",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@storybook/addon-essentials": "^7.6.14",
     "@storybook/addon-interactions": "^7.6.14",
     "@storybook/addon-links": "^7.6.14",
@@ -53,6 +55,7 @@
     "lint-staged": "^15.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "semantic-release": "^23.0.2",
     "storybook": "^7.6.14",
     "storybook-css-modules": "1.0.8",
     "typescript": "^5.3.3",
@@ -75,6 +78,7 @@
   "scripts": {
     "build-storybook": "storybook build",
     "build": "storybook build",
+    "semantic-release": "semantic-release",
     "build:components": "babel stories/** -d dist",
     "build:tokens": "node scripts/build-tokens.js",
     "prepare": "husky install || true",
@@ -85,6 +89,16 @@
     "lint:fix": "npm run lint -- --fix",
     "sb": "storybook dev -p 6006",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "release": {
+    "branches": ["main"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ]
   },
   "version": "1.8.6"
 }
