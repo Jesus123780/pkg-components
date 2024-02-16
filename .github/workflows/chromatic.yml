@@ -63,6 +63,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    needs: chromatic
     if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v2
