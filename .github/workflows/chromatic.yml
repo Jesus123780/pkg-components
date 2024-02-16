@@ -89,8 +89,10 @@ jobs:
           npm ci && npm install && yarn install --immutable --immutable-cache --check-cache
 
       - name: Publish to npm
-      - run: npm ci
-      - run: npm run semantic-release
+        run: npm publish
+
+      - name: Run Semantic Release
+        run: npm run semantic-release
         env: 
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
