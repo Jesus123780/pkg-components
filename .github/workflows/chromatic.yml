@@ -88,8 +88,9 @@ jobs:
         run: |
           npm ci && npm install && yarn install --immutable --immutable-cache --check-cache
 
-      - name: Run Semantic Release
-        run: npm run semantic-release
-        env: 
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
+          npm publish
