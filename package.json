@@ -90,18 +90,6 @@
     "sb": "storybook dev -p 6006",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      "@semantic-release/git"
-    ]
-  },
   "version": "0.0.0-development",
   "repository": {
     "type": "git",
