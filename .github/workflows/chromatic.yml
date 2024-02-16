@@ -19,21 +19,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-  validate-commit:
+    validate-commit:
     name: Validate Commit Message
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Install nvm
         uses: actions/setup-node@v2
         with:
-          node-version: 16
-
+          node-version: 14
+      - name: Use Node.js ${{ matrix.node-version }}
+        run: |
+          nvm install 20.8.1
+          nvm use 20.8.1
       - name: Install dependencies
         run: npm install
-      
+
       - name: Run Semantic Release
         if: success()
         run: npm run semantic-release
