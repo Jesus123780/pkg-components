@@ -38,14 +38,14 @@ jobs:
   build:
     needs: validate-commit
     name: Build
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-
-        # Instala las dependencias antes de la construcción
-        - name: Install dependencies
-          run: npm install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+            # Instala las dependencias antes de la construcción
+    
+    - name: Install dependencies
+        run: npm install
 
   chromatic:
     runs-on: ubuntu-latest
