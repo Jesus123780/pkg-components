@@ -105,6 +105,6 @@
   "version": "0.0.0-development",
   "repository": {
     "type": "git",
-    "url": "https://github.com/foodi-app-org/pkg-components.git"
+    "url": "https://github.com/pkg-components"
   }
 }
