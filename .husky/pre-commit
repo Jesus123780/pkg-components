@@ -3,3 +3,4 @@
 
 #Run install
 npm run build:tokens
+npm run update:version

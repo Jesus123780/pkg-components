@@ -79,6 +79,7 @@
     "build-storybook": "storybook build",
     "build": "storybook build",
     "semantic-release": "semantic-release --branches main",
+    "update:version": "node increment-version.js && git add package.json",
     "build:components": "babel stories/** -d dist",
     "build:tokens": "node scripts/build-tokens.js",
     "prepare": "husky install || true",
@@ -90,7 +91,7 @@
     "sb": "storybook dev -p 6006",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.0.0-development",
+  "version": "1.8.17",
   "repository": {
     "type": "git",
     "url": "https://github.com/Jesus123780/pkg-components.git"
