@@ -26,21 +26,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install nvm
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
-      - name: Use Node.js ${{ matrix.node-version }}
-        run: |
-          nvm install 20.8.1
-          nvm use 20.8.1
+          node-version: 20.8.1
+
       - name: Install dependencies
         run: npm install
 
       - name: Run Semantic Release
         if: success()
         run: npm run semantic-release
-
 
       - name: Validate commit messages
         run: |
