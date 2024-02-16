@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     background-color: transparent;
     color: transparent !important;
 }
@@ -11,7 +10,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 3px solid var(--color-primary-red);
+    border: 3px solid var(--color-base-white);
     border-top: 3px solid;
     animation: spin 1s linear infinite;
   }

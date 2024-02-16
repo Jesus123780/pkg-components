@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const choices = require('./choices')
 
-const {
-  color: {
-    brand,
+const { 
+  color: { 
+    brand, 
     base
+  },
+  colorAlvi: {
+    baseAlvi,
+    brandAlvi
   },
   boxShadow,
   borderWidth,
@@ -32,19 +37,23 @@ const decisions = {
       foreGround:brand.foreGroundLoader
     },
     primary: {
-      OrangeRed: brand.alizarinCrimson,
-      OrangeRed2: brand.guardsmanOrangeRed,
-      OrangeRedDark: brand.tabasco,
-      OrangeRedHeader: brand.orangeRedGradient,
-      orangeRedGradientButton: brand.orangeRedGradientButton,
+      red: brand.alizarinCrimson,
+      red2: brand.guardsmanRed,
+      // blue: brand.blue,
+      redDark: brand.tabasco,
+      // blueHeader: brand.blueGradient,
+      redHeader: brand.redGradient,
+      redQtyButton: brand.redGradientButton,
       redBg: brand.chablis,
       disabled: brand.paleSlate,
-      pinkLight: brand.pinkLight
+      pinkLight: brand.pinkLight,
+      redDarker: brand.darkerRed
     },
     secondary: {
-      orangeRedDark: brand.orangeRedStone,
-      orangeRedBg: brand.foam,
-      blue: brand.blue
+      blue: brand.deepCerulean,
+      blue2: brand.blueLagoon,
+      blueDark: brand.blueStone,
+      blueBg: brand.foam
     },
     neutral: {
       black: brand.mineShaft,
@@ -58,13 +67,13 @@ const decisions = {
     campaigns: {
       red: brand.lust,
       black: brand.heavyMetal,
-      orangeRed: brand.orangeRedTag,
+      blue: brand.blueTag,
       orange: brand.orangeTag,
       yellow: brand.schoolBusYellow,
       turquoise: brand.turquoise
     },
     feedback: {
-      successLight: brand.kellyOrangeRed,
+      successLight: brand.kellyGreen,
       successDark: brand.japaneseLaurel,
       errorLight: brand.red,
       errorDark: brand.kuCrimson,
@@ -73,7 +82,7 @@ const decisions = {
     },
     text: {
       primary: brand.lust,
-      secondary: brand.easternorangeRed,
+      secondary: brand.easternBlue,
       grayLight: brand.steel,
       inactive: brand.silver,
       black: brand.bokaraGray,
@@ -90,9 +99,7 @@ const decisions = {
       gray: brand.mercury,
       grayLight: brand.whiteSmoke,
       white: brand.white,
-      pink: brand.sweetPink,
-      blue: brand.blue
-
+      pink: brand.sweetPink
     },
     icons: {
       primary: brand.alizarinCrimson,
@@ -101,9 +108,84 @@ const decisions = {
       grayLight: brand.silver,
       black: brand.mineShaft,
       white: brand.white,
-      success: brand.kellyOrangeRed,
+      success: brand.kellyGreen,
       error: brand.red,
       warning: brand.fuelYellow
+    }
+  },
+  colorAlvi: {
+    base:{
+      black: baseAlvi.mineShaft,
+      white: baseAlvi.white,
+      transparent: baseAlvi.transparent
+    },
+    loaders:{
+      background: brand.backgroundLoader,
+      foreGround: brand.foreGroundLoader
+    },
+    primary: {
+      blue: brandAlvi.congressBlue,
+      blue2: brandAlvi.catalinaBlue,
+      blue3: brandAlvi.midnightBlue,
+      backgroundBlue: brandAlvi.backgroundBlue,
+      blueGradient: brandAlvi.blueGradient,
+      yellowGradientButton: brandAlvi.yellowGradientButton
+    },
+    secondary: {
+      yellow: brandAlvi.sunglow,
+      yellow2: brandAlvi.butterCup,
+      yellow3: brandAlvi.goldenGrass,
+      yellow4: brandAlvi.creamBrulee
+    },
+    neutral: {
+      black: brandAlvi.black,
+      gray: brandAlvi.mercury,
+      grayLight: brandAlvi.wildSand,
+      grayDark: brandAlvi.doveGray,
+      graySilver: brandAlvi.silver,
+      grayWhite: brandAlvi.alabaster,
+      white: brandAlvi.white
+    },
+    campaigns: {
+      superMarca: brandAlvi.superMarca,
+      superPrecio: brandAlvi.superPrecio,
+      exclusivo: brandAlvi.exclusivo
+    },
+    feedback: {
+      successDark: brandAlvi.successDark,
+      errorDark: brandAlvi.errorDark,
+      warningLight: brandAlvi.warningLight,
+      warningDark: brandAlvi.warningDark
+    },
+    text: {
+      primary: brandAlvi.primary,
+      secondary: brandAlvi.secondary,
+      grayLight: brandAlvi.grayLight,
+      inactive: brandAlvi.inactive,
+      success: brandAlvi.success,
+      error: brandAlvi.error,
+      warning: brandAlvi.warning
+    },
+    background: {
+      selago: brandAlvi.selago,
+      foam: brandAlvi.foam,
+      wildSand: brandAlvi.wildSand,
+      spanishGray: brandAlvi.spanishGray,
+      mercury: brandAlvi.mercury,
+      white: brandAlvi.white,
+      yellow: brandAlvi.secondary,
+      blue: brandAlvi.congressBlue
+    },
+    icons: {
+      primary: brandAlvi.congressBlue,
+      secondary: brandAlvi.secondary,
+      gray: brandAlvi.doveGray,
+      grayLight: brandAlvi.silver,
+      black: brandAlvi.black,
+      white: brandAlvi.white,
+      success: brandAlvi.kellyGreen,
+      error: brandAlvi.red,
+      warning: brandAlvi.warningLight
     }
   },
   fontFamily: {

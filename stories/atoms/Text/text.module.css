@@ -3,7 +3,7 @@
     color: var(--color-neutral-black);
     letter-spacing: var(--letter-spacing-normal);
     font-weight: var(--font-weight-normal);
-    font-family: 'PFont-Regular';
+    font-family: 'PFont-Regular', sans-serif;
 }
 
 .color-default {
@@ -201,4 +201,8 @@
 
 .align-end {
   text-align: end;
+}
+
+.color-gray {
+  color: var(--color-neutral-gray-silver);
 }

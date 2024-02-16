@@ -27,7 +27,7 @@ type TextProps = {
     as?: string;
     children: React.ReactNode;
     className?: string | string[];
-    color?: 'default' | 'primary' | 'blue' | 'white';
+    color?: 'default' | 'primary' | 'blue' | 'white' | 'gray';
     lineHeight?: TextLineHeight;
     size?: TextSize;
     font?: TextFont;
@@ -46,7 +46,7 @@ export const Text: React.FC<TextProps> = ({
     weight = 400,
     className = '',
     lineHeight,
-    as: Component = 'h3',
+    as: Component = 'span',
     styles = {},
     customSize = ''
 }) => {

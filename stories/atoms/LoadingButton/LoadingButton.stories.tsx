@@ -13,6 +13,6 @@ type Story = StoryObj<typeof LoadingButton>;
 
 export const Default: Story = {
     args: {
-      color: 'red'
+      color: 'transparent'
     },
   };

@@ -1,23 +1,20 @@
 import React from 'react';
-import { Toast } from './index';
+import { Toast, ToastProps } from './index';
 
-// Más sobre la exportación por defecto: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'molecules/Toast',
   component: Toast,
-  // Más sobre argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
     backgroundColor: { control: 'color' },
   },
 };
 
-// Más sobre plantillas de componentes: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => {
+const Template = (args: ToastProps) => {
   return <Toast {...args} />;
 };
 
-// Más sobre args: https://storybook.js.org/docs/react/writing-stories/args
 export const TemplateToast = Template.bind({});
+// @ts-ignore
 TemplateToast.args = {
   toastList: [
     {
@@ -28,7 +25,8 @@ TemplateToast.args = {
   ],
 };
 
-export const MultipleToasts = Template.bind({});
+export const MultipleToasts = Template.bind({})
+// @ts-ignore
 MultipleToasts.args = {
   toastList: [
     {

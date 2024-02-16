@@ -36,7 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
     outline: 'none',
     width,
     fontSize,
-    color: primary ? 'white' : 'var(--color-primary-green)',
+    color: primary ? 'white' : 'var(--color-primary-red)',
     ...styles
   };
 

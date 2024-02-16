@@ -40,6 +40,8 @@
     "eslint": "8.54.0",
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-storybook": "0.6.15",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "storybook": "^7.6.14",
@@ -47,15 +49,26 @@
     "typescript": "5.2.2",
     "vite": "^5.1.1"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "components",
+    "design",
+    "system",
+    "ui",
+    "jesus",
+    "juvinao",
+    "pkg-components"
+  ],
   "license": "ISC",
   "main": "index.tsx",
   "name": "pkg-components",
+  "private": true,
   "scripts": {
     "build-storybook": "storybook build",
     "build": "storybook build",
     "build:components": "babel stories/** -d dist",
     "build:tokens": "node scripts/build-tokens.js",
+    "prepare": "husky install",
     "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
     "check:te": "npm run check:types && npm run check:eslint",
     "check:types": "tsc --noemit",
@@ -64,5 +77,5 @@
     "sb": "storybook dev -p 6006",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.8.4"
+  "version": "1.8.6"
 }

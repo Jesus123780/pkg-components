@@ -31,7 +31,7 @@ export const ProgressBar = styled.div<ProgressBarProps>`
   background-color: ${PColor};
   height: 5px;
   transition: .2s;
-
+  z-index: var(--z-index-99999);
   ${props => props.progress && css`
     transition: .2s;
     animation-name: ${width};
@@ -41,7 +41,7 @@ export const ProgressBar = styled.div<ProgressBarProps>`
     z-index: 9999;
   `}
 
-  ${props => (props.final || 0) <= (props.progress || 0) && css`
+  ${props => (props.final || 0) >= (props.progress || 0) && css`
     background-color: ${EColor};
   `}
 `;

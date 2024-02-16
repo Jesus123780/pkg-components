@@ -68,10 +68,10 @@
     text-align: left;
     height: 18px;
     margin-left: -1px;
-    overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: wrap;
     color: var(--color-base-white);
+    font-size: var(--font-size-base);
   }
   .notification-image {
     float: left;

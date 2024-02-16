@@ -1,25 +1,27 @@
 :root {
-  --color-base-black: #1A1A1A;
+  --color-base-black: #282828;
   --color-base-white: #FFFFFF;
   --color-base-transparent: transparent;
 
   --color-loaders-background: #f3f3f3;
   --color-loaders-fore-ground: #ecebeb;
 
-  --color-primary-orange-red: #F95450;
-  --color-primary-orange-red2: #F95450;
-  --color-primary-orange-red-dark: #F95450;
-  --color-primary-orange-red-header: linear-gradient(270deg, #E86241 0%, #F95450 100%) 0% 0% no-repeat padding-box;
-  --color-primary-orange-red-gradient-button: linear-gradient(270deg, #E86241 0%, #F95450 100%) 0% 0% no-repeat padding-box;
+  --color-primary-red: #ff0000;
+  --color-primary-red2: #C00000;
+  --color-primary-red-dark: #A21B11;
+  --color-primary-red-header: linear-gradient(180deg, #DA291C 0%, #C00000 96.15%);
+  --color-primary-red-qty-button: linear-gradient(180deg, #DA291C 0%, #C00000 44.44%);
   --color-primary-red-bg: #FFF4F4;
   --color-primary-disabled: #c4c4c4;
   --color-primary-pink-light: #FFC2C2;
+  --color-primary-red-darker: #5C0F0A;
 
-  --color-secondary-orange-red-dark: #00586C;
-  --color-secondary-orange-red-bg: #E4F7FC;
-  --color-secondary-blue: #011E41;
+  --color-secondary-blue: #0062ff;
+  --color-secondary-blue2: #006C85;
+  --color-secondary-blue-dark: #00586C;
+  --color-secondary-blue-bg: #E4F7FC;
 
-  --color-neutral-black: #1A1A1A;
+  --color-neutral-black: #282828;
   --color-neutral-gray: #E5E5E5;
   --color-neutral-gray-light: #F5F5F5;
   --color-neutral-gray-dark: #666666;
@@ -29,7 +31,7 @@
 
   --color-campaigns-red: #da291c;
   --color-campaigns-black: #212322;
-  --color-campaigns-orange-red: #E86241;
+  --color-campaigns-blue: #006c85;
   --color-campaigns-orange: #e07c00;
   --color-campaigns-yellow: #FEDD00;
   --color-campaigns-turquoise: #63BBAE;
@@ -42,10 +44,10 @@
   --color-feedback-warning-dark: #CC870F;
 
   --color-text-primary: #da291c;
-  --color-text-secondary: #F95750;
+  --color-text-secondary: #0062ff;
   --color-text-gray-light: #666666;
   --color-text-inactive: #C4C4C4;
-  --color-text-black: #1A1A1A;
+  --color-text-black: #282828;
   --color-text-white: #FFFFFF;
   --color-text-success: #1B8900;
   --color-text-error: #EE0000;
@@ -53,23 +55,85 @@
 
   --color-background-primary: #da291c;
   --color-background-primary-light: #FFF4F4;
-  --color-background-secondary: #F95750;
+  --color-background-secondary: #0062ff;
   --color-background-secondary-light: #E4F7FC;
   --color-background-gray: #E5E5E5;
   --color-background-gray-light: #f5f5f5;
   --color-background-white: #FFFFFF;
   --color-background-pink: #ec938d;
-  --color-background-blue: #011E41;
 
-  --color-icons-primary: #F95450;
-  --color-icons-secondary: #F95750;
+  --color-icons-primary: #ff0000;
+  --color-icons-secondary: #0062ff;
   --color-icons-gray: #666666;
   --color-icons-gray-light: #C4C4C4;
-  --color-icons-black: #1A1A1A;
+  --color-icons-black: #282828;
   --color-icons-white: #FFFFFF;
   --color-icons-success: #24ba00;
   --color-icons-error: #F80000;
   --color-icons-warning: #F0A92E;
+
+  --color-alvi-base-black: #282828;
+  --color-alvi-base-white: #FFFFFF;
+  --color-alvi-base-transparent: transparent;
+
+  --color-alvi-loaders-background: #f3f3f3;
+  --color-alvi-loaders-fore-ground: #ecebeb;
+
+  --color-alvi-primary-blue: #02498E;
+  --color-alvi-primary-blue2: #04377A;
+  --color-alvi-primary-blue3: #00285C;
+  --color-alvi-primary-background-blue: #DEEAFA;
+  --color-alvi-primary-blue-gradient: linear-gradient(180deg, #02498E 0%, #00285C 96.15%);
+  --color-alvi-primary-yellow-gradient-button: linear-gradient(180deg, #FFE59C 0%, #EEC656 100%);
+
+  --color-alvi-secondary-yellow: #FDC42D;
+  --color-alvi-secondary-yellow2: #F6B812;
+  --color-alvi-secondary-yellow3: #E1AE27;
+  --color-alvi-secondary-yellow4: #FFE59C;
+
+  --color-alvi-neutral-black: #333333;
+  --color-alvi-neutral-gray: #E5E5E5;
+  --color-alvi-neutral-gray-light: #F5F5F5;
+  --color-alvi-neutral-gray-dark: #666666;
+  --color-alvi-neutral-gray-silver: #C4C4C4;
+  --color-alvi-neutral-gray-white: #F9F9F9;
+  --color-alvi-neutral-white: #FFFFFF;
+
+  --color-alvi-campaigns-super-marca: #DA291C;
+  --color-alvi-campaigns-super-precio: #02498E;
+  --color-alvi-campaigns-exclusivo: #FEDD00;
+
+  --color-alvi-feedback-success-dark: #1B8900;
+  --color-alvi-feedback-error-dark: #E43C3C;
+  --color-alvi-feedback-warning-light: #F0A92E;
+  --color-alvi-feedback-warning-dark: #CC870F;
+
+  --color-alvi-text-primary: #02498E;
+  --color-alvi-text-secondary: #FDC42D;
+  --color-alvi-text-gray-light: #666666;
+  --color-alvi-text-inactive: #C4C4C4;
+  --color-alvi-text-success: #1B8900;
+  --color-alvi-text-error: #E43C3C;
+  --color-alvi-text-warning: #CC870F;
+
+  --color-alvi-background-selago: #DEEAFA;
+  --color-alvi-background-foam: #E4F7FC;
+  --color-alvi-background-wild-sand: #F5F5F5;
+  --color-alvi-background-spanish-gray: #999999;
+  --color-alvi-background-mercury: #E5E5E5;
+  --color-alvi-background-white: #FFFFFF;
+  --color-alvi-background-yellow: #FDC42D;
+  --color-alvi-background-blue: #02498E;
+
+  --color-alvi-icons-primary: #02498E;
+  --color-alvi-icons-secondary: #FDC42D;
+  --color-alvi-icons-gray: #666666;
+  --color-alvi-icons-gray-light: #C4C4C4;
+  --color-alvi-icons-black: #333333;
+  --color-alvi-icons-white: #FFFFFF;
+  --color-alvi-icons-success: #24ba00;
+  --color-alvi-icons-error: #F80000;
+  --color-alvi-icons-warning: #F0A92E;
 
   --font-family-sans: Open Sans;
 
@@ -80,7 +144,7 @@
   --font-size-md: 0.875rem;
   --font-size-lg: 1rem;
   --font-size-xl: 1.125rem;
-  --font-size-2xl: 20px;
+  --font-size-2xl: 1.25rem;
   --font-size-3xl: 1.5rem;
   --font-size-5xl: 1.875rem;
   --font-size-6xl: 3rem;

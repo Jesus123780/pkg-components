@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React from 'react'
 
 export interface IconProps {
@@ -25,6 +26,12 @@ export const IconMiniCheck = ({
         d='M2.59 6.57A1 1 0 0 0 1.19 8l5.16 5.09L16.72 2.36A1 1 0 1 0 15.28.97l-8.96 9.28-3.73-3.68z'
         fillRule='evenodd'
     ></path></svg>
+}
+
+IconMiniCheck.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 export const IconLogoCMF = ({
@@ -784,6 +791,13 @@ export const IconClose = ({
   </svg>
 )
 
+IconClose.propTypes = {
+  color: PropTypes.string,
+  height: PropTypes.number,
+  size: PropTypes.any,
+  width: PropTypes.number
+}
+
 
 export const IconMainLogo = ({
   size,
@@ -1027,3 +1041,8 @@ export const IconStrokeLogo = ({
     </g>
   </svg>
 )
+IconStrokeLogo.propTypes = {
+  height: PropTypes.any,
+  size: PropTypes.any,
+  width: PropTypes.any
+}

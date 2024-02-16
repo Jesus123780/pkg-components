@@ -1,3 +1,5 @@
+'use-client'
+
 import PropTypes from 'prop-types'
 import React from 'react'
 import { IconProps } from '../../stories/assets/public/Icons'
@@ -11,7 +13,12 @@ import { IconProps } from '../../stories/assets/public/Icons'
  * @param {Object} props... - Any other SVG attributes
  * @returns {JSX.Element} SVG icon
  */
-export const IconBuys = ({ style = {}, size, color = 'var(--color-icons-black)', ...props }) => {return (
+export const IconBuys = ({ 
+  style = {}, 
+  size, 
+  color = 'var(--color-icons-black)', 
+  ...props
+}: IconProps) => {return (
   <svg
     className='icon'
     height={size || 800}
@@ -91,7 +98,7 @@ IconTime.propTypes = {
  * @param {Object} props... - Any other SVG attributes
  * @returns {JSX.Element} SVG icon
  */
-export const IconHome = ({ style = {}, size, color, ...props }) => {return (
+export const IconHome = ({ style = {}, size, color, ...props }: IconProps) => {return (
   <svg
     fill='none'
     height={size || 800}
@@ -116,7 +123,7 @@ export const IconHome = ({ style = {}, size, color, ...props }) => {return (
   </svg>
 )}
 
-export const IconInfo = ({ style = {}, size, color }) => {
+export const IconInfo = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -125,6 +132,12 @@ export const IconInfo = ({ style = {}, size, color }) => {
     width={size}
     xmlns='http://www.w3.org/2000/svg'
   ><path d='M15.333 21.999h3.333v3.333h-3.333v-3.333zm0-13.334h3.333v10h-3.333v-10zm1.65-8.333C7.783.332.333 7.799.333 16.999c0 9.2 7.45 16.666 16.65 16.666C26.2 33.665 33.666 26.2 33.666 17S26.2.332 16.983.332zm.017 30c-7.367 0-13.334-5.967-13.334-13.333C3.666 9.632 9.633 3.665 17 3.665c7.366 0 13.333 5.967 13.333 13.334 0 7.366-5.967 13.333-13.333 13.333z'></path></svg>
+}
+
+IconInfo.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.any,
+  style: PropTypes.object
 }
 
 
@@ -138,7 +151,12 @@ export const IconInfo = ({ style = {}, size, color }) => {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconInformationProduct = ({ style = {}, size, color, ...props }) => {return (
+export const IconInformationProduct = ({ 
+  style = {}, 
+  size, 
+  color, 
+  ...props
+}: IconProps) => {return (
   <svg
     className='icon'
     height={size || 800}
@@ -176,7 +194,7 @@ IconInformationProduct.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconChart = ({ style = {}, size, color, ...props }) => {return (
+export const IconChart = ({ style = {}, size, color, ...props }: IconProps) => {return (
   <svg
     height={size || 800}
     viewBox='0 0 24 24'
@@ -208,7 +226,12 @@ export const IconChart = ({ style = {}, size, color, ...props }) => {return (
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconCategorie = ({ style = {}, size, color, ...props }) => {return (
+export const IconCategorie = ({ 
+  style = {}, 
+  size, 
+  color, 
+  ...props
+}: IconProps) => {return (
   <svg
     fill='none'
     height={size || 800}
@@ -248,7 +271,12 @@ IconCategorie.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconStore = ({ style = {}, size, color, ...props }) => {return (
+export const IconStore = ({ 
+  style = {}, 
+  size, 
+  color, 
+  ...props
+}: IconProps) => {return (
   <svg
     fill='none'
     height={size || 800}
@@ -272,7 +300,7 @@ IconStore.propTypes = {
 }
 
 
-export const IconColombia = ({ style = {}, size }) => {
+export const IconColombia = ({ style = {}, size }: IconProps) => {
   return <svg
     height={size}
     id='Capa_1'
@@ -306,7 +334,12 @@ IconColombia.propTypes = {
   style: PropTypes.object
 }
 
-export const IconArrowRight = ({ style = {}, size, color, ...props }) => {
+export const IconArrowRight = ({ 
+  style = {}, 
+  size, 
+  color, 
+  ...props
+}: IconProps) => {
   return <svg
     fill='none'
     height={size}
@@ -340,7 +373,12 @@ IconArrowRight.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconTicket = ({ style = {}, size, color, ...props }) => {return (
+export const IconTicket = ({ 
+  style = {}, 
+  size, 
+  color, 
+  ...props
+}: IconProps) => {return (
   <svg
     className='icon'
     height={size || 800}
@@ -368,7 +406,7 @@ IconTicket.propTypes = {
 }
 
 
-export const IconDost = ({ style = {}, size, color }) => {
+export const IconDost = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -388,7 +426,7 @@ IconDost.propTypes = {
 export const Google = ({
   size,
   ...props
-}) => {
+}: IconProps) => {
   return (
     <svg
       height={`${size}px`}
@@ -426,7 +464,7 @@ Google.propTypes = {
   size: PropTypes.any
 }
 
-export const IconLogout = ({ size, color }) => {
+export const IconLogout = ({ size, color }: IconProps) => {
   return <svg
     height={size}
     version='1.1'
@@ -456,7 +494,7 @@ IconLogout.propTypes = {
   size: PropTypes.any
 }
 
-export const IconMessageMain = ({ style = {}, size, color }) => {
+export const IconMessageMain = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -472,7 +510,12 @@ IconMessageMain.propTypes = {
   style: PropTypes.object
 }
 
-export const IconNotification = ({ size, style = {}, color = 'var(--color-icons-primary)', ...props }) => {return (
+export const IconNotification = ({ 
+  size, 
+  style = {}, 
+  color = 'var(--color-icons-primary)', 
+  ...props
+}: IconProps) => {return (
   <svg
     fill='none'
     height={size || 800}
@@ -498,7 +541,7 @@ IconNotification.propTypes = {
   style: PropTypes.object
 }
 
-export const IconWallet = ({ style = {}, color, size }) => {
+export const IconWallet = ({ style = {}, color, size }: IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -513,7 +556,7 @@ IconWallet.propTypes = {
   style: PropTypes.object
 }
 
-export const IconUser = ({ style = {}, size, color }) => {
+export const IconUser = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -530,7 +573,8 @@ IconUser.propTypes = {
   style: PropTypes.object
 }
 
-export const IconHorario = ({ style = {}, size, color }) => {
+
+export const IconHorario = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -563,7 +607,12 @@ IconHorario.propTypes = {
   style: PropTypes.object
 }
 
-export const IconLogo = ({ style = {}, color, size, ...rest }) => {
+export const IconLogo = ({ 
+  style = {}, 
+  color, 
+  size, 
+  ...rest
+}: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -588,7 +637,11 @@ IconHome.propTypes = {
   style: PropTypes.object
 }
 
-export const IconMiniCheck = ({ style = {}, size, color }) => {
+export const IconMiniCheck = ({ 
+  style = {}, 
+  size, 
+  color
+}: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -608,7 +661,11 @@ IconMiniCheck.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconArrowTop = ({ size, style = {}, color }) => {
+export const IconArrowTop = ({ 
+  size, 
+  style = {}, 
+  color
+}: IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -634,7 +691,7 @@ IconArrowTop.propTypes = {
   style: PropTypes.object
 }
 
-export const IconSearch = ({ style = {}, size, color, props }) => {
+export const IconSearch = ({ style = {}, size, color, ...props }: IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -668,7 +725,11 @@ IconSearch.propTypes = {
   style: PropTypes.object
 }
 
-export const IconRate = ({ style = {}, size, color }) => {
+export const IconRate = ({ 
+  style = {}, 
+  size, 
+  color
+}: IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -686,7 +747,11 @@ IconRate.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconLoading = ({ color, size, ...props }) => {
+export const IconLoading = ({ 
+  color, 
+  size, 
+  ...props
+}: IconProps) => {
   return (
     <svg
       {...props}
@@ -711,7 +776,7 @@ IconLoading.propTypes = {
   size: PropTypes.any
 }
 
-export const IconNoShow = ({ style = {}, size }) => {
+export const IconNoShow = ({ style = {}, size }: IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -729,7 +794,7 @@ IconNoShow.propTypes = {
   style: PropTypes.object
 }
 
-export const IconShowEye = ({ style = {}, size }) => {
+export const IconShowEye = ({ style = {}, size }: IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -819,7 +884,11 @@ IconPizza.propTypes = {
   size: PropTypes.any
 }
 
-export const IconShopping = ({ style = {}, size, color }) => {
+export const IconShopping = ({ 
+  style = {}, 
+  size, 
+  color
+}: IconProps) => {
   return <svg
     fill={color}
     fillRule='evenodd'
@@ -837,11 +906,12 @@ IconShopping.propTypes = {
   style: PropTypes.object
 }
 
-export const IconCarrot = (props) => {return (
+export const IconCarrot = ({ style = {}, size, color, ...props }: IconProps) => {return (
   <svg
     fill='none'
-    height={433}
-    width={345}
+    height={size || 433}
+    width={size || 345}
+    color={color}
     xmlns='http://www.w3.org/2000/svg'
     {...props}
   >
@@ -886,13 +956,19 @@ export const IconCarrot = (props) => {return (
   </svg>
 )}
 
-export const IconFigure = (props) => {return (
+IconCarrot.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+export const IconFigure = ({style = {}, size, color, ...props}: IconProps) => {return (
   <svg
     viewBox='0 0 675.6 522.55'
     xmlns='http://www.w3.org/2000/svg'
     {...props}
-    height={500}
-    width={500}
+    height={size || 500}
+    width={size || 500}
   >
     <defs>
       <style>{'.cls-2{fill:#f9cac6;opacity:.5;mix-blend-mode:multiply}'}</style>
@@ -921,11 +997,17 @@ export const IconFigure = (props) => {return (
   </svg>
 )}
 
-export const IconSales = ({ style = {}, size, color }) => {
+IconFigure.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+
+export const IconSales = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill='none'
     height={size}
-    stroke={color || '#ff0000'}
+    stroke={color || 'ff0000'}
     style={style}
     viewBox='0 0 24 24'
     width={size}
@@ -949,7 +1031,7 @@ IconSales.propTypes = {
   style: PropTypes.object
 }
 
-export const IconDelete = ({ style = {}, size, color }) => {
+export const IconDelete = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -977,12 +1059,13 @@ IconDelete.propTypes = {
   style: PropTypes.object
 }
 
-export const IconComment = (props) => {return (
+export const IconComment = ({style = {}, size, color, ...props }: IconProps) => {return (
   <svg
     fill='none'
-    height={16}
+    height={size || 16}
     style={{
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ...style
     }}
     width={16}
     xmlns='http://www.w3.org/2000/svg'
@@ -990,14 +1073,20 @@ export const IconComment = (props) => {return (
   >
     <path
       d='M4.667 12.288h2.667L10.3 14.26a.665.665 0 0 0 1.034-.553v-1.42c2 0 3.333-1.334 3.333-3.334v-4c0-2-1.333-3.333-3.333-3.333H4.667c-2 0-3.333 1.333-3.333 3.333v4c0 2 1.333 3.334 3.333 3.334zm1-5.288h4.666M5.667 7h4.666'
-      stroke={props.color}
+      stroke={color}
       strokeLinecap='round'
       strokeLinejoin='round'
       strokeMiterlimit={10}
     />
   </svg>
 )}
-export const IconCancel = ({ style = {}, size, color }) => {
+
+IconComment.propTypes = {
+  color: PropTypes.any,
+  size: PropTypes.number,
+  style: PropTypes.object
+}
+export const IconCancel = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color || '#717171'}
     height={size}
@@ -1031,7 +1120,7 @@ IconCancel.propTypes = {
   style: PropTypes.object
 }
 // Icon de Arrow
-export const IconArrowBottom = ({ style = {}, color, size }) => {
+export const IconArrowBottom = ({ style = {}, color, size }: IconProps) => {
   return <svg
     color={color}
     height={size}
@@ -1051,7 +1140,7 @@ IconArrowBottom.propTypes = {
 }
 
 
-export const IconFolder = ({ style = {}, size }) => {
+export const IconFolder = ({ style = {}, size }: IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -1074,7 +1163,7 @@ IconFolder.propTypes = {
   style: PropTypes.object
 }
 
-export const IconPlus = ({ style = {}, size, color }) => {
+export const IconPlus = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -1090,7 +1179,7 @@ export const IconPlus = ({ style = {}, size, color }) => {
 export const IconLinePart = ({
   size = 2,
   color
-}) => {return (
+}: IconProps) => {return (
   <svg
     fill='none'
     height={size}
@@ -1119,7 +1208,7 @@ IconPlus.propTypes = {
   style: PropTypes.object
 }
 
-export const IconPromo = ({ style = {}, size, color }) => {
+export const IconPromo = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -1140,7 +1229,7 @@ IconPromo.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconEdit = ({ style = {}, size, color }) => {
+export const IconEdit = ({ style = {}, size, color }: IconProps) => {
   return <svg
     fill={color}
     height={size}
@@ -1157,7 +1246,7 @@ IconEdit.propTypes = {
   style: PropTypes.object
 }
 
-export const IconSendMessage = ({ size, color }) => {
+export const IconSendMessage = ({ size, color }: IconProps) => {
   return <svg
     height={size}
     viewBox='0 0 47.02 39.35'
@@ -1194,7 +1283,7 @@ IconSendMessage.propTypes = {
   color: PropTypes.any,
   size: PropTypes.any
 }
-export const IconClose = ({ size, color }) => {
+export const IconClose = ({ size, color } : IconProps) => {
   return (
     <svg
       fill={color || '#717171'}
@@ -1228,7 +1317,7 @@ IconClose.propTypes = {
   size: PropTypes.any
 }
 
-export const IconLocationMap2 = ({ size, color, ...props }) => {
+export const IconLocationMap2 = ({ size, color, ...props } : IconProps) => {
   return <svg
     fill='none'
     height={`${size}px`}
@@ -1255,7 +1344,7 @@ IconLocationMap2.propTypes = {
   size: PropTypes.any
 }
 
-export const IconGoogleFullColor = ({ size }) => {
+export const IconGoogleFullColor = ({ size } : IconProps) => {
   return <svg
     height={size}
     version='1.1'
@@ -1273,7 +1362,7 @@ IconGoogleFullColor.propTypes = {
   size: PropTypes.any
 }
 
-export const IconArrowLeft = ({ style = {}, size, color }) => {
+export const IconArrowLeft = ({ style = {}, size, color } : IconProps) => {
   return <svg
     height={size}
     style={style}
@@ -1306,7 +1395,7 @@ IconChart.propTypes = {
   style: PropTypes.object
 }
 
-export const IconQuestion = (props) => {return (
+export const IconQuestion = (props: IconProps) => {return (
   <svg
     fill='none'
     height={props.size}

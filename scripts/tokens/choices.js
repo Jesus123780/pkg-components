@@ -2,22 +2,22 @@ const choices = {
   color: {
     brand: {
       // Primary
-      alizarinCrimson: '#F95450',
-      guardsmanOrangeRed: '#F95450',
-      tabasco: '#F95450',
+      alizarinCrimson: '#ff0000',
+      guardsmanRed: '#C00000',
+      tabasco: '#A21B11',
       chablis: '#FFF4F4',
       turquoise: '#63BBAE',
       pinkLight: '#FFC2C2',
-      orangeRedGradient: 'linear-gradient(270deg, #E86241 0%, #F95450 100%) 0% 0% no-repeat padding-box',
-      orangeRedGradientButton: 'linear-gradient(270deg, #E86241 0%, #F95450 100%) 0% 0% no-repeat padding-box',
+      darkerRed: '#5C0F0A',
+      redGradient: 'linear-gradient(180deg, #DA291C 0%, #C00000 96.15%)',
+      redGradientButton: 'linear-gradient(180deg, #DA291C 0%, #C00000 44.44%)',
       // Secondary
-      deepCerulean: '#F95750',
-      orangeRedLagoon: '#E86241',
-      orangeRedStone: '#00586C',
-      blue: '#011E41',
+      deepCerulean: '#0062ff',
+      blueLagoon: '#006C85',
+      blueStone: '#00586C',
       foam: '#E4F7FC',
       // Neutral
-      mineShaft: '#1A1A1A',
+      mineShaft: '#282828',
       doveGray: '#666666',
       silver: '#C4C4C4',
       mercury: '#E5E5E5',
@@ -34,27 +34,83 @@ const choices = {
       meteor: '#CC870F',
       // Text
       lust: '#da291c',
-      easternorangeRed: '#F95750',
+      easternBlue: '#0062ff',
       steel: '#666666',
       paleSlate: '#c4c4c4',
-      bokaraGray: '#1A1A1A',
-      indiaOrangeRed: '#1a8900',
+      bokaraGray: '#282828',
+      indiaGreen: '#1a8900',
       kuCrimson: '#EE0000',
       // Backgrounds
       lilyWhite: '#e4f7fc',
       whiteSmoke: '#f5f5f5',
       sweetPink: '#ec938d',
       // Icons
-      kellyOrangeRed: '#24ba00',
+      kellyGreen: '#24ba00',
       // Loaders
       backgroundLoader: '#f3f3f3',
       foreGroundLoader: '#ecebeb',
       // Tags
-      orangeRedTag: '#E86241',
+      blueTag: '#006c85',
       orangeTag: '#e07c00'
     },
     base: {
-      mineShaft: '#1A1A1A',
+      mineShaft: '#282828',
+      white: '#FFFFFF',
+      transparent: 'transparent'
+    }
+  },
+  colorAlvi: {
+    brandAlvi: {
+      // Primary
+      congressBlue: '#02498E',
+      catalinaBlue: '#04377A',
+      midnightBlue: '#00285C',
+      backgroundBlue: '#DEEAFA',
+      spanishGray: '#999999',
+      blueGradient: 'linear-gradient(180deg, #02498E 0%, #00285C 96.15%)',
+      yellowGradientButton: 'linear-gradient(180deg, #FFE59C 0%, #EEC656 100%)',
+      // Secondary
+      sunglow: '#FDC42D',
+      butterCup: '#F6B812',
+      goldenGrass: '#E1AE27',
+      creamBrulee: '#FFE59C',
+      // Neutral
+      black: '#333333',
+      doveGray: '#666666',
+      silver: '#C4C4C4',
+      mercury: '#E5E5E5',
+      wildSand: '#F5F5F5',
+      alabaster: '#F9F9F9',
+      white: '#FFFFFF',
+      // Campaigns
+      superMarca: '#DA291C',
+      superPrecio: '#02498E',
+      exclusivo: '#FEDD00',
+      // Feedback
+      successDark: '#1B8900',
+      errorDark: '#E43C3C',
+      warningLight: '#F0A92E',
+      warningDark: '#CC870F',
+      // Text
+      primary: '#02498E',
+      secondary: '#FDC42D',
+      grayLight: '#666666',
+      inactive: '#C4C4C4',
+      success: '#1B8900',
+      error: '#E43C3C',
+      warning: '#CC870F',
+      // Backgrounds
+      selago: '#DEEAFA',
+      foam: '#E4F7FC',
+      // Icons
+      kellyGreen: '#24ba00',
+      red: '#F80000',
+      // Loaders
+      backgroundLoader: '#f3f3f3',
+      foreGroundLoader: '#ecebeb'
+    },
+    baseAlvi: {
+      mineShaft: '#282828',
       white: '#FFFFFF',
       transparent: 'transparent'
     }
@@ -69,7 +125,7 @@ const choices = {
     '2xl': '1.5rem',
     '3xl': '2rem',
     '4xl': '3rem',
-    '5xl': '3.5rem'
+    '5xl': '3.5rem'//64 - pendiente validar
   },
   fontFamily: {
     sans: ['Open Sans']
@@ -82,7 +138,7 @@ const choices = {
     md: '0.875rem',
     lg: '1rem',
     xl: '1.125rem',
-    '2xl': '20px',
+    '2xl': '1.25rem',
     '3xl': '1.5rem',
     '5xl': '1.875rem',
     '6xl': '3rem',

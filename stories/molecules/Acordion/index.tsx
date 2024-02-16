@@ -1,3 +1,4 @@
+'use-client'
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { IconArrowBottom, IconArrowTop } from '../../../assets/icons';
@@ -28,7 +29,9 @@ export const Options: React.FC<OptionsProps> = ({
   label,
   path
 }) => {
-  const refButton = useRef<HTMLDivElement>(null);
+  const refButton = useRef<HTMLDivElement>({
+    current: ''
+  });
   const refMenu = useRef<HTMLDivElement>(null);
   const location = useRouter();
 

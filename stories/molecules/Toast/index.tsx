@@ -4,8 +4,21 @@ import { BGColor, PColor } from '../../../assets/colors'
 import { IconClose } from './../../../assets/icons/index'
 import styles from './styles.module.css'
 
+export interface ToastItem {
+  id: number;
+  title: string;
+  description: string;
+  backgroundColor?: 'success' | 'warning' | 'error';
+}
 
-export const Toast = (props) => {
+export interface ToastProps {
+  toastList: ToastItem[];
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  autoDelete?: boolean;
+  autoDeleteTime?: number;
+}
+
+export const Toast: React.FC<ToastProps> = (props) => {
   const {
     toastList,
     position,
@@ -31,7 +44,7 @@ export const Toast = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toastList, autoDelete, autoDeleteTime, list])
 
-  const deleteToast = (id) => {
+  const deleteToast = (id: number) => {
     const listItemIndex = list.findIndex((e) => {return e.id === id})
     const toastListItem = toastList.findIndex((e) => {return e.id === id})
     list.splice(listItemIndex, 1)
@@ -40,21 +53,31 @@ export const Toast = (props) => {
   }
   const [divPosition, setDivPosition] = useState(0)
 
-  const handleDrag = (event) => {
-    setDivPosition(event.clientX)
+  const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
+    setDivPosition(event.clientX);
   }
-  const handleDragEnd = (event, id) => {
+  
+  const handleDragEnd = (event: React.DragEvent<HTMLDivElement>, id: number) => {
     if (window.innerWidth - event.clientX > window.innerWidth / 2) {
-      deleteToast(id)
+      deleteToast(id);
     }
-  }
+  };
 
   const backgroundColor = {
     success: '#50a773',
     warning: '#ebbc26',
     error: `${PColor}69`
   }
-
+  const getBackgroundColor = (color?: 'success' | 'warning' | 'error') => {
+    switch (color) {
+      case 'warning':
+        return '#ebbc26';
+      case 'error':
+        return `${PColor}69`;
+      default:
+        return '#50a773';
+    }
+  }
   return (
     <div className={styles[`notification-container ${ position }`]}>
       {list.map((toast, i) => {return (
@@ -68,7 +91,7 @@ export const Toast = (props) => {
             position: 'relative',
             left: `${ divPosition }px`,
             transition: 'left 0.5s ease-in-out',
-            backgroundColor: backgroundColor[toast?.backgroundColor] ?? '#50a773'
+            backgroundColor: backgroundColor[toast.backgroundColor] ?? backgroundColor['success']
           }}
         >
           <button className={styles['notification-button']} onClick={() => {return deleteToast(toast.id)}}>
@@ -87,7 +110,6 @@ export const Toast = (props) => {
 Toast.propTypes = {
   autoDelete: PropTypes.bool,
   autoDeleteTime: PropTypes.number,
-  position: PropTypes.string,
   toastList: PropTypes.array.isRequired
 }
 

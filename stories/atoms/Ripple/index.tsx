@@ -48,6 +48,7 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
   const button = useRef<HTMLButtonElement>(null);
 
   const handleRippleEffect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (loading) return;
     const buttonElement = button.current;
     if (!buttonElement) return;
 
@@ -89,7 +90,7 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
       disabled={disabled}
       family={family}
       margin={margin}
-      onClick={handleRippleEffect}
+      onClick={loading ? () => { return } : handleRippleEffect}
       padding={padding}
       radius={radius}
       ref={button}
@@ -101,8 +102,8 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
     >
       <span id='ripple-button-label'>{label}</span>
       {loading && (
-        <LoadingWrapper>
-          <IconLoading color={getGlobalStyle('--color-base-white')} size={20} />
+        <LoadingWrapper id='loading'>
+          <IconLoading color={getGlobalStyle('--color-base-white')} size={30} />
         </LoadingWrapper>
       )}
       <span style={loading ? { opacity: 0 } : {}}>{props.children}</span>
@@ -139,7 +140,7 @@ const LoadingWrapper = styled.div`
   position: absolute;
 
   svg {
-    animation: rotator 1.4s linear infinite;
+    animation: rotator 1s linear infinite;
     fill: #fff;
   }
 
@@ -157,7 +158,7 @@ const Button = styled.button<RippleButtonProps>`
   &:disabled {
     background-color: ${`${PColor}69`} !important;
   }
-
+  position: relative;
   padding: ${({ padding }) => padding || '1em'};
   background-color: ${({ bgColor }) => bgColor || 'red'};
   color: ${({ color }) => color || BGColor};
