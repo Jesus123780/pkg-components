@@ -10,6 +10,7 @@ on:
 
 # List of jobs
 jobs:
+  quality
   build:
     runs-on: ubuntu-latest
     steps:
