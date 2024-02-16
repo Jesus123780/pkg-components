@@ -38,6 +38,6 @@ export interface MiniCardProductProps {
     comment: boolean;
     edit: boolean;
     onClick: () => void;
-    render: string;
+    render: React.ReactNode | null;
     tag: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
 }

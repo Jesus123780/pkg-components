@@ -10,6 +10,10 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   pName = "",
   withQuantity = false,
   openQuantity = false,
+  ProQuantity = 0,
+  onClick = () => {
+    return;
+  },
   ...props
 }) => {
   return (
