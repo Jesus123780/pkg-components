@@ -2,10 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 #Run install
-npm install -f
-
-#Run Link
-npm run link:pkgch -f
-
-#Run build
-# npm run build
+npm run build:tokens
