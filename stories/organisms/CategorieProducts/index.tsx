@@ -18,6 +18,8 @@ interface CategorieProductsProps {
 export const CategorieProducts: React.FC<CategorieProductsProps> = ({
   data = [],
   breakpoints,
+  disabledItems,
+  checkedItems,
   onChange = (event) => {
     console.log(event);
   },
@@ -31,8 +33,11 @@ export const CategorieProducts: React.FC<CategorieProductsProps> = ({
             <div className={styles.cat_item}>
               <Checkbox
                 className={styles.checkbox}
-                checked={false}
                 onChange={onChange}
+                checked={checkedItems.has(item.carProId)}
+                disabled={disabledItems.has(item.carProId)}
+                id={item.carProId}
+                label={item?.pName}
               />
               <Text
                 className={styles.cat_title}

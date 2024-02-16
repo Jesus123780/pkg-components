@@ -1,5 +1,5 @@
 import React from 'react'
-import { classNames } from '../../../helpers'
+import { classNames, getGlobalStyle } from '../../../helpers'
 import style from './button.module.css'
 
 export type ButtonProps = {
@@ -36,7 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
     outline: 'none',
     width,
     fontSize,
-    color: primary ? 'white' : 'var(--color-primary-red)',
+    color: primary ? 'white' : getGlobalStyle('--color-primary-red'),
     ...styles
   };
 

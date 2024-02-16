@@ -8,7 +8,7 @@
   cursor: pointer;
   display: flex;
   margin: 10px 0;
-  padding: 5px;
+  padding: 0 5px;
   text-decoration: none;
   transition: all .2s linear;
   width: auto;

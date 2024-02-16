@@ -1,3 +1,5 @@
+import './stories/assets/public/styles.css'
+import './stories/assets/public/global.css'
 export * from './stories/atoms'
 export * from './stories/molecules'
 export * from './stories/organisms'
