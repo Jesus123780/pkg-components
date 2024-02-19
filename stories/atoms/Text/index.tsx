@@ -27,7 +27,7 @@ interface TextProps {
   as?: string
   children: React.ReactNode
   className?: string | string[]
-  color?: 'default' | 'primary' | 'blue' | 'white' | 'gray'
+  color?: 'default' | 'primary' | 'blue' | 'white' | 'gray' | 'gray-dark' | 'green'
   lineHeight?: TextLineHeight
   size?: TextSize
   font?: TextFont

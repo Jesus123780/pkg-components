@@ -1,12 +1,12 @@
-import React, { FC } from "react"
+import React, { type FC } from 'react'
 
 import {
-  IconProps,
+  type IconProps,
   IconMiniCheck,
   IconQrCode,
   IconClose,
-  IconStrokeLogo,
-} from "../../assets/public/Icons"
+  IconStrokeLogo
+} from '../../assets/public/Icons'
 import {
   Google,
   IconArrowRight,
@@ -53,12 +53,10 @@ import {
   IconLocationMap2,
   IconGoogleFullColor,
   IconArrowLeft,
-  IconQuestion,
-} from "../../../assets"
+  IconQuestion
+} from '../../../assets'
 
-interface IconMap {
-  [key: string]: FC<IconProps>
-}
+type IconMap = Record<string, FC<IconProps>>
 
 interface IconPropsComponent {
   icon: string
@@ -70,75 +68,75 @@ interface IconPropsComponent {
 
 export const Icons: IconMap = {
   MiniCheck: IconMiniCheck,
-  IconQrCode: IconQrCode,
+  IconQrCode,
   time: IconTime,
   home: IconHome,
-  IconBuys: IconBuys,
-  IconInfo: IconInfo,
-  IconMinus: IconMinus,
-  IconInformationProduct: IconInformationProduct,
-  IconChart: IconChart,
-  IconCategorie: IconCategorie,
-  IconColombia: IconColombia,
-  IconArrowRight: IconArrowRight,
-  IconTicket: IconTicket,
-  Google: Google,
-  IconLogout: IconLogout,
-  IconDost: IconDost,
-  IconMessageMain: IconMessageMain,
-  IconWallet: IconWallet,
-  IconUser: IconUser,
-  IconHorario: IconHorario,
-  IconStore: IconStore,
-  IconLogo: IconLogo,
-  IconMiniCheck: IconMiniCheck,
-  IconArrowTop: IconArrowTop,
-  IconSearch: IconSearch,
-  IconRate: IconRate,
-  IconLoading: IconLoading,
-  IconNoShow: IconNoShow,
-  IconShowEye: IconShowEye,
-  IconPizza: IconPizza,
-  IconNotification: IconNotification,
-  IconShopping: IconShopping,
-  IconCarrot: IconCarrot,
-  IconFigure: IconFigure,
-  IconDelete: IconDelete,
-  IconSales: IconSales,
-  IconStrokeLogo: IconStrokeLogo,
-  IconComment: IconComment,
-  IconCancel: IconCancel,
-  IconArrowBottom: IconArrowBottom,
-  IconPlus: IconPlus,
-  IconLinePart: IconLinePart,
-  IconFolder: IconFolder,
-  IconPromo: IconPromo,
-  IconEdit: IconEdit,
-  IconSendMessage: IconSendMessage,
-  IconLocationMap2: IconLocationMap2,
-  IconClose: IconClose,
-  IconGoogleFullColor: IconGoogleFullColor,
-  IconArrowLeft: IconArrowLeft,
-  IconQuestion: IconQuestion,
+  IconBuys,
+  IconInfo,
+  IconMinus,
+  IconInformationProduct,
+  IconChart,
+  IconCategorie,
+  IconColombia,
+  IconArrowRight,
+  IconTicket,
+  Google,
+  IconLogout,
+  IconDost,
+  IconMessageMain,
+  IconWallet,
+  IconUser,
+  IconHorario,
+  IconStore,
+  IconLogo,
+  IconMiniCheck,
+  IconArrowTop,
+  IconSearch,
+  IconRate,
+  IconLoading,
+  IconNoShow,
+  IconShowEye,
+  IconPizza,
+  IconNotification,
+  IconShopping,
+  IconCarrot,
+  IconFigure,
+  IconDelete,
+  IconSales,
+  IconStrokeLogo,
+  IconComment,
+  IconCancel,
+  IconArrowBottom,
+  IconPlus,
+  IconLinePart,
+  IconFolder,
+  IconPromo,
+  IconEdit,
+  IconSendMessage,
+  IconLocationMap2,
+  IconClose,
+  IconGoogleFullColor,
+  IconArrowLeft,
+  IconQuestion
 }
 
 const GetIcon = (key: string): FC<IconProps> | null => {
   const Icono = Icons[key]
-  return Icono || null
+  return Icono ?? null
 }
 
-export const Icon = ({
+export const Icon: React.FC<IconPropsComponent> = ({
   icon,
   size,
   width,
   height,
-  color,
+  color
 }: IconPropsComponent) => {
   const Icono = GetIcon(icon)
   if (!Icono) {
     return <div>No se encontró el ícono</div>
   }
   return (
-    <Icono size={size || 24} color={color} width={width} height={height} />
+    <Icono size={size ?? 24} color={color} width={width} height={height} />
   )
 }

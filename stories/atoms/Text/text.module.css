@@ -10,6 +10,13 @@
   color: var(--color-text-black);
 }
 
+.color-green {
+  color: var(--color-feedback-success-light);
+
+}
+.color-gray-dark {
+  color: var(--color-neutral-gray-dark);
+}
 .font-regular {
   font-family: 'PFont-Regular';
 }

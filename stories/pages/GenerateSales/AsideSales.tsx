@@ -17,6 +17,10 @@ interface AsideProps {
   data?: {
     payMethodPState: number
   }
+  errors?: {
+    change: boolean
+    valueDelivery: boolean
+  }
 }
 
 export const AsideSales: React.FC<AsideProps> = ({

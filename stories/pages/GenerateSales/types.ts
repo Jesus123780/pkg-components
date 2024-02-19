@@ -55,7 +55,7 @@ export interface Product {
   ValueDelivery: string
   getOneTags: {
     nameTag: string
-  }
+  } | null
 }
 
 interface ExtProductFoodSubOptional {

@@ -1,9 +1,18 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
-import { Button, Icon, Row, Text } from '../../atoms'
-import { Skeleton } from '../../molecules'
-import type { Data, Product, ProductFood } from './types'
+import {
+  Button,
+  Icon,
+  Row,
+  Text
+} from '../../atoms'
+import { EmptyData, Skeleton } from '../../molecules'
+import type {
+  Data,
+  Product,
+  ProductFood
+} from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
@@ -34,6 +43,8 @@ interface GenerateSalesProps {
   data?: Data
   values?: {
     cliId: string
+    change: string
+    valueDelivery: string
   }
   errors?: {
     change: boolean
@@ -47,6 +58,7 @@ interface GenerateSalesProps {
   handleDecrement?: (product: Product) => void
   handleIncrement?: (product: Product) => void
   handleSave?: () => void
+  onClick?: () => void
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
 }
 export const GenerateSales: React.FC<GenerateSalesProps> = ({
@@ -55,6 +67,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   propsSliderCategory = {},
   data = {
     PRODUCT: [],
+    counter: 0,
     getOneTags: {
       nameTag: ''
     }
@@ -75,6 +88,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   loadingClients = false,
   dispatch = () => {},
   handleClickAction = () => {},
+  onClick = () => {},
   fetchMoreProducts = () => {},
   handleChange = () => {},
   setShow = () => {},
@@ -148,19 +162,20 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   }}
                   pName={producto.pName}
                   render={<Icon size={20} icon="IconSales" />}
-                  tag={producto?.getOneTags && tag}
+                  tag={(producto?.getOneTags?.nameTag !== null) && tag}
                 />
               )
             })}
         </div>
-        <div className={styles.content__action_product}>
+        <div className={styles.content__action_product} >
           <Button primary={true} onClick={fetchMoreProducts}>
-            ver mas productos
+            ver más
           </Button>
         </div>
-        <div className={styles.content__scrolling}>
+        <div className={styles.content__scrolling} style={{ display: data?.PRODUCT?.length > 0 ? 'grid' : 'block' }}>
           {!isLoading &&
-            data.PRODUCT?.map((producto) => {
+            (data.PRODUCT.length > 0)
+            ? data.PRODUCT?.map((producto) => {
               const tag = {
                 tag: producto?.getOneTags?.nameTag ?? ''
               }
@@ -176,12 +191,15 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   ValueDelivery={producto.ValueDelivery}
                   comment={false}
                   withQuantity={true}
-                  openQuantity={ProQuantity}
+                  openQuantity={Boolean(ProQuantity)}
                   handleDecrement={() => {
                     handleDecrement(producto)
                   }}
                   handleIncrement={() => {
                     handleIncrement(producto)
+                  }}
+                  handleGetSubItems={() => {
+                    onClick(producto)
                   }}
                   edit={false}
                   key={producto.pId}
@@ -196,22 +214,43 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   tag={producto?.getOneTags?.nameTag !== null && tag}
                 />
               )
-            })}
+            })
+            : <EmptyData height={200} width={200} />}
         </div>
         <div className={styles.content__action}>
-          <Text align='center' size='2xl' color='default' lineHeight='2xl' styles={{ margin: '0 20px 0 0' }}>
-          {totalProductPrice}
-          </Text>
-          <Button
-            onClick={() => {
-              dispatch({ type: 'REMOVE_ALL_PRODUCTS' })
-            }}
-          >
-            Eliminar
-          </Button>
-          <Button onClick={handleSave} primary={true}>
-            Guardar
-          </Button>
+          <Row style={{ width: '50%', display: 'flex', alignItems: 'center' }}>
+            <div className={styles.content__counter} >
+              <span className={styles.counter} >{data?.counter > 99 ? '+99' : (data?.counter ?? 0)}</span>
+              <Icon
+                size={20}
+                icon="IconInformationProduct"
+                height={20}
+                width={20}
+                color={getGlobalStyle('--color-icons-primary')}
+              />
+            </div>
+            <Text
+              align="center"
+              size="2xl"
+              color="gray-dark"
+              lineHeight="2xl"
+              styles={{ margin: '0 20px 0 20px' }}
+            >
+              {totalProductPrice}
+            </Text>
+          </Row>
+          <Row style={{ width: 'min-content' }}>
+            <Button
+              onClick={() => {
+                dispatch({ type: 'REMOVE_ALL_PRODUCTS' })
+              }}
+            >
+              Eliminar
+            </Button>
+            <Button onClick={handleSave} primary={true}>
+              Guardar
+            </Button>
+          </Row>
         </div>
       </div>
     </AwesomeModal>

@@ -1,3 +1,44 @@
+interface ExtProductFood {
+  __typename: string
+  pId: string
+  exPid: string
+  exState: number
+  extraName: string
+  extraPrice: number
+  state: number
+  pDatCre: string
+  pDatMod: string
+  quantity: number
+  newExtraPrice: number
+}
+interface ExtProductFoodSubOptional {
+  __typename: string
+  pId: string
+  opExPid: string | null
+  idStore: string
+  opSubExPid: string
+  OptionalSubProName: string
+  exCodeOptionExtra: string
+  exCode: string
+  state: number
+  pDatCre: string
+  pDatMod: string
+  check: boolean
+}
+
+interface ExtProductFoodOptional {
+  __typename: string
+  pId: string
+  opExPid: string
+  OptionalProName: string
+  state: number
+  code: string
+  numbersOptionalOnly: number
+  pDatCre: string
+  required: number
+  pDatMod: string
+  ExtProductFoodsSubOptionalAll: ExtProductFoodSubOptional[]
+}
 export interface MiniCardProductProps {
   __typename: string
   pId: string
@@ -40,6 +81,9 @@ export interface MiniCardProductProps {
   onClick: () => void
   render: React.ReactNode | null
   tag: any | null
+  dataExtra: ExtProductFood[]
+  dataOptional: ExtProductFoodOptional[]
   handleDecrement?: () => void
   handleIncrement?: () => void
+  handleGetSubItems?: () => void
 }

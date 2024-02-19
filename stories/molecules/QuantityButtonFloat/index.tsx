@@ -35,7 +35,9 @@ export const QuantityButtonFloat: React.FC<QuantityButtonFloatProps> = ({
           icon="IconMinus"
         />
       </button>
-      <Text className={styles.quantity}>{quantity}</Text>
+      <Text align='center' className={styles.quantity}>
+        {quantity}
+      </Text>
       <button onClick={() => {
         handleIncrement()
       }}>

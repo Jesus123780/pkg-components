@@ -238,7 +238,12 @@ export const data: Data = {
       ProImage: 'https:https://front-back-server.onrender.comstatic/platos/undefined',
       ProPrice: 20000,
       ProQuantity: 4,
-      free: false
+      free: false,
+      getOneTags: {
+        nameTag: 'Tag 1'
+      },
+      ProDescuento: '3',
+      ValueDelivery: '0'
     },
     {
       pId: '486c7a48-1511-bc69-3ebf-13e8c04d2125',
@@ -248,7 +253,7 @@ export const data: Data = {
       ProImage: 'https:https://front-back-server.onrender.comstatic/platos/undefined',
       ProPrice: 20000,
       ProQuantity: 4,
-      free: false,
+      free: true,
       dataOptional: [
         {
           __typename: 'ExtProductFoodOptional',

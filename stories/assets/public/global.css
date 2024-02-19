@@ -37,7 +37,7 @@
   --color-campaigns-turquoise: #63BBAE;
 
   --color-feedback-success-light: #24ba00;
-  --color-feedback-success-dark: #1B8900;
+  --color-feedback-success-dark: #50a773;
   --color-feedback-error-light: #F80000;
   --color-feedback-error-dark: #EE0000;
   --color-feedback-warning-light: #F0A92E;
@@ -49,7 +49,7 @@
   --color-text-inactive: #C4C4C4;
   --color-text-black: #282828;
   --color-text-white: #FFFFFF;
-  --color-text-success: #1B8900;
+  --color-text-success: #50a773;
   --color-text-error: #EE0000;
   --color-text-warning: #CC870F;
 
@@ -103,7 +103,7 @@
   --color-alvi-campaigns-super-precio: #02498E;
   --color-alvi-campaigns-exclusivo: #FEDD00;
 
-  --color-alvi-feedback-success-dark: #1B8900;
+  --color-alvi-feedback-success-dark: #50a773;
   --color-alvi-feedback-error-dark: #E43C3C;
   --color-alvi-feedback-warning-light: #F0A92E;
   --color-alvi-feedback-warning-dark: #CC870F;
@@ -112,7 +112,7 @@
   --color-alvi-text-secondary: #FDC42D;
   --color-alvi-text-gray-light: #666666;
   --color-alvi-text-inactive: #C4C4C4;
-  --color-alvi-text-success: #1B8900;
+  --color-alvi-text-success: #50a773;
   --color-alvi-text-error: #E43C3C;
   --color-alvi-text-warning: #CC870F;
 

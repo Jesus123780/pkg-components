@@ -28,7 +28,7 @@ const choices = {
       heavyMetal: '#212322',
       schoolBusYellow: '#FEDD00',
       // Feedback
-      japaneseLaurel: '#1B8900',
+      japaneseLaurel: '#50a773',
       red: '#F80000',
       fuelYellow: '#F0A92E',
       meteor: '#CC870F',
@@ -87,7 +87,7 @@ const choices = {
       superPrecio: '#02498E',
       exclusivo: '#FEDD00',
       // Feedback
-      successDark: '#1B8900',
+      successDark: '#50a773',
       errorDark: '#E43C3C',
       warningLight: '#F0A92E',
       warningDark: '#CC870F',
@@ -96,7 +96,7 @@ const choices = {
       secondary: '#FDC42D',
       grayLight: '#666666',
       inactive: '#C4C4C4',
-      success: '#1B8900',
+      success: '#50a773',
       error: '#E43C3C',
       warning: '#CC870F',
       // Backgrounds
