@@ -1,12 +1,12 @@
-import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import styled, { css, keyframes } from "styled-components";
-import { PColor } from "../../../../assets/colors";
-import { getGlobalStyle } from "../../../../utils";
+import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import styled, { css, keyframes } from 'styled-components'
+import { PColor } from '../../../../assets/colors'
+import { getGlobalStyle } from '../../../../utils'
 
 export const Checkbox = ({
   checked = false,
-  className = "",
+  className = '',
   disabled = false,
   id,
   indeterminate = false,
@@ -15,56 +15,56 @@ export const Checkbox = ({
   onChange = (event, id) => {
     return {
       event,
-      id,
-    };
+      id
+    }
   },
   ...restProps
 }) => {
-  const inputEl = useRef(null);
-  const [clickCount, setClickCount] = useState(0);
-  const [lastClickTime, setLastClickTime] = useState(0);
+  const inputEl = useRef(null)
+  const [clickCount, setClickCount] = useState(0)
+  const [lastClickTime, setLastClickTime] = useState(0)
 
-  const clickThreshold = 1000; // Umbral de tiempo en milisegundos
+  const clickThreshold = 1000 // Umbral de tiempo en milisegundos
 
   const syncIndeterminateState = useCallback(() => {
     if (inputEl && inputEl.current) {
-      inputEl.current.indeterminate = indeterminate;
+      inputEl.current.indeterminate = indeterminate
     }
-  }, [inputEl, indeterminate]);
+  }, [inputEl, indeterminate])
 
   useEffect(() => {
-    syncIndeterminateState();
-  }, [indeterminate, syncIndeterminateState]);
+    syncIndeterminateState()
+  }, [indeterminate, syncIndeterminateState])
 
   const handleChange = (event) => {
     if (indeterminate) {
-      syncIndeterminateState();
+      syncIndeterminateState()
     }
 
-    const now = Date.now();
+    const now = Date.now()
 
     if (now - lastClickTime < clickThreshold) {
       setClickCount((prevClickCount) => {
-        return prevClickCount + 1;
-      });
+        return prevClickCount + 1
+      })
     } else {
-      setClickCount(1);
+      setClickCount(1)
     }
 
     if (clickCount >= 7) {
       // alert('¡Vas a quemar el teclado! Por favor, no hagas clic tan rápido.')
-      setClickCount(0);
+      setClickCount(0)
     }
 
-    setLastClickTime(now);
-    onChange(event, id);
-  };
+    setLastClickTime(now)
+    onChange(event, id)
+  }
 
-  const disabledStyles = { color: getGlobalStyle("--color-text-inactive") };
+  const disabledStyles = { color: getGlobalStyle('--color-text-inactive') }
 
   return (
     <Span
-      className={className || ""}
+      className={className || ''}
       id={id}
       style={disabled ? disabledStyles : {}}
       {...restProps}
@@ -79,15 +79,15 @@ export const Checkbox = ({
         type="checkbox"
       />
       <CheckboxLabel
-        className={className || ""}
+        className={className || ''}
         checked={checked}
         htmlFor={`checkbox-${id}`}
       >
         {label}
       </CheckboxLabel>
     </Span>
-  );
-};
+  )
+}
 
 Checkbox.propTypes = {
   checked: PropTypes.bool,
@@ -98,8 +98,8 @@ Checkbox.propTypes = {
   indeterminate: PropTypes.bool,
   label: PropTypes.any,
   name: PropTypes.any,
-  onChange: PropTypes.func,
-};
+  onChange: PropTypes.func
+}
 const checkboxCheck = keyframes`
   0%: {
     width: 0;
@@ -118,12 +118,12 @@ const checkboxCheck = keyframes`
     border-color: #fff;
     transform: translate3d(0, -0.5em, 0) rotate(45deg);
   }
-`;
+`
 const Span = styled.span`
   align-items: center;
   cursor: pointer;
   display: grid;
-`;
+`
 const CheckboxLabel = styled.label`
   align-items: center;
   color: #9e9e9e;
@@ -157,10 +157,10 @@ const CheckboxLabel = styled.label`
           animation: ${checkboxCheck} 200ms cubic-bezier(0.4, 0, 0.23, 1);
         }
       `
-    );
+    )
   }}
-`;
+`
 const CheckboxAtom = styled.input`
   width: 0;
   height: 0;
-`;
+`

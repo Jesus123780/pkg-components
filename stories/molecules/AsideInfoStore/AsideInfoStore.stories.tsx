@@ -1,13 +1,13 @@
-import React from "react"
-import { AsideInfoStore } from "./index"
-import { Text } from "../../atoms"
+import React from 'react'
+import { AsideInfoStore } from './index'
+import { Text } from '../../atoms'
 
 export default {
-  title: "molecules/AsideInfoStore",
+  title: 'molecules/AsideInfoStore',
   component: AsideInfoStore,
   argTypes: {
-    backgroundColor: { control: "color" },
-  },
+    backgroundColor: { control: 'color' }
+  }
 }
 
 const Template = (args: any) => {
@@ -16,7 +16,7 @@ const Template = (args: any) => {
       <Text>Hola</Text>
       <AsideInfoStore
         handleClose={() => {
-          return
+
         }}
         show={true}
         active={0}

@@ -6,6 +6,37 @@ import { Overline } from '../../../atoms/Overline'
 import { changeSearch, changeValue, findOptionById, renderVal } from './helpers'
 import { BoxOptions, BoxSelect, ButtonAction, ContainerItems, ContentBox, CustomButtonS, IconSel, InputText, LabelInput, MainButton, SpanText, TextNotResult, Tooltip } from './styles'
 
+interface NewSelectProps {
+  accessor?: any
+  action?: boolean
+  beforeLabel?: string
+  border?: any
+  disabled?: boolean
+  error?: boolean
+  fullName?: any
+  handleClickAction?: () => void
+  heightBody?: any
+  icon?: boolean
+  id?: string
+  loading?: boolean
+  margin?: string
+  minWidth?: string
+  name?: string
+  noLabel?: boolean
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  optionName?: string
+  options?: any[]
+  overLine?: boolean
+  padding?: string
+  required?: boolean
+  search?: string
+  sideLabel?: string
+  title?: string
+  topTitle?: string
+  value?: string
+  width?: string
+
+}
 export const NewSelect = ({
   options = [],
   beforeLabel = '',
@@ -34,7 +65,7 @@ export const NewSelect = ({
   accessor,
   fullName,
   onChange = () => {
-    return
+    return null
   },
   handleClickAction = () => {
     return
@@ -252,35 +283,3 @@ export const NewSelect = ({
     </div>
   )
 }
-
-NewSelect.propTypes = {
-  accessor: PropTypes.any,
-  action: PropTypes.bool,
-  beforeLabel: PropTypes.string,
-  border: PropTypes.any,
-  disabled: PropTypes.bool,
-  error: PropTypes.bool,
-  fullName: PropTypes.any,
-  handleClickAction: PropTypes.func,
-  heightBody: PropTypes.any,
-  icon: PropTypes.bool,
-  id: PropTypes.string,
-  loading: PropTypes.bool,
-  margin: PropTypes.string,
-  minWidth: PropTypes.string,
-  name: PropTypes.string,
-  noLabel: PropTypes.bool,
-  onChange: PropTypes.func,
-  optionName: PropTypes.string,
-  options: PropTypes.array,
-  overLine: PropTypes.bool,
-  padding: PropTypes.string,
-  required: PropTypes.bool,
-  search: PropTypes.string,
-  sideLabel: PropTypes.string,
-  title: PropTypes.string,
-  topTitle: PropTypes.string,
-  value: PropTypes.string,
-  width: PropTypes.string
-}
-

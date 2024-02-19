@@ -4,18 +4,23 @@ import { getGlobalStyle } from '../../../utils'
 import styles from './AsideInfoStore.module.css'
 
 interface AsideInfoStoreProps {
-  children: React.ReactNode;
-  handleClose: () => void;
-  show: boolean;
-  active?: number;
+  children: React.ReactNode
+  handleClose: () => void
+  show: boolean
+  zIndex?: string
+  style?: React.CSSProperties
 }
-export const AsideInfoStore: React.FC<AsideInfoStoreProps> = ({ 
-  show = true, 
-  children, 
-  handleClose = () => { return } 
+
+export const AsideInfoStore: React.FC<AsideInfoStoreProps> = ({
+  show = true,
+  zIndex = '',
+  children,
+  style = {},
+  handleClose = () => { }
 }) => {
   return (
     <div
+      style={{ ...style, zIndex }}
       className={`${styles.aside_content} ${
         show ? styles.aside_content__show : ''
       }`}

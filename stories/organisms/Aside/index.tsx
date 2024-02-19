@@ -33,8 +33,22 @@ import {
   Router
 } from './styled'
 import { getGlobalStyle } from '../../../utils'
+interface MemoAsideProps {
+  isMobile?: boolean
+  location?: any
+  countOrders?: number
+  setCollapsed?: any
+  salesOpen?: boolean
+  collapsed?: boolean
+  dataStore?: any
+  loading?: boolean
+  handleClick?: any
+  handleOpenDeliveryTime?: any
+  setSalesOpen?: any
+  setShowComponentModal?: any
 
-const MemoAside = ({
+}
+const MemoAside: React.FC<MemoAsideProps> = ({
   isMobile = false,
   location = {
     pathname: '/'
@@ -49,80 +63,99 @@ const MemoAside = ({
     uState: 1
   },
   loading = false,
-  handleClick = (state) => { return state },
-  handleOpenDeliveryTime = () => { return },
-  setSalesOpen = (state) => { return state },
-  setShowComponentModal = (state) => { return state }
+  handleClick = (state: boolean) => { return state },
+  handleOpenDeliveryTime = () => { },
+  setSalesOpen = (state: boolean) => { return state },
+  setShowComponentModal = (state: boolean) => { return state }
 }) => {
   const [show, setShow] = useState(false)
-  const [active, setActive] = useState(null)
+  const [active, setActive] = useState<boolean>(false)
   const pathname = location?.pathname === '/dashboard/[...name]'
-
+  interface DataStore {
+    storeName: string
+    idStore: string
+    uState: number
+  }
   const {
     storeName,
     idStore,
     uState
-  } = dataStore || {}
+  }: DataStore = dataStore ?? {
+    storeName: '',
+    idStore: '',
+    uState: 1
+  }
 
-  const handleOpenCreateProduct = () => {
+  const handleOpenCreateProduct = (): void => {
     setShowComponentModal(3)
     handleClick(3)
     setShow(!show)
   }
 
   const links = [
-    { href: '/dashboard',
+    {
+      href: '/dashboard',
       icon: IconHome,
-      size: '30px',
+      size: '25px',
       label: 'Home'
     },
-    { href: '/pedidos',
+    {
+      href: '/pedidos',
       icon: IconTicket,
       size: '25px',
       label: 'Pedidos',
       count: countOrders ?? 0
     },
-    { href: idStore ? `/dashboard/${storeName}/${idStore}` : '/dashboard',
+    {
+      href: idStore !== '' ? `/dashboard/${storeName}/${idStore}` : '/dashboard',
       icon: IconStore,
-      size: '30px',
+      size: '25px',
       label: 'Perfil'
     },
-    { href: '/horarios',
+    {
+      href: '/horarios',
       icon: IconTime,
       size: '25px',
       label: 'Horarios'
     },
-    { icon: IconTime,
-      size: '35px',
+    {
+      icon: IconTime,
+      size: '25px',
       label: 'Tiempo de entrega',
       onClick: handleOpenDeliveryTime
     },
-    { href: '/ventas',
+    {
+      href: '/ventas',
       icon: IconTicket,
       size: '25px',
       label: 'Ventas'
     },
-    { href: '/informes',
+    {
+      href: '/informes',
       icon: IconChart,
       size: '25px',
       label: 'Informes'
     },
-    { href: '/clientes',
+    {
+      href: '/clientes',
       icon: IconUser,
       size: '25px',
       label: 'Clientes'
     },
-    { href: '/compras',
+    {
+      href: '/compras',
       icon: IconBuys,
       size: '25px',
       label: 'Compras'
     },
-    { href: '/categorias',
+    {
+      href: '/categorias',
       icon: IconCategorie,
       size: '25px',
       label: 'Categorías'
     },
-    { href: '/products',
+    {
+      href: '/products',
       icon: IconShopping,
       size: '25px',
       label: 'Productos',
@@ -133,7 +166,8 @@ const MemoAside = ({
           size: '20px',
           label: 'Productos',
           subLinks: [
-            { href: '/products',
+            {
+              href: '/products',
               icon: IconTicket,
               size: '20px',
               label: 'Productos'
@@ -145,7 +179,7 @@ const MemoAside = ({
   ]
 
   useEffect(() => {
-    function handleKeyDown(event) {
+    function handleKeyDown (event: KeyboardEvent) {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
         setSalesOpen(!salesOpen)
@@ -155,11 +189,10 @@ const MemoAside = ({
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [salesOpen])
 
   const handleMenu = (index) => {
-    setActive((prev) => {
+    setActive((prev: boolean) => {
       const state = index === prev ? false : index
       return state
     })
@@ -177,26 +210,26 @@ const MemoAside = ({
       }
       <Overline
         bgColor='rgba(0, 0, 0, 0.162)'
-        onClick={() => { return setShow(!show) }}
+        onClick={() => { setShow(!show) }}
         show={show}
         zIndex={getGlobalStyle('--z-index-99999')}
       />
       <ContainerAside collapsed={isMobile ? collapsed : false}>
         <Card>
           <Info>
-            <ButtonGlobalCreate onClick={() => { return setShow(!show) }}>
+            <ButtonGlobalCreate onClick={() => { setShow(!show) }}>
                 Agregar Nuevo
             </ButtonGlobalCreate>
             <Portal>
               <LeftNav show={show && !salesOpen}>
                 {location?.pathname !== '/products' && <Info>
-                  <Button onClick={() => { return handleOpenCreateProduct() }}>
+                  <Button onClick={() => { handleOpenCreateProduct() }}>
                       Productos
                   </Button>
                 </Info>}
                 {location?.pathname === '/products' && <Info>
                   <Button
-                    onClick={() => { 
+                    onClick={() => {
                       setShowComponentModal(4)
                       handleClick(4)
                     }}
@@ -211,7 +244,9 @@ const MemoAside = ({
                 </Info>
               </LeftNav>
             </Portal>
-            {(loading) ? null : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
+            {(loading)
+              ? null
+              : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
               <a>
                 <h1 className='title_store'>
                   {storeName}
@@ -234,7 +269,7 @@ const MemoAside = ({
               const multiple = link.multiple || []
               return (
                 <div key={link.href}>
-                  {Boolean(!multiple.length) &&
+                  {Boolean(multiple.length === 0) &&
                     <CustomLinkAside
                       count={link.count}
                       href={link.href}
@@ -253,8 +288,8 @@ const MemoAside = ({
                       } = item || {}
                       return (
                         <Options
-                          active={index === active}
-                          handleClick={() => { return handleMenu(index) }}
+                          active={Boolean(index === active)}
+                          handleClick={() => { handleMenu(index) }}
                           icon={icon}
                           index={index}
                           key={href}
@@ -278,7 +313,8 @@ const MemoAside = ({
                     })
                   }
                 </div>
-              )})}
+              )
+            })}
           </Router>
         </Card>
       </ContainerAside>

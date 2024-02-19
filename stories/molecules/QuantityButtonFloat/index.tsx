@@ -2,26 +2,44 @@ import React from 'react'
 import { Icon, Text } from '../../atoms'
 import styles from './styles.module.css'
 
-export const QuantityButtonFloat = ({
+interface QuantityButtonFloatProps {
+  quantity?: number
+  handleIncrement?: () => void
+  handleDecrement?: () => void
+  open?: boolean
+}
+
+export const QuantityButtonFloat: React.FC<QuantityButtonFloatProps> = ({
   quantity = 0,
   handleIncrement = () => {
-    return
+    return null
   },
   handleDecrement = () => {
-    return
+    return null
   },
-  open = false,
+  open = false
 }) => {
   return (
-    <div className={`${styles['quick-add']} ${!open && styles['quick-add_initial'] }`}>
-      <button onClick={handleDecrement}>
-        <Icon size={24} width={24} height={24}  icon='IconMinus' />
+    <div
+      className={`${styles['quick-add']} ${
+        !open && styles['quick-add_initial']
+      }`}
+    >
+      <button onClick={() => {
+        handleDecrement()
+      }}>
+        <Icon
+          size={24}
+          width={24}
+          height={24}
+          icon="IconMinus"
+        />
       </button>
-      <Text className={styles.quantity} >
-        {quantity}
-      </Text>
-      <button onClick={handleIncrement}>
-        <Icon icon='IconPlus' />
+      <Text className={styles.quantity}>{quantity}</Text>
+      <button onClick={() => {
+        handleIncrement()
+      }}>
+        <Icon icon="IconPlus" />
       </button>
     </div>
   )

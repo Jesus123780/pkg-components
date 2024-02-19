@@ -1,6 +1,6 @@
-import React, { useRef } from "react"
-import styled, { css, keyframes } from "styled-components"
-import { IconMiniCheck } from "../../assets/public/Icons"
+import React, { useRef } from 'react'
+import styled, { css, keyframes } from 'styled-components'
+import { IconMiniCheck } from '../../assets/public/Icons'
 
 const checkboxCheck = keyframes`
   0%: {
@@ -77,7 +77,7 @@ const CheckboxAtom = styled.input`
   height: 0;
 `
 
-type CheckboxProps = {
+interface CheckboxProps {
   checked: boolean
   className?: string
   disabled?: boolean
@@ -90,7 +90,7 @@ type CheckboxProps = {
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   checked,
-  className = "",
+  className = '',
   disabled = false,
   id,
   indeterminate = false,
@@ -105,7 +105,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     onChange(event, id)
   }
 
-  const disabledStyles = { color: "#CCC" }
+  const disabledStyles = { color: '#CCC' }
   const CheckboxSvg = styled.div<{ checked: boolean }>`
     animation: ${({ checked }: { checked: boolean }) =>
       checked &&
@@ -125,7 +125,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   `
   return (
     <Span
-      className={className || ""}
+      className={className || ''}
       id={id}
       style={disabled ? disabledStyles : {}}
       {...restProps}

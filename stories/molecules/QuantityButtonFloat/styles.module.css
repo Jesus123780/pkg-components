@@ -1,15 +1,14 @@
 .quick-add {
-    display: flex;
     align-items: center;
-    width: 100px;
-    height: 38px;
+    background-color: var(--color-base-white);
     border-radius: 8px;
+    box-shadow: var(--box-shadow-sm);
+    display: flex;
+    height: 38px;
     justify-content: flex-end;
     overflow: hidden;
     transition: all .2s;
-    box-shadow: var(--box-shadow-sm);
-    background-color: var(--color-base-white);
-
+    width: 100px;
 }
 
 .quick-add button {
@@ -17,6 +16,7 @@
     height: 100%;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     display: flex;
     background-color: var(--color-base-white);
 

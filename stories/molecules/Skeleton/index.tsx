@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
 interface SkeletonProps {
-  height?: number | string;
-  width?: string;
-  margin?: string;
-  className?: string;
-  borderRadius?: string;
-  numberObject?: number;
+  height?: number | string
+  width?: string
+  margin?: string
+  className?: string
+  borderRadius?: string
+  numberObject?: number
 }
 
 const SkeletonComponent: React.FC<SkeletonProps> = ({
@@ -16,7 +16,7 @@ const SkeletonComponent: React.FC<SkeletonProps> = ({
   margin,
   className,
   borderRadius,
-  numberObject = 1,
+  numberObject = 1
 }) => {
   return (
     <>
@@ -27,27 +27,27 @@ const SkeletonComponent: React.FC<SkeletonProps> = ({
             borderRadius={borderRadius}
             height={`${height}px`}
             key={value + 1}
-            margin={margin || ''}
-            width={width || ''}
+            margin={margin ?? ''}
+            width={width ?? ''}
           >
             <div className='card-loader'></div>
           </Container>
-        );
+        )
       })}
     </>
-  );
-};
+  )
+}
 
-export const Skeleton = React.memo(SkeletonComponent);
+export const Skeleton = React.memo(SkeletonComponent)
 
 const Container = styled.div<SkeletonProps>`
   .card-loader {
     background-color: #fff;
     position: relative;
-    margin: ${({ margin }) => margin || '0'};
-    border-radius: ${({ borderRadius }) => borderRadius || '2px'};
-    width: ${({ width }) => width || 'auto'};
-    height: ${({ height }) => height || '150px'};
+    margin: ${({ margin }) => margin ?? '0'};
+    border-radius: ${({ borderRadius }) => borderRadius ?? '2px'};
+    width: ${({ width }) => width ?? 'auto'};
+    height: ${({ height }) => height ?? '150px'};
     overflow: hidden;
     padding: 0;
     &:after {
@@ -71,7 +71,7 @@ const Container = styled.div<SkeletonProps>`
       background-color: #ededed;
       border-radius: 6px;
       box-shadow: -48px 78px 0 -48px #ededed, -51px 102px 0 -51px #ededed;
-      height: ${({ height }) => height || '150px'};
+      height: ${({ height }) => height ?? '150px'};
     }
   }
 
@@ -83,4 +83,4 @@ const Container = styled.div<SkeletonProps>`
       transform: translate3d(100%, 0, 0);
     }
   }
-`;
+`

@@ -1,43 +1,45 @@
 export interface MiniCardProductProps {
-    __typename: string;
-    pId: string;
-    sizeId: string | null;
-    colorId: string | null;
-    cId: string | null;
-    withQuantity?: boolean;
-    openQuantity?: boolean;
-    dId: string | null;
-    ctId: string | null;
-    fId: string | null;
-    pName: string;
-    getOneTags: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ProPrice: number;
-    ProDescuento: string;
-    free: number;
-    ProUniDisponibles: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ProDescription: string;
-    ProProtegido: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ProAssurance: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ValueDelivery: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ProStar: number;
-    sTateLogistic: number;
-    ProImage: string;
-    ProWidth: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ProHeight: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ProLength: string;
-    ProWeight: string;
-    ProQuantity: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    ProOutstanding: number;
-    pDatCre: string;
-    pDatMod: string;
-    ProDelivery: number;
-    ProVoltaje: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    pState: number;
-    feat: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    area: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
-    comment: boolean;
-    edit: boolean;
-    onClick: () => void;
-    render: React.ReactNode | null;
-    tag: any | null; // Reemplaza 'any' por el tipo correcto si es conocido
+  __typename: string
+  pId: string
+  sizeId: string | null
+  colorId: string | null
+  cId: string | null
+  withQuantity?: boolean
+  openQuantity?: boolean
+  dId: string | null
+  ctId: string | null
+  fId: string | null
+  pName: string
+  getOneTags: any | null
+  ProPrice: number
+  ProDescuento: string
+  free: number
+  ProUniDisponibles: any | null
+  ProDescription: string
+  ProProtegido: any | null
+  ProAssurance: any | null
+  ValueDelivery: any | null
+  ProStar: number
+  sTateLogistic: number
+  ProImage: string
+  ProWidth: any | null
+  ProHeight: any | null
+  ProLength: string
+  ProWeight: string
+  ProQuantity: any | null
+  ProOutstanding: number
+  pDatCre: string
+  pDatMod: string
+  ProDelivery: number
+  ProVoltaje: any | null
+  pState: number
+  feat: any | null
+  area: any | null
+  comment: boolean
+  edit: boolean
+  onClick: () => void
+  render: React.ReactNode | null
+  tag: any | null
+  handleDecrement?: () => void
+  handleIncrement?: () => void
 }

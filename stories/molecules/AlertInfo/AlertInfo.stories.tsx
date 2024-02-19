@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { AlertInfo } from './index';
+import type { Meta, StoryObj } from '@storybook/react'
+import { AlertInfo } from './index'
 
 const meta: Meta<typeof AlertInfo> = {
   component: AlertInfo,
@@ -11,29 +11,29 @@ const meta: Meta<typeof AlertInfo> = {
   args: {
     type: 'info',
     message: 'This is an alert'
-  },
-};
+  }
+}
 
-export default meta;
-type Story = StoryObj<typeof AlertInfo>;
+export default meta
+type Story = StoryObj<typeof AlertInfo>
 
 export const AlertInfoMain: Story = {
   args: {
     type: 'info',
     message: 'This is an alert'
-  },
-};
+  }
+}
 
 export const AlertInfoWarning: Story = {
   args: {
     type: 'warning',
     message: 'This is an alert warning'
-  },
-};
+  }
+}
 
 export const AlertInfoError: Story = {
   args: {
     type: 'error',
     message: 'This is an alert error'
-  },
-};
+  }
+}

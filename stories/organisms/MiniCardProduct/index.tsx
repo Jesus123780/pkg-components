@@ -1,57 +1,65 @@
-import React from "react";
-import styles from "./styles.module.css";
-import { MiniCardProductProps } from "./type";
-import productImg from "../../../assets/images/product.png";
-import { QuantityButtonFloat } from "../../molecules/QuantityButtonFloat";
+import React from 'react'
+import styles from './styles.module.css'
+import { type MiniCardProductProps } from './type'
+import { QuantityButtonFloat } from '../../molecules/QuantityButtonFloat'
 
 export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   ProPrice,
-  ProDescription = "",
-  pName = "",
+  ProDescription = '',
+  pName = '',
   withQuantity = false,
   openQuantity = false,
   ProQuantity = 0,
-  onClick = () => {
-    return;
-  },
+  onClick = () => {},
+  handleDecrement = () => {},
+  handleIncrement = () => {},
   ...props
 }) => {
+  const urlImage = '/images/DEFAULTBANNER.png'
+
   return (
-    <div className={styles.productCardWrapper}>
-      <div
-        className={styles["product-card-content"]}
-        data-test-id="product-card-test-id"
-      >
+    <div style={{ position: 'relative', width: 'min-content' }} >
+      {withQuantity && (
+        <div className={styles.quantity_container}>
+          <QuantityButtonFloat
+            handleDecrement={handleDecrement}
+            handleIncrement={handleIncrement}
+            open={openQuantity}
+            quantity={ProQuantity}
+          />
+        </div>
+      )}
+      <div className={styles.productCardWrapper} onClick={onClick}>
         <div
-          className={styles["product-card-image__container"]}
-          data-test-id="product-card-image"
+          className={styles['product-card-content']}
+          data-test-id="product-card-test-id"
         >
-          <div className={styles["wrapper-image"]}>
-            <img className={styles["product-card-image"]} src={productImg} />
-          </div>
-          {withQuantity && (
-            <div className={styles["quantity_container"]}>
-              <QuantityButtonFloat open={openQuantity} />
+          <div
+            className={styles['product-card-image__container']}
+            data-test-id="product-card-image"
+          >
+            <div className={styles['wrapper-image']}>
+              <img className={styles['product-card-image']} src={urlImage} />
             </div>
-          )}
-          <div className={styles["product-card-image__overlay"]}></div>
+            <div className={styles['product-card-image__overlay']}></div>
+          </div>
+          <div
+            className={styles['product-card__price']}
+            data-test-id="product-card-price"
+          >
+            {ProPrice}
+          </div>
+          <span className={styles['product-card__title']} title={pName}>
+            {pName}
+          </span>
+          <span
+            className={styles['product-card__description']}
+            title={ProDescription}
+          >
+            {ProDescription}
+          </span>
         </div>
-        <div
-          className={styles["product-card__price"]}
-          data-test-id="product-card-price"
-        >
-          {ProPrice}
-        </div>
-        <span className={styles["product-card__title"]} title={pName}>
-          {pName}
-        </span>
-        <span
-          className={styles["product-card__description"]}
-          title={ProDescription}
-        >
-          {ProDescription}
-        </span>
       </div>
     </div>
-  );
-};
+  )
+}
