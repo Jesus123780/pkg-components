@@ -119,6 +119,8 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     margin-left: 15px;
+    width: 110px;
+    max-width: 110px;
 }
 
 .container_free {

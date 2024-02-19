@@ -23,7 +23,7 @@ const hours = Array.from({ length: 25 }, (_, i) => {
 })
 
 export const ScheduleLinearWeekly = ({
-  isMobile,
+  isMobile = false,
   handleClick = (number) => {
     return number
   },
@@ -34,7 +34,7 @@ export const ScheduleLinearWeekly = ({
   style = {}
 }) => {
   const data = organizeData(schedules)
-  if (isMobile)
+  if (isMobile) {
     return (
       <ScheduleMobile
         data={schedules}
@@ -45,11 +45,12 @@ export const ScheduleLinearWeekly = ({
         style={style}
       />
     )
+  }
   return (
     <>
-      <Divider margin='0 0 50px 0' />
+      <Divider marginBottom='50px' />
       <AlertInfo message='Aquí puedes crear tus horarios de atención para programar tus actividades.' type='info' />
-      <Divider margin='0 0 100px 0' />
+      <Divider marginBottom='100px' />
       <div className={styles.container} style={style}>
         <div className={styles.timeColumn}>
           {hours?.map((hour) => {
@@ -62,7 +63,7 @@ export const ScheduleLinearWeekly = ({
             let lastEventIndex = 0 // Variable para rastrear el índice del último evento
             const totalHours = Object.keys(hoursData).length // Obtener el número total de horas con eventos
             let Hours = 0 // Inicializar el total de horas para el día
-            for (let hour in hoursData) {
+            for (const hour in hoursData) {
               Hours += hoursData[hour].length // Sumar la cantidad de horas para cada evento
             }
             return (
@@ -74,7 +75,7 @@ export const ScheduleLinearWeekly = ({
                   }}
                 >
                   {days[day]}
-                  {Hours ? ` ${Hours || 0} h` : null}
+                  {(Hours !== null) ? ` ${Hours || 0} h` : null}
                 </span>
                 {hours?.map((hour, index) => {
                   const events = hoursData[hour]
