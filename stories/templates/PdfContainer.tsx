@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Document, Page, PDFViewer } from '@react-pdf/renderer'
+import {
+  Document,
+  Page,
+  PDFViewer
+} from '@react-pdf/renderer'
 
 interface PdfContainerProps {
   children: React.ReactNode
