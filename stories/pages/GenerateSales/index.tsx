@@ -57,6 +57,7 @@ interface GenerateSalesProps {
   fetchMoreProducts?: () => void
   handleDecrement?: (product: ProductFood) => void
   handleIncrement?: (product: ProductFood) => void
+  handleFreeProducts?: (product: ProductFood) => void
   handleSave?: () => void
   onClick?: () => void
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
@@ -88,6 +89,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   loadingClients = false,
   dispatch = () => {},
   handleClickAction = () => {},
+  handleFreeProducts = () => {},
   onClick = (product: MiniCardProductProps) => {
     return product
   },
@@ -201,6 +203,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   }}
                   handleIncrement={() => {
                     handleIncrement(producto)
+                  }}
+                  handleFreeProducts={() => {
+                    handleFreeProducts(producto)
                   }}
                   handleGetSubItems={() => {
                     onClick(producto)

@@ -19,6 +19,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   handleDecrement = () => {},
   handleIncrement = () => {},
   handleGetSubItems = () => {},
+  handleFreeProducts = () => {},
   dataExtra = [],
   dataOptional = []
 }) => {
@@ -44,8 +45,8 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         </div>
       )}
       {hoverFree && (
-        <div className={styles.productCardWrapperFree}>
-          <Text color="white" align="center" size='sm'>
+        <div className={styles.productCardWrapperFree} onClick={handleFreeProducts}>
+          <Text color='white' align='center' size='sm'>
             {free ? 'Gratis' : 'Marcar gratis'}
           </Text>
         </div>
@@ -53,11 +54,11 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
       <div className={styles.productCardWrapper} onClick={onClick}>
         <div
           className={styles['product-card-content']}
-          data-test-id="product-card-test-id"
+          data-test-id='product-card-test-id'
         >
           <div
             className={styles['product-card-image__container']}
-            data-test-id="product-card-image"
+            data-test-id='product-card-image'
           >
             <div className={styles['wrapper-image']}>
               <img className={styles['product-card-image']} src={urlImage} />
@@ -66,7 +67,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           </div>
           <div
             className={styles['product-card__price']}
-            data-test-id="product-card-price"
+            data-test-id='product-card-price'
           >
             {ProPrice}
           </div>
@@ -80,7 +81,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             {ProDescription}
           </span>
         </div>
-        {Boolean(free) && <Tag label="Gratis" backgroundColor="green" />}
+        {Boolean(free) && <Tag label='Gratis' backgroundColor='green' />}
       </div>
       <div>
         {showDot && (
@@ -90,7 +91,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
               onClick={handleGetSubItems}
             >
               <Icon
-                icon="IconDost"
+                icon='IconDost'
                 size={30}
                 color={getGlobalStyle('--color-icons-primary')}
               />
