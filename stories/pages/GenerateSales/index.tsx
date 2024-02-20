@@ -10,13 +10,13 @@ import {
 import { EmptyData, Skeleton } from '../../molecules'
 import type {
   Data,
-  Product,
   ProductFood
 } from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
 import { CategorieProducts } from '../../organisms'
+import type { MiniCardProductProps } from '../../organisms/MiniCardProduct/type'
 import styles from './styles.module.css'
 
 interface IpropsSliderCategory {
@@ -27,7 +27,7 @@ interface IpropsSliderCategory {
   breakpoints: Record<
   string,
   {
-    slidesPerView: number
+    slidesPerView: number | string
     spaceBetween: number | string
   }
   >
@@ -55,8 +55,8 @@ interface GenerateSalesProps {
   handleChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
   dispatch?: React.Dispatch<any>
   fetchMoreProducts?: () => void
-  handleDecrement?: (product: Product) => void
-  handleIncrement?: (product: Product) => void
+  handleDecrement?: (product: ProductFood) => void
+  handleIncrement?: (product: ProductFood) => void
   handleSave?: () => void
   onClick?: () => void
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
@@ -88,7 +88,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   loadingClients = false,
   dispatch = () => {},
   handleClickAction = () => {},
-  onClick = () => {},
+  onClick = (product: MiniCardProductProps) => {
+    return product
+  },
   fetchMoreProducts = () => {},
   handleChange = () => {},
   setShow = () => {},
@@ -179,7 +181,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
               const tag = {
                 tag: producto?.getOneTags?.nameTag ?? ''
               }
-              const ProQuantity = producto.ProQuantity
+              const ProQuantity = producto?.ProQuantity ?? 0
               return (
                 <MiniCardProduct
                   {...producto}
@@ -191,6 +193,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   ValueDelivery={producto.ValueDelivery}
                   comment={false}
                   withQuantity={true}
+                  hoverFree={true}
+                  showDot={true}
                   openQuantity={Boolean(ProQuantity)}
                   handleDecrement={() => {
                     handleDecrement(producto)

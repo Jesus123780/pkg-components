@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { GenerateSales } from './index'
 import { products, data } from './mock'
 import { data as dataCategorie } from '../../organisms/CategorieProducts/mockData'
+
 const meta: Meta<typeof GenerateSales> = {
   component: GenerateSales,
   title: 'pages/GenerateSales',
@@ -11,8 +12,6 @@ const meta: Meta<typeof GenerateSales> = {
     isLoading: true,
     propsSliderCategory: {
       data: dataCategorie,
-      checkedItems: {},
-      disabledItems: {},
       onChange: () => { console.log('onChange') },
       breakpoints: {
         320: {

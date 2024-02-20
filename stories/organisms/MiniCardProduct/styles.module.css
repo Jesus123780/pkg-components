@@ -127,3 +127,22 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.productCardWrapperFree {
+    background-color: var(--color-feedback-success-dark);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 3px 0;
+    position: absolute;
+    top: 10px;
+    transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+    width: 95%;
+}
+
+.product-card:hover .productCardWrapperFree {
+    top: -23px;
+}

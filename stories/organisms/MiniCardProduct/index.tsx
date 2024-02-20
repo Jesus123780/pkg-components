@@ -1,7 +1,7 @@
 import React from 'react'
 import { type MiniCardProductProps } from './type'
 import { QuantityButtonFloat } from '../../molecules/QuantityButtonFloat'
-import { Icon, Tag } from '../../atoms'
+import { Icon, Tag, Text } from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'
 
@@ -10,6 +10,8 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   ProDescription = '',
   pName = '',
   withQuantity = false,
+  showDot = false,
+  hoverFree = false,
   openQuantity = false,
   free = false,
   ProQuantity = 0,
@@ -18,8 +20,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   handleIncrement = () => {},
   handleGetSubItems = () => {},
   dataExtra = [],
-  dataOptional = [],
-  ...props
+  dataOptional = []
 }) => {
   const urlImage = '/images/DEFAULTBANNER.png'
 
@@ -30,6 +31,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         width: 'min-content',
         height: '270px'
       }}
+      className={styles['product-card']}
     >
       {withQuantity && (
         <div className={styles.quantity_container}>
@@ -39,6 +41,13 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             open={openQuantity}
             quantity={ProQuantity}
           />
+        </div>
+      )}
+      {hoverFree && (
+        <div className={styles.productCardWrapperFree}>
+          <Text color="white" align="center" size='sm'>
+            {free ? 'Gratis' : 'Marcar gratis'}
+          </Text>
         </div>
       )}
       <div className={styles.productCardWrapper} onClick={onClick}>
@@ -71,20 +80,23 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             {ProDescription}
           </span>
         </div>
-        {Boolean(free) && (
-            <Tag label='Gratis' backgroundColor='green' />
-        )}
+        {Boolean(free) && <Tag label="Gratis" backgroundColor="green" />}
       </div>
       <div>
-        <div className={styles.container_free} >
-          <button className={styles.dots_sub_items} onClick={handleGetSubItems}>
-            <Icon
-              icon="IconDost"
-              size={30}
-              color={getGlobalStyle('--color-icons-primary')}
-            />
-          </button>
-        </div>
+        {showDot && (
+          <div className={styles.container_free}>
+            <button
+              className={styles.dots_sub_items}
+              onClick={handleGetSubItems}
+            >
+              <Icon
+                icon="IconDost"
+                size={30}
+                color={getGlobalStyle('--color-icons-primary')}
+              />
+            </button>
+          </div>
+        )}
         <div className={styles.card_sub_items}>
           {dataExtra?.map((subItem, idx) => {
             const subItemName = `${subItem?.quantity}x ${subItem?.extraName}`

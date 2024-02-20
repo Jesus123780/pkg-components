@@ -1,13 +1,13 @@
 import React from 'react'
 import { Carousel } from '../../molecules/Slider'
+import { Text } from '../../atoms'
+import type { Root } from './types'
 import styles from './styles.module.css'
-import { Checkbox, Text } from '../../atoms'
-import { type Root } from './types'
 
 interface CategorieProductsProps {
   data: Root[]
   breakpoints: Record<string, {
-    slidesPerView: number
+    slidesPerView: number | string
     spaceBetween: number | string
   }>
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -16,9 +16,7 @@ interface CategorieProductsProps {
 export const CategorieProducts: React.FC<CategorieProductsProps> = ({
   data = [],
   breakpoints,
-  disabledItems,
-  checkedItems,
-  onChange = (event) => {
+  onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event)
   }
 }) => {
