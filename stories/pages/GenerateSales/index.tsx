@@ -100,7 +100,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   handleIncrement = () => {},
   handleSave = () => {}
 }) => {
-  console.log(data)
   return (
     <AwesomeModal
       title="Crea una venta"

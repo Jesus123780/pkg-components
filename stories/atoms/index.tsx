@@ -1,5 +1,6 @@
 export * from './Button'
 export * from './Column'
+export * from './LoadingButton'
 export * from './Icon'
 export * from './Image'
 export * from './Paragraph'

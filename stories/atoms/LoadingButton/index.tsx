@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styles from './Loader.module.css'
 
 interface LoadingButtonProps {
-  color?: string;
+  color?: string
 }
 
 export const LoadingButton: React.FC<LoadingButtonProps> = ({ color }) => {

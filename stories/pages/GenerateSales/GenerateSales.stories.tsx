@@ -9,7 +9,7 @@ const meta: Meta<typeof GenerateSales> = {
   args: {
     show: true,
     openAside: false,
-    isLoading: true,
+    isLoading: false,
     propsSliderCategory: {
       data: dataCategorie,
       onChange: () => { console.log('onChange') },

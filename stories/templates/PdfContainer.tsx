@@ -2,7 +2,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { Document, Page, PDFViewer } from '@react-pdf/renderer'
 
-export const PdfContainer = ({ children, pageSize }) => {
+interface PdfContainerProps {
+  children: React.ReactNode
+  pageSize?: string
+}
+export const PdfContainer: React.FC<PdfContainerProps> = ({ children, pageSize }) => {
   return (
     <PDFViewer
       style={{
