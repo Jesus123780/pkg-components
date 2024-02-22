@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import {
   Document,
@@ -11,7 +10,7 @@ interface PdfContainerProps {
   pageSize?: string | undefined
 }
 
-export const PdfContainer: React.FC<PdfContainerProps> = ({ children, pageSize }) => {
+export const PdfContainer: React.FC<PdfContainerProps> = ({ children }) => {
   return (
     <PDFViewer
       style={{
@@ -19,9 +18,15 @@ export const PdfContainer: React.FC<PdfContainerProps> = ({ children, pageSize }
         height: '90vh'
       }}
     >
+      {children}
+    </PDFViewer>
+  )
+}
+export const PdfContainerDownload: React.FC<PdfContainerProps> = ({ children, pageSize }) => {
+  return (
       <Document>
         <Page
-          size={pageSize ?? 'A4'}
+          size={'A4'}
           style={{
             margin: 20,
             paddingRight: 40
@@ -30,11 +35,5 @@ export const PdfContainer: React.FC<PdfContainerProps> = ({ children, pageSize }
           {children}
         </Page>
       </Document>
-    </PDFViewer>
   )
-}
-
-PdfContainer.propTypes = {
-  children: PropTypes.node,
-  pageSize: PropTypes.string
 }

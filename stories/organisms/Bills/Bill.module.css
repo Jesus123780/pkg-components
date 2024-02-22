@@ -1,26 +1,26 @@
 .container {
   width: 100%;
   font-family: 'PFont-Regular', 'Courier New', monospace;
-  font-size: 11px;
+  font-size: 10px;
   background-color: #ffffff;
 }
 
 .title {
   text-align: center;
   font-family: 'PFont-Bold';
-  margin-bottom: 1em;
+  margin-bottom: 0em;
 }
 
 .separator {
   border-bottom: 1px dashed black;
-  margin: 4px 0;
-  margin-bottom: 1em;
+  margin: 0;
+  margin-bottom: 0em;
 }
 
 .columns {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1em;
+  margin-bottom: 0em;
 }
 
 .message {
@@ -31,7 +31,7 @@
 .columnSeparator {
   margin-left: 4px;
   padding-left: 4px;
-  margin-bottom: 1em;
+  margin-bottom: 0em;
 }
 
 .columnItem {
@@ -39,7 +39,7 @@
   text-align: center;
   width: calc(100% / 3);
   word-wrap: break-word;
-  margin-bottom: 1em;
+  margin-bottom: 0em;
 }
 
 .columnHeader {
@@ -52,21 +52,21 @@
   text-align: center;
   width: calc(100% / 3);
   word-wrap: break-word;
-  margin-bottom: 1em;
+  margin-bottom: 0em;
 }
 
 .logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1em;
+  margin-bottom: 0em;
 }
 
 .subColumns {
   display: flex;
   flex-direction: column;
-  margin-left: .1em;
-  margin-bottom: 1em;
+  margin-left: .0em;
+  margin-bottom: 0em;
 }
 
 .subColumnItem {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { PdfSalesInvoice } from './index'
 import { mockData } from './mockData'
-import { pdf } from '@react-pdf/renderer'
+import { PdfContainer } from '../PdfContainer'
 
 export default {
   title: 'templates/PdfSalesInvoice',
@@ -19,7 +19,11 @@ export default {
 }
 
 export const Default = (args) => {
-  return (<PdfSalesInvoice {...args} data={mockData} /> )
+  return (
+    <PdfContainer>
+      <PdfSalesInvoice {...args} data={mockData} />
+    </PdfContainer>
+  )
 }
 
 Default.args = {

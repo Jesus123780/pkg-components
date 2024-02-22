@@ -38,12 +38,3 @@ DropdownMenuHeader.propTypes = {
   array: PropTypes.array,
   index: PropTypes.string
 }
-
-
-// import React from 'react'
-
-// export const DropdownMenuHeader = () => {
-//   return (
-//     <div>Hola</div>
-//   )
-// }

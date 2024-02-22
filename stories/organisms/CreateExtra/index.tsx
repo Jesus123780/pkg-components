@@ -1,15 +1,15 @@
-import { 
-  AnimatePresence, 
-  motion, 
+import {
+  AnimatePresence,
+  motion,
   usePresence
 } from 'framer-motion'
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 import { AwesomeModal } from '..'
 import { APColor, EColor } from '../../../assets/colors'
-import { 
-  IconDelete, 
-  IconEdit, 
+import {
+  IconDelete,
+  IconEdit,
   IconMiniCheck
 } from '../../../assets/icons'
 import { getGlobalStyle, numberFormat } from '../../../utils'
@@ -29,7 +29,7 @@ import {
 export const CreateExtra = ({
   LineItems = {
     Lines: []
-  },  
+  },
   loading = false,
   modal = false,
   inputRefs,
@@ -38,15 +38,15 @@ export const CreateExtra = ({
     loading: false,
     exPid: null
   },
-  CleanLines = () => { return },
-  handleAdd = () => { return },
+  CleanLines = () => { },
+  handleAdd = () => { },
   handleEdit = (i, item) => { return { i, item } },
-  handleFocusChange = (i) => { return i},
+  handleFocusChange = (i) => { return i },
   handleSelect = (item, index) => { return { item, index } },
-  handleLineChange = (i, extraName, value) => { return { i, extraName, value }},
+  handleLineChange = (i, extraName, value) => { return { i, extraName, value } },
   handleRemove = (i, exPid) => { return { i, exPid } },
   onSubmitUpdate = ({ pId }) => { return pId },
-  setModal = () => { return }
+  setModal = () => { }
 }) => {
   const disabled = false
   const transition = { type: 'spring', stiffness: 300, damping: 30 }
@@ -64,7 +64,7 @@ export const CreateExtra = ({
       in: { y: 0, opacity: 1 },
       out: { y: 30, opacity: 0, zIndex: -1 }
     },
-    onAnimationComplete: () => {return !isPresent && safeToRemove()},
+    onAnimationComplete: () => { return !isPresent && safeToRemove() },
     transition
   }
   const endOfListRef = useRef({
@@ -81,8 +81,8 @@ export const CreateExtra = ({
       footer={false}
       header={true}
       height='60vh'
-      onCancel={() => { return setModal() }}
-      onHide={() => { return setModal() }}
+      onCancel={() => { setModal() }}
+      onHide={() => { setModal() }}
       padding={0}
       question={false}
       show={modal}
@@ -94,13 +94,14 @@ export const CreateExtra = ({
       <ContentModal>
         <AnimatePresence>
           <div className='content'>
-            {LineItems?.Lines?.length ? LineItems?.Lines?.map((extra, i) => {
-              const price = numberFormat(extra?.extraPrice)
-              const exPid = extra?.exPid ?? null
-              const forEdit = extra?.forEdit || false
-              const isSelect = selected.exPid === exPid
+            {LineItems?.Lines?.length
+              ? LineItems?.Lines?.map((extra, i) => {
+                const price = numberFormat(extra?.extraPrice)
+                const exPid = extra?.exPid ?? null
+                const forEdit = extra?.forEdit || false
+                const isSelect = selected.exPid === exPid
 
-              return (
+                return (
                 <motion.div {...animations} key={extra?.exPid || i} >
                   <ContentLinesItems loading={isSelect}>
                     <Row>
@@ -112,7 +113,7 @@ export const CreateExtra = ({
                         }}
                         onFocus={() => { return handleFocusChange(i) }}
                         placeholder='Nombre'
-                        reference={inputRefs && inputRefs?.current[i]}
+                        reference={inputRefs?.current[i]}
                         value={extra?.extraName}
                       />
                       <InputHooks
@@ -146,8 +147,8 @@ export const CreateExtra = ({
                     >
                       <IconDelete color={EColor} size='25px' />
                     </RippleButton>
-                    {forEdit ?
-                      <>
+                    {forEdit
+                      ? <>
                         <RippleButton
                           bgColor='transparent'
                           disabled={disabled}
@@ -165,8 +166,7 @@ export const CreateExtra = ({
                           <Tag label={'guardado'} />
                         </span>
                       </>
-                      : 
-                      <>
+                      : <>
                         <RippleButton
                           bgColor='transparent'
                           disabled={disabled}
@@ -182,8 +182,9 @@ export const CreateExtra = ({
                   </ContentLinesItems>
                 </motion.div>
 
-              )
-            }) : null}
+                )
+              })
+              : null}
             <div ref={endOfListRef} />
           </div>
 
@@ -203,7 +204,7 @@ export const CreateExtra = ({
               if (endOfListRef?.current) {
                 endOfListRef.current.scrollIntoView({ behavior: 'smooth' })
               }
-              return handleAdd()
+              handleAdd()
             }}
             quantity={Number(LineItems?.Lines?.length || 0)}
             showNegativeButton={true}
@@ -252,5 +253,3 @@ CreateExtra.propTypes = {
   }),
   setModal: PropTypes.func
 }
-
-
