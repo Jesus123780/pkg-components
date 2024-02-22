@@ -5,6 +5,7 @@ export interface Root {
   ProImage: any
   idStore: string
   pName: string
+  checked?: boolean
   totalCount: any
   ProDescription: string
   pDatCre: string

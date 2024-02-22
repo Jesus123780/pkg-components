@@ -1,4 +1,6 @@
-export const mockData = {
+import type { InterfacePdfSalesInvoice } from './type'
+
+export const mockData: InterfacePdfSalesInvoice = {
   srcLogo: '/images/DEFAULTBANNER.png',
   addressStore: '',
   storePhone: '3423423423423',
@@ -11,6 +13,7 @@ export const mockData = {
   ref: 'ShkT2cqYzL',
   products: [
     {
+      __typename: 'ProductFood',
       pId: '22f39df1-04c4-4251-e518-b43f93fc8a2b',
       pName: 'Hamburguesa  mas papas',
       getOneTags: null,

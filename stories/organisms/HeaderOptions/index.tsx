@@ -11,11 +11,13 @@ import {
 import {
   Button,
   Column,
+  Icon,
   Overline,
   Row,
   Text
 } from '../../atoms'
 import { ButtonOption, FloatingBoxTwo } from './styled'
+import { getGlobalStyle } from '../../../helpers'
 
 export const Options = ({
   userConsent,
@@ -184,7 +186,13 @@ export const Options = ({
               space
             >
               <span>Configuración</span>
-              <IconUser color={PColor} size='25px' />
+              <Icon
+            height={20}
+            width={20}
+            icon="IconFilter"
+            size={20}
+            color={getGlobalStyle('--color-icons-primary')}
+          />
             </ButtonOption>
           </Option>
           <Option Theme={false}>

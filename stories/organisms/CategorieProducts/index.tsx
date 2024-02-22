@@ -3,28 +3,41 @@ import { Carousel } from '../../molecules/Slider'
 import { Text } from '../../atoms'
 import type { Root } from './types'
 import styles from './styles.module.css'
+import { getGlobalStyle } from '../../../helpers'
 
 interface CategorieProductsProps {
   data: Root[]
-  breakpoints: Record<string, {
+  breakpoints: Record<
+  string,
+  {
     slidesPerView: number | string
     spaceBetween: number | string
-  }>
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  }
+  >
+  handleChangeCheck: (id: string) => void
 }
 
 export const CategorieProducts: React.FC<CategorieProductsProps> = ({
   data = [],
   breakpoints,
-  onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event)
+  handleChangeCheck = (id) => {
+    return id
   }
 }) => {
+  const findChecked = data?.some((item) => Boolean(item?.checked))
   return (
     <div>
       <Carousel breakpoints={breakpoints} pagination={false}>
         {data.map((item, index) => (
-          <div key={item.carProId} className={styles.categorie} title={item.pName}>
+          <div
+            key={item.carProId}
+            className={styles.categorie}
+            title={item.pName}
+            style={item?.checked ? { border: `1px solid ${getGlobalStyle('--color-text-primary')} ` } : {}}
+            onClick={() => {
+              handleChangeCheck(item.carProId)
+            }}
+          >
             <div className={styles.cat_item}>
               <Text
                 className={styles.cat_title}

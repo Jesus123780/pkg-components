@@ -4,6 +4,7 @@ import React, {
   useState
 } from 'react'
 import {
+  IconBox,
   IconBuys,
   IconCategorie,
   IconChart,
@@ -150,7 +151,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     },
     {
       href: '/categorias',
-      icon: IconCategorie,
+      icon: IconBox,
       size: '25px',
       label: 'Categorías'
     },

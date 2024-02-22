@@ -1,29 +1,20 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
-import {
-  Button,
-  Icon,
-  Row,
-  Text
-} from '../../atoms'
+import { Button, Column, Icon, Row, Text } from '../../atoms'
 import { EmptyData, Skeleton } from '../../molecules'
-import type {
-  Data,
-  ProductFood
-} from './types'
+import type { Data, ProductFood } from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
 import { CategorieProducts } from '../../organisms'
 import type { MiniCardProductProps } from '../../organisms/MiniCardProduct/type'
+import type { Root } from '../../organisms/CategorieProducts/types'
 import styles from './styles.module.css'
 
 interface IpropsSliderCategory {
-  data: number[]
-  checkedItems: Set<string>
-  disabledItems: Set<string>
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  data: Root[]
+  handleChangeCheck: (id: string) => void
   breakpoints: Record<
   string,
   {
@@ -35,6 +26,7 @@ interface IpropsSliderCategory {
 interface GenerateSalesProps {
   productsFood?: ProductFood[]
   show: boolean
+  loadingProduct: boolean
   propsSliderCategory?: IpropsSliderCategory
   openAside: boolean
   loadingClients: boolean
@@ -59,13 +51,18 @@ interface GenerateSalesProps {
   handleIncrement?: (product: ProductFood) => void
   handleFreeProducts?: (product: ProductFood) => void
   handleSave?: () => void
+  handleOpenAside?: () => void
   onClick?: () => void
+  numberFormat?: (number: string | number) => number
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
 }
+
 export const GenerateSales: React.FC<GenerateSalesProps> = ({
   productsFood = [],
   dataClientes = [],
-  propsSliderCategory = {},
+  propsSliderCategory = {
+    data: []
+  },
   data = {
     PRODUCT: [],
     counter: 0,
@@ -86,9 +83,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   show = false,
   openAside = false,
   isLoading = false,
+  loadingProduct = false,
   loadingClients = false,
   dispatch = () => {},
-  handleClickAction = () => {},
   handleFreeProducts = () => {},
   onClick = (product: MiniCardProductProps) => {
     return product
@@ -98,8 +95,16 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   setShow = () => {},
   handleDecrement = () => {},
   handleIncrement = () => {},
-  handleSave = () => {}
+  handleSave = () => {},
+  handleOpenAside = () => {},
+  numberFormat = (number) => {
+    return number
+  }
 }) => {
+  const findChecked = propsSliderCategory.data?.some((item) =>
+    Boolean(item?.checked)
+  )
+
   return (
     <AwesomeModal
       title="Crea una venta"
@@ -115,19 +120,43 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     >
       <div className={styles.container}>
         <div className={styles.header}>
-          <Row>
+          <Column>
             <CategorieProducts {...propsSliderCategory} />
-          </Row>
+          </Column>
         </div>
-        <div className={styles.content__products}>
+        <div className={styles.filter}>
+          <Icon
+            height={20}
+            width={20}
+            icon="IconFilter"
+            size={20}
+            color={
+              findChecked
+                ? getGlobalStyle('--color-icons-primary')
+                : getGlobalStyle('--color-icons-gray')
+            }
+          />
+        </div>
+        <div
+          className={styles.content__products}
+          style={{ display: productsFood?.length > 0 ? 'grid' : 'block' }}
+        >
           <AsideSales
             values={values}
+            handleChange={handleChange}
             errors={errors}
+            overline={true}
+            handleOpenAside={handleOpenAside}
             dataClientes={dataClientes}
             loadingClients={loadingClients}
             openAside={openAside}
           />
-          <button className={styles.content__categorie__aside}>
+          <button
+            className={styles.content__categorie__aside}
+            onClick={() => {
+              handleOpenAside()
+            }}
+          >
             <span />
           </button>
           {isLoading
@@ -140,18 +169,19 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             />
               )
             : null}
-          {!isLoading &&
-            productsFood?.map((producto) => {
-              const tag = {
-                tag: producto?.getOneTags?.nameTag
-              }
-              return (
+          {!isLoading && Boolean(productsFood.length > 0)
+            ? (
+                productsFood?.map((producto) => {
+                  const tag = {
+                    tag: producto?.getOneTags?.nameTag
+                  }
+                  return (
                 <MiniCardProduct
                   {...producto}
                   ProDescription={producto.ProDescription}
                   ProDescuento={producto.ProDescuento}
                   ProImage={producto.ProImage}
-                  ProPrice={producto.ProPrice}
+                  ProPrice={numberFormat(producto.ProPrice)}
                   ProQuantity={producto.ProQuantity}
                   ValueDelivery={producto.ValueDelivery}
                   comment={false}
@@ -165,31 +195,38 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   }}
                   pName={producto.pName}
                   render={<Icon size={20} icon="IconSales" />}
-                  tag={(producto?.getOneTags?.nameTag !== null) && tag}
+                  tag={producto?.getOneTags?.nameTag !== null && tag}
                 />
+                  )
+                })
               )
-            })}
+            : (
+            <EmptyData height={200} width={200} />
+              )}
         </div>
-        <div className={styles.content__action_product} >
+        <div className={styles.content__action_product}>
           <Button primary={true} onClick={fetchMoreProducts}>
             ver más
           </Button>
         </div>
-        <div className={styles.content__scrolling} style={{ display: data?.PRODUCT?.length > 0 ? 'grid' : 'block' }}>
-          {!isLoading &&
-            (data.PRODUCT.length > 0)
-            ? data.PRODUCT?.map((producto) => {
-              const tag = {
-                tag: producto?.getOneTags?.nameTag ?? ''
-              }
-              const ProQuantity = producto?.ProQuantity ?? 0
-              return (
+        <div
+          className={styles.content__scrolling}
+          style={{ display: data?.PRODUCT?.length > 0 ? 'grid' : 'block' }}
+        >
+          {!isLoading && data.PRODUCT.length > 0
+            ? (
+                data.PRODUCT?.map((producto) => {
+                  const tag = {
+                    tag: producto?.getOneTags?.nameTag ?? ''
+                  }
+                  const ProQuantity = producto?.ProQuantity ?? 0
+                  return (
                 <MiniCardProduct
                   {...producto}
                   ProDescription={producto.ProDescription}
                   ProDescuento={producto.ProDescuento}
                   ProImage={producto.ProImage}
-                  ProPrice={producto.ProPrice}
+                  ProPrice={numberFormat(producto.ProPrice)}
                   ProQuantity={ProQuantity}
                   ValueDelivery={producto.ValueDelivery}
                   comment={false}
@@ -221,14 +258,28 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   render={<Icon size={20} icon="IconSales" />}
                   tag={producto?.getOneTags?.nameTag !== null && tag}
                 />
+                  )
+                })
               )
-            })
-            : <EmptyData height={200} width={200} />}
+            : (
+            <EmptyData height={200} width={200} />
+              )}
+          <button
+            style={{ right: '0.3125rem', left: 'unset' }}
+            className={styles.content__categorie__aside}
+            onClick={() => {
+              handleOpenAside()
+            }}
+          >
+            <span />
+          </button>
         </div>
         <div className={styles.content__action}>
           <Row style={{ width: '50%', display: 'flex', alignItems: 'center' }}>
-            <div className={styles.content__counter} >
-              <span className={styles.counter} >{data?.counter > 99 ? '+99' : (data?.counter ?? 0)}</span>
+            <div className={styles.content__counter}>
+              <span className={styles.counter}>
+                {data?.counter > 99 ? '+99' : data?.counter ?? 0}
+              </span>
               <Icon
                 size={20}
                 icon="IconInformationProduct"
@@ -255,7 +306,11 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             >
               Eliminar
             </Button>
-            <Button onClick={handleSave} primary={true}>
+            <Button
+              disabled={Boolean(data.PRODUCT.length === 0)}
+              onClick={handleSave}
+              primary={true}
+            >
               Guardar
             </Button>
           </Row>

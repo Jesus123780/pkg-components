@@ -11,7 +11,7 @@ export interface ProductFood {
   unitPrice?: number | undefined
   fId: string | null
   pName: string
-  ProPrice: number
+  ProPrice: number | string
   ProDescuento: string
   free?: boolean
   ProUniDisponibles: any | null // Reemplaza 'any' por el tipo correcto si es conocido
@@ -42,7 +42,7 @@ export interface ProductFood {
   tag: any | null // Reemplaza 'any' por el tipo correcto si es conocido
   getOneTags: {
     nameTag: string
-  }
+  } | null
   dataExtra?: ExtProductFood[]
   dataOptional?: ExtProductFoodOptional[]
 

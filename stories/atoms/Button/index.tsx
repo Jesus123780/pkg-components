@@ -2,18 +2,18 @@ import React from 'react'
 import { classNames, getGlobalStyle } from '../../../helpers'
 import style from './button.module.css'
 
-export type ButtonProps = {
-  width?: string;
-  borderRadius?: string;
-  fontSize?: string;
-  padding?: string;
-  type?: string | 'secundary' | 'primary';
-  primary?: boolean;
-  disabled?: boolean;
-  onClick?: () => void;
-  children?: React.ReactNode;
-  styles?: React.CSSProperties;
-};
+export interface ButtonProps {
+  width?: string
+  borderRadius?: string
+  fontSize?: string
+  padding?: string
+  type?: string | 'secundary' | 'primary'
+  primary?: boolean
+  disabled?: boolean
+  onClick?: () => void
+  children?: React.ReactNode
+  styles?: React.CSSProperties
+}
 
 export const Button: React.FC<ButtonProps> = ({
   children,
@@ -28,22 +28,21 @@ export const Button: React.FC<ButtonProps> = ({
   onClick = () => {},
   ...res
 }) => {
-
   const buttonStyle = {
-    padding: padding || '10px 20px',
-    borderRadius: borderRadius || '',
+    padding: padding ?? '10px 20px',
+    borderRadius: borderRadius ?? '',
     cursor: 'pointer',
     outline: 'none',
     width,
     fontSize,
     color: primary ? 'white' : getGlobalStyle('--color-primary-red'),
     ...styles
-  };
+  }
 
   return (
     <button
       disabled={disabled}
-      className={classNames(style['button'], {
+      className={classNames(style.button, {
         [style[`button--${type}`]]: type,
         [style['button--primary']]: primary,
         [style['button--secondary']]: !primary
@@ -54,6 +53,5 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {children}
     </button>
-  );
-};
-
+  )
+}

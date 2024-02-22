@@ -8,8 +8,9 @@ import {
 
 interface PdfContainerProps {
   children: React.ReactNode
-  pageSize?: string
+  pageSize?: string | undefined
 }
+
 export const PdfContainer: React.FC<PdfContainerProps> = ({ children, pageSize }) => {
   return (
     <PDFViewer

@@ -91,9 +91,15 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
               onClick={handleGetSubItems}
             >
               <Icon
-                icon='IconDost'
+                icon='IconBox'
                 size={30}
-                color={getGlobalStyle('--color-icons-primary')}
+                height={30}
+                width={30}
+                color={
+                  Boolean(dataExtra?.length > 0) || Boolean(dataOptional?.length > 0)
+                    ? getGlobalStyle('--color-icons-primary')
+                    : getGlobalStyle('--color-icons-gray')
+                }
               />
             </button>
           </div>
