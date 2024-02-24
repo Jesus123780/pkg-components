@@ -1,50 +1,104 @@
 import React from 'react'
-import { styles } from './styles'
 import { Column, Row, Text } from '../PDF'
 import { View } from '@react-pdf/renderer'
 import type { ProductFood } from '../../pages/GenerateSales/types'
+import { styles } from './styles'
 
 interface ListPDFProps {
   data: ProductFood[]
+  numberFormat?: (number: number) => string
 }
-export const ListPDF: React.FC<ListPDFProps> = ({ data = [] }) => {
+
+export const ListPDF: React.FC<ListPDFProps> = ({
+  data = [],
+  numberFormat
+}) => {
   return (
     <View>
       {data?.map((product: ProductFood, index: number) => {
-        const { pId, pName, ProPrice, ProQuantity, free, unitPrice } =
-          product ?? {
-            pId: '',
-            pName: '',
-            ProPrice: 0,
-            ProQuantity: 0,
-            free: false,
-            unitPrice: 0
-          }
+        const {
+          pId,
+          pName,
+          ProPrice,
+          ProQuantity,
+          free,
+          unitPrice,
+          dataOptional,
+          dataExtra
+        } = product ?? {
+          pId: '',
+          pName: '',
+          dataOptional: [],
+          dataExtra: [],
+          ProPrice: 0,
+          ProQuantity: 0,
+          free: false,
+          unitPrice: 0
+        }
         return (
-          <Row key={pId}>
-            <Column style={[styles.column, styles.firstColumn]}>
-              <Text>{`# ${index + 1}`}</Text>
+          <Row key={pId} style={styles.item}>
+            <Column style={[styles.column, styles.firstColumn, { flexBasis: '10%' }]}>
+              <Text>{`${index + 1}`}</Text>
             </Column>
             <Column
-              style={[{ flexBasis: '40%' }, styles.column]}
+              style={[styles.column, { flexBasis: '60%', alignItems: 'start' }]}
               title="container_info_client"
             >
-              <Text>{pName ?? '' }</Text>
+              <Text style={styles.name}>
+                {pName ?? ''}
+              </Text>
+              <Row style={styles.card_sub_items}>
+                {dataExtra?.map((subItem, idx) => {
+                  const subItemName = `${subItem?.quantity}x ${subItem?.extraName}`
+                  const formattedPrice = `$ ${numberFormat(
+                    subItem.newExtraPrice ?? 0
+                  )}`
+                  const isLastItem = idx === dataExtra.length - 1
+                  return (
+                    <Text style={{ fontSize: '6px' }} key={subItem.exPid}>
+                      {` - ${subItemName} ${formattedPrice} ${
+                        isLastItem ? '' : ', '
+                      }`}
+                    </Text>
+                  )
+                })}
+                {Array.isArray(dataOptional) &&
+                  dataOptional.length > 0 &&
+                  ' - '}
+                {dataOptional?.map((productItem, idx) => {
+                  const subItems =
+                    productItem?.ExtProductFoodsSubOptionalAll ?? []
+                  const isLastItem = idx === dataOptional.length - 1
+                  return subItems.map((subItem, index) => (
+                    <Text key={index} style={{ fontSize: '6px' }}>
+                     - {subItem?.OptionalSubProName !== null
+                      ? `1x ${subItem?.OptionalSubProName}`
+                      : ''}
+                      {isLastItem ? '' : ', '}
+                    </Text>
+                  ))
+                })}
+              </Row>
             </Column>
             <Column
-              style={[{ flexBasis: '10%' }, styles.column, styles.otherColumns]}
+              style={[styles.column, styles.otherColumns, { flexBasis: '10%' }]}
             >
-              <Text>{ProQuantity ?? '' }</Text>
+              <Text>{ProQuantity ?? ''}</Text>
             </Column>
             <Column
-              style={[{ flexBasis: '10%' }, styles.column, styles.otherColumns]}
+              style={[styles.column, styles.otherColumns, { flexBasis: '10%' }]}
             >
-              <Text>{free ? 'Gratis' : (unitPrice ?? '') }</Text>
+              <Text>
+                {Boolean(free)
+                  ? 'Gratis'
+                  : `$ ${numberFormat(unitPrice)}`
+                  }
+              </Text>
             </Column>
             <Column
-              style={[{ flexBasis: '10%' }, styles.column, styles.otherColumns]}
+              style={[styles.column, styles.otherColumns, { flexBasis: '10%' }]}
             >
-              <Text>{ProPrice ?? '' }</Text>
+              <Text>{`$ ${numberFormat(ProPrice) ?? ''}`}</Text>
             </Column>
           </Row>
         )

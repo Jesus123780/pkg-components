@@ -1,12 +1,13 @@
 import { StyleSheet } from '@react-pdf/renderer'
-import { PColor, PLColor, SFColor } from '../../../assets'
+import { BColor, PColor, PLColor, SFColor } from '../../../assets'
 
 export const styles = StyleSheet.create({
   container: {
-    height: '95%'
+    padding: 10,
+    flexGrow: 1
   },
   header: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: SFColor,
     borderStyle: 'solid',
     borderRadius: 5,
@@ -20,7 +21,9 @@ export const styles = StyleSheet.create({
   },
   info: {
     backgroundColor: PColor,
-    padding: 3,
+    padding: 5,
+    paddingTop: 10,
+    marginBottom: 5,
     borderRadius: 2,
     alignContent: 'center',
     alignItems: 'center'
@@ -29,16 +32,19 @@ export const styles = StyleSheet.create({
     textAlign: 'center'
   },
   bordered: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: SFColor,
-    borderStyle: 'solid'
+    borderStyle: 'solid',
+    marginBottom: 5
   },
   column: {
     flexBasis: '25%',
-    padding: 4,
+    padding: 0,
     borderRightWidth: 0.1,
-    borderColor: '#000',
-    alignItems: 'center'
+    borderColor: BColor,
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center'
   },
   firstColumn: {
     padding: 4,
@@ -56,5 +62,31 @@ export const styles = StyleSheet.create({
     padding: 5,
     marginTop: 20,
     borderRadius: 5
+  },
+  card_sub_items: {
+    lineHeight: '.5',
+    margin: '0',
+    textAlign: 'left',
+    flexWrap: 'wrap'
+  },
+  name: {
+    fontSize: 10,
+    fontWeight: 'bold'
+  },
+  section: {
+    padding: 10,
+    flexGrow: 1
+  },
+  qrImage: {
+    width: 150,
+    height: 150,
+    maxHeight: 150,
+    maxWidth: 150
+  },
+  item: {
+    borderTopWidth: 0.1,
+    borderTopColor: SFColor,
+    borderBottomWidth: 0.1,
+    borderBottomColor: SFColor
   }
 })

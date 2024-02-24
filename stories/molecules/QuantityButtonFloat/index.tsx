@@ -4,9 +4,9 @@ import styles from './styles.module.css'
 
 interface QuantityButtonFloatProps {
   quantity?: number
+  open?: boolean
   handleIncrement?: () => void
   handleDecrement?: () => void
-  open?: boolean
 }
 
 export const QuantityButtonFloat: React.FC<QuantityButtonFloatProps> = ({

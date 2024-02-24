@@ -1,12 +1,14 @@
 import React from 'react'
 import { Text as CustomText, StyleSheet } from '@react-pdf/renderer'
+import { SEGColor } from '../../../assets'
 
 const styles = StyleSheet.create({
   text: {
     fontSize: 10,
     fontFamily: 'Helvetica',
-    color: '#333333',
-    marginBottom: 5
+    color: SEGColor,
+    marginBottom: 5,
+    flexWrap: 'wrap'
   }
 })
 
