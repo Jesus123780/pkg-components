@@ -1,26 +1,21 @@
 import styled, { css, keyframes } from 'styled-components'
-import { EColor, PColor } from '../../../assets/colors'
+import { PColor } from '../../../assets/colors'
 
 interface ProgressBarProps {
-  progress?: number
-  final?: number
+  progress?: boolean
 }
 
 export const width = keyframes`
   0% {
     width: 0%;
-    opacity: 100%;
+    visibility: visible;
   }
   50% {
     width: 40%;
   }
-  70% {
-    opacity: 90%;
-  }
   100% {
     width: 100%;
-    opacity: 9%;
-    visibility: hidden;
+    visibility: hidden; /* Ocultar al final */
   }
 `
 
@@ -32,17 +27,14 @@ export const ProgressBar = styled.div<ProgressBarProps>`
   height: 5px;
   transition: .2s;
   z-index: var(--z-index-99999);
+  
   ${props => props.progress && css`
-    transition: .2s;
-    animation-name: ${width};
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-delay: 1s;
+    animation: ${width} 2s forwards;
     z-index: 9999;
   `}
 
-  ${props => (props.final) > (props.progress) && css`
-    background-color: ${EColor};
+  ${props => !props.progress && css`
+    visibility: hidden;
   `}
 `
 
@@ -50,3 +42,4 @@ ProgressBar.displayName = 'ProgressBar'
 ProgressBar.defaultProps = {
   'data-testid': 'progress-bar'
 }
+

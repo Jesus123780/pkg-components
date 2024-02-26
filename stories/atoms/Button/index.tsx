@@ -8,11 +8,13 @@ export interface ButtonProps {
   fontSize?: string
   padding?: string
   type?: string | 'secundary' | 'primary'
+  border?: 'gray' | 'primary'
+  color?: 'default' | 'white' | 'black'
   primary?: boolean
   disabled?: boolean
-  onClick?: () => void
   children?: React.ReactNode
   styles?: React.CSSProperties
+  onClick?: () => void
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -22,6 +24,8 @@ export const Button: React.FC<ButtonProps> = ({
   width,
   padding,
   disabled,
+  border,
+  color,
   primary = false,
   styles = {},
   type = '',
@@ -44,7 +48,9 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={classNames(style.button, {
         [style[`button--${type}`]]: type,
+        [style[`button--${color}`]]: color,
         [style['button--primary']]: primary,
+        [style[`button--border-${border}`]]: border,
         [style['button--secondary']]: !primary
       })}
       style={buttonStyle}

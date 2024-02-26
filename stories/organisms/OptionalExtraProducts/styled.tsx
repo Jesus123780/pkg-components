@@ -26,9 +26,10 @@ export const GarnishChoicesHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   place-items: center;
-  background: #f2f2f2;
+  background-color: var(--color-background-gray-light);
   position: sticky;
   top: 0px;
+  flex-wrap: wrap;
   border-bottom: 1px solid #ccc;
   margin-bottom: 80px;
   top: -11px;
@@ -150,17 +151,18 @@ export const ContentModal = styled.form`
 export const BodyDnd = styled.div`
   .first-column {
     display: grid;
-    grid-template-columns: 33% repeat(auto-fill, 33%) 33%;
-    width: 100%;
     grid-gap: 19px 5px;
-    overflow: auto;
+    grid-template-columns: 33% repeat(auto-fill, 33%) 33%;
     height: 100%;
+    overflow: auto;
+    width: 100%;
   }
   .contain-check-item {
     width: 100%;
     display: flex;
     place-content: space-between;
     padding: 0 10px;
+    flex-wrap: wrap;
   }
 
   .tooltip {

@@ -1,22 +1,18 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
   EColor,
-  NorthTexasGreen,
-  PColor
+  NorthTexasGreen
 } from '../../../assets/colors'
 import {
   IconDelete,
   IconEdit,
-  IconMiniCheck,
-  IconQuestion
+  IconMiniCheck
 } from '../../../assets/icons'
 import {
-  Button,
   Column,
   RippleButton,
-  Tag,
-  Text
+  Tag
 } from '../../atoms'
 import { InputHooks } from '../../molecules'
 import {
@@ -35,14 +31,17 @@ export const OptionalExtraProducts = ({
   },
   isCustomSubOpExPid,
   loadingEditSubOptional,
-  selectedItem = {},
+  selectedItem = {
+    id: '',
+    listID: ''
+  },
   selectedExtra,
   openModalEditExtra,
-  setSelectedExtra = () => {
-    return
+  setSelectedExtra = (args) => {
+    return args
   },
-  setOpenModalEditExtra = () => {
-    return
+  setOpenModalEditExtra = (boolean) => {
+    return boolean
   },
   handleCheck = () => {
     return
@@ -79,9 +78,7 @@ export const OptionalExtraProducts = ({
   // STATES
   const [numberLimit, setNumberLimit] = useState(1)
   const [showTooltip, setShowTooltip] = useState(false)
-  const handleShowTooltip = (index) => {
-    return setShowTooltip(index === showTooltip ? false : index)
-  }
+  const handleShowTooltip = (index) => { return setShowTooltip(index === showTooltip ? false : index) }
 
   return (
     <BodyDnd>
@@ -93,7 +90,7 @@ export const OptionalExtraProducts = ({
       >
         <div className='first-column'>
           {dataListIds?.map((listID, index) => {
-            const list = data.lists[listID]
+            const list = data.lists[listID] 
             const numberLimit = list?.numberLimit
             const incompleteList = list.numberLimit === list.cards.length
             const messageLimit = `${numberLimit} ${
@@ -101,13 +98,13 @@ export const OptionalExtraProducts = ({
             }`
             return (
               <Column
-                as='ul'
-                border={`2px solid ${
-                  incompleteList ? NorthTexasGreen : 'transparent'
-                }`}
+                style={{
+                  border: `2px solid ${
+                    incompleteList ? NorthTexasGreen : 'transparent'
+                  }`,
+                  height: 'min-content'
+                }}
                 key={listID}
-                role='list'
-                style={{ minWidth: '100%', height: 'max-content' }}
               >
                 <GarnishChoicesHeader
                   style={{
@@ -123,7 +120,7 @@ export const OptionalExtraProducts = ({
                     <p className='garnish-choices__title-desc'>
                       Escoge hasta {messageLimit}.
                     </p>
-                    {list?.required === 1 && <Tag />}
+                    {Boolean(list?.required === 1) && <Tag />}
                   </div>
                   <RippleButton
                     bgColor='transparent'
@@ -148,46 +145,6 @@ export const OptionalExtraProducts = ({
                   >
                     <IconEdit color={EColor} size='25px' />
                   </RippleButton>
-                  <div style={{ position: 'relative', width: 'min-content' }}>
-                    <Button
-                      backgroundColor='transparent'
-                      border='none'
-                      onClick={() => {
-                        return handleShowTooltip(listID)
-                      }}
-                      primary
-                    >
-                      {showTooltip === listID && (
-                        <div className='tooltip'>
-                          <Text
-                            color='var(--color-neutral-black)'
-                            fontSize='.75rem'
-                          >
-                            Si no completas el numero de items no se mostraran a
-                            los clientes
-                          </Text>
-                          <Button
-                            Button
-                            backgroundColor='transparent'
-                            border='none'
-                            className='btn-ok'
-                            onClick={() => {
-                              return setShowTooltip(false)
-                            }}
-                            primary
-                          >
-                            <Text color={PColor} fontWeight='600'>
-                              Ok, entendí
-                            </Text>
-                          </Button>
-                        </div>
-                      )}
-                      <IconQuestion
-                        color={incompleteList ? 'gray' : PColor}
-                        size={30}
-                      />
-                    </Button>
-                  </div>
                 </GarnishChoicesHeader>
                 <div className='contain-check-item'>
                   <Tag
@@ -200,7 +157,6 @@ export const OptionalExtraProducts = ({
                 <List
                   data={data}
                   editOneItem={editOneItem}
-                  index={index}
                   isCustomSubOpExPid={isCustomSubOpExPid}
                   list={list}
                   listID={listID}

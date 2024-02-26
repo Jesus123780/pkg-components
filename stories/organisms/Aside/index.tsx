@@ -224,22 +224,23 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             <Portal>
               <LeftNav show={show && !salesOpen}>
                 {location?.pathname !== '/products' && <Info>
-                  <Button onClick={() => { handleOpenCreateProduct() }}>
+                  <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
                       Productos
                   </Button>
                 </Info>}
                 {location?.pathname === '/products' && <Info>
                   <Button
+                    border='gray' color='black'
                     onClick={() => {
                       setShowComponentModal(4)
                       handleClick(4)
                     }}
                   >
-                      Categorias
+                      Categorías
                   </Button>
                 </Info>}
                 <Info>
-                  <Button onClick={() => { return setSalesOpen(!salesOpen) }}>
+                  <Button border='gray' color='black' onClick={() => { return setSalesOpen(!salesOpen) }}>
                       Ventas
                   </Button>
                 </Info>

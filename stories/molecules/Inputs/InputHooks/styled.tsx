@@ -122,7 +122,7 @@ export const LabelInput = styled.span`
     return value ? SFColor : errorColor
   }};
   pointer-events: none;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   text-overflow: ellipsis;
   overflow: hidden;
   font-family: PFont-Light;

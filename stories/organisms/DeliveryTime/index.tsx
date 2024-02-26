@@ -6,21 +6,28 @@ import styles from './DeliveryTime.module.css'
 import { TimeInput } from './Input'
 import { getGlobalStyle } from '../../../utils'
 
-export const DeliveryTime = ({
+interface DeliveryTimeProps {
+  isOpen?: boolean
+  handleDeliveryTimeChange?: (value: string) => void
+  deliveryTime?: string
+  loading?: boolean
+  setDeliveryTimeOpen?: () => void
+  createDeliveryTime?: (number: string) => void
+
+}
+export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
   isOpen = false,
   handleDeliveryTimeChange = (value) => {
     return value
   },
   deliveryTime = '',
   loading = false,
-  setDeliveryTimeOpen = (state) => {
-    return state
+  setDeliveryTimeOpen = () => {
   },
   createDeliveryTime = (number) => {
     return number
   }
 }) => {
-
   return (
     <div>
       <AwesomeModal
@@ -43,18 +50,18 @@ export const DeliveryTime = ({
         title='Tiempo de entrega'
         zIndex={getGlobalStyle('--z-index-99999')}
       >
-        <div className={styles['content']}>
+        <div className={styles.content}>
           <Column>
-            <Text className={styles['paragrap']}>
-              Le dice al cliente cuanto timepo tardara en llegar su pedido, y
+            <Text className={styles.paragraph}>
+              Le dice al cliente cuanto tiempo tardara en llegar su pedido, y
               así el cliente podrá decidir si desea o no realizar la compra.
             </Text>
-            <Text className={styles['label']}>Tiempo de entrega</Text>
-            <Row className={styles['container_input']}>
+            <Text className={styles.label}>Tiempo de entrega</Text>
+            <Row className={styles.container_input}>
               <TimeInput onChange={handleDeliveryTimeChange} value={deliveryTime} />
             </Row>
           </Column>
-          <Column className={styles['actions']}>
+          <Column className={styles.actions}>
             <Button
               disabled={loading || (!deliveryTime || deliveryTime === '0')}
               loading={loading}
