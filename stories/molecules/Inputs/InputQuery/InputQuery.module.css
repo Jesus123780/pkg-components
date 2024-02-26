@@ -25,10 +25,8 @@
   border: 1px solid var(--color-neutral-gray);
   display: flex;
   height: 50px;
-  margin-top: 15px;
-  padding-right: 8px;
-  padding: 3px;
-  width: min-content;
+  padding: 3px 8px;
+  width: 100%;
 }
 
 .searchInput {

@@ -70,7 +70,7 @@ export const Header = ({
         &nbsp;
         <Link href={'/dashboard'}>
           <a>
-            <IconLogo color={PColor} size={isMobile ? '40px' : '80px'} />
+            <IconLogo color={PColor} size={isMobile ? '40px' : '90px'} />
           </a>
         </Link>
       </Row>

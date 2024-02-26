@@ -1,5 +1,13 @@
+// main styles
 import './stories/assets/public/styles.css'
 import './stories/assets/public/global.css'
+// swiper styles 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+// UI components
 export * from './stories/atoms'
 export * from './stories/molecules'
 export * from './stories/organisms'

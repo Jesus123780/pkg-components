@@ -160,4 +160,5 @@
 .suggestion button {
     background-color: var(--color-base-transparent);
     padding: 0;
+    cursor: pointer;
 }

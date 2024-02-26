@@ -3,13 +3,20 @@ import React from 'react'
 import { PColor } from '../../../../assets/colors'
 import { IconSearch } from '../../../../assets/icons'
 import styles from './InputQuery.module.css'
+interface IInputQuery {
+  dataForm: {
+    search: string
+  }
+  placeholder: string
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-export const InputQuery = ({
+export const InputQuery: React.FC<IInputQuery> = ({
   dataForm = {
     search: ''
   },
   placeholder = '',
-  handleChange = () => { return },
+  handleChange = () => { },
   ...rest
 }) => {
   return (
