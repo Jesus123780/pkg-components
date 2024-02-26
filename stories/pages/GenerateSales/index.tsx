@@ -52,6 +52,7 @@ interface GenerateSalesProps {
   handleFreeProducts?: (product: ProductFood) => void
   handleSave?: () => void
   handleOpenAside?: () => void
+  handleComment?: (product: ProductFood) => void
   onClick?: () => void
   numberFormat?: (number: string | number) => number
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
@@ -96,6 +97,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   handleDecrement = () => {},
   handleIncrement = () => {},
   handleSave = () => {},
+  handleComment = () => {},
   handleOpenAside = () => {},
   numberFormat = (number) => {
     return number
@@ -229,9 +231,11 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   ProPrice={numberFormat(producto.ProPrice)}
                   ProQuantity={ProQuantity}
                   ValueDelivery={producto.ValueDelivery}
-                  comment={false}
                   withQuantity={true}
                   hoverFree={true}
+                  handleComment={() => {
+                    handleComment(producto)
+                  }}
                   showDot={true}
                   openQuantity={Boolean(ProQuantity)}
                   handleDecrement={() => {

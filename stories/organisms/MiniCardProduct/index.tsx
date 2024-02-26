@@ -1,7 +1,11 @@
 import React from 'react'
 import { type MiniCardProductProps } from './type'
 import { QuantityButtonFloat } from '../../molecules/QuantityButtonFloat'
-import { Icon, Tag, Text } from '../../atoms'
+import {
+  Icon,
+  Tag,
+  Text
+} from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'
 
@@ -15,10 +19,12 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   openQuantity = false,
   free = false,
   ProQuantity = 0,
+  comment = '',
   onClick = () => {},
   handleDecrement = () => {},
   handleIncrement = () => {},
   handleGetSubItems = () => {},
+  handleComment = () => {},
   handleFreeProducts = () => {},
   dataExtra = [],
   dataOptional = []
@@ -45,8 +51,11 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         </div>
       )}
       {hoverFree && (
-        <div className={styles.productCardWrapperFree} onClick={handleFreeProducts}>
-          <Text color='white' align='center' size='sm'>
+        <div
+          className={styles.productCardWrapperFree}
+          onClick={handleFreeProducts}
+        >
+          <Text color="white" align="center" size="sm">
             {free ? 'Gratis' : 'Marcar gratis'}
           </Text>
         </div>
@@ -54,11 +63,11 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
       <div className={styles.productCardWrapper} onClick={onClick}>
         <div
           className={styles['product-card-content']}
-          data-test-id='product-card-test-id'
+          data-test-id="product-card-test-id"
         >
           <div
             className={styles['product-card-image__container']}
-            data-test-id='product-card-image'
+            data-test-id="product-card-image"
           >
             <div className={styles['wrapper-image']}>
               <img className={styles['product-card-image']} src={urlImage} />
@@ -67,7 +76,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           </div>
           <div
             className={styles['product-card__price']}
-            data-test-id='product-card-price'
+            data-test-id="product-card-price"
           >
             {ProPrice}
           </div>
@@ -81,7 +90,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             {ProDescription}
           </span>
         </div>
-        {Boolean(free) && <Tag label='Gratis' backgroundColor='green' />}
+        {Boolean(free) && <Tag label="Gratis" backgroundColor="green" />}
       </div>
       <div>
         {showDot && (
@@ -91,12 +100,13 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
               onClick={handleGetSubItems}
             >
               <Icon
-                icon='IconBox'
+                icon="IconBox"
                 size={30}
                 height={30}
                 width={30}
                 color={
-                  Boolean(dataExtra?.length > 0) || Boolean(dataOptional?.length > 0)
+                  Boolean(dataExtra?.length > 0) ||
+                  Boolean(dataOptional?.length > 0)
                     ? getGlobalStyle('--color-icons-primary')
                     : getGlobalStyle('--color-icons-gray')
                 }
@@ -132,6 +142,19 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           })}
         </div>
       </div>
+      {showDot && (
+        <div className={styles.suggestion}>
+          <button onClick={handleComment}>
+            <Icon
+              icon="IconLines"
+              size={25}
+              height={25}
+              width={25}
+              color={comment !== '' ? getGlobalStyle('--color-icons-primary') : getGlobalStyle('--color-icons-gray')}
+            />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
