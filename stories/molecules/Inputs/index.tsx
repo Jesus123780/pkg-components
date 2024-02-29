@@ -7,4 +7,4 @@ export * from './InputQuery'
 export * from './InputRange/index'
 export * from './InputSelect.js/NewSelect'
 export * from './InputTags'
-
+export * from './PatternFormat'

@@ -145,7 +145,7 @@ export const Icon: React.FC<IconPropsComponent> = ({
   color
 }: IconPropsComponent) => {
   const Icono = GetIcon(icon)
-  if (!Icono) {
+  if (Icono === undefined || Icono === null) {
     return <div>No se encontró el ícono</div>
   }
   return (

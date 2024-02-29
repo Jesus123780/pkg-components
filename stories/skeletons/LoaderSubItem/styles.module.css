@@ -1,0 +1,19 @@
+.row {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.column {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.leftLoader {
+    width: auto;
+    margin-left: 10px;
+}

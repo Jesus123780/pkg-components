@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { IconQuestion } from '../../../assets/icons'
 import {
   Button,
   Checkbox,
   Divider,
-  Tag,
-  Text
+  Tag
 } from '../../atoms'
-import { InputHooks, QuantityButton } from '../../molecules'
+import { AlertInfo, InputHooks, QuantityButton } from '../../molecules'
 import { ContentCheckbox, GarnishChoicesHeader } from './styled'
 import { getGlobalStyle } from '../../../helpers'
 
@@ -134,7 +132,7 @@ export const FormExtra = ({
           <ContentCheckbox>
             <Checkbox
               checkbox
-              label='Marcar como requerido.'
+              label='Marcar como obligatorio.'
               checked={
                 isEdit ? selectedExtra?.required === 1 : Boolean(setCheck.exState)
               }
@@ -208,6 +206,8 @@ export const FormExtra = ({
               >
                 Añadir
               </Button>
+              <Divider marginTop={getGlobalStyle('--spacing-2xl')} />
+              <AlertInfo message='Agrega sub productos como adicionales, salsas... etc.' type='warning' />
             </>
           )}
         </div>

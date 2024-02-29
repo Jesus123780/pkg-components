@@ -254,4 +254,5 @@
   --z-index-auto: auto;
   --z-index--2: -2;
   --z-index--1: -1;
+  --z-index-high: 999999999;
 }

@@ -1,21 +1,26 @@
 import React from 'react'
-import { AsideInfoStore, InputHooks, NewSelect } from '../../molecules'
-import { Button, Divider, Overline } from '../../atoms'
+import {
+  AsideInfoStore,
+  InputHooks,
+  NewSelect
+} from '../../molecules'
+import {
+  Button,
+  Divider,
+  Overline
+} from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 
 interface AsideProps {
   openAside?: boolean
   overline?: boolean
-  handleCloseAside?: () => void
   loadingClients?: boolean
   dataClientes?: any[]
-  handleClickAction?: () => void
-  handleOpenAside?: () => void
-  handleChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
   values?: {
     cliId: string
+    valueDelivery: string
+    change: string
   }
-  dispatch?: React.Dispatch<any>
   data?: {
     payMethodPState: number
   }
@@ -23,14 +28,22 @@ interface AsideProps {
     change: boolean
     valueDelivery: boolean
   }
+  paymentMethodTransfer?: boolean
+  handleClickAction?: () => void
+  handleCloseAside?: () => void
+  handleOpenAside?: () => void
+  handleChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  dispatch?: React.Dispatch<any>
 }
 
 export const AsideSales: React.FC<AsideProps> = ({
   openAside = false,
   loadingClients = false,
+  paymentMethodTransfer = false,
   dataClientes = [],
   values = {
-    cliId: ''
+    cliId: '',
+    change: ''
   },
   errors = {
     change: false,
@@ -60,7 +73,7 @@ export const AsideSales: React.FC<AsideProps> = ({
         />
       )}
       <AsideInfoStore
-        zIndex={getGlobalStyle('--z-index-99999')}
+        zIndex={getGlobalStyle('--z-index-high')}
         show={openAside}
         handleClose={() => {
           handleOpenAside()
@@ -87,6 +100,7 @@ export const AsideSales: React.FC<AsideProps> = ({
         />
         <Divider marginBottom={'20px'} />
         <Button
+          primary={paymentMethodTransfer}
           onClick={() => {
             dispatch({ type: 'PAYMENT_METHOD_TRANSACTION' })
           }}
@@ -97,7 +111,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           onClick={() => {
             dispatch({ type: 'PAYMENT_METHOD_MONEY' })
           }}
-          primary
+          primary={!paymentMethodTransfer}
         >
           EFECTIVO
         </Button>

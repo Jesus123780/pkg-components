@@ -12,19 +12,57 @@ const labelStatusOrder = {
   4: 'Pedido concluido',
   5: 'Pedido Rechazado'
 }
-export const OrderCard = ({ storeOrder = [] }) => {
-  if (!storeOrder?.length) return <></>
+export interface IstoreOrder {
+  pCodeRef: string
+  getOneStore: {
+    idStore: string
+    storeName: string
+    city: {
+      cName: string
+    }
+    department: {
+      dName: string
+    }
+  }
+  pSState: number
+
+}
+interface OrderCardProps {
+  storeOrder?: IstoreOrder[]
+}
+export const OrderCard: React.FC<OrderCardProps> = ({ storeOrder = [] }) => {
+  if (!(storeOrder?.length > 0)) return <></>
   return (
     <CardOrder>
       {storeOrder?.length > 0
         ? storeOrder.map((order) => {
-          const { getOneStore } = order || {}
+          const { getOneStore } = order ?? {
+            getOneStore: {
+              idStore: '',
+              storeName: '',
+              city: {
+                cName: ''
+              },
+              department: {
+                dName: ''
+              }
+            }
+          }
           const {
             idStore,
             storeName,
             city,
             department
-          } = getOneStore || {}
+          } = getOneStore ?? {
+            idStore: '',
+            storeName: '',
+            city: {
+              cName: ''
+            },
+            department: {
+              dName: ''
+            }
+          }
           const pCodeRef = order.pCodeRef
           return (
             <Link
@@ -46,7 +84,7 @@ export const OrderCard = ({ storeOrder = [] }) => {
                       {storeName} {city?.cName} {department?.dName}
                     </h5>
                   </div>
-                  {order.pCodeRef && (
+                  {order.pCodeRef !== null && (
                     <div className='order-number'>
                         Ref de pedido
                       <div>

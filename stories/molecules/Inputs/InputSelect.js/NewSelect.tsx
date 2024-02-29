@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
 import { BGColor, PColor, SECColor, SEGColor, SFColor } from '../../../../assets/colors'
 import { IconArrowBottom, IconFolder, IconLoading, IconPlus, IconCancel as IconWarning } from '../../../../assets/icons'
@@ -7,7 +6,7 @@ import { changeSearch, changeValue, findOptionById, renderVal } from './helpers'
 import { BoxOptions, BoxSelect, ButtonAction, ContainerItems, ContentBox, CustomButtonS, IconSel, InputText, LabelInput, MainButton, SpanText, TextNotResult, Tooltip } from './styles'
 
 interface NewSelectProps {
-  accessor?: any
+  accessor?: string
   action?: boolean
   beforeLabel?: string
   border?: any
@@ -29,7 +28,7 @@ interface NewSelectProps {
   overLine?: boolean
   padding?: string
   required?: boolean
-  search?: string
+  search?: boolean
   sideLabel?: string
   title?: string
   topTitle?: string
@@ -37,7 +36,7 @@ interface NewSelectProps {
   width?: string
 
 }
-export const NewSelect = ({
+export const NewSelect: React.FC<NewSelectProps> = ({
   options = [],
   beforeLabel = '',
   noLabel = false,
@@ -62,7 +61,7 @@ export const NewSelect = ({
   error = false,
   required = false,
   overLine = false,
-  accessor,
+  accessor = '',
   fullName,
   onChange = () => {
     return null

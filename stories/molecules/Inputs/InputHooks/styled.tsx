@@ -112,7 +112,7 @@ export const LabelInput = styled.span`
     return value ? '1rem' : '16px'
   }};
   top: ${({ value, labelTop }) => {
-    return value ? '7px' : labelTop || '35px'
+    return value ? '3px' : labelTop || '35px'
   }};
   left: ${({ value }) => {
     return value ? '10px' : '25px'

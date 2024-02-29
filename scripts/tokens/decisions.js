@@ -320,7 +320,8 @@ const decisions = {
     50: zIndex['50'],
     999: zIndex['999'],
     9999: zIndex['9999'],
-    99999: zIndex['99999']
+    99999: zIndex['99999'],
+    ['high']: zIndex['high']
   }
 }
 module.exports = decisions

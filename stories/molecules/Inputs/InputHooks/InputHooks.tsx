@@ -29,8 +29,57 @@ import {
   Tooltip
 } from './styled'
 
+interface InputHooksProps {
+  autoComplete?: string
+  border?: string
+  Cc?: any
+  checked?: boolean
+  autoFocus?: any
+  dataForm?: object
+  disabled?: boolean
+  display?: string
+  email?: any
+  error?: string | boolean
+  fontSize?: string
+  height?: any
+  labelColor?: any
+  labelTop?: any
+  letters?: any
+  margin?: string
+  maxWidth?: string
+  minWidth?: string
+  name?: string
+  nit?: boolean
+  numeric?: boolean
+  onChange?: (e: any, v: any) => void
+  padding?: string
+  paddingInput?: string
+  pass?: any
+  passConfirm?: {
+    passValue: any
+    validate: any
+  }
+  placeholder?: string
+  radius?: string
+  range?: {
+    max: any
+    min: any
+  }
+  reference?: any
+  required?: any
+  setDataValue?: (e: any) => void
+  title?: string
+  messageError?: string
+  type?: string
+  typeTextarea?: boolean
+  value?: string
+  width?: string
+  onFocus?: () => void
+  onInvalid?: () => void
+  onBlur?: () => void
 
-export const InputHooks = ({
+}
+export const InputHooks: React.FC<InputHooksProps> = ({
   autoComplete = 'off',
   border = '',
   Cc,
@@ -70,10 +119,10 @@ export const InputHooks = ({
   typeTextarea = false,
   value = '',
   width = '100%',
-  onFocus = () => { return },
-  onInvalid = () => { return },
-  setDataValue = () => { return },
-  onBlur = () => { return },
+  onFocus = () => { },
+  onInvalid = () => { },
+  setDataValue = () => { },
+  onBlur = () => { },
   ...rest
 }) => {
   // STATE

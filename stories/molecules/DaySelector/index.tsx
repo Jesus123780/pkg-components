@@ -1,24 +1,26 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { CircleDay } from './styled'
-
-export const DaySelector = ({
+interface DaySelectorProps {
+  days: { day: number; name: string }[]
+  selectedDays: number[]
+  handleDaySelection: (day: number) => void
+}
+export const DaySelector: React.FC<DaySelectorProps> = ({
   days = [],
   selectedDays = [],
-  handleDaySelection = () => {
-    return
-  }
+  handleDaySelection = () => {}
 }) => {
   return (
     <>
       {days.map((day) => {
-        return (
-          <CircleDay
+        return ( 
+        <CircleDay
             key={day.day}
             onClick={() => {
-              return handleDaySelection(day.day)
+              handleDaySelection(day.day)
             }}
-            pulse={selectedDays.includes(day.day)}
+            pulse={selectedDays.includes(day.day) as boolean}
           >
             {day.name}
           </CircleDay>

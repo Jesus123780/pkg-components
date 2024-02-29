@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled, { keyframes } from 'styled-components'
 import {
   IconInformationProduct,
-  IconMiniCheck,
-} from '../../../assets';
-import { getGlobalStyle } from '../../../utils';
-import { Button, Icon, Row, Text } from '../../atoms';
-import style from './CardOrder.module.css';
-import { calculateRemainingTime, color } from './helpers';
+  IconMiniCheck
+} from '../../../assets'
+import { getGlobalStyle } from '../../../utils'
+import { Button, Icon, Row, Text } from '../../atoms'
+import { calculateRemainingTime, color } from './helpers'
+import style from './CardOrder.module.css'
 
 interface CardOrderProps {
-  pCodeRef?: string;
-  view?: boolean;
-  pDatCre?: string;
-  deliveryTimeMinutes?: number | null;
-  handleViewOrder?: (pCodeRef: string) => string;
+  pCodeRef?: string
+  view?: boolean
+  pDatCre?: string
+  deliveryTimeMinutes?: number | null
+  handleViewOrder?: (pCodeRef: string) => string
 }
 
 export const CardOrder: React.FC<CardOrderProps> = ({
@@ -25,9 +25,9 @@ export const CardOrder: React.FC<CardOrderProps> = ({
   deliveryTimeMinutes = null,
   handleViewOrder = (pCodeRef: string) => pCodeRef
 }) => {
-  const label = 'Nuevo Pedido';
+  const label = 'Nuevo Pedido'
   const { minutes, hour, remainingTimeText, entregaText, delay } =
-    deliveryTimeMinutes
+    deliveryTimeMinutes !== null
       ? calculateRemainingTime(pDatCre, deliveryTimeMinutes)
       : {
           minutes: '',
@@ -35,7 +35,7 @@ export const CardOrder: React.FC<CardOrderProps> = ({
           remainingTimeText: '',
           entregaText: '',
           delay: false
-        };
+        }
   return (
     <div
       className={style.card}
@@ -81,31 +81,31 @@ export const CardOrder: React.FC<CardOrderProps> = ({
               {`Retrasado: ${remainingTimeText}`}
             </Text>
           )}
-          {Boolean(!delay) && <Row alignItems='center'>
+          {Boolean(!(delay ?? false)) && <Row alignItems='center'>
             <div style={{ width: '20px', marginRight: '20px' }}>
               <Icon size={25} icon='time' />
             </div>
-            {Boolean(!delay) && (
+            {Boolean(!(delay ?? false)) && (
               <Text className={style.card_text_content}>
-                {`Tiempo de entrega: ${hour ? `${hour}h` : ''} ${
-                  minutes || ''
+                {`Tiempo de entrega: ${hour !== null ? hour : ''} ${
+                  minutes ?? ''
                 }`}
               </Text>
             )}
           </Row>}
-          {Boolean(!delay) && <Row alignItems='center'>
+          {Boolean(!(delay ?? false)) && <Row alignItems='center'>
             <div style={{ width: '20px', marginRight: '20px' }}>
               <Icon size={25} icon='time' />
             </div>
-            {Boolean(!delay) && (
+            {Boolean(!(delay ?? false)) && (
               <Text className={style.card_text_content}>{entregaText}</Text>
             )}
           </Row>}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 CardOrder.propTypes = {
   pCodeRef: PropTypes.string,
@@ -116,7 +116,7 @@ CardOrder.propTypes = {
   ]),
   view: PropTypes.bool,
   handleViewOrder: PropTypes.func
-};
+}
 
 const pulse = keyframes`
   0% {
@@ -131,10 +131,10 @@ const pulse = keyframes`
     transform: scale(2.5);
     opacity: 0;
   }
-`;
+`
 
 interface BubbleProps {
-  color?: string;
+  color?: string
 }
 
 export const Bubble = styled.div<BubbleProps>`
@@ -143,12 +143,12 @@ export const Bubble = styled.div<BubbleProps>`
   margin: 0;
 
   &:hover:after {
-    background-color: ${({ color }) => color || ''};
+    background-color: ${({ color }) => color ?? ''};
   }
 
   &:after {
     content: "";
-    background-color: ${({ color }) => color || ''};
+    background-color: ${({ color }) => color ?? ''};
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -163,7 +163,7 @@ export const Bubble = styled.div<BubbleProps>`
     display: block;
     text-align: center;
     opacity: 1;
-    background-color: ${({ color }) => color || ''};
+    background-color: ${({ color }) => color ?? ''};
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -174,7 +174,7 @@ export const Bubble = styled.div<BubbleProps>`
     display: block;
     text-align: center;
     opacity: 1;
-    background-color: ${({ color }) => color || ''};
+    background-color: ${({ color }) => color ?? ''};
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -186,12 +186,12 @@ export const Bubble = styled.div<BubbleProps>`
     display: block;
     text-align: center;
     opacity: 1;
-    background-color: ${({ color }) => color || ''};
+    background-color: ${({ color }) => color ?? ''};
     width: 12px;
     height: 12px;
     border-radius: 50%;
     animation: ${pulse} 1.5s linear infinite;
   }
-`;
+`
 
-Bubble.displayName = 'Bubble';
+Bubble.displayName = 'Bubble'

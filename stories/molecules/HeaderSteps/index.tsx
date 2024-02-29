@@ -1,14 +1,14 @@
-import React, { FC } from 'react';
-import { Text } from '../../atoms';
-import styles from './HeaderSteps.module.css';
-import { getGlobalStyle } from '../../../utils';
+import React, { type FC } from 'react'
+import { Text } from '../../atoms'
+import styles from './HeaderSteps.module.css'
+import { getGlobalStyle } from '../../../utils'
 
 interface HeaderStepsProps {
-  active?: number;
-  steps: string[];
-  overActive?: number | null;
-  handleOverActive?: (index: number) => void;
-  setActive?: (index: number) => void;
+  active?: number
+  steps: string[]
+  overActive?: number | null
+  handleOverActive?: (index: number) => void
+  setActive?: (index: number) => void
 }
 
 export const HeaderSteps: FC<HeaderStepsProps> = ({
@@ -16,13 +16,13 @@ export const HeaderSteps: FC<HeaderStepsProps> = ({
   steps = [],
   overActive = null,
   handleOverActive = (index) => {
-    return index;
+    return index
   },
   setActive = (index) => {
-    return index;
-  },
+    return index
+  }
 }) => {
-  const tabWidth = 100 / steps.length;
+  const tabWidth = 100 / steps.length
   return (
     <div className={styles.header_step}>
       {steps.map((title, index) => {
@@ -33,43 +33,42 @@ export const HeaderSteps: FC<HeaderStepsProps> = ({
             }`}
             key={title}
             onClick={() => {
-              setActive(index);
+              setActive(index)
             }}
             onMouseLeave={() => {
-              handleOverActive(active);
+              handleOverActive(active)
             }}
             onMouseOver={() => {
-              handleOverActive(index);
+              handleOverActive(index)
             }}
           >
             <Text
               as='h2'
               className={styles.text}
-              fontFamily='PFont-Light'
-              fontSize='.9rem'
-              fontWeight='500'
+              size='md'
+              align='center'
+              weight='normal'
               style={{
                 userSelect: 'none',
                 fontWeight: getGlobalStyle('--font-weight-bold'),
                 color:
                   index === active
                     ? getGlobalStyle('--color-primary-red')
-                    : getGlobalStyle('--color-text-gray-light'),
+                    : getGlobalStyle('--color-text-gray-light')
               }}
             >
               {title}
             </Text>
           </div>
-        );
+        )
       })}
       <span
         className={`${styles.slider}`}
         style={{
           left: `${active * tabWidth}%`,
-          width: `${tabWidth}%`,
+          width: `${tabWidth}%`
         }}
       ></span>
     </div>
-  );
-};
-
+  )
+}

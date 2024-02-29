@@ -13,13 +13,13 @@ export const AlertInfo: React.FC<AlertInfoProps> = ({ type, message }) => {
   const borders: { [key in AlertInfoProps['type']]: string } = {
     warning: sizeBorder,
     error: sizeBorder,
-    info: sizeBorder,
+    info: sizeBorder
   }
 
   const colors: { [key in AlertInfoProps['type']]: string } = {
     warning: '#FFC107',
     error: getGlobalStyle('--color-primary-red'),
-    info: '#0D6EFD',
+    info: '#0D6EFD'
   }
 
   const borderStyle = borders[type] || `${sizeBorder} transparent`
@@ -33,7 +33,7 @@ export const AlertInfo: React.FC<AlertInfoProps> = ({ type, message }) => {
           <IconInfo color={color} size={25} />
         </div>
       </div>
-      <div className={styles.message} style={{ color }}>{message}</div>
+      <div className={styles.message}>{message}</div>
     </div>
   )
 }

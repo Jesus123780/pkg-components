@@ -4,7 +4,18 @@ import styled, { css, keyframes } from 'styled-components'
 import { PColor } from '../../../../assets/colors'
 import { getGlobalStyle } from '../../../../utils'
 
-export const Checkbox = ({
+interface CheckboxProps {
+  checked?: boolean
+  className?: string
+  disabled?: boolean
+  hideLabel?: boolean
+  id?: any
+  indeterminate?: boolean
+  label?: any
+  name?: any
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>, id: any) => void
+}
+export const Checkbox: React.FC<CheckboxProps> = ({
   checked = false,
   className = '',
   disabled = false,
@@ -36,7 +47,7 @@ export const Checkbox = ({
     syncIndeterminateState()
   }, [indeterminate, syncIndeterminateState])
 
-  const handleChange = (event) => {
+  const handleChange = (event): void => {
     if (indeterminate) {
       syncIndeterminateState()
     }

@@ -1,12 +1,9 @@
-// ScheduleLinearWeekly.js
-
 import PropTypes from 'prop-types'
 import React from 'react'
-import styles from './styles.module.css'
 import { organizeData } from './helpers'
 import { ScheduleMobile } from './ScheduleMobile'
-import { AlertInfo } from '../../molecules'
 import { Divider } from '../../atoms/Divider'
+import styles from './styles.module.css'
 
 const days = {
   1: 'Lunes',
@@ -22,7 +19,14 @@ const hours = Array.from({ length: 25 }, (_, i) => {
   return i
 })
 
-export const ScheduleLinearWeekly = ({
+interface ScheduleLinearWeeklyProps {
+  isMobile?: boolean
+  handleClick?: (number: number) => void
+  handleHourPmAM?: (string: string) => void
+  schedules?: any[]
+  style?: React.CSSProperties
+}
+export const ScheduleLinearWeekly: React.FC<ScheduleLinearWeeklyProps> = ({
   isMobile = false,
   handleClick = (number) => {
     return number
@@ -46,10 +50,9 @@ export const ScheduleLinearWeekly = ({
       />
     )
   }
+
   return (
     <>
-      <Divider marginBottom='50px' />
-      <AlertInfo message='Aquí puedes crear tus horarios de atención para programar tus actividades.' type='info' />
       <Divider marginBottom='100px' />
       <div className={styles.container} style={style}>
         <div className={styles.timeColumn}>
@@ -59,12 +62,12 @@ export const ScheduleLinearWeekly = ({
         </div>
         <div className={styles.scheduleGrid}>
           {Object.entries(data).map(([day, hoursData], indexDays) => {
-            let isFirstEventShown = false // Variable para rastrear si ya se mostró el texto del primer evento
-            let lastEventIndex = 0 // Variable para rastrear el índice del último evento
-            const totalHours = Object.keys(hoursData).length // Obtener el número total de horas con eventos
-            let Hours = 0 // Inicializar el total de horas para el día
+            let isFirstEventShown = false
+            let lastEventIndex = 0
+            const totalHours = Object.keys(hoursData).length
+            let Hours = 0
             for (const hour in hoursData) {
-              Hours += hoursData[hour].length // Sumar la cantidad de horas para cada evento
+              Hours += hoursData[hour].length
             }
             return (
               <div className={styles.dayColumn} key={day}>
@@ -114,7 +117,7 @@ export const ScheduleLinearWeekly = ({
                         className={styles.hourCell}
                         key={`${day}-${hour}`}
                         onClick={() => {
-                          return handleClick(indexDays)
+                          handleClick(indexDays)
                         }}
                       >
                         <div className={styles.event} style={borderRadiusStyle}>

@@ -10,6 +10,7 @@ import { AsideSales } from './AsideSales'
 import { CategorieProducts } from '../../organisms'
 import type { MiniCardProductProps } from '../../organisms/MiniCardProduct/type'
 import type { Root } from '../../organisms/CategorieProducts/types'
+import { HeaderInfo } from './HeaderInfo'
 import styles from './styles.module.css'
 
 interface IpropsSliderCategory {
@@ -23,10 +24,17 @@ interface IpropsSliderCategory {
   }
   >
 }
+interface Client {
+  clientName: string
+  ccClient: string
+  ClientAddress: string
+  clientNumber: string
+}
 interface GenerateSalesProps {
   productsFood?: ProductFood[]
   show: boolean
   loadingProduct: boolean
+  client: Client
   propsSliderCategory?: IpropsSliderCategory
   openAside: boolean
   loadingClients: boolean
@@ -57,7 +65,6 @@ interface GenerateSalesProps {
   numberFormat?: (number: string | number) => number
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
 }
-
 export const GenerateSales: React.FC<GenerateSalesProps> = ({
   productsFood = [],
   dataClientes = [],
@@ -86,6 +93,12 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   isLoading = false,
   loadingProduct = false,
   loadingClients = false,
+  client = {
+    clientName: '',
+    ccClient: '',
+    ClientAddress: '',
+    clientNumber: ''
+  },
   dispatch = () => {},
   handleFreeProducts = () => {},
   onClick = (product: MiniCardProductProps) => {
@@ -143,16 +156,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           className={styles.content__products}
           style={{ display: productsFood?.length > 0 ? 'grid' : 'block' }}
         >
-          <AsideSales
-            values={values}
-            handleChange={handleChange}
-            errors={errors}
-            overline={true}
-            handleOpenAside={handleOpenAside}
-            dataClientes={dataClientes}
-            loadingClients={loadingClients}
-            openAside={openAside}
-          />
           <button
             className={styles.content__categorie__aside}
             onClick={() => {
@@ -211,6 +214,14 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             ver más
           </Button>
         </div>
+        <HeaderInfo
+          client={client}
+          handleOpenAside={handleOpenAside}
+          totalProductPrice={totalProductPrice}
+          payMethodPState={
+            data?.payMethodPState === 1 ? 'TRANSFERENCIA' : 'EFECTIVO'
+          }
+        />
         <div
           className={styles.content__scrolling}
           style={{ display: data?.PRODUCT?.length > 0 ? 'grid' : 'block' }}
@@ -320,6 +331,18 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           </Row>
         </div>
       </div>
+      <AsideSales
+        values={values}
+        handleChange={handleChange}
+        errors={errors}
+        dispatch={dispatch}
+        overline={true}
+        paymentMethodTransfer={data?.payMethodPState === 1}
+        handleOpenAside={handleOpenAside}
+        dataClientes={dataClientes}
+        loadingClients={loadingClients}
+        openAside={openAside}
+      />
     </AwesomeModal>
   )
 }

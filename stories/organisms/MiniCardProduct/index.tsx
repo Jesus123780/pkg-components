@@ -92,7 +92,10 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         </div>
         {Boolean(free) && <Tag label="Gratis" backgroundColor="green" />}
       </div>
-      <div>
+      <div style={{
+        height: '30px',
+        overflow: 'hidden'
+      }} >
         {showDot && (
           <div className={styles.container_free}>
             <button

@@ -1,3 +1,4 @@
+import React from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { BGColor, PColor } from './../../../assets/colors/index'
 
@@ -17,8 +18,10 @@ export const onPulses = keyframes`
     transform: scale3d(1, 1, 1);
 }
 `
-
-export const CircleDay = styled.div`
+interface CircleDayProps {
+  pulse: boolean
+}
+export const CircleDay: CircleDayProps = styled.div`
   border: 2px solid #cccccc;
   border-radius: 50%;
   height: 50px;

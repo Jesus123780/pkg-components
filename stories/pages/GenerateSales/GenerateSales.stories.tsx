@@ -9,6 +9,12 @@ const meta: Meta<typeof GenerateSales> = {
   args: {
     show: true,
     openAside: false,
+    client: {
+      clientName: 'Jesus Juvinao Perez, Martines',
+      ccClient: '104778787985',
+      ClientAddress: 'Carrera 11 # 454 c',
+      clientNumber: '+57 300 456 7890'
+    },
     isLoading: false,
     propsSliderCategory: {
       data: dataCategorie,

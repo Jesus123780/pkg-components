@@ -154,7 +154,7 @@ export const BodyDnd = styled.div`
     grid-gap: 19px 5px;
     grid-template-columns: 33% repeat(auto-fill, 33%) 33%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden auto;
     width: 100%;
   }
   .contain-check-item {
@@ -191,7 +191,7 @@ export const ContentLinesItems = styled.div`
   height: min-content;
   border-bottom: 1px solid #ccc;
   ${(props) => {
-    return props.noBorder && `border-bottom: none`
+    return Boolean(props.noBorder) && 'border-bottom: none'
   }}
 `
 export const ContentCheckbox = styled.div`
