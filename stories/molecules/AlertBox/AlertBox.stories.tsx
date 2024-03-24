@@ -12,4 +12,4 @@ const error = {
   message: 'This is an error message'
 }
 
-export const Default = () => {return <AlertBox err={error} />}
+export const Default: React.FC = () => { return <AlertBox err={error} /> }

@@ -3,67 +3,62 @@ import {
   isEmail,
   isPassword,
   onlyLetters,
-  rangeLength,
+  rangeLength
 } from '../../../../helpers'
-import React, {
-    useEffect,
-    useState,
-    ChangeEvent,
-    FC
-} from 'react'
-import { Button } from '../../../atoms/Button';
+import React, { useEffect, useState, type ChangeEvent, type FC } from 'react'
+import { Button } from '../../../atoms/Button'
 
 interface InputProps {
-  autoComplete?: string;
-  border?: string;
-  checked?: boolean;
-  disabled?: boolean;
-  letters?: string;
-  labelTop?: string;
-  fontSize?: string;
-  display?: string;
-  error?: string;
-  autoFocus?: boolean;
-  height?: boolean | string;
-  email?: boolean;
-  dataForm?: object | null | any;
-  labelColor?: string;
-  margin?: string;
-  maxWidth?: string;
-  minWidth?: string;
-  name?: string;
-  nit?: boolean;
-  numeric?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Ajustado para tipar correctamente el evento
-  padding?: string;
-  paddingInput?: string;
-  pass?: boolean;
-  passConfirm?: boolean;
-  placeholder?: string;
-  radius?: string;
-  range?: ValidationRange;
-  reference?: React.RefObject<HTMLInputElement>;
-  required?: boolean;
-  title?: string;
-  type?: string;
-  typeTextarea?: boolean;
-  value?: string | number | readonly string[]; // Ajustado para admitir tipos adicionales según el código proporcionado
-  width?: string;
-  labelButton?: string;
-  onFocus?: () => void;
-  setDataValue?: () => void;
-  onBlur?: () => void;
-  onInvalid?: () => void;
+  autoComplete?: string
+  border?: string
+  checked?: boolean
+  disabled?: boolean
+  letters?: string
+  labelTop?: string
+  fontSize?: string
+  display?: string
+  error?: string
+  autoFocus?: boolean
+  height?: boolean | string
+  email?: boolean
+  dataForm?: object | null | any
+  labelColor?: string
+  margin?: string
+  maxWidth?: string
+  minWidth?: string
+  name?: string
+  nit?: boolean
+  numeric?: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void // Ajustado para tipar correctamente el evento
+  padding?: string
+  paddingInput?: string
+  pass?: boolean
+  passConfirm?: boolean
+  placeholder?: string
+  radius?: string
+  range?: ValidationRange
+  reference?: React.RefObject<HTMLInputElement>
+  required?: boolean
+  title?: string
+  type?: string
+  typeTextarea?: boolean
+  value?: string | number | readonly string[] // Ajustado para admitir tipos adicionales según el código proporcionado
+  width?: string
+  labelButton?: string
+  onFocus?: () => void
+  setDataValue?: () => void
+  onBlur?: () => void
+  onInvalid?: () => void
 }
 
 interface ValidationRange {
-  min: number;
-  max: number;
+  min: number
+  max: number
 }
 
 interface InputState {
-  errors: string;
-  message: string;
+  errors: string
+  message: string
 }
 
 export const Input: FC<InputProps> = ({
@@ -89,7 +84,7 @@ export const Input: FC<InputProps> = ({
   nit = false,
   numeric = false,
   onChange = (e) => {
-    return e;
+    return e
   },
   padding = '',
   paddingInput = '',
@@ -106,30 +101,30 @@ export const Input: FC<InputProps> = ({
   value = '',
   width = '100%',
   onFocus = () => {
-    return;
+
   },
   setDataValue = () => {
-    return;
+
   },
   onBlur = () => {
-    return;
+
   },
   ...rest
 }) => {
-  const isAutoComplete = !autoComplete ? 'off' : autoComplete;
-  const isEmailValue = email ? 'off' : isAutoComplete;
-  const [errors, setErrors] = useState<string  | boolean>(error);
-  const [message, setMessage] = useState('El campo no debe estar vacío');
+  const isAutoComplete = !autoComplete ? 'off' : autoComplete
+  const isEmailValue = email ? 'off' : isAutoComplete
+  const [errors, setErrors] = useState<string | boolean>(error)
+  const [message, setMessage] = useState('El campo no debe estar vacío')
 
   const errorFunc = (
     e: ChangeEvent<HTMLInputElement>,
     v: boolean,
     m: string
   ) => {
-    setErrors(v);
-    v && setMessage(m);
-    onChange(e);
-  };
+    setErrors(v)
+    v && setMessage(m)
+    onChange(e)
+  }
   useEffect(() => {
     setErrors(error)
   }, [error])
@@ -137,37 +132,34 @@ export const Input: FC<InputProps> = ({
   const validations = (e: ChangeEvent<HTMLInputElement>) => {
     // Valida que el campo no sea nulo
     if (required) {
-      if (e.target.value.length == 0)
-        return errorFunc(e, true, 'El campo no debe estar vacío');
-      errorFunc(e, false, '');
+      if (e.target.value.length == 0) { return errorFunc(e, true, 'El campo no debe estar vacío') }
+      errorFunc(e, false, '')
     }
     // Valida que el campo sea tipo numérico
     if (numeric) {
-      if (isNaN(parseFloat(e.target.value)))
-        return errorFunc(e, true, 'El campo debe ser numérico');
-      errorFunc(e, false, '');
+      if (isNaN(parseFloat(e.target.value))) { return errorFunc(e, true, 'El campo debe ser numérico') }
+      errorFunc(e, false, '')
     }
     // Valida que el campo sea solo letras
     if (letters) {
-      if (onlyLetters(e.target.value))
-        return errorFunc(e, true, 'El campo debe contener solo letras');
-      errorFunc(e, false, '');
+      if (onlyLetters(e.target.value)) { return errorFunc(e, true, 'El campo debe contener solo letras') }
+      errorFunc(e, false, '')
     }
     // Valida que el campo esté en el rango correcto
     if (range) {
-      if (rangeLength(e.target.value, range.min, range.max))
+      if (rangeLength(e.target.value, range.min, range.max)) {
         return errorFunc(
           e,
           true,
           `El rango de caracteres es de ${range.min} a ${range.max}`
-        );
-      errorFunc(e, false, '');
+        )
+      }
+      errorFunc(e, false, '')
     }
     // Valida si el campo tiene un formato de email correcto
     if (email) {
-      if (isEmail(e.target.value))
-        return errorFunc(e, true, 'El formato de email no es válido');
-      errorFunc(e, false, '');
+      if (isEmail(e.target.value)) { return errorFunc(e, true, 'El formato de email no es válido') }
+      errorFunc(e, false, '')
     }
     if (pass) {
       if (isPassword(e.target.value)) {
@@ -175,12 +167,12 @@ export const Input: FC<InputProps> = ({
           e,
           true,
           'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.'
-        );
+        )
       }
-      errorFunc(e, false, '');
+      errorFunc(e, false, '')
     }
     if (e) {
-      return errorFunc(e, false, '');
+      return errorFunc(e, false, '')
     }
   }
 
@@ -202,7 +194,7 @@ export const Input: FC<InputProps> = ({
         numeric={numeric}
         onBlur={onBlur}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          return validations(e);
+          return validations(e)
         }}
         paddingInput={paddingInput}
         placeholder={placeholder}
@@ -220,9 +212,15 @@ export const Input: FC<InputProps> = ({
       >
         {title}
       </LabelInput>
-      <Button styles={{ margin: '0 0 0 3px' }} primary width='207px' borderRadius='5px 50px 50px 5px' fontSize='22px'>
+      <Button
+        styles={{ margin: '0 0 0 3px' }}
+        primary
+        width="207px"
+        borderRadius="5px 50px 50px 5px"
+        fontSize="22px"
+      >
         {labelButton}
       </Button>
     </div>
-  );
-};
+  )
+}

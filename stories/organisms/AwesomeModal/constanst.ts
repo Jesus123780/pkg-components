@@ -5,6 +5,6 @@ export const MODAL_SIZES = {
 }
 
 export const BUTTONS_TEXT = {
-  cancel: 'cancelar',
-  confirm: 'confirmar'
+  cancel: 'Cancelar',
+  confirm: 'Confirmar'
 }

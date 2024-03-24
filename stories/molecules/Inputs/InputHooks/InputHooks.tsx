@@ -77,7 +77,7 @@ interface InputHooksProps {
   onFocus?: () => void
   onInvalid?: () => void
   onBlur?: () => void
-
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 export const InputHooks: React.FC<InputHooksProps> = ({
   autoComplete = 'off',
@@ -123,6 +123,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   onInvalid = () => { },
   setDataValue = () => { },
   onBlur = () => { },
+  onKeyDown = () => { },
   ...rest
 }) => {
   // STATE
@@ -343,6 +344,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
             size={fontSize}
             type={isPasswordShown ? 'text' : asType}
             value={value}
+            onKeyDown={onKeyDown}
           />
           {(!!showSuggestions) && (
             <div>

@@ -1,0 +1,27 @@
+.menu_options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-direction: column;
+    position: absolute;
+    top: -15px;
+    width: 100%;
+    left: 0;
+    box-shadow: var(--box-shadow-sm);
+}
+
+.menu_options__option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--color-base-white);
+    border-left: 4px solid transparent;
+    cursor: pointer;
+}
+
+.menu_options__option:hover {
+    border-left: 4px solid var(--color-secondary-blue);
+    background-color: var(--color-neutral-gray-light);
+}

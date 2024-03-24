@@ -1,11 +1,19 @@
-
-
 import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import styles from './styles.module.css'
 import { IconArrowLeft } from '../../../assets'
+import styles from './styles.module.css'
 
-export const ResisesColumnsMemo = ({
+type InitialDividerPosition = Record<string, number>
+
+interface ResisesColumnsProps {
+  lastMinWidth?: string
+  padding?: string
+  height?: string
+  backgroundColor?: string
+  initialDividerPosition?: InitialDividerPosition | null
+  children?: React.ReactNode[]
+}
+export const ResisesColumnsMemo: React.FC<ResisesColumnsProps> = ({
   lastMinWidth = '440px',
   padding = '15px',
   height = '',
@@ -17,6 +25,7 @@ export const ResisesColumnsMemo = ({
   const initialDividerPos = { __0: 60, __1: 40 }
   const [columnsChildren, setColumnsChildren] = useState([])
   const [dividerPos, setDividerPos] = useState(initialDividerPos)
+
   const getInitialDividerPos = (numSections) => {
     const initialPos = {}
     for (let i = 0; i < numSections; i++) {
@@ -26,7 +35,7 @@ export const ResisesColumnsMemo = ({
   }
 
   useEffect(() => {
-    if (props.children) {
+    if (props.children !== null && props.children !== undefined) {
       const newColumnsChildren =
         props?.children?.map((_element, index) => {
           return `__${index}`
@@ -51,8 +60,8 @@ export const ResisesColumnsMemo = ({
   }, [])
 
   const updateDividerPos = (newPos) => {
-    const totalPercentage = Object.values(newPos).reduce((a, b) => {return a + b})
-    const newDividerPosObj = {...dividerPos}
+    const totalPercentage = Object.values(newPos).reduce((a, b) => { return a + b })
+    const newDividerPosObj = { ...dividerPos }
     if (totalPercentage && !Number.isNaN(totalPercentage)) {
       // Compute the factor to scale the percentages.
       const scaleFactor = 100 / totalPercentage
@@ -81,17 +90,17 @@ export const ResisesColumnsMemo = ({
       const screenWidth = window.innerWidth
       const elemWidth = boundingRect?.width
       if (!elemLeft || !elemWidth) return
-  
+
       // set minimum width to 440
       const minWidth = 440
       const maxColumns = Math.ceil(screenWidth / minWidth)
-  
+
       // set the percentage width of each column
       let columnPercentage = 100 / Object.keys(dividerPos).length
       if (maxColumns < Object.keys(dividerPos).length) {
         columnPercentage = 100 / Object.keys(dividerPos).length
       }
-  
+
       // calculate the maximum and minimum positions for each divider
       let min = elemLeft + minWidth
       let max = screenWidth - minWidth
@@ -103,7 +112,7 @@ export const ResisesColumnsMemo = ({
       const percent = ((newDividerPos - elemLeft) / elemWidth) * 100
       if (dividerPos) {
         const totalPercentage = Object.values(dividerPos)?.reduce(
-          (a, b) => {return a + b}
+          (a, b) => { return a + b }
         )
         const addingSize = totalPercentage - percent
         const newDividerPosObj = {}
@@ -122,7 +131,6 @@ export const ResisesColumnsMemo = ({
     }
     requestAnimationFrame(move)
   }
-  
 
   const onDragEnd = useCallback((event) => {
     if (dragging.current) {
@@ -141,8 +149,8 @@ export const ResisesColumnsMemo = ({
         onTouchMove={onDrag}
         ref={wrapper}
         style={{
-          height: height,
-          padding: padding,
+          height,
+          padding,
           backgroundColor: backgroundColor || '#f4f5f7'
         }}
       >
@@ -151,9 +159,9 @@ export const ResisesColumnsMemo = ({
           const nextColumn = columns[position + 1]
           return (
             <div
-              className={styles['column']}
+              className={styles.column}
               key={index}
-              ref={(ref) => {return (columnRef[index] = ref)}}
+              ref={(ref) => { return (columnRef[index] = ref) }}
               style={{
                 width: `${dividerPos[data]}%`,
                 minWidth: `${lastMinWidth}`,
@@ -165,8 +173,7 @@ export const ResisesColumnsMemo = ({
                 <div
                   className={styles['column-controler']}
                   onMouseDown={onDragStart}
-                  onMouseDownCapture={() =>
-                  {return handleColtroler(data, nextColumn, index)}
+                  onMouseDownCapture={() => { return handleColtroler(data, nextColumn, index) }
                   }
                   onTouchStart={onDragStart}
                   style={{ right: '-2px', borderColor: 'red' }}

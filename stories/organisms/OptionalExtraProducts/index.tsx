@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import {
   EColor,
@@ -23,7 +22,31 @@ import {
 import { FormExtra } from './FormExtra'
 import { BodyDnd, GarnishChoicesHeader } from './styled'
 
-export const OptionalExtraProducts = ({
+interface IOptionalExtraProducts {
+  title: string
+  dataListIds: string[]
+  data: any
+  isCustomSubOpExPid: any
+  loadingEditSubOptional: any
+  selectedItem: any
+  selectedExtra: any
+  openModalEditExtra: boolean
+  handleCheck: any
+  editOneItem: any
+  handleRemoveList: any
+  setTitle: any
+  setCheck: any
+  handleChangeItems: any
+  handleAdd: any
+  removeOneItem: any
+  handleAddList: any
+  setData: any
+  editOneExtra: any
+  setSelectedExtra: (args: any) => void
+  setOpenModalEditExtra: (boolean: boolean) => void
+
+}
+export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
   title = '',
   dataListIds = [],
   data = {
@@ -36,49 +59,57 @@ export const OptionalExtraProducts = ({
     listID: ''
   },
   selectedExtra,
-  openModalEditExtra,
+  openModalEditExtra = false,
   setSelectedExtra = (args) => {
     return args
   },
-  setOpenModalEditExtra = (boolean) => {
+  setOpenModalEditExtra = (boolean: boolean) => {
     return boolean
   },
   handleCheck = () => {
-    return
+
   },
   editOneItem = () => {
-    return
+
   },
   handleRemoveList = () => {
-    return
+
   },
   setTitle = () => {
-    return
+
   },
   setCheck = {},
   handleChangeItems = () => {
-    return
+
   },
   handleAdd = () => {
-    return
+
   },
   removeOneItem = () => {
-    return
+
   },
   handleAddList = () => {
-    return
+
   },
   setData = () => {
-    return
+
   },
   editOneExtra = () => {
-    return
+
   }
 }) => {
   // STATES
-  const [numberLimit, setNumberLimit] = useState(1)
-  const [showTooltip, setShowTooltip] = useState(false)
-  const handleShowTooltip = (index) => { return setShowTooltip(index === showTooltip ? false : index) }
+  const [numberLimit, setNumberLimit] = useState<number>(1)
+  const [showTooltip, setShowTooltip] = useState<boolean>(false)
+
+  /**
+ * Toggles the visibility of a tooltip.
+ * @param {boolean} index - The boolean value indicating tooltip visibility.
+ * @returns {React.Dispatch<React.SetStateAction<boolean>>} - The state setter function.
+ */
+  const handleShowTooltip = (index: boolean): void => {
+    return setShowTooltip((prevIndex: boolean) => (prevIndex === index ? false : index))
+  }
 
   return (
     <BodyDnd>
@@ -90,7 +121,7 @@ export const OptionalExtraProducts = ({
       >
         <div className='first-column'>
           {dataListIds?.map((listID, index) => {
-            const list = data.lists[listID] 
+            const list = data.lists[listID]
             const numberLimit = list?.numberLimit
             const incompleteList = list.numberLimit === list.cards.length
             const messageLimit = `${numberLimit} ${
@@ -157,7 +188,6 @@ export const OptionalExtraProducts = ({
                 <List
                   data={data}
                   editOneItem={editOneItem}
-                  isCustomSubOpExPid={isCustomSubOpExPid}
                   list={list}
                   listID={listID}
                   loadingEditSubOptional={loadingEditSubOptional}
@@ -177,8 +207,7 @@ export const OptionalExtraProducts = ({
                       name: 'list_value'
                     })
                   }}
-                  onFocus={true}
-                  onKeyDown={(e) => {
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                     if (e.key === 'Enter' && !incompleteList) {
                       handleAdd({ listId: listID })
                     }
@@ -195,7 +224,7 @@ export const OptionalExtraProducts = ({
                     }
                     return null
                   }}
-                  onKeyPress={(e) => {
+                  onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                     if (e.key === 'Enter' && !incompleteList) {
                       handleAdd({ listId: listID })
                     }
@@ -212,12 +241,12 @@ export const OptionalExtraProducts = ({
           handleAddList={handleAddList}
           handleCheck={handleCheck}
           handleShowTooltip={handleShowTooltip}
-          numberLimit={numberLimit}
+          numberLimit={String(numberLimit)}
           setCheck={setCheck}
           setNumberLimit={setNumberLimit}
           setShowTooltip={setShowTooltip}
           setTitle={setTitle}
-          showTooltip={showTooltip}
+          showTooltip={String(showTooltip)}
           title={title}
         />
       </ResisesColumns>
@@ -246,13 +275,13 @@ export const OptionalExtraProducts = ({
           handleAddList={handleAddList}
           handleShowTooltip={handleShowTooltip}
           isEdit={true}
-          numberLimit={numberLimit}
+          numberLimit={String(numberLimit)}
           selectedExtra={selectedExtra}
           setCheck={setCheck}
           setSelectedExtra={setSelectedExtra}
           setShowTooltip={setShowTooltip}
           setTitle={setTitle}
-          showTooltip={showTooltip}
+          showTooltip={String(showTooltip)}
           title={title}
         />
         <RippleButton
@@ -274,31 +303,4 @@ export const OptionalExtraProducts = ({
       </AwesomeModal>
     </BodyDnd>
   )
-}
-
-OptionalExtraProducts.propTypes = {
-  data: PropTypes.shape({
-    lists: PropTypes.any
-  }),
-  dataListIds: PropTypes.array,
-  editOneExtra: PropTypes.func,
-  editOneItem: PropTypes.func,
-  handleAdd: PropTypes.func,
-  handleAddList: PropTypes.func,
-  handleChangeItems: PropTypes.func,
-  handleCheck: PropTypes.func,
-  handleRemoveList: PropTypes.func,
-  isCustomSubOpExPid: PropTypes.any,
-  loadingEditSubOptional: PropTypes.any,
-  openModalEditExtra: PropTypes.any,
-  removeOneItem: PropTypes.func,
-  selectedExtra: PropTypes.any,
-  pId: PropTypes.string,
-  selectedItem: PropTypes.object,
-  setCheck: PropTypes.func,
-  setData: PropTypes.func,
-  setOpenModalEditExtra: PropTypes.func,
-  setSelectedExtra: PropTypes.func,
-  setTitle: PropTypes.func,
-  title: PropTypes.string
 }

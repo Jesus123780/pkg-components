@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   BtnClose,
   Container,
@@ -7,12 +7,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
-  Wrapper,
-} from "./styled"
-import { BUTTONS_TEXT, MODAL_SIZES } from "./helpers"
-import { Button, Icon } from "../../atoms"
+  Wrapper
+} from './styled'
+import { BUTTONS_TEXT, MODAL_SIZES } from './helpers'
+import { Button, Icon } from '../../atoms'
 
-export type AwesomeModalProps = {
+export interface AwesomeModalProps {
   animationBackdropAnimation?: boolean
   backdrop?: string
   backgroundColor?: string
@@ -50,7 +50,6 @@ export type AwesomeModalProps = {
   onHide?: () => void
 }
 
-
 export const AwesomeModal: React.FC<AwesomeModalProps> = ({
   backgroundColor,
   title,
@@ -64,8 +63,8 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
   padding,
   justifyButtons,
   iconSize,
-  backdrop = "",
-  iconColor = "",
+  backdrop = '',
+  iconColor = '',
   iconConfirm = null,
   useScroll = false,
   keyboard = true,
@@ -79,20 +78,20 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
   height,
   bgColor,
   question = false,
-  customHeight = "",
-  headerColor = "",
+  customHeight = '',
+  headerColor = '',
   submit = false,
   header = true,
-  borderRadius = ".3rem",
+  borderRadius = '.3rem',
   onHide = () => {
-    return
+
   },
   onCancel = () => {
-    return
+
   },
   onConfirm = () => {
-    return
-  },
+
+  }
 }) => {
   const [state, setState] = useState<boolean>(show)
   const [modal, setModal] = useState<boolean>(false)
@@ -109,23 +108,13 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
     return setModal(!modal)
   }
 
-  const clickCancel = ():void => {
+  const clickCancel = (): void => {
     setState(false)
     onCancel()
     setModal(false)
     setTimeout(onHide, timeOut)
     onCancel()
   }
-  const clickConfirm = () => {
-    if (hideOnConfirm) setState(false)
-    onCancel()
-    setModal(false)
-    if (hideOnConfirm) {
-      setTimeout(onHide, timeOut)
-    }
-    onConfirm()
-  }
-
 
   useEffect(() => {
     /**
@@ -135,22 +124,22 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
      * @returns {void}
      */
     const handleKeyUp = (e: KeyboardEvent): void => {
-      if (e.code === "Escape") {
+      if (e.code === 'Escape') {
         setModal(true)
       }
     }
 
-    if (question && backdrop === "static" && state && show) {
-      window.addEventListener("keyup", handleKeyUp)
+    if (question && backdrop === 'static' && state && show) {
+      window.addEventListener('keyup', handleKeyUp)
       return () => {
-        if (keyboard) window.removeEventListener("keyup", handleKeyUp)
+        if (keyboard) window.removeEventListener('keyup', handleKeyUp)
       }
     }
 
-    if (backdrop !== "static" && keyboard && show) {
-      window.addEventListener("keyup", handleKeyUp)
+    if (backdrop !== 'static' && keyboard && show) {
+      window.addEventListener('keyup', handleKeyUp)
       return () => {
-        window.removeEventListener("keyup", handleKeyUp)
+        window.removeEventListener('keyup', handleKeyUp)
       }
     }
 
@@ -166,7 +155,7 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
    */
   const onBackdropHide = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.preventDefault()
-    if (backdrop === "static") {
+    if (backdrop === 'static') {
       setAnimationBackdrop(true)
     } else {
       hide()
@@ -178,9 +167,9 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
 
   useEffect(() => {
     if (show && useScroll) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = 'auto'
     }
   }, [show, useScroll])
 
@@ -231,7 +220,7 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
             backgroundColor={backgroundColor}
             borderRadius={borderRadius}
             display={display}
-            height={customHeight || "100%"}
+            height={customHeight || '100%'}
           >
             {children}
           </ModalBody>

@@ -1,15 +1,15 @@
-import styled, { css, keyframes } from "styled-components"
-import { MODAL_SIZES } from "./helpers"
+import styled, { css, keyframes } from 'styled-components'
+import { MODAL_SIZES } from './helpers'
 import {
-  BtnCancelProps,
-  BtnCloseProps,
-  BtnConfirmProps,
-  ModalBodyProps,
-  ModalFooterProps,
-  ModalHeaderProps,
-  ModalProps,
-  WrapperProps,
-} from "./interfaces"
+  type BtnCancelProps,
+  type BtnCloseProps,
+  type BtnConfirmProps,
+  type ModalBodyProps,
+  type ModalFooterProps,
+  type ModalHeaderProps,
+  type ModalProps,
+  type WrapperProps
+} from './interfaces'
 
 const fadeIn = keyframes`
     from {
@@ -72,13 +72,13 @@ const fadeOutTop = keyframes`
 
 export const Container = styled.div<ModalProps>`
   display: ${({ show, state }) => {
-    if (show && state) return "block"
-    else if (show && !state) return "block"
-    else if (!show && !state) return "none"
+    if (show && state) return 'block'
+    else if (show && !state) return 'block'
+    else if (!show && !state) return 'none'
   }};
   position: fixed;
   background: ${({ bgColor }) => {
-    return "rgba(0,0,0,.4)"
+    return 'rgba(0,0,0,.4)'
   }};
   top: 0;
   left: 0;
@@ -87,18 +87,19 @@ export const Container = styled.div<ModalProps>`
   width: 100%;
   height: 100%;
   z-index: ${({ zIndex }) => {
-    return zIndex || "100"
+    return zIndex || '100'
   }};
   opacity: 1;
   ${({ show, state }) => {
-    if (show && state)
-      return css`
+    if (show && state) {
+ return css`
         animation: ${fadeIn} 0.1s linear;
       `
-    else if (show && !state)
-      return css`
+} else if (show && !state) {
+ return css`
         animation: ${fadeIn} .s linear;
       `
+}
   }}
 `
 
@@ -124,9 +125,9 @@ export const Wrapper = styled.div<WrapperProps>`
 export const Modal = styled.div<ModalProps>`
   background: #fff;
   width: ${({ size }) => {
-    if (size === MODAL_SIZES.small) return "30%"
-    else if (size === MODAL_SIZES.medium) return "60%"
-    else if (size === MODAL_SIZES.large) return "100%"
+    if (size === MODAL_SIZES.small) return '30%'
+    else if (size === MODAL_SIZES.medium) return '60%'
+    else if (size === MODAL_SIZES.large) return '100%'
     return size
   }};
   ${(props) => {
@@ -143,14 +144,14 @@ export const Modal = styled.div<ModalProps>`
   }};
   z-index: 999;
   padding: ${({ padding }) => {
-    return padding || "30px 20px"
+    return padding || '30px 20px'
   }};
   box-shadow: 4px 3px 7px #d6d6d6;
   height: ${({ height }) => {
-    return height || "auto"
+    return height || 'auto'
   }};
   min-height: ${({ height }) => {
-    return height || "auto"
+    return height || 'auto'
   }};
   ${({ state }) => {
     return state
@@ -170,7 +171,7 @@ export const ModalHeader = styled.div<ModalHeaderProps>`
   justify-content: space-between;
   padding: 10px 0;
   background-color: ${({ headerColor }) => {
-    return headerColor || "var(--color-base-white)"
+    return headerColor || 'var(--color-base-white)'
   }};
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
@@ -215,19 +216,19 @@ export const ModalBody = styled.div<ModalBodyProps>`
   flex: 1 1 auto;
   overflow-y: auto;
   border-radius: ${({ borderRadius }) => {
-    return borderRadius || "none"
+    return borderRadius || 'none'
   }};
   display: ${({ display }) => {
-    return display || "block"
+    return display || 'block'
   }};
   height: ${({ height }) => {
-    return height || "auto"
+    return height || 'auto'
   }};
   min-height: ${({ height }) => {
-    return height || "auto"
+    return height || 'auto'
   }};
   padding: ${({ padding }) => {
-    return padding || "0"
+    return padding || '0'
   }};
   .modal-wrapper {
     background-color: #ffffff;
@@ -264,7 +265,7 @@ export const ModalFooter = styled.div<ModalFooterProps>`
   border-top: 1px solid #eee;
   bottom: 0;
   display: flex;
-  justify-content: ${({ justifyButtons }) => { return justifyButtons || "space-between" }};
+  justify-content: ${({ justifyButtons }) => { return justifyButtons || 'space-between' }};
   left: 0;
   margin: auto;
   padding: 25px 5px;
@@ -276,11 +277,11 @@ export const ModalFooter = styled.div<ModalFooterProps>`
 export const BtnConfirm = styled.button<BtnConfirmProps>`
   flex-direction: row;
   padding: ${({ padding }) => {
-    return padding || "5px"
+    return padding || '5px'
   }};
   cursor: pointer;
   border: ${({ border }) => {
-    return border ? '1px solid red' : "none"
+    return border ? '1px solid red' : 'none'
   }};
   border-radius: 30px;
   font-size: 12px;
@@ -288,10 +289,10 @@ export const BtnConfirm = styled.button<BtnConfirmProps>`
   justify-content: center;
   align-items: center;
   height: ${({ height }) => {
-    return height || "auto"
+    return height || 'auto'
   }};
   background-color: ${({ bgColor }) => {
-    return bgColor || "transparent"
+    return bgColor || 'transparent'
   }};
   &:disabled {
     cursor: no-drop;
@@ -301,11 +302,11 @@ export const BtnConfirm = styled.button<BtnConfirmProps>`
 export const BtnCancel = styled.button<BtnCancelProps>`
   flex-direction: row;
   padding: ${({ padding }) => {
-    return padding || "5px"
+    return padding || '5px'
   }};
   cursor: pointer;
   border: ${({ border }) => {
-    return border ? `${`1px solid 'red'`}` : "none"
+    return border ? `${'1px solid \'red\''}` : 'none'
   }};
   border-radius: 30px;
   font-size: 11px;
@@ -313,10 +314,10 @@ export const BtnCancel = styled.button<BtnCancelProps>`
   justify-content: center;
   align-items: center;
   height: ${({ height }) => {
-    return height || "auto"
+    return height || 'auto'
   }};
   background-color: ${({ bgColor }) => {
-    return bgColor || "transparent"
+    return bgColor || 'transparent'
   }};
   &:disabled {
     cursor: no-drop;

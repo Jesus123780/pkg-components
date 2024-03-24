@@ -20,6 +20,7 @@ import {
 } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
 import { Skeleton } from '../../molecules/Skeleton'
+import styles from './styles.module.css'
 
 export const BannerStore = ({
   altLogo = '',
@@ -39,12 +40,12 @@ export const BannerStore = ({
     Image: '/images/DEFAULTBANNER.png',
     storeName: ''
   },
-  handleInputChangeLogo = () => { return },
+  handleInputChangeLogo = () => { },
   onTargetClickLogo = (event) => { return event },
-  handleClose = () => { return },
-  handleUpdateBanner = () => { return },
-  HandleDeleteBanner = () => { return },
-  onTargetClick = () => { return }
+  handleClose = () => { },
+  handleUpdateBanner = () => { },
+  HandleDeleteBanner = () => { },
+  onTargetClick = () => { }
 }) => {
   return (
     <Section>
@@ -70,7 +71,7 @@ export const BannerStore = ({
       }
       {isLoading
         ? <Skeleton height={isMobile ? 118 : 250} />
-        : <MerchantBannerWrapperInfo bannerImage={(path || src) ? `url(${path || src})` : `url('/images/DEFAULTBANNER.png')`} open={isEmtySchedules ? true : openNow} >
+        : <MerchantBannerWrapperInfo bannerImage={(path || src) ? `url(${path || src})` : 'url(\'/images/DEFAULTBANNER.png\')'} open={isEmtySchedules ? true : openNow} >
           <span>
             <IconStore color={getGlobalStyle('--color-icons-white')} size={40} />
           </span>
@@ -111,28 +112,30 @@ export const BannerStore = ({
         </>
       }
       <MerchantInfo >
-        {store?.Image ?
+        {store?.Image
+          ? <span className={styles.wrapper_logo}>
+            <Image
+              alt={altLogo}
+              height={70}
+              objectFit='contain'
+              onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
+              src={store?.Image ?? '/images/DEFAULTBANNER.png'}
+              width={70}
+            />
+          </span>
+          : <span className={styles.wrapper_logo}>
           <Image
-            alt={altLogo}
-            className='logo'
-            height={70}
-            objectFit='contain'
-            onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
-            src={store?.Image ?? '/images/DEFAULTBANNER.png'}
-            width={70}
-          />
-          :
-          <Image
-            alt={altLogo || 'logo'}
+            alt={altLogo ?? 'logo'}
             blurDataURL='/images/DEFAULTBANNER.png'
-            className='logo'
             height={70}
             objectFit='contain'
             onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
             placeholder='blur'
             src={srcLogo ?? '/images/DEFAULTBANNER.png'}
             width={70}
-          />}
+            />
+            </span>
+        }
         <div className='basico_info' style={{ display: 'flex', justifyContent: 'space-between' }}>
           <MerchantInfoTitle >
             {store?.storeName}

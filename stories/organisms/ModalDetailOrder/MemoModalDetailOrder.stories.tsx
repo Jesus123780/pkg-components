@@ -1,25 +1,21 @@
-import React from 'react'
-import { MemoModalDetailOrder } from './index'
+import type { Meta, StoryObj } from '@storybook/react'
+import { ModalDetailOrder } from './index'
+import { mockDataOrder } from './mockData'
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-export default {
-  title: 'organisms/MemoModalDetailOrder',
-  component: MemoModalDetailOrder,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' }
+const meta: Meta<typeof ModalDetailOrder> = {
+  component: ModalDetailOrder,
+  title: 'atoms/ModalDetailOrder',
+  args: {
+
   }
 }
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => {
-  return <MemoModalDetailOrder {...args} />
-}
+export default meta
 
-export const TemplateMemoModalDetailOrder = Template.bind({})
-// More on args: https://storyb ook.js.org/docs/react/writing-stories/args
-TemplateMemoModalDetailOrder.args = {
-  memoModalDetailOrder: {
-    cards: [1, 2, 3]
+type Story = StoryObj<typeof ModalDetailOrder>
+
+export const ModalDetailOrderComponent: Story = {
+  args: {
+    ...mockDataOrder
   }
 }

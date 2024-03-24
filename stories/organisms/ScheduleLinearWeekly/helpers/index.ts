@@ -13,10 +13,12 @@ export const organizeData = (data) => {
   }
   
   // Iterate over the data and organize it by day of the week
-  data.forEach(schedule => {
-    const day = schedule.schDay
-    organizedData[day].push(schedule)
-  })
+  if (data?.length > 0) {
+    data.forEach(schedule => {
+      const day = schedule.schDay
+      organizedData[day].push(schedule)
+    })
+  }
   
   // Generate the final structure considering the difference in hours
   const finalData = {}

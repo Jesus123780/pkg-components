@@ -31,7 +31,12 @@ export const ActionName = styled.span`
   z-index: -900;
   padding: 1px 30px;
 `
-export const ButtonCard = styled.button`
+interface IButtonCard {
+  grid?: boolean
+  top?: string
+  delay?: string
+}
+export const ButtonCard: IButtonCard = styled.button`
   font-size: 12px;
   font-family: PFont-Light;
   cursor: pointer;
@@ -63,10 +68,10 @@ export const ButtonCard = styled.button`
 
   ${(props) => {
     return (
-      props.grid &&
+      (Boolean(props.grid)) &&
       css`
         top: ${({ top }) => {
-        return top || '80px'
+        return top ?? '80px'
       }};
       `
     )

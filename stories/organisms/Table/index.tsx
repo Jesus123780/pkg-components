@@ -38,15 +38,15 @@ export const Table = ({
   bgRow,
   data,
   pointer,
-  renderBody = [], 
-  entryPerView, 
-  handleAdd, 
-  buttonAdd, 
+  renderBody = [],
+  entryPerView,
+  handleAdd,
+  buttonAdd,
   labelBtn
 }) => {
   const initialState = { selectedIndex: 0 }
 
-  function reducer (state, action) {
+  function reducer(state, action) {
     switch (action.type) {
       case 'arrowUp':
         return {
@@ -94,12 +94,12 @@ export const Table = ({
     const allPages = Math.ceil(data?.length / properties.entriesValue)
     setPages([])
     for (let i = 0; i < allPages; i++) {
-      setPages(s => {return [...s, i]})
+      setPages(s => { return [...s, i] })
     }
     const indexLastElem = properties.currentPage * properties.entriesValue
     const indexFirstElem = indexLastElem - properties.entriesValue
     setProperties({ ...properties, indexLastElem, indexFirstElem })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [properties.entriesValue, properties.currentPage, data])
 
   const handleEntries = event => {
@@ -140,36 +140,40 @@ export const Table = ({
       <TableResponsive>
         <ContainerTable>
           <Section bgRow={bgRow} columnWidth={titles || []}>
-            {titles?.map((x, i) => {return <Content justify={x.justify} key={i}>
-              <ArrowsLabel htmlFor={x.key}>
-                <Title onClick={onTargetClick} pointer={pointer}>{x.name}</Title>
-              </ArrowsLabel>
-              {x.arrow && <ArrowsLabel htmlFor={x.key}>
-                <ArrowsCheck
-                  id={x.key}
-                  name={x.key}
-                  onChange={(e) => {return handleColumn(e, x.key)}}
-                  ref={fileInputRef}
-                  type='checkbox'
-                />
-                <Button onClick={onTargetClick} style={{ height: '10px' }}><IconArrowTop color={currentColumn?.[`${x.key}`] === 0 ? BColor : '#d0d7ec'} size='15px' /></Button>
-                <Button onClick={onTargetClick} style={{ height: '10px' }}><IconArrowBottom color={currentColumn?.[`${x.key}`] === 1 ? BColor : '#d0d7ec'} size='15px' /></Button>
-              </ArrowsLabel>}
-            </Content>})}
+            {titles?.map((x, i) => {
+              return <Content justify={x.justify} key={i}>
+                <ArrowsLabel htmlFor={x.key}>
+                  <Title onClick={onTargetClick} pointer={pointer}>{x.name}</Title>
+                </ArrowsLabel>
+                {x.arrow && <ArrowsLabel htmlFor={x.key}>
+                  <ArrowsCheck
+                    id={x.key}
+                    name={x.key}
+                    onChange={(e) => { return handleColumn(e, x.key) }}
+                    ref={fileInputRef}
+                    type='checkbox'
+                  />
+                  <Button onClick={onTargetClick} style={{ height: '10px' }}><IconArrowTop color={currentColumn?.[`${x.key}`] === 0 ? BColor : '#d0d7ec'} size='15px' /></Button>
+                  <Button onClick={onTargetClick} style={{ height: '10px' }}><IconArrowBottom color={currentColumn?.[`${x.key}`] === 1 ? BColor : '#d0d7ec'} size='15px' /></Button>
+                </ArrowsLabel>}
+              </Content>
+            })}
           </Section>
-          {renderBody(data?.filter((x, i) => {return ((i >= properties.indexFirstElem) && i < properties.indexLastElem)})?.sort((prev, post) => {return orderColumn(prev, post, currentColumn)}), titles, properties.indexFirstElem)}
+          {renderBody(data?.filter((x, i) => { return ((i >= properties.indexFirstElem) && i < properties.indexLastElem) })?.sort((prev, post) => { return orderColumn(prev, post, currentColumn) }), titles, properties.indexFirstElem)}
         </ContainerTable>
       </TableResponsive>
       {entryPerView && data?.length > 0 && <EntryPaginationC>
         <Text size='12px'>Show {properties.currentPage} / {pages.length} Pages </Text>
         <div style={{ display: 'flex' }}>
-          <EntryButton onClick={() => {return setProperties(s => {return { ...properties, currentPage: properties.currentPage !== 1 ? s.currentPage - 1 : 1 }})}}>Before</EntryButton>
-          {pages.map(x => {return <CurrentPage
-            current={(x + 1 === properties.currentPage && 'true')}
-            key={x}
-            onClick={() => {return setProperties({ ...properties, currentPage: x + 1 })}}
-          >{x + 1}</CurrentPage>})}
-          <EntryButton onClick={() => {return setProperties(s => {return { ...properties, currentPage: s.currentPage !== pages.length ? s.currentPage + 1 : s.currentPage }})}} >Next</EntryButton>
+          <EntryButton onClick={() => { return setProperties(s => { return { ...properties, currentPage: properties.currentPage !== 1 ? s.currentPage - 1 : 1 } }) }}>Before</EntryButton>
+          {pages.map(x => {
+            return <CurrentPage
+              current={(x + 1 === properties.currentPage && 'true')}
+              key={x}
+              onClick={() => { return setProperties({ ...properties, currentPage: x + 1 }) }}
+            >{x + 1}</CurrentPage>
+          })}
+          <EntryButton onClick={() => { return setProperties(s => { return { ...properties, currentPage: s.currentPage !== pages.length ? s.currentPage + 1 : s.currentPage } }) }} >Next</EntryButton>
         </div>
       </EntryPaginationC>}
     </>

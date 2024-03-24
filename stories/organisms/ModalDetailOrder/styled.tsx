@@ -1,35 +1,6 @@
 import styled from 'styled-components'
 import { DarkSilver, SECBGColor } from '../../../assets/colors'
 
-export const ModalWrapper = styled.div`
-  animation: 0s ease 0s 1 normal none running none;
-  background-color: #ffffff;
-  border-radius: 3px;
-  box-shadow: var(--ds-shadow-overlay, 0 0 0 1px rgba(9, 30, 66, 0.08), 0 2px 1px rgba(9, 30, 66, 0.08), 0 0 20px -6px rgba(9, 30, 66, 0.31));
-  display: flex;
-  inset: 0px;
-  left: 0px;
-  margin: auto;
-  max-height: calc(100vh - 119px);
-  max-width: 80%;
-  overflow-y: auto;
-  position: fixed;
-  right: 0px;
-  top: 60px;
-  transition: none 0s ease 0s;
-  z-index: 9900;
-  .modal--section__main {
-    flex: 0 1 calc(75% + 12px);
-    height: 100%;
-    padding: 0 0 150px 0;
-    overflow-y: auto;
-  }
-  .modal--section__sec {
-    flex: 0 1 calc(24% + 12px);
-    height: 100%;
-  }
-`
-
 export const ActionButton = styled.div`
   background-color: #ffffff;
   border-radius: 4px;

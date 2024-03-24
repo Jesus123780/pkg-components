@@ -1,14 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const choices = require('./choices')
 
 const { 
   color: { 
     brand, 
     base
-  },
-  colorAlvi: {
-    baseAlvi,
-    brandAlvi
   },
   boxShadow,
   borderWidth,
@@ -99,6 +94,7 @@ const decisions = {
       gray: brand.mercury,
       grayLight: brand.whiteSmoke,
       white: brand.white,
+      overline: brand.overline,
       pink: brand.sweetPink
     },
     icons: {
@@ -111,81 +107,6 @@ const decisions = {
       success: brand.kellyGreen,
       error: brand.red,
       warning: brand.fuelYellow
-    }
-  },
-  colorAlvi: {
-    base:{
-      black: baseAlvi.mineShaft,
-      white: baseAlvi.white,
-      transparent: baseAlvi.transparent
-    },
-    loaders:{
-      background: brand.backgroundLoader,
-      foreGround: brand.foreGroundLoader
-    },
-    primary: {
-      blue: brandAlvi.congressBlue,
-      blue2: brandAlvi.catalinaBlue,
-      blue3: brandAlvi.midnightBlue,
-      backgroundBlue: brandAlvi.backgroundBlue,
-      blueGradient: brandAlvi.blueGradient,
-      yellowGradientButton: brandAlvi.yellowGradientButton
-    },
-    secondary: {
-      yellow: brandAlvi.sunglow,
-      yellow2: brandAlvi.butterCup,
-      yellow3: brandAlvi.goldenGrass,
-      yellow4: brandAlvi.creamBrulee
-    },
-    neutral: {
-      black: brandAlvi.black,
-      gray: brandAlvi.mercury,
-      grayLight: brandAlvi.wildSand,
-      grayDark: brandAlvi.doveGray,
-      graySilver: brandAlvi.silver,
-      grayWhite: brandAlvi.alabaster,
-      white: brandAlvi.white
-    },
-    campaigns: {
-      superMarca: brandAlvi.superMarca,
-      superPrecio: brandAlvi.superPrecio,
-      exclusivo: brandAlvi.exclusivo
-    },
-    feedback: {
-      successDark: brandAlvi.successDark,
-      errorDark: brandAlvi.errorDark,
-      warningLight: brandAlvi.warningLight,
-      warningDark: brandAlvi.warningDark
-    },
-    text: {
-      primary: brandAlvi.primary,
-      secondary: brandAlvi.secondary,
-      grayLight: brandAlvi.grayLight,
-      inactive: brandAlvi.inactive,
-      success: brandAlvi.success,
-      error: brandAlvi.error,
-      warning: brandAlvi.warning
-    },
-    background: {
-      selago: brandAlvi.selago,
-      foam: brandAlvi.foam,
-      wildSand: brandAlvi.wildSand,
-      spanishGray: brandAlvi.spanishGray,
-      mercury: brandAlvi.mercury,
-      white: brandAlvi.white,
-      yellow: brandAlvi.secondary,
-      blue: brandAlvi.congressBlue
-    },
-    icons: {
-      primary: brandAlvi.congressBlue,
-      secondary: brandAlvi.secondary,
-      gray: brandAlvi.doveGray,
-      grayLight: brandAlvi.silver,
-      black: brandAlvi.black,
-      white: brandAlvi.white,
-      success: brandAlvi.kellyGreen,
-      error: brandAlvi.red,
-      warning: brandAlvi.warningLight
     }
   },
   fontFamily: {

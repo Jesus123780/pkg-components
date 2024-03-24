@@ -20,6 +20,7 @@ const choices = {
       mineShaft: '#282828',
       doveGray: '#666666',
       silver: '#C4C4C4',
+      overline: 'rgba(0, 0, 0, 0.4)', 
       mercury: '#E5E5E5',
       wildSand: '#F5F5F5',
       alabaster: '#F9F9F9',
@@ -54,62 +55,6 @@ const choices = {
       orangeTag: '#e07c00'
     },
     base: {
-      mineShaft: '#282828',
-      white: '#FFFFFF',
-      transparent: 'transparent'
-    }
-  },
-  colorAlvi: {
-    brandAlvi: {
-      // Primary
-      congressBlue: '#02498E',
-      catalinaBlue: '#04377A',
-      midnightBlue: '#00285C',
-      backgroundBlue: '#DEEAFA',
-      spanishGray: '#999999',
-      blueGradient: 'linear-gradient(180deg, #02498E 0%, #00285C 96.15%)',
-      yellowGradientButton: 'linear-gradient(180deg, #FFE59C 0%, #EEC656 100%)',
-      // Secondary
-      sunglow: '#FDC42D',
-      butterCup: '#F6B812',
-      goldenGrass: '#E1AE27',
-      creamBrulee: '#FFE59C',
-      // Neutral
-      black: '#333333',
-      doveGray: '#666666',
-      silver: '#C4C4C4',
-      mercury: '#E5E5E5',
-      wildSand: '#F5F5F5',
-      alabaster: '#F9F9F9',
-      white: '#FFFFFF',
-      // Campaigns
-      superMarca: '#DA291C',
-      superPrecio: '#02498E',
-      exclusivo: '#FEDD00',
-      // Feedback
-      successDark: '#50a773',
-      errorDark: '#E43C3C',
-      warningLight: '#F0A92E',
-      warningDark: '#CC870F',
-      // Text
-      primary: '#02498E',
-      secondary: '#FDC42D',
-      grayLight: '#666666',
-      inactive: '#C4C4C4',
-      success: '#50a773',
-      error: '#E43C3C',
-      warning: '#CC870F',
-      // Backgrounds
-      selago: '#DEEAFA',
-      foam: '#E4F7FC',
-      // Icons
-      kellyGreen: '#24ba00',
-      red: '#F80000',
-      // Loaders
-      backgroundLoader: '#f3f3f3',
-      foreGroundLoader: '#ecebeb'
-    },
-    baseAlvi: {
       mineShaft: '#282828',
       white: '#FFFFFF',
       transparent: 'transparent'

@@ -1,0 +1,4 @@
+.wrapper_logo {
+    border: 2px dashed var(--color-neutral-gray-silver) !important;
+    border-radius: 50% !important;
+}

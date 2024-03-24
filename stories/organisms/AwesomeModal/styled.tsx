@@ -1,11 +1,11 @@
-/* eslint-disable consistent-return */
 import styled, { css, keyframes } from 'styled-components'
 import {
-    BGColor,
-    DarkSilver,
-    SEGColor
+  BGColor,
+  DarkSilver,
+  SEGColor
 } from '../../../assets/colors'
 import { MODAL_SIZES } from './constanst'
+import { getGlobalStyle } from '../../../helpers'
 
 const fadeIn = keyframes`
     from {
@@ -67,28 +67,35 @@ const fadeOutTop = keyframes`
 
 `
 
-export const Container = styled.div`
-    display: ${({ show, state }) => {
-    if (show && state) return 'block'
-    else if (show && !state) return 'block'
-    else if (!show && !state) return 'none'
-  }};
+interface IContainer {
+  show: boolean | undefined
+  state: boolean | undefined
+  bgColor?: string
+  zIndex?: string
+}
+
+export const Container: React.FC<IContainer> = styled.div<IContainer>`
+    display: ${({ show, state }) =>
+      ((show ?? false) && (state ?? false)) || ((show ?? false) && !(state ?? false))
+        ? 'block'
+        : 'none'};
     position: fixed;
-    background: ${({ bgColor }) => { return bgColor || 'rgba(0,0,0,.4)' }};
+    background: ${({ bgColor }) => bgColor ?? getGlobalStyle('--color-background-overline')};
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: ${({ zIndex }) => { return zIndex || '100' }};
+    z-index: ${({ zIndex }) => zIndex ?? '100'};
     opacity: 1;
-  ${({ show, state }) => {
-    if (show && state) return css`animation: ${fadeIn} .1s linear;`
-    else if (show && !state) return css`animation: ${fadeIn} .s linear;`
-  }}
-
-`
+    animation: ${({ show, state }) =>
+      (show ?? false) && (state ?? false)
+        ? css`animation: ${fadeIn} .1s linear;`
+        : (show ?? false) && !(state ?? false)
+        ? css`animation: ${fadeIn} .s linear;`
+        : 'none'};
+  `
 
 export const Wrapper = styled.div`
     position: relative;
@@ -98,10 +105,6 @@ export const Wrapper = styled.div`
     z-index: 888;
     display: flex;
     align-items: center;
-    ${props => {
-    return props.backdropA && css`
-        animation: ${Pulse} .2s forwards;
-    `}}
     justify-content: center;
 `
 
@@ -116,14 +119,15 @@ export const Modal = styled.div`
     ${props => {
     return props.backdropA && css`
         animation: ${Pulse} .2s forwards;
-    `}}
+    `
+}}
     min-width: 340px;
     border-radius: ${({ borderRadius }) => { return borderRadius }};
     border: 1px solid rgba(0,0,0,.2);
     z-index: 999;
-    height: ${({ height }) => { return height || 'auto' }};
-    min-height: ${({ height }) => { return height || 'auto' }};
-    min-height: ${({ height }) => { return height || 'auto' }};
+    height: ${({ height }) => { return height ?? 'auto' }};
+    min-height: ${({ height }) => { return height ?? 'auto' }};
+    min-height: ${({ height }) => { return height ?? 'auto' }};
     ${({ state }) => { return state ? css`animation: ${fadeInTop} .2s forwards;` : css`animation: ${fadeOutTop} .2s forwards;` }}
 `
 
@@ -155,7 +159,8 @@ export const BtnClose = styled.button`
         position: absolute;
         right: 6px;
         top: 6px;
-    `}}
+    `
+}}
     background-color: transparent;
     border: 0;
     font-size: 1.5rem;
@@ -172,14 +177,14 @@ export const ModalBody = styled.div`
     position: relative;
     flex: 1 1 auto;
     overflow-y: auto;
-    border-radius: ${({ borderRadius }) => { return borderRadius || 'none' }};
-    background-color: ${({ backgroundColor }) => { return backgroundColor || BGColor }};
-    display: ${({ display }) => { return display || 'block' }};
-    height: ${({ height }) => { return height || 'auto' }};
+    border-radius: ${({ borderRadius }) => { return borderRadius ?? 'none' }};
+    background-color: ${({ backgroundColor }) => { return backgroundColor ?? BGColor }};
+    display: ${({ display }) => { return display ?? 'block' }};
+    height: ${({ height }) => { return height ?? 'auto' }};
 
-    min-height: ${({ height }) => { return height || 'auto' }};
-    min-height: ${({ height }) => { return height || 'auto' }};
-    padding: ${({ padding }) => { return padding || '0' }};
+    min-height: ${({ height }) => { return height ?? 'auto' }};
+    min-height: ${({ height }) => { return height ?? 'auto' }};
+    padding: ${({ padding }) => { return padding ?? '0' }};
 .modal-wrapper {
     background-color: #FFFFFF;
     border-radius: 5px;
@@ -222,12 +227,12 @@ export const ModalFooter = styled.div`
     justify-content: space-between;
     display: flex;
     border-top: 1px solid ${`${DarkSilver}33`};
-    background-color: ${({ backgroundColor }) => { return backgroundColor || BGColor }};
+    background-color: ${({ backgroundColor }) => { return backgroundColor ?? BGColor }};
 `
 
 export const BtnConfirm = styled.button`
     flex-direction: row;
-    padding: ${({ padding }) => { return padding || '5px' }};
+    padding: ${({ padding }) => { return padding ?? '5px' }};
     cursor: pointer;
     border: ${({ border }) => { return border ? `1px solid  ${SEGColor}` : 'none' }};
     border-radius: 30px;
@@ -235,8 +240,8 @@ export const BtnConfirm = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: ${({ height }) => { return height || 'auto' }};
-    background-color: ${({ bgColor }) => { return bgColor || 'transparent' }};
+    height: ${({ height }) => { return height ?? 'auto' }};
+    background-color: ${({ bgColor }) => { return bgColor ?? 'transparent' }};
     &:disabled {
         cursor: no-drop;
     }
@@ -244,7 +249,7 @@ export const BtnConfirm = styled.button`
 
 export const BtnCancel = styled.button`
     flex-direction: row;
-    padding: ${({ padding }) => { return padding || '5px' }};
+    padding: ${({ padding }) => { return padding ?? '5px' }};
     cursor: pointer;
     border: ${({ border }) => { return border ? `${`1px solid ${SEGColor}`}` : 'none' }};
     border-radius: 30px;
@@ -252,8 +257,8 @@ export const BtnCancel = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: ${({ height }) => { return height || 'auto' }};
-    background-color: ${({ bgColor }) => { return bgColor || 'transparent' }};
+    height: ${({ height }) => { return height ?? 'auto' }};
+    background-color: ${({ bgColor }) => { return bgColor ?? 'transparent' }};
     &:disabled {
         cursor: no-drop;
     }

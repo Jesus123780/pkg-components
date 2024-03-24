@@ -5,6 +5,7 @@ import style from './button.module.css'
 export interface ButtonProps {
   width?: string
   borderRadius?: string
+  loading?: boolean
   fontSize?: string
   padding?: string
   type?: string | 'secundary' | 'primary'
@@ -27,6 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
   border,
   color,
   primary = false,
+  loading = false,
   styles = {},
   type = '',
   onClick = () => {},

@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useState } from 'react'
-import { BGColor, PColor } from '../../../assets/colors'
+import React, {
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import { IconClose } from '../../../assets/icons'
-import { RippleButton } from '../../atoms'
 import { Button } from '../../atoms/Button'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
 import {
@@ -10,14 +12,50 @@ import {
   Container,
   Modal,
   ModalBody,
-  ModalFooter,
   ModalHeader,
   ModalTitle,
   Wrapper
 } from './styled'
+import { getGlobalStyle } from '../../../helpers'
+import styles from './styles.module.css'
+interface IPropsAwesomeModal {
+  backgroundColor?: string
+  title?: string
+  size?: string
+  show?: boolean
+  disabled?: any
+  display?: any
+  zIndex?: any
+  cancel?: string
+  confirm?: string
+  padding?: any
+  backdrop?: string
+  iconConfirm?: any
+  useScroll?: boolean
+  keyboard?: boolean
+  footer?: boolean
+  btnCancel?: boolean
+  openLateral?: any
+  btnConfirm?: boolean
+  children?: any
+  hideOnConfirm?: boolean
+  timeOut?: number
+  backdropAnimation?: boolean
+  height?: any
+  bgColor?: any
+  question?: boolean
+  customHeight?: any
+  submit?: boolean
+  header?: boolean
+  sizeIconClose?: string
+  borderRadius?: string
+  onHide?: () => void
+  onCancel?: () => void
+  onConfirm?: () => void
 
-export const AwesomeModal = ({
-  backgroundColor,
+}
+export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
+  backgroundColor = '',
   title,
   size = MODAL_SIZES.medium,
   show,
@@ -38,7 +76,6 @@ export const AwesomeModal = ({
   children,
   hideOnConfirm = true,
   timeOut = 200,
-  backdropAnimation = false,
   height,
   bgColor,
   question = false,
@@ -48,34 +85,29 @@ export const AwesomeModal = ({
   sizeIconClose = '30px',
   borderRadius = '.3rem',
   onHide = () => {
-    return
   },
   onCancel = () => {
-    return
   },
   onConfirm = () => {
-    return
   }
 }) => {
-  const [state, setState] = useState(show)
-  const [modal, setSModal] = useState(false)
-  const [backdropA, setAnimationBackdrop] = useState(false)
+  const [state, setState] = useState<boolean | undefined>(show)
+  const [modal, setModal] = useState<boolean>(false)
   const hide = useCallback(() => {
     setState(false)
     onCancel()
-    setSModal(false)
+    setModal(false)
     setTimeout(onHide, timeOut)
   }, [onCancel, onHide, timeOut])
-  const onShowQuestion = () => {
-    return setSModal(!modal)
-  }
-  // eslint-disable-next-line consistent-return
 
-  // eslint-disable-next-line consistent-return
+  const onShowQuestion = (): void => {
+    return setModal(!modal)
+  }
+
   useEffect(() => {
-    const handleKeyUp = (e) => {
+    const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>): void => {
       if (e.code === 'Escape') {
-        setSModal(true)
+        setModal(true)
       }
     }
 
@@ -100,146 +132,93 @@ export const AwesomeModal = ({
   useEffect(() => {
     setState(show)
   }, [show])
-  const onBackdropHide = (e) => {
-    e.preventDefault()
-    if (backdrop === 'static') {
-      setAnimationBackdrop(true)
-    } else {
-      hide()
-    }
-    setTimeout(() => {
-      return setAnimationBackdrop(false)
-    }, 100)
-  }
+
   useEffect(() => {
-    if (show && useScroll) {
+    if (show === true && useScroll) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'auto'
     }
   }, [show, useScroll])
-  const clickCancel = () => {
+
+  const clickCancel = (): void => {
     setState(false)
     onCancel()
-    setSModal(false)
+    setModal(false)
     setTimeout(onHide, timeOut)
     onCancel()
   }
-  const clickConfirm = () => {
+  const clickConfirm = (): void => {
     if (hideOnConfirm) setState(false)
     onCancel()
-    setSModal(false)
+    setModal(false)
     if (hideOnConfirm) {
       setTimeout(onHide, timeOut)
     }
     onConfirm()
   }
-  const onClickBackdrop = () => {
-    if (backdropAnimation) {
-      setAnimationBackdrop(false)
-    }
-  }
 
   return (
     <Container
-      bgColor={bgColor}
-      onMouseDown={onBackdropHide}
-      openLateral={openLateral}
       show={show}
-      showLateral={show}
       state={state}
       zIndex={zIndex}
     >
-      <Wrapper backdropA={backdropA} onMouseDown={onClickBackdrop}>
+      <Wrapper>
         <Modal
-          backdropA={backdropA}
           borderRadius={borderRadius}
           height={height}
           onMouseDown={(e) => {
             return e.stopPropagation()
           }}
-          show={show}
-          showLateral={show}
           size={size}
           state={state}
         >
           {header && (
             <ModalHeader>
               <ModalTitle>{title}</ModalTitle>
-              <BtnClose
+              <button
+                style={{ backgroundColor: getGlobalStyle('--color-base-transparent'), cursor: 'pointer' }}
                 onClick={() => {
                   return question ? onShowQuestion() : hide()
                 }}
               >
-                <IconClose color={PColor} size={sizeIconClose} />
-              </BtnClose>
+                <IconClose color={getGlobalStyle('--color-background-primary')} size={sizeIconClose} />
+              </button>
             </ModalHeader>
           )}
           <ModalBody
-            backgroundColor={backgroundColor}
+            bgColor={backgroundColor}
             borderRadius={borderRadius}
             display={display}
-            height={customHeight || 'calc(100vh - 50px)'}
+            height={customHeight !== '' ? customHeight : 'calc(100vh - 50px)'}
             padding={padding}
           >
-            {modal && show && (
-              <div className='modal-wrapper'>
-                <h2>{`¿Seguro que quieres cerrar ${title ?? ''}?`}</h2>
-                <div className='modal-confirm'>
-                  <RippleButton
-                    border
-                    disabled={disabled}
-                    onClick={() => {
-                      return setSModal(false)
-                    }}
-                    style={{ fontSize: '14px', fontWeight: '400' }}
-                    type='button'
-                  >
-                    {cancel || BUTTONS_TEXT.cancel}
-                  </RippleButton>
-                  <RippleButton
-                    border
-                    color={BGColor}
-                    onClick={() => {
-                      hide()
-                    }}
-                    style={{ fontSize: '14px', fontWeight: '400' }}
-                    type={submit ? 'submit' : 'button'}
-                  >
-                    {confirm || BUTTONS_TEXT.confirm}
-                  </RippleButton>
-                </div>
-              </div>
-            )}
             {children}
           </ModalBody>
           {footer && (
-            <ModalFooter backgroundColor={backgroundColor}>
+            <div className={styles.footer_modal} >
               {btnCancel && (
                 <Button
-                  backgroundColor={PColor}
-                  border
                   disabled={disabled}
                   onClick={clickCancel}
                   type='button'
-                  widthButton='200px'
                 >
-                  {cancel || BUTTONS_TEXT.cancel}
+                  {cancel ?? BUTTONS_TEXT.cancel}
                 </Button>
               )}
               {btnConfirm && (
                 <Button
-                  backgroundColor={PColor}
-                  border
+                  primary
+                  border='primary'
                   onClick={clickConfirm}
                   type={submit ? 'submit' : 'button'}
-                  widthButton='200px'
                 >
-                  {confirm || BUTTONS_TEXT.confirm}
+                  {confirm ?? BUTTONS_TEXT.confirm}
                   {iconConfirm}
                 </Button>
               )}
-            </ModalFooter>
+            </div>
           )}
         </Modal>
       </Wrapper>
