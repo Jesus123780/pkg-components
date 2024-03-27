@@ -5,124 +5,124 @@ export interface TypeModalDetailOrder {
   dataModal: DataModal
   dataStore: DataStore
   disabledPrint: boolean
-  loading: boolean
-  openAction: boolean
-  saleError?: boolean
-  pDatCre: PDatCre
-  saleGroup?: boolean
-  LoadingStatusOrder: boolean
   edit?: boolean
   isClient: boolean
+  loading: boolean
+  LoadingStatusOrder: boolean
+  openAction: boolean
+  pDatCre: PDatCre
+  saleError?: boolean
+  saleGroup?: boolean
   saleKey: any[]
+  stateSale: number
   totalProductsPrice: string
+  HandleChangeState: () => void
   handleModalItem: (pId: string, ShoppingCardId: string) => void
+  handleModalProductSale: () => void
+  handleOpenActions: () => void
   handlePrint: () => void
   handleSale: () => void
-  handleModalProductSale: () => void
   handleSaleGroup: () => void
   handleSaleKey: () => void
-  handleOpenActions: () => void
-  setModalItem: (boolean: boolean) => void
   onClose: () => void
   onPress: () => void
-  HandleChangeState: () => void
+  setModalItem: (boolean: boolean) => void
   setStateSale: Dispatch<SetStateAction<string>>
-  stateSale: string | null
 }
 
 export interface DataModal {
   __typename: string
-  pdpId: any
-  idStore: string
-  pCodeRef: string
-  payMethodPState: number
-  pPRecoger: any
   change?: string
-  totalProductsPrice: number
-  pSState: number
-  pDatCre: string
   channel: number
-  locationUser: any
-  pDatMod: string
   getAllPedidoStore: GetAllPedidoStore[]
+  idStore: string
+  locationUser: any
+  payMethodPState: number
+  pCodeRef: string
+  pDatCre: string
+  pDatMod: string
+  pdpId: any
+  pPRecoger: any
+  pSState: number
+  totalProductsPrice: number
 }
 
 export interface GetAllPedidoStore {
   __typename: string
-  pdpId: string
-  pId: any
+  getAllShoppingCard: GetAllShoppingCard
   idStore: string
-  ShoppingCard: string
-  pCodeRef: string
-  pPStateP: number
   payMethodPState: number
-  pPRecoger: any
+  pCodeRef: string
   pDatCre: string
   pDatMod: string
-  getAllShoppingCard: GetAllShoppingCard
+  pdpId: string
+  pId: any
+  pPRecoger: any
+  pPStateP: number
+  ShoppingCard: string
 }
 
 export interface GetAllShoppingCard {
   __typename: string
-  ShoppingCard: string
-  comments: string
   cantProducts: number
+  comments: string
   pId: string
-  productFood: ProductFood
   priceProducts: number
+  productFood: ProductFood
+  ShoppingCard: string
 }
 
 export interface DataStore {
   __typename: string
-  cId: string
-  id: string
-  deliveryTimeMinutes: number
-  scheduleOpenAll: boolean
-  dId: string
-  idStore: string
-  ctId: string
-  change?: string
-  payMethodPState?: string
-  neighborhoodStore: string
-  Viaprincipal: string
-  catStore: string
-  storeOwner: string
-  storeName: string
-  ImageName: any
-  emailStore: string
-  storePhone: string
-  socialRaz: string
-  Image: any
+  addressStore: string
   banner: string
+  cateStore: CateStore
+  catStore: string
+  change?: string
+  cId: string
+  city: City
+  createdAt: string
+  ctId: string
+  deliveryTimeMinutes: number
+  department: Department
+  description: string
+  dId: string
   documentIdentifier: string
-  uPhoNum: string
+  emailStore: string
+  getStoreSchedules: GetStoreSchedule[]
+  id: string
+  idStore: string
+  Image: any
+  ImageName: any
+  neighborhoodStore: string
+  NitStore: string
+  pais: Pais
+  payMethodPState?: string
+  scheduleOpenAll: boolean
+  secVia: any
+  siteWeb: string
+  socialRaz: string
+  storeName: string
+  storeOwner: string
+  storePhone: string
+  typeContribute: string
+  typeRegiments: string
   ULocation: string
+  uPhoNum: string
   upLat: string
   upLon: string
   uState: string
-  siteWeb: string
-  description: string
-  createdAt: string
-  secVia: any
-  NitStore: string
-  typeRegiments: string
-  typeContribute: string
-  addressStore: string
-  pais: Pais
-  city: City
-  department: Department
-  getStoreSchedules: GetStoreSchedule[]
-  cateStore: CateStore
+  Viaprincipal: string
 }
 
 export interface Pais {
   __typename: string
-  cId: string
-  cName: string
   cCalCod: string
-  cState: number
   cDatCre: string
   cDatMod: string
+  cId: string
+  cName: string
+  cState: number
 }
 
 export interface City {

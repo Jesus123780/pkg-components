@@ -259,7 +259,7 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
               </ContainerGrid>
             </div>
           </div>
-          <div>{console.log('LoadingStatusOrder', LoadingStatusOrder)}
+          <div>{console.log(stateOrder[stateSale])}
             {Boolean(edit) && (
               <Column>
                 <RippleButton
@@ -273,10 +273,10 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
                 <Column style={{ position: 'relative' }}>
                   {openAction && (
                     <div className={styles.menu_options}>
-                      {options.map((option) => {
+                      {options.map((option, index) => {
                         return (
                           <button
-                            className={styles.menu_options__option}
+                            className={`${styles.menu_options__option} ${stateSale === index && styles.menu_options__option_active}`}
                             key={option.value}
                             onClick={() => {
                               return handleChangeStateSale(
@@ -286,7 +286,7 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
                             }}
                           >
                             <Text align='start' size='sm'>
-                              {option.label ?? 'Pedido'}
+                              {option.label ?? stateOrder[stateSale as keyof typeof stateOrder]}
                             </Text>
                           </button>
                         )

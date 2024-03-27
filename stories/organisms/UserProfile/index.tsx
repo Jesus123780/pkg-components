@@ -1,16 +1,37 @@
 import PropTypes from 'prop-types'
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Devices } from '../Devices'
+import { Text } from '../../atoms'
 import { ProfileInfo } from './ProfileInfo'
 import { RestaurantInfo } from './RestaurantInfo'
 import {
   Button,
   Container,
-  ContainerColumn,
-  Text
+  ContainerColumn
 } from './styled'
 
-export const UserProfile = ({
+interface UserProfileProps {
+  dataForm?: {
+    email: string
+    lastName: string
+    upAddress: any
+    upDateBir: any
+    upPhone: string
+    upZipCode: any
+    username: string
+  }
+  dataStore?: object
+  dataDevice?: any[]
+  deviceId?: any
+  loading?: boolean
+  asEdited?: boolean
+  loadingSubmit?: boolean
+  handleSubmit?: () => void
+  onChange?: () => void
+  useFormatDate?: () => void
+}
+
+export const UserProfile: React.FC<UserProfileProps> = ({
   dataForm = {},
   dataStore = {},
   dataDevice = [],
@@ -18,39 +39,38 @@ export const UserProfile = ({
   loading = false,
   asEdited = false,
   loadingSubmit = false,
-  handleSubmit = () => { return },
-  onChange = () => { return }
+  handleSubmit = () => { },
+  onChange = () => { }
 }) => {
   const [editingProfile, setEditingProfile] = useState(false)
   const [editingDataProfile, setEditingDataProfile] = useState(false)
   const [editingAddress, setEditingAddress] = useState(false)
   const [currentView, setCurrentView] = useState('Perfil')
 
-  const handleViewChange = useCallback((tabKey) => {
+  const handleViewChange = useCallback((tabKey: string) => {
     setCurrentView(tabKey)
   }, [])
 
-  const handleProfileDataEditClick = () => {
+  const handleProfileDataEditClick = (): void => {
     setEditingDataProfile(!editingDataProfile)
     if (editingDataProfile) {
       handleSubmit()
     }
   }
 
-  const handleProfileEditClick = () => {
+  const handleProfileEditClick = (): void => {
     setEditingProfile(!editingProfile)
     if (editingProfile) {
       handleSubmit()
     }
   }
 
-  const handleAddressEditClick = () => {
+  const handleAddressEditClick = (): void => {
     setEditingAddress(!editingAddress)
     if (editingAddress) {
       handleSubmit()
     }
   }
-  console.log(editingProfile)
   const memoizedComponents = {
     Perfil: (
       <ProfileInfo
@@ -69,7 +89,7 @@ export const UserProfile = ({
     ),
     Dispositivos: (
       <div style={{ width: '90%', margin: '0 30px' }}>
-        <Text fSize='1.5rem'>
+        <Text>
         Mis dispositivos
         </Text>
         <Devices
@@ -85,19 +105,20 @@ export const UserProfile = ({
     )
   }
 
-
   return <div style={{ backgroundColor: '#f6f6f6', padding: '30px' }}>
     <Container>
       <ContainerColumn width='25%'>
-        {Object.keys(memoizedComponents).map(view => {return (
+        {Object.keys(memoizedComponents).map(view => {
+          return (
           <Button
             isActive={view === currentView}
             key={view}
-            onClick={() => {return handleViewChange(view)}}
+            onClick={() => { return handleViewChange(view) }}
           >
             {view.charAt(0).toUpperCase() + view.slice(1)}
           </Button>
-        )})}
+          )
+        })}
       </ContainerColumn>
       <ContainerColumn width='75%'>
         {memoizedComponents[currentView]}
@@ -126,4 +147,3 @@ UserProfile.propTypes = {
   onChange: PropTypes.func,
   useFormatDate: PropTypes.func
 }
-

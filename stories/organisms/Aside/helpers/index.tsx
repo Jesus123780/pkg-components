@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { ActiveLink } from '../../../atoms'
 import { AnchorRouter } from '../styled'
@@ -51,13 +50,4 @@ export const CustomLinkAside: React.FC<CustomLinkAsideProps> = ({
           )}
     </>
   )
-}
-
-CustomLinkAside.propTypes = {
-  count: PropTypes.number,
-  href: PropTypes.string,
-  icon: PropTypes.object,
-  label: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-  size: PropTypes.number
 }

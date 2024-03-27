@@ -25,3 +25,8 @@
     border-left: 4px solid var(--color-secondary-blue);
     background-color: var(--color-neutral-gray-light);
 }
+
+.menu_options__option_active {
+    border-left: 4px solid var(--color-primary-red);
+    background-color: var(--color-neutral-gray-light);
+}

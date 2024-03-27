@@ -7,7 +7,7 @@ import type { Data, ProductFood } from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
-import { CategorieProducts } from '../../organisms'
+import { CategoriesProducts } from '../../organisms'
 import type { MiniCardProductProps } from '../../organisms/MiniCardProduct/type'
 import type { Root } from '../../organisms/CategorieProducts/types'
 import { HeaderInfo } from './HeaderInfo'
@@ -136,7 +136,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       <div className={styles.container}>
         <div className={styles.header}>
           <Column>
-            <CategorieProducts {...propsSliderCategory} />
+            <CategoriesProducts {...propsSliderCategory} />
           </Column>
         </div>
         <div className={styles.filter}>

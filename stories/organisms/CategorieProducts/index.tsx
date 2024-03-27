@@ -17,7 +17,7 @@ interface CategorieProductsProps {
   handleChangeCheck: (id: string) => void
 }
 
-export const CategorieProducts: React.FC<CategorieProductsProps> = ({
+export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
   data = [],
   breakpoints,
   handleChangeCheck = (id) => {

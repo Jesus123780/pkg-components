@@ -1,18 +1,18 @@
 import React from 'react'
 import { type Meta, type StoryObj } from '@storybook/react'
-import { CategorieProducts } from './index'
+import { CategoriesProducts } from './index'
 import { data } from './mockData'
 import { type Root } from './types'
 
 export default {
   title: 'organisms/CategorieProducts',
-  component: CategorieProducts
-} as Meta<typeof CategorieProducts>
+  component: CategoriesProducts
+} as Meta<typeof CategoriesProducts>
 
-type Story = StoryObj<typeof CategorieProducts>
+type Story = StoryObj<typeof CategoriesProducts>
 
 export const MainCategorieProducts: Story = (args: any) => (
-  <CategorieProducts {...args} />
+  <CategoriesProducts {...args} />
 )
 
 MainCategorieProducts.args = {

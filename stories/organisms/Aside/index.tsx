@@ -1,4 +1,6 @@
 import React, {
+  type Dispatch,
+  type SetStateAction,
   memo,
   useEffect,
   useState
@@ -45,9 +47,8 @@ interface MemoAsideProps {
   loading?: boolean
   handleClick?: any
   handleOpenDeliveryTime?: any
-  setSalesOpen?: any
   setShowComponentModal?: any
-
+  setSalesOpen?: Dispatch<SetStateAction<boolean>>
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
   isMobile = false,
@@ -168,10 +169,22 @@ const MemoAside: React.FC<MemoAsideProps> = ({
           label: 'Productos',
           subLinks: [
             {
-              href: '/products',
+              href: '/products/products?all=true',
               icon: IconTicket,
               size: '20px',
               label: 'Productos'
+            },
+            {
+              href: '/products/disabled',
+              icon: IconTicket,
+              size: '20px',
+              label: 'Productos borrados'
+            },
+            {
+              href: '/products/create',
+              icon: IconTicket,
+              size: '20px',
+              label: 'Crear producto'
             }
           ]
         }
@@ -180,10 +193,10 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   ]
 
   useEffect(() => {
-    function handleKeyDown (event: KeyboardEvent) {
+    function handleKeyDown (event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
-        setSalesOpen(!salesOpen)
+        setSalesOpen(prevState => !(prevState))
       }
     }
     document.addEventListener('keydown', handleKeyDown)
@@ -192,7 +205,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     }
   }, [salesOpen])
 
-  const handleMenu = (index) => {
+  const handleMenu = (index: boolean): void => {
     setActive((prev: boolean) => {
       const state = index === prev ? false : index
       return state
@@ -287,7 +300,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                         label,
                         href,
                         icon
-                      } = item || {}
+                      } = item ?? {}
                       return (
                         <Options
                           active={Boolean(index === active)}

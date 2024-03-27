@@ -8,7 +8,6 @@ import { IconClose } from '../../../assets/icons'
 import { Button } from '../../atoms/Button'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
 import {
-  BtnClose,
   Container,
   Modal,
   ModalBody,
@@ -157,14 +156,16 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
     }
     onConfirm()
   }
-
-  return (
+  const onClickBackdrop = () => {
+    hide()
+  }
+   return (
     <Container
       show={show}
       state={state}
       zIndex={zIndex}
     >
-      <Wrapper>
+      <Wrapper onMouseDown={onClickBackdrop}>
         <Modal
           borderRadius={borderRadius}
           height={height}

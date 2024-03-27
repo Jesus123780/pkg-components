@@ -68,7 +68,7 @@ export const MenuLeft = styled.button`
   font-family: PFont-Regular;
   border-bottom: 1px solid #52525242;
   padding: 0;
-  background: transparent;
+  background: transparent !important;
   ${(props) => {
     return (
       props.active &&

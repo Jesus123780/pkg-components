@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  AlertInfo,
   AsideInfoStore,
   InputHooks,
   NewSelect
@@ -43,7 +44,8 @@ export const AsideSales: React.FC<AsideProps> = ({
   dataClientes = [],
   values = {
     cliId: '',
-    change: ''
+    change: '',
+    valueDelivery: ''
   },
   errors = {
     change: false,
@@ -79,9 +81,11 @@ export const AsideSales: React.FC<AsideProps> = ({
           handleOpenAside()
           handleCloseAside()
         }}
-        style={{ height: '100vh' }}
+        style={{ height: '100vh', padding: getGlobalStyle('--spacing-xs') }}
       >
-        <Divider marginBottom={'20px'} />
+        <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
+        <AlertInfo message='Selecciona a un cliente para la venta' type='warning' />
+        <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
         <NewSelect
           action={true}
           handleClickAction={() => {
@@ -94,7 +98,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           onChange={handleChange}
           optionName="clientName"
           options={dataClientes ?? []}
-          search={' '}
+          search={true}
           title="Mis clientes"
           value={values?.cliId ?? ''}
         />

@@ -11,6 +11,7 @@ interface TagProps {
   color?: 'primary' | 'secondary'
   label?: string
   lineHeight?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '9xl' | '10xl'
+  style?: object
 }
 
 export const Tag: React.FC<TagProps> = ({
@@ -20,7 +21,8 @@ export const Tag: React.FC<TagProps> = ({
   color,
   backgroundColor,
   align,
-  lineHeight
+  lineHeight,
+  style
 }) => {
   const combinedClasses = Array.isArray(className)
     ? className.filter(Boolean).join(' ')
@@ -28,15 +30,16 @@ export const Tag: React.FC<TagProps> = ({
 
   return (
     <span
-    className={classNames('marmita-minitag', {
-      [`${combinedClasses}`]: combinedClasses,
-      [styles[`color-${color}`]]: color,
-      [styles['marmita-minitag']]: true,
-      [styles[`align-${align}`]]: align,
-      [styles[`background-${backgroundColor}`]]: backgroundColor,
-      [styles[`line-height-${lineHeight}`]]: lineHeight
-    })}
-      >
+      style={style}
+      className={classNames('marmita-minitag', {
+        [`${combinedClasses}`]: combinedClasses,
+        [styles[`color-${color}`]]: color,
+        [styles['marmita-minitag']]: true,
+        [styles[`align-${align}`]]: align,
+        [styles[`background-${backgroundColor}`]]: backgroundColor,
+        [styles[`line-height-${lineHeight}`]]: lineHeight
+      })}
+    >
       {label}
       {children}
     </span>

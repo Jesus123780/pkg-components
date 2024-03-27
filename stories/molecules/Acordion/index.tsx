@@ -9,6 +9,7 @@ import {
   Row,
   Span
 } from './Styled'
+import { getGlobalStyle } from '../../../helpers'
 
 interface OptionsProps {
   active?: boolean
@@ -87,6 +88,9 @@ export const Options: React.FC<OptionsProps> = ({
         </div>
         <ContainerBurger>
           <button
+            style={{
+              backgroundColor: getGlobalStyle('--color-base-transparent')
+            }}
             className='BurgerMenu__container'
             onClick={() => { handleClick(index) }}
           >

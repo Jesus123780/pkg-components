@@ -149,7 +149,7 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                   <div>
                     <p className='garnish-choices__title'>{list?.title}</p>
                     <p className='garnish-choices__title-desc'>
-                      Escoge hasta {messageLimit}.
+                      Escoge hasta  jejeje{messageLimit}.
                     </p>
                     {Boolean(list?.required === 1) && <Tag />}
                   </div>

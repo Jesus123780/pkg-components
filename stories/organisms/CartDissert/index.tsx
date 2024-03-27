@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import {
   IconDelete,
@@ -8,8 +7,23 @@ import {
 } from '../../../assets/icons'
 import { Column } from '../../atoms/Column'
 import styles from './styles.module.css'
+import { getGlobalStyle } from '../../../helpers'
 
-export const Card = ({
+interface CardProps {
+  card?: {
+    title: string
+    id: string
+  }
+  listID: any
+  loadingEditSubOptional?: boolean
+  selectedItem?: {
+    id: string
+  }
+  removeOneItem: (args: any) => any
+  editOneItem: () => void
+}
+
+export const Card: React.FC<CardProps> = ({
   card = {
     title: '',
     id: ''
@@ -19,22 +33,22 @@ export const Card = ({
   selectedItem = {
     id: ''
   },
-  removeOneItem = () => {},
-  editOneItem = () => {}
+  removeOneItem = (args) => { return args },
+  editOneItem = (args: any) => { return args }
 }) => {
-  const [editingCardId, setEditingCardId] = useState(null)
+  const [editingCardId, setEditingCardId] = useState<string | null>(null)
 
   const [editedTitle, setEditedTitle] = useState(card?.title)
 
-  const handleEditCard = (cardId) => {
+  const handleEditCard = (cardId: string): void => {
     setEditingCardId(cardId)
     editOneItem({ listID, id: card.id })
   }
 
-  const handleSaveClick = () => {
+  const handleSaveClick = (): void => {
     setEditingCardId(null)
-    if (!card?.id) return
-    editOneItem({ listID, id: card?.id, title: editedTitle || card?.title })
+    if (card?.id === '' || card?.id === null) return
+    editOneItem({ listID, id: card?.id, title: editedTitle ?? card?.title })
   }
   const isEditing = editingCardId === selectedItem?.id
 
@@ -49,24 +63,26 @@ export const Card = ({
         alignItems: 'center'
       }}
     >
-      <div className={styles['contentCard']}>
+      <div className={styles.contentCard}>
         <Column>
-          {isEditing ? (
+          {isEditing
+            ? (
             <input
-              className={styles['contentCard__input']}
+              className={styles.contentCard__input}
               onChange={(e) => {
                 return setEditedTitle(e.target.value)
               }}
               type='text'
               value={editedTitle}
             />
-          ) : (
-            <h3 className={styles['title_card']}>{card?.title}</h3>
-          )}
+              )
+            : (
+            <h3 className={styles.title_card}>{card?.title}</h3>
+              )}
         </Column>
-        <div className={styles['contentCard__actions']}>
+        <div className={styles.contentCard__actions}>
           <button
-            className={styles['contentCard__button']}
+            className={styles.contentCard__button}
             onClick={() => {
               return removeOneItem({ listID, id: card.id })
             }}
@@ -76,34 +92,21 @@ export const Card = ({
             <IconDelete color='var(--color-primary-red)' size='23px' />
           </button>
           <button
-            className={styles['contentCard__button']}
+            className={styles.contentCard__button}
             onClick={
               isEditing
                 ? () => {
-                  return handleSaveClick()
-                }
+                    return handleSaveClick()
+                  }
                 : () => {
-                  handleEditCard(card.id)
-                }
+                    handleEditCard(card.id)
+                  }
             }
           >
-            {loadingEditSubOptional ? <IconLoading /> : isEditing ? <IconMiniCheck color='var(--color-alvi-icons-success)' size='23px' /> : <IconEdit color='var(--color-primary-red)' size='23px' />}
+            {loadingEditSubOptional ? <IconLoading /> : isEditing ? <IconMiniCheck color={getGlobalStyle('--color-icons-success')} size='23px' /> : <IconEdit color='var(--color-primary-red)' size='23px' />}
           </button>
         </div>
       </div>
     </Column>
   )
-}
-
-Card.propTypes = {
-  card: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string
-  }),
-  editOneItem: PropTypes.func,
-  index: PropTypes.number,
-  listID: PropTypes.any,
-  loadingEditSubOptional: PropTypes.bool,
-  removeOneItem: PropTypes.func,
-  selectedItem: PropTypes.object
 }

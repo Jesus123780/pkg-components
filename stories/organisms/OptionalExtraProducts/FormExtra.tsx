@@ -10,6 +10,33 @@ import { AlertInfo, InputHooks, QuantityButton } from '../../molecules'
 import { ContentCheckbox, GarnishChoicesHeader } from './styled'
 import { getGlobalStyle } from '../../../helpers'
 
+interface SelectedExtra {
+  numberLimit: number
+  required: number
+  title: string
+}
+
+interface SetCheck {
+  exState: boolean
+}
+
+interface Props {
+  isEdit?: boolean
+  numberLimit?: string
+  selectedExtra?: SelectedExtra
+  setCheck?: SetCheck
+  showTooltip?: string
+  title?: string
+  handleAddList?: (args: { title: string, numberLimit: string }) => void
+  setSelectedExtra?: (args: SelectedExtra) => void
+  handleCheck?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleShowTooltip?: (string: string) => void
+  setNumberLimit?: (number: string) => void
+  setShowTooltip?: (boolean: boolean) => void
+  setTitle?: (text: string) => void
+  sendNotification?: (args: { description: string, title: string, backgroundColor: string }) => void
+}
+
 /**
  * FormExtra component for handling extra form fields.
  * @param {Object} props - Component props.
@@ -29,7 +56,7 @@ import { getGlobalStyle } from '../../../helpers'
  * @param {function} [props.sendNotification=(args)=>args] - Function to send notification.
  * @returns {JSX.Element} Rendered FormExtra component.
  */
-export const FormExtra = ({
+export const FormExtra: React.FC<Props> = ({
   isEdit = false,
   numberLimit = '',
   selectedExtra = {
@@ -71,11 +98,11 @@ export const FormExtra = ({
   const finalTitle = title ?? defaultTitle
   const emptyTitle = title?.trim() === ''
 
-  const parseNumberLimit = (limit) => {
+  const parseNumberLimit = (limit: string | number): void => {
     return typeof limit === 'string' ? parseInt(limit, 10) : limit
   }
 
-  const isLimitEqualToOne = (limit) => {
+  const isLimitEqualToOne = (limit: string | number): void => {
     return parseNumberLimit(limit) === 1
   }
 
@@ -86,7 +113,6 @@ export const FormExtra = ({
   const showNegativeButton = isEdit
     ? isLimitEqualToOne(selectedExtra?.numberLimit)
     : isLimitEqualToOne(numberLimit)
-
   return (
     <div style={{ height: '100%' }}>
       <div>
@@ -159,27 +185,28 @@ export const FormExtra = ({
           <QuantityButton
             handleDecrement={() => {
               if (isEdit) {
-                setSelectedExtra({
-                  ...selectedExtra,
-                  numberLimit: selectedExtra?.numberLimit - 1
-                })
+                setSelectedExtra((prevSelectedExtra) => ({
+                  ...prevSelectedExtra,
+                  numberLimit: isNaN(prevSelectedExtra?.numberLimit) ? 0 : Math.max(0, Number(prevSelectedExtra?.numberLimit) - 1)
+                }))
                 return
               }
-              setNumberLimit(numberLimit === '0' ? 0 : parseInt(numberLimit, 10) - 1)
+              setNumberLimit((prevNumberLimit) => Math.max(0, parseInt(prevNumberLimit, 10) - 1))
             }}
             handleIncrement={() => {
               if (isEdit) {
-                setSelectedExtra({
-                  ...selectedExtra,
-                  numberLimit: selectedExtra?.numberLimit + 1
-                })
+                setSelectedExtra((prevSelectedExtra) => ({
+                  ...prevSelectedExtra,
+                  numberLimit: isNaN(prevSelectedExtra?.numberLimit) ? 0 : Number(prevSelectedExtra?.numberLimit) + 1
+                }))
                 return
               }
-              setNumberLimit(numberLimit + 1)
+              setNumberLimit((prevNumberLimit) => Math.max(0, Number(prevNumberLimit) + 1))
             }}
             quantity={quantity}
             showNegativeButton={showNegativeButton}
           />
+
           {!isEdit && (
             <>
               <Divider marginTop={getGlobalStyle('--spacing-xl')} />

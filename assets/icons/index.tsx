@@ -308,7 +308,7 @@ IconStore.propTypes = {
   style: PropTypes.object
 }
 
-export const IconColombia = ({ style = {}, size }: IconProps) => {
+export const IconColombia: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
   return (
     <svg
       height={size}
@@ -332,7 +332,7 @@ IconColombia.propTypes = {
   style: PropTypes.object
 }
 
-export const IconArrowRight = ({
+export const IconArrowRight: React.FC<IconProps> = ({
   style = {},
   size,
   color,
@@ -349,6 +349,8 @@ export const IconArrowRight = ({
     >
       <path
         stroke={color}
+        width={size}
+        height={size}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
@@ -373,7 +375,7 @@ IconArrowRight.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconTicket = ({
+export const IconTicket: React.FC<IconProps> = ({
   style = {},
   size,
   color,
@@ -407,7 +409,7 @@ IconTicket.propTypes = {
   style: PropTypes.object
 }
 
-export const IconDost = ({ style = {}, size, color }: IconProps) => {
+export const IconDost: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -428,7 +430,7 @@ IconDost.propTypes = {
   style: PropTypes.object
 }
 
-export const Google = ({ size, ...props }: IconProps) => {
+export const Google: React.FC<IconProps> = ({ size, ...props }: IconProps) => {
   return (
     <svg
       height={`${size}px`}
@@ -466,7 +468,7 @@ Google.propTypes = {
   size: PropTypes.any
 }
 
-export const IconLogout = ({ size, color }: IconProps) => {
+export const IconLogout: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       height={size}

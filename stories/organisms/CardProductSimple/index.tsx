@@ -52,28 +52,28 @@ export const MemoCardProductSimple = ({
   activeComment,
   dataExtra = [],
   dataOptional = [],
-  dispatch = () => { return },
-  handleComment = () => { return },
-  handleDecrement = () => { return },
-  handleDelete = () => { return },
-  handleFreeProducts = () => { return },
-  handleIncrement = () => { return },
-  onClick = () => { return },
-  onFileInputChange = () => { return },
-  onTargetClick = () => { return }
+  dispatch = () => { },
+  handleComment = () => { },
+  handleDecrement = () => { },
+  handleDelete = () => { },
+  handleFreeProducts = () => { },
+  handleIncrement = () => { },
+  onClick = () => { },
+  onFileInputChange = () => { },
+  onTargetClick = () => { }
 }) => {
   const router = useRouter()
   const [startAnimateUp, setStartAnimateUp] = useState('')
   const [animateType, setAnimateType] = useState('')
   const [show, setShow] = useState(false)
 
-  const handle = () => {
+  const handle = (): void => {
     setTimeout(() => {
       setAnimateType('move-up')
       setStartAnimateUp('')
     }, 250)
   }
-  const handleDown = (event) => {
+  const handleDown = (event): void => {
     handleDecrement(event)
     setStartAnimateUp('')
     setAnimateType('')
@@ -107,12 +107,12 @@ export const MemoCardProductSimple = ({
   // Formatea los datos extras
   const formattedExtraData = dataExtra
     .slice(0, 4)
-    .map(product => {return `$ ${numberFormat(product?.extraPrice)}, ${product.extraName}`})
+    .map(product => { return `$ ${numberFormat(product?.extraPrice)}, ${product.extraName}` })
   const finalExtraFormat = conjunctionFormatter.format(formattedExtraData)
   // Formatea los datos opcionales
   const formattedOptionalData = dataOptional
     .slice(0, 4)
-    .map(product => {return product?.ExtProductFoodsSubOptionalAll?.map(subProduct => {return subProduct.OptionalSubProName}).join(', ')})
+    .map(product => { return product?.ExtProductFoodsSubOptionalAll?.map(subProduct => { return subProduct.OptionalSubProName }).join(', ') })
   const finalOptionalFormat = unitFormatter.format(formattedOptionalData)
   // Une las dos listas
   const listCategories = `${finalExtraFormat}, ${finalOptionalFormat}`
@@ -169,8 +169,8 @@ export const MemoCardProductSimple = ({
             <ButtonCard
               delay='.1s'
               grid={false}
-              onClick={() => {
-                return router.push(`/update/products/editar/${pId}`)
+              onClick={async () => {
+                return await router.push(`/update/products/editar/${pId}`)
               }}
               top={'80px'}
             >
@@ -248,7 +248,7 @@ export const MemoCardProductSimple = ({
                         payload: {
                           value: event.target.value,
                           name: 'name',
-                          index: index,
+                          index,
                           id: pId
                         }
                       })
@@ -259,7 +259,7 @@ export const MemoCardProductSimple = ({
                         payload: {
                           value: event.target.value,
                           name: 'name',
-                          index: index,
+                          index,
                           id: pId
                         }
                       })

@@ -10,7 +10,6 @@ const formatDate = (dateString) => {
   const month = date.toLocaleString('default', { month: 'short' })
   return `${day} de ${month}`
 }
-  
 
 export const DateRange = ({ startDate, endDate }) => {
   const formattedStartDate = formatDate(startDate)
