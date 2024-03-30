@@ -1,4 +1,3 @@
-import React from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { BGColor, PColor } from './../../../assets/colors/index'
 
@@ -26,9 +25,10 @@ export const CircleDay: CircleDayProps = styled.div`
   border-radius: 50%;
   height: 50px;
   cursor: pointer;
-  background-color: ${BGColor};
+  background-color: var(--color-neutral-gray-light);
   width: 50px;
   min-height: 50px;
+  margin-right: 25px;
   text-align: center;
   display: grid;
   place-content: center;
@@ -36,9 +36,10 @@ export const CircleDay: CircleDayProps = styled.div`
   ${(props) => {
     return props.pulse
       ? css`
-          animation: ${onPulses} 2s infinite;
-          background-color: ${`${PColor}`};
-          color: ${BGColor};
+        animation: ${onPulses} 2s infinite;
+        background-color: ${`${PColor}`};
+        border: 2px solid ${`${PColor}`};
+        color: ${BGColor};
         `
       : css``
   }}

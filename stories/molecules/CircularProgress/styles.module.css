@@ -1,0 +1,5 @@
+.circle_bg {
+  margin: 20px auto;
+  display: block;
+  transform: rotate(-90deg)
+}

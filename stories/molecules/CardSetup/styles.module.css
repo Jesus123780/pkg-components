@@ -1,0 +1,28 @@
+
+.container {
+    display: grid;
+    grid-template-rows: max-content max-content 1fr;
+    padding: 32px 24px;
+    gap: 16px;
+    border-radius: 16px;
+    background-color: rgb(247, 248, 249);
+    box-shadow: none;
+  }
+  
+  .logo {
+    width: 200px; /* Ajustar el ancho del logo */
+    height: auto; /* Mantener la proporción del logo */
+  }
+  
+  .portada {
+    width: 100%; /* Ajustar el ancho de la portada */
+    max-height: 300px; /* Altura máxima opcional */
+    object-fit: cover; /* Recortar y mantener proporción */
+  }
+  
+  .description {
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 400;
+    color: var(--color-text-gray-light);
+  }

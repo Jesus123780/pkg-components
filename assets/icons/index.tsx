@@ -1103,25 +1103,23 @@ IconSales.propTypes = {
   style: PropTypes.object
 }
 
-export const IconDelete = ({ style = {}, size, color }: IconProps) => {
+export const IconDelete: React.FC<IconProps> = ({ style = {}, size, color, ...props }: IconProps) => {
   return (
     <svg
-      fill={color}
-      height={size}
-      style={style}
-      viewBox="0 0 23 24"
-      width={size}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M13.014 10.085l-.544 8.656c-.036.48.338.9.822.925h.06a.87.87 0 0 0 .87-.817l.544-8.656a.867.867 0 0 0-.822-.924.892.892 0 0 0-.93.816zM8.965 9.269a.883.883 0 0 0-.821.924l.543 8.656a.87.87 0 0 0 .87.817h.06a.883.883 0 0 0 .822-.925l-.543-8.656a.892.892 0 0 0-.93-.816z"
-        fill={color}
-      ></path>
-      <path
-        d="M22.027 4.946h-5.968V3.338C16.058 1.5 14.547 0 12.698 0H10.21C8.35 0 6.839 1.5 6.839 3.338v1.608H.882A.866.866 0 0 0 0 5.811c0 .48.387.876.882.876h2.066l.894 14.191C3.952 22.631 5.304 24 6.912 24h9.074c1.607 0 2.96-1.369 3.069-3.122l.096-1.572a.875.875 0 0 0-.821-.925.884.884 0 0 0-.93.817l-.097 1.572c-.049.829-.629 1.49-1.317 1.49H6.91c-.688 0-1.268-.65-1.317-1.49L4.7 6.687H18.21l-.387 6.1c-.036.48.338.9.822.924a.876.876 0 0 0 .93-.817l.399-6.207h2.066a.884.884 0 0 0 .882-.876c0-.48-.41-.865-.894-.865zM8.603 3.338c0-.877.725-1.597 1.607-1.597h2.49c.881 0 1.606.72 1.606 1.597v1.608H8.603V3.338z"
-        fill={color}
-      ></path>
-    </svg>
+    xmlns="http://www.w3.org/2000/svg"
+    height={size ?? 24}
+    viewBox="0 0 24 24"
+    width={size ?? 24}
+    color={color}
+    {...props}
+  >
+    <path
+      fill={color ?? '#FF4242'}
+      fillRule='evenodd'
+      d='M10.113 1.5A2.53 2.53 0 0 0 7.65 3.454L7.407 4.67a.398.398 0 0 1-.39.319H3.75a1.25 1.25 0 0 0 0 2.5h16.958a1.25 1.25 0 1 0 0-2.5h-3.267a.398.398 0 0 1-.39-.32l-.243-1.215A2.53 2.53 0 0 0 14.345 1.5h-4.232Zm4.453 3.489-.196-.977A.03.03 0 0 0 14.347 4h-4.233a.03.03 0 0 0-.025.012l-.195.977h4.673Zm4.86 3.232a1.25 1.25 0 0 1 1.145 1.347l-.024.296a905.298 905.298 0 0 1-.288 3.432c-.174 2.037-.39 4.445-.55 5.88-.1.905-.446 1.746-1.112 2.365-.67.622-1.539.905-2.465.922-2.623.047-5.252.05-7.878-.005-.916-.019-1.768-.315-2.42-.937-.647-.616-.987-1.447-1.085-2.337-.16-1.449-.376-3.859-.55-5.894a815.2 815.2 0 0 1-.287-3.427l-.024-.295a1.25 1.25 0 0 1 2.492-.2l.024.292a738.821 738.821 0 0 0 .285 3.417c.175 2.039.388 4.418.544 5.832.049.44.194.677.325.803.126.12.344.238.748.247 2.589.054 5.185.051 7.78.005.445-.009.68-.135.81-.255.131-.122.279-.357.329-.808l.544-5.819.31-3.715a1.25 1.25 0 0 1 1.346-1.146Z'
+      clipRule='evenodd'
+    />
+  </svg>
   )
 }
 
@@ -1131,7 +1129,7 @@ IconDelete.propTypes = {
   style: PropTypes.object
 }
 
-export const IconInvoice = ({ style = {}, size }) => {
+export const IconInvoice: React.FC<IconProps> = ({ style = {}, size }) => {
   return <svg
     fill='none'
     height={size}
@@ -1222,11 +1220,11 @@ export const IconInvoice = ({ style = {}, size }) => {
   /><path d='M237.44,212.07h86.77v-84H180.87v84h22.77' transform='translate(-150.54 -18.44)' /></svg>
 }
 
-export const IconDownload = ({
+export const IconDownload: React.FC<IconProps> = ({
   style = {},
   size,
   color
-}): React.FC<IconProps> => {
+}) => {
   return (
     <svg
       fill={color}
@@ -1389,23 +1387,17 @@ export const IconPlus = ({ style = {}, size = 24, color }: IconProps) => {
     </svg>
   )
 }
-export const IconLinePart = ({ size = 2, color }: IconProps) => {
+export const IconLinePart: React.FC<IconProps> = ({ size = 2, color, ...props }: IconProps) => {
   return (
     <svg
-      fill="none"
-      height={size}
-      width={16}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M1 1h14"
-        stroke={color}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeMiterlimit={10}
-        strokeWidth={2}
-      />
-    </svg>
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    <path d="M23 13H1v-2h22z" />
+    <path fill="none" d="M0 0h24v24H0z" />
+  </svg>
   )
 }
 
@@ -1419,17 +1411,17 @@ IconPlus.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconMinus = ({
+export const IconMinus: React.FC<IconProps> = ({
   style = {},
   size = 24,
   color,
   ...props
-}: IconProps) => {
+}) => {
   return (
     <svg
-      height={size || 24}
+      height={size ?? 24}
       viewBox="0 0 24 24"
-      width={size || 24}
+      width={size ?? 24}
       style={style}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
@@ -1739,7 +1731,7 @@ export const IconBox: React.FC<IconProps> = ({ size, color, ...props }) => (
   </svg>
 )
 
-export const IconPdf = ({ size, color, ...props }): React.FC<IconProps> => (
+export const IconPdf: React.FC<IconProps> = ({ size, color, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -1805,7 +1797,7 @@ export const IconPdf = ({ size, color, ...props }): React.FC<IconProps> => (
   </svg>
 )
 
-export const IconLines = ({ size, color, ...props }): React.FC<IconProps> => (
+export const IconLines: React.FC<IconProps> = ({ size, color, ...props }) => (
   <svg
   xmlns="http://www.w3.org/2000/svg"
   width={size}

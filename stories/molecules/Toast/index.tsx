@@ -5,17 +5,17 @@ import { IconClose } from './../../../assets/icons/index'
 import styles from './styles.module.css'
 
 export interface ToastItem {
-  id: number;
-  title: string;
-  description: string;
-  backgroundColor?: 'success' | 'warning' | 'error';
+  id: number
+  title: string
+  description: string
+  backgroundColor?: 'success' | 'warning' | 'error'
 }
 
 export interface ToastProps {
-  toastList: ToastItem[];
-  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-  autoDelete?: boolean;
-  autoDeleteTime?: number;
+  toastList: ToastItem[]
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+  autoDelete?: boolean
+  autoDeleteTime?: number
 }
 
 export const Toast: React.FC<ToastProps> = (props) => {
@@ -33,7 +33,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (autoDelete && toastList.length && list.length) {
+      if (autoDelete && (toastList.length > 0) && (list.length > 0)) {
         deleteToast(toastList[0].id)
       }
     }, autoDeleteTime)
@@ -45,8 +45,8 @@ export const Toast: React.FC<ToastProps> = (props) => {
   }, [toastList, autoDelete, autoDeleteTime, list])
 
   const deleteToast = (id: number) => {
-    const listItemIndex = list.findIndex((e) => {return e.id === id})
-    const toastListItem = toastList.findIndex((e) => {return e.id === id})
+    const listItemIndex = list.findIndex((e) => { return e.id === id })
+    const toastListItem = toastList.findIndex((e) => { return e.id === id })
     list.splice(listItemIndex, 1)
     toastList.splice(toastListItem, 1)
     setList([...list])
@@ -54,14 +54,14 @@ export const Toast: React.FC<ToastProps> = (props) => {
   const [divPosition, setDivPosition] = useState(0)
 
   const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
-    setDivPosition(event.clientX);
+    setDivPosition(event.clientX)
   }
-  
+
   const handleDragEnd = (event: React.DragEvent<HTMLDivElement>, id: number) => {
     if (window.innerWidth - event.clientX > window.innerWidth / 2) {
-      deleteToast(id);
+      deleteToast(id)
     }
-  };
+  }
 
   const backgroundColor = {
     success: '#50a773',
@@ -71,30 +71,31 @@ export const Toast: React.FC<ToastProps> = (props) => {
   const getBackgroundColor = (color?: 'success' | 'warning' | 'error') => {
     switch (color) {
       case 'warning':
-        return '#ebbc26';
+        return '#ebbc26'
       case 'error':
-        return `${PColor}69`;
+        return `${PColor}69`
       default:
-        return '#50a773';
+        return '#50a773'
     }
   }
   return (
-    <div className={styles[`notification-container ${ position }`]}>
-      {list.map((toast, i) => {return (
+    <div className={styles[`notification-container ${position}`]}>
+      {list.map((toast, i) => {
+        return (
         <div
-          className={`${ styles.notification } ${ styles.toast } ${ styles[position] }`}
+          className={`${styles.notification} ${styles.toast} ${styles[position]}`}
           draggable
           key={i}
           onDrag={handleDrag}
-          onDragEnd={(e) => {return handleDragEnd(e, toast.id)}}
+          onDragEnd={(e) => { return handleDragEnd(e, toast.id) }}
           style={{
             position: 'relative',
-            left: `${ divPosition }px`,
+            left: `${divPosition}px`,
             transition: 'left 0.5s ease-in-out',
-            backgroundColor: backgroundColor[toast.backgroundColor] ?? backgroundColor['success']
+            backgroundColor: backgroundColor[toast.backgroundColor] ?? backgroundColor.success
           }}
         >
-          <button className={styles['notification-button']} onClick={() => {return deleteToast(toast.id)}}>
+          <button className={styles['notification-button']} onClick={() => { return deleteToast(toast.id) }}>
             <IconClose color={BGColor} size={30} />
           </button>
           <div>
@@ -102,7 +103,8 @@ export const Toast: React.FC<ToastProps> = (props) => {
             <p className={styles['notification-message']}>{toast.description}</p>
           </div>
         </div>
-      )})}
+        )
+      })}
     </div>
   )
 }

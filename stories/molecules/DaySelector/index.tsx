@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { CircleDay } from './styled'
 interface DaySelectorProps {
-  days: { day: number; name: string }[]
+  days: Array<{ day: number, name: string }>
   selectedDays: number[]
   handleDaySelection: (day: number) => void
 }
@@ -14,7 +13,7 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
   return (
     <>
       {days.map((day) => {
-        return ( 
+        return (
         <CircleDay
             key={day.day}
             onClick={() => {
@@ -28,15 +27,4 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
       })}
     </>
   )
-}
-
-DaySelector.propTypes = {
-  days: PropTypes.arrayOf(
-    PropTypes.shape({
-      day: PropTypes.number,
-      name: PropTypes.string
-    })
-  ),
-  handleDaySelection: PropTypes.func,
-  selectedDays: PropTypes.arrayOf(PropTypes.number)
 }
