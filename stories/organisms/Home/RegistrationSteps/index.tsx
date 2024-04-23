@@ -3,7 +3,7 @@ import React from 'react'
 import Sales from '../../../../assets/images/sales.webp'
 import styles from './RegistrationSteps.module.css'
 
-export const RegistrationSteps = () => {
+export const RegistrationSteps: React.FC = () => {
   const BUSINESS_TITLE = process.env.BUSINESS_TITLE
 
   return (
@@ -32,5 +32,3 @@ export const RegistrationSteps = () => {
     </div>
   )
 }
-
-

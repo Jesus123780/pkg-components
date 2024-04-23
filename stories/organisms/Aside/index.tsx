@@ -8,7 +8,6 @@ import React, {
 import {
   IconBox,
   IconBuys,
-  IconCategorie,
   IconChart,
   IconHome,
   IconLogo,
@@ -20,7 +19,8 @@ import {
 } from '../../../assets/icons'
 import {
   Button,
-  Overline
+  Overline,
+  Text
 } from '../../atoms'
 
 import Link from 'next/link'
@@ -36,18 +36,20 @@ import {
   Router
 } from './styled'
 import { getGlobalStyle } from '../../../utils'
+
 interface MemoAsideProps {
-  isMobile?: boolean
-  location?: any
-  countOrders?: number
-  setCollapsed?: any
-  salesOpen?: boolean
   collapsed?: boolean
+  countOrders?: number
   dataStore?: any
-  loading?: boolean
   handleClick?: any
   handleOpenDeliveryTime?: any
+  isMobile?: boolean
+  loading?: boolean
+  location?: any
+  salesOpen?: boolean
+  setCollapsed?: any
   setShowComponentModal?: any
+  version?: string
   setSalesOpen?: Dispatch<SetStateAction<boolean>>
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
@@ -56,6 +58,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     pathname: '/'
   },
   countOrders = 0,
+  version = '0.0.0',
   setCollapsed,
   salesOpen,
   collapsed = false,
@@ -109,7 +112,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
       count: countOrders ?? 0
     },
     {
-      href: idStore !== '' ? `/dashboard/${storeName}/${idStore}` : '/dashboard',
+      href: idStore !== '' ? `/dashboard/${storeName?.replace(' ', '-')?.toLocaleLowerCase()}/${idStore}` : '/dashboard',
       icon: IconStore,
       size: '25px',
       label: 'Perfil'
@@ -331,6 +334,9 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               )
             })}
           </Router>
+          <Text color='gray-dark'>
+            {version}
+          </Text>
         </Card>
       </ContainerAside>
     </>

@@ -13,9 +13,9 @@ import ImageHand from '../../assets/public/Images/asistant_hand.png'
 
 export const Home = () => {
   return (
-    <div className={styles['container']}>
+    <div className={styles.container}>
       <Column className={styles['col-1']}>
-        <div className={styles['container_icon']}>
+        <div className={styles.container_icon}>
           <Icon icon='LogoCMF' />
         </div>
         <div className={styles['text-container']}>
@@ -33,8 +33,8 @@ export const Home = () => {
       <Column className={styles['col-2']}>
         <Image src={ImageAsistan} alt='' width='100%' height='100%' />
         <div className={styles['col-2_lateral-column']}>
-        <div className={styles['contain_image_hand']} >
-          <Image src={ImageHand} alt='' className={styles['image_hand']} />
+        <div className={styles.contain_image_hand} >
+          <Image src={ImageHand} alt='' className={styles.image_hand} />
         </div>
         </div>
       </Column>

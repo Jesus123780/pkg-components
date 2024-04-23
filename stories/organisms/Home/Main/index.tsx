@@ -1,10 +1,11 @@
 import React from 'react'
 import styles from './Main.module.css'
 
-export const Main = () => {
+export const Main: React.FC = () => {
   const BUSINESS_TITLE = process.env.BUSINESS_TITLE
-  function getFormattedSpanishDate() {
-    const options = { year: 'numeric', month: 'long', day: '2-digit' }
+
+  function getFormattedSpanishDate (): string {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: '2-digit' }
     const now = new Date()
     return now.toLocaleDateString('es-ES', options).replace(/ de /g, ' • ')
   }
@@ -18,7 +19,7 @@ export const Main = () => {
           <div className={styles.categoryTag}>Gestión</div>
           <h1 className={styles.title}>Pasos para registrar un restaurante en {BUSINESS_TITLE}</h1>
           <p className={styles.subtitle}>
-          Es muy fácil registrar un restaurante en {BUSINESS_TITLE}, 
+          Es muy fácil registrar un restaurante en {BUSINESS_TITLE},
           </p>
           <p className={styles.subtitle}>
           ten a mano los documentos de tu negocio y

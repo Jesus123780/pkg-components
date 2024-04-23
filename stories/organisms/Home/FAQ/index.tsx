@@ -5,7 +5,11 @@ import React from 'react'
 import { Options } from '../../../molecules'
 import styles from './FAQ.module.css'
 
-export const FAQSection = ({ handleMenu = () => { return }, active }) => {
+interface FAQSectionProps {
+  active?: any
+  handleMenu?: (index: number) => void
+}
+export const FAQSection: React.FC<FAQSectionProps> = ({ handleMenu = (index) => { return index }, active }) => {
   const faqs = [
     { question: 'Crear un menú y tener claro el horario de atención.', answer: 'Respuesta a la pregunta 1...' }
   ]
@@ -18,7 +22,8 @@ export const FAQSection = ({ handleMenu = () => { return }, active }) => {
       <p className={styles.faqSubtitle}>
         Te acercamos las preguntas más frecuentes que hacen nuestros clientes...
       </p>
-      {faqs.map((faq, index) => {return (
+      {faqs.map((faq, index) => {
+        return (
         <Options
           active={index === active}
           handleClick={() => { return handleMenu(index) }}
@@ -32,7 +37,8 @@ export const FAQSection = ({ handleMenu = () => { return }, active }) => {
             <p>{faq.answer}</p>
           </div>
         </Options>
-      )})}
+        )
+      })}
     </div>
   )
 }
