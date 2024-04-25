@@ -185,7 +185,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             }
           </Info>
           <Router>
-            {modulesArray.map((module: any, index) => {
+            {modulesArray?.map((module: any, index) => {
               const subModules = module?.subModules ?? []
               const existSubModules = Boolean(subModules.length > 0)
               const onAction = module?.mPath?.startsWith('?')
@@ -214,7 +214,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                         label={module.mName}
                         path={`/${module.mPath}`}
                       >
-                        {subModules.map((item: any, index: number) => {
+                        {subModules?.map((item: any, index: number) => {
                           return (
                             <div key={item.smId} style={{ marginLeft: '20px', width: '90%' }} >
                               <CustomLinkAside
