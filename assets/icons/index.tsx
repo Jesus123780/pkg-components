@@ -14,37 +14,37 @@ import { getGlobalStyle } from '../../helpers'
  * @param {Object} props... - Any other SVG attributes
  * @returns {JSX.Element} SVG icon
  */
-export const IconBuys = ({
+export const IconBuys: React.FC<IconProps> = ({
   style = {},
   size,
   color = 'var(--color-icons-black)',
   ...props
-}: IconProps) => {
+}) => {
   return (
     <svg
       className="icon"
-      height={size || 800}
+      height={size ?? 800}
       viewBox="0 0 1024 1024"
-      width={size || 800}
+      width={size ?? 800}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
       style={{ ...style, color }}
     >
       <path
         d="M687.7 833.8h-76.8c-16.6 0-30-13.4-30-30s13.4-30 30-30h76.8c16.6 0 30 13.4 30 30s-13.4 30-30 30zm-207 0H136.8c-16.6 0-30-13.4-30-30s13.4-30 30-30h343.9c16.6 0 30 13.4 30 30s-13.4 30-30 30z"
-        fill={color || '#3C9'}
+        fill={color ?? '#3C9'}
       />
       <path
         d="M880.8 931H207.9c-25.3 0-45.9-20.7-45.9-45.9 0-25.3 20.7-45.9 45.9-45.9h672.9c25.3 0 45.9 20.7 45.9 45.9S906 931 880.8 931z"
-        fill={color || '#FFB89A'}
+        fill={color ?? '#FFB89A'}
       />
       <path
         d="M703 122.7c20.9 0 40.6 8.2 55.5 23.2 14.9 14.9 23.2 34.7 23.2 55.5v2.8l.3 2.8 57.7 611.8c-.6 20-8.8 38.7-23.1 53.1-14.9 14.9-34.7 23.2-55.5 23.2H236c-20.9 0-40.6-8.2-55.5-23.2-14.4-14.4-22.6-33.2-23.1-53.2l54.7-612 .2-2.7v-2.7c0-20.9 8.2-40.6 23.2-55.5 14.9-14.9 34.7-23.2 55.5-23.2h412m0-59.9H291c-76.3 0-138.7 62.4-138.7 138.7l-55 615c0 76.3 62.4 138.7 138.7 138.7h525c76.3 0 138.7-62.4 138.7-138.7l-58-615c0-76.3-62.4-138.7-138.7-138.7z"
-        fill={color || '#45484C'}
+        fill={color ?? '#45484C'}
       />
       <path
         d="M712.6 228.8c0-24.9-20.1-45-45-45s-45 20.1-45 45c0 13.5 6 25.6 15.4 33.9-.3 1.6-.4 3.3-.4 5v95.9c0 23.5-9.2 45.7-26 62.5-16.8 16.8-39 26-62.5 26h-88.5c-23.5 0-45.7-9.2-62.5-26-16.8-16.8-26-39-26-62.5v-95.9c0-1.7-.1-3.4-.4-5 9.4-8.2 15.4-20.4 15.4-33.9 0-24.9-20.1-45-45-45s-45 20.1-45 45c0 13.5 6 25.6 15.4 33.9-.3 1.6-.4 3.3-.4 5v95.9c0 81.9 66.6 148.6 148.6 148.6h88.5c81.9 0 148.6-66.6 148.6-148.6v-95.9c0-1.7-.1-3.4-.4-5 9.3-8.3 15.2-20.4 15.2-33.9z"
-        fill={color || '#45484C'}
+        fill={color ?? '#45484C'}
       />
     </svg>
   )
@@ -65,13 +65,13 @@ IconBuys.propTypes = {
  * @param {Object} props... - Any other SVG attributes
  * @returns {JSX.Element} SVG icon
  */
-export const IconTime = ({ style = {}, size, color, ...props }: IconProps) => {
+export const IconTime: React.FC<IconProps> = ({ style = {}, size, color, ...props }: IconProps) => {
   return (
     <svg
       fill="none"
-      height={size || 800}
+      height={size ?? 800}
       viewBox="0 0 24 24"
-      width={size || 800}
+      width={size ?? 800}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
       style={{ ...style, color }}
@@ -79,7 +79,7 @@ export const IconTime = ({ style = {}, size, color, ...props }: IconProps) => {
       <path
         clipRule="evenodd"
         d="M12 2.75a9.25 9.25 0 1 0 0 18.5 9.25 9.25 0 0 0 0-18.5ZM1.25 12C1.25 6.063 6.063 1.25 12 1.25S22.75 6.063 22.75 12 17.937 22.75 12 22.75 1.25 17.937 1.25 12ZM12 7.25a.75.75 0 0 1 .75.75v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1-.22-.53V8a.75.75 0 0 1 .75-.75Z"
-        fill={color || '#1C274C'}
+        fill={color ?? '#1C274C'}
         fillRule="evenodd"
       />
     </svg>
@@ -101,26 +101,26 @@ IconTime.propTypes = {
  * @param {Object} props... - Any other SVG attributes
  * @returns {JSX.Element} SVG icon
  */
-export const IconHome = ({ style = {}, size, color, ...props }: IconProps) => {
+export const IconHome: React.FC<IconProps> = ({ style = {}, size, color, ...props }: IconProps) => {
   return (
     <svg
       fill="none"
-      height={size || 800}
+      height={size ?? 800}
       viewBox="0 0 24 24"
-      width={size || 800}
+      width={size ?? 800}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
       style={{ ...style, color }}
     >
       <path
         d="M9 16c.85.63 1.885 1 3 1s2.15-.37 3-1"
-        stroke={color || '#1C274C'}
+        stroke={color ?? '#1C274C'}
         strokeLinecap="round"
         strokeWidth={1.5}
       />
       <path
         d="M22 12.204v1.521c0 3.9 0 5.851-1.172 7.063C19.657 22 17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212C2 19.576 2 17.626 2 13.725v-1.521c0-2.289 0-3.433.52-4.381.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2c1.108 0 2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715"
-        stroke={color || '#1C274C'}
+        stroke={color ?? '#1C274C'}
         strokeLinecap="round"
         strokeWidth={1.5}
       />
@@ -128,7 +128,7 @@ export const IconHome = ({ style = {}, size, color, ...props }: IconProps) => {
   )
 }
 
-export const IconInfo = ({ style = {}, size, color }: IconProps) => {
+export const IconInfo: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -159,7 +159,7 @@ IconInfo.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconInformationProduct = ({
+export const IconInformationProduct: React.FC<IconProps> = ({
   style = {},
   size,
   color,
@@ -168,9 +168,9 @@ export const IconInformationProduct = ({
   return (
     <svg
       className="icon"
-      height={size || 800}
+      height={size ?? 800}
       viewBox="0 0 1024 1024"
-      width={size || 800}
+      width={size ?? 800}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
       style={{ ...style, color }}
@@ -216,7 +216,7 @@ export const IconChart: React.FC<IconProps> = ({ style = {}, size, color, ...pro
       <defs>
         <style>
           {
-            `.chart{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd}`
+            '.chart{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd}'
           }
         </style>
       </defs>
@@ -236,30 +236,30 @@ export const IconChart: React.FC<IconProps> = ({ style = {}, size, color, ...pro
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconCategorie = ({
+export const IconCategorie: React.FC<IconProps> = ({
   style = {},
   size,
   color,
   ...props
-}: IconProps) => {
+}) => {
   return (
     <svg
       fill="none"
-      height={size || 800}
+      height={size ?? 800}
       viewBox="0 0 24 24"
-      width={size || 800}
+      width={size ?? 800}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
       style={{ ...style, color }}
     >
       <path
         d="M4 7.657c0-.818 0-1.226.152-1.594.152-.367.442-.657 1.02-1.235l.656-.656c.578-.578.868-.868 1.235-1.02C7.431 3 7.84 3 8.657 3h6.686c.818 0 1.226 0 1.594.152.367.152.656.442 1.235 1.02l.656.656c.579.578.867.868 1.02 1.235.152.368.152.776.152 1.594V17c0 1.886 0 2.828-.586 3.414C18.828 21 17.886 21 16 21H8c-1.886 0-2.828 0-3.414-.586C4 19.828 4 18.886 4 17V7.657Z"
-        stroke={color || '#33363F'}
+        stroke={color ?? '#33363F'}
         strokeWidth={2}
       />
       <path
         d="M4 7h16M9 11a3 3 0 0 0 6 0"
-        stroke={color || '#33363F'}
+        stroke={color ?? '#33363F'}
         strokeLinecap="round"
         strokeWidth={2}
       />
@@ -283,18 +283,15 @@ IconCategorie.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconStore = ({ style = {}, size, color, ...props }: IconProps) => {
+export const IconStore: React.FC<IconProps> = ({ style = {}, size, color, ...props }) => {
   return (
     <svg
       fill="none"
-      height={size || 800}
-      stroke={color || '#000'}
+      height={size ?? 800}
+      stroke={color}
       strokeWidth={3}
       viewBox="0 0 64 64"
-      width={size || 800}
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-      style={{ ...style, color }}
+      width={size ?? 800}
     >
       <path d="M52 27.18v25.58a2.92 2.92 0 0 1-3 2.84H15a2.92 2.92 0 0 1-3-2.84V27.17" />
       <path d="M26.26 55.52V38.45h11.58v17.07M8.44 19.18s-1.1 7.76 6.45 8.94a7.17 7.17 0 0 0 6.1-2A7.43 7.43 0 0 0 32 26a7.4 7.4 0 0 0 5 2.49 11.82 11.82 0 0 0 5.9-2.15 6.66 6.66 0 0 0 4.67 2.15 8 8 0 0 0 7.93-9.3L50.78 9.05a1 1 0 0 0-.94-.65H14a1 1 0 0 0-.94.66ZM8.44 19.18h47.1M21.04 19.18V8.4M32.05 19.18V8.4M43.01 19.18V8.4" />
@@ -503,7 +500,7 @@ IconLogout.propTypes = {
   size: PropTypes.any
 }
 
-export const IconMessageMain = ({ style = {}, size, color }: IconProps) => {
+export const IconMessageMain: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -523,7 +520,7 @@ IconMessageMain.propTypes = {
   style: PropTypes.object
 }
 
-export const IconNotification = ({
+export const IconNotification: React.FC<IconProps> = ({
   size,
   style = {},
   color = 'var(--color-icons-primary)',
@@ -532,10 +529,10 @@ export const IconNotification = ({
   return (
     <svg
       fill="none"
-      height={size || 800}
+      height={size ?? 800}
       style={style}
       viewBox="0 0 24 24"
-      width={size || 800}
+      width={size ?? 800}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -556,7 +553,7 @@ IconNotification.propTypes = {
   style: PropTypes.object
 }
 
-export const IconWallet = ({ style = {}, color, size }: IconProps) => {
+export const IconWallet: React.FC<IconProps> = ({ style = {}, color, size }: IconProps) => {
   return (
     <svg height={size} style={style} viewBox="0 0 54.01 39.97" width={size}>
       <path
@@ -581,7 +578,7 @@ IconWallet.propTypes = {
   style: PropTypes.object
 }
 
-export const IconUser = ({ style = {}, size, color }: IconProps) => {
+export const IconUser: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -602,7 +599,7 @@ IconUser.propTypes = {
   style: PropTypes.object
 }
 
-export const IconHorario = ({ style = {}, size, color }: IconProps) => {
+export const IconHorario: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -617,14 +614,14 @@ export const IconHorario = ({ style = {}, size, color }: IconProps) => {
         cy="11.5"
         fill="none"
         r="10.5"
-        stroke={color || '#5e5f5f'}
+        stroke={color ?? '#5e5f5f'}
         strokeMiterlimit="10"
         strokeWidth="2px"
       />
       <polyline
-        fill={color || '#5e5f5f'}
+        fill={color ?? '#5e5f5f'}
         points="11 7 11 12.57 15.69 12.57"
-        stroke={color || '#5e5f5f'}
+        stroke={color ?? '#5e5f5f'}
         strokeMiterlimit="10"
       />
     </svg>
@@ -661,7 +658,7 @@ export const IconBoxes: React.FC<IconProps> = ({
   </svg>
 )
 
-export const IconLogo = ({ style = {}, color, size, ...props }: IconProps) => {
+export const IconLogo: React.FC<IconProps> = ({ style = {}, color, size, ...props }: IconProps) => {
   return (
     <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -697,7 +694,7 @@ IconHome.propTypes = {
   style: PropTypes.object
 }
 
-export const IconMiniCheck = ({ style = {}, size, color }: IconProps) => {
+export const IconMiniCheck: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -721,7 +718,7 @@ IconMiniCheck.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconArrowTop = ({ size, style = {}, color }: IconProps) => {
+export const IconArrowTop: React.FC<IconProps> = ({ size, style = {}, color }: IconProps) => {
   return (
     <svg
       height={size}
@@ -749,7 +746,7 @@ IconArrowTop.propTypes = {
   style: PropTypes.object
 }
 
-export const IconSearch = ({
+export const IconSearch: React.FC<IconProps> = ({
   style = {},
   size,
   color,
@@ -787,7 +784,7 @@ IconSearch.propTypes = {
   style: PropTypes.object
 }
 
-export const IconRate = ({ style = {}, size, color }: IconProps) => {
+export const IconRate: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       height={size}
@@ -810,7 +807,7 @@ IconRate.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconLoading = ({ color, size, ...props }: IconProps) => {
+export const IconLoading: React.FC<IconProps> = ({ color, size, ...props }: IconProps) => {
   return (
     <svg
       {...props}
@@ -835,7 +832,7 @@ IconLoading.propTypes = {
   size: PropTypes.any
 }
 
-export const IconNoShow = ({ style = {}, size }: IconProps) => {
+export const IconNoShow: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
   return (
     <svg
       height={size}
@@ -859,7 +856,7 @@ IconNoShow.propTypes = {
   style: PropTypes.object
 }
 
-export const IconShowEye = ({ style = {}, size }: IconProps) => {
+export const IconShowEye: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
   return (
     <svg height={size} style={style} viewBox="0 0 512 298.67" width={size}>
       <path
@@ -887,7 +884,7 @@ IconShowEye.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconPizza = ({ ...props }) => {
+export const IconPizza: React.FC<IconProps> = ({ ...props }) => {
   return (
     <svg
       fill="none"
@@ -956,7 +953,7 @@ IconPizza.propTypes = {
   size: PropTypes.any
 }
 
-export const IconShopping = ({ style = {}, size, color }: IconProps) => {
+export const IconShopping: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -978,7 +975,7 @@ IconShopping.propTypes = {
   style: PropTypes.object
 }
 
-export const IconCarrot = ({
+export const IconCarrot: React.FC<IconProps> = ({
   style = {},
   size,
   color,
@@ -987,8 +984,8 @@ export const IconCarrot = ({
   return (
     <svg
       fill="none"
-      height={size || 433}
-      width={size || 345}
+      height={size ?? 433}
+      width={size ?? 345}
       color={color}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
@@ -1041,7 +1038,7 @@ IconCarrot.propTypes = {
   style: PropTypes.object
 }
 
-export const IconFigure = ({
+export const IconFigure: React.FC<IconProps> = ({
   style = {},
   size,
   color,
@@ -1052,8 +1049,8 @@ export const IconFigure = ({
       viewBox="0 0 675.6 522.55"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
-      height={size || 500}
-      width={size || 500}
+      height={size ?? 500}
+      width={size ?? 500}
     >
       <defs>
         <style>
@@ -1091,12 +1088,12 @@ IconFigure.propTypes = {
   style: PropTypes.object
 }
 
-export const IconSales = ({ style = {}, size, color }: IconProps) => {
+export const IconSales: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill="none"
       height={size}
-      stroke={color || 'ff0000'}
+      stroke={color ?? 'ff0000'}
       style={style}
       viewBox="0 0 24 24"
       width={size}
@@ -1270,7 +1267,7 @@ export const IconDownload: React.FC<IconProps> = ({
   )
 }
 
-export const IconComment = ({
+export const IconComment: React.FC<IconProps> = ({
   style = {},
   size,
   color,
@@ -1279,7 +1276,7 @@ export const IconComment = ({
   return (
     <svg
       fill="none"
-      height={size || 16}
+      height={size ?? 16}
       style={{
         cursor: 'pointer',
         ...style
@@ -1304,10 +1301,10 @@ IconComment.propTypes = {
   size: PropTypes.number,
   style: PropTypes.object
 }
-export const IconCancel = ({ style = {}, size, color }: IconProps) => {
+export const IconCancel: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
-      fill={color || '#717171'}
+      fill={color ?? '#717171'}
       height={size}
       style={style}
       viewBox="0 0 32 32"
@@ -1340,7 +1337,7 @@ IconCancel.propTypes = {
   style: PropTypes.object
 }
 // Icon de Arrow
-export const IconArrowBottom = ({ style = {}, color, size }: IconProps) => {
+export const IconArrowBottom: React.FC<IconProps> = ({ style = {}, color, size }: IconProps) => {
   return (
     <svg
       color={color}
@@ -1364,7 +1361,7 @@ IconArrowBottom.propTypes = {
   style: PropTypes.object
 }
 
-export const IconFolder = ({ style = {}, size }: IconProps) => {
+export const IconFolder: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
   return (
     <svg
       height={size}
@@ -1392,12 +1389,12 @@ IconFolder.propTypes = {
   style: PropTypes.object
 }
 
-export const IconPlus = ({ style = {}, size = 24, color }: IconProps) => {
+export const IconPlus: React.FC<IconProps> = ({ style = {}, size = 24, color }: IconProps) => {
   return (
     <svg
-      height={size || 24}
+      height={size ?? 24}
       viewBox="0 0 24 24"
-      width={size || 24}
+      width={size ?? 24}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -1459,11 +1456,11 @@ export const IconMinus: React.FC<IconProps> = ({
 }
 
 IconMinus.propTypes = {
-  color: PropTypes.func,
+  color: PropTypes.string,
   size: PropTypes.number,
   style: PropTypes.object
 }
-export const IconPromo = ({ style = {}, size, color }: IconProps) => {
+export const IconPromo: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -1491,7 +1488,7 @@ IconPromo.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconEdit = ({ style = {}, size, color }: IconProps) => {
+export const IconEdit: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -1515,7 +1512,7 @@ IconEdit.propTypes = {
   style: PropTypes.object
 }
 
-export const IconSendMessage = ({ size, color }: IconProps) => {
+export const IconSendMessage: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       height={size}
@@ -1564,10 +1561,10 @@ IconSendMessage.propTypes = {
   color: PropTypes.any,
   size: PropTypes.any
 }
-export const IconClose = ({ size, color }: IconProps) => {
+export const IconClose: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
-      fill={color || '#717171'}
+      fill={color ?? '#717171'}
       height={size}
       viewBox="0 0 32 32"
       width={size}
@@ -1598,7 +1595,7 @@ IconClose.propTypes = {
   size: PropTypes.any
 }
 
-export const IconLocationMap2 = ({ size, color, ...props }: IconProps) => {
+export const IconLocationMap2: React.FC<IconProps> = ({ size, color, ...props }: IconProps) => {
   return (
     <svg
       fill="none"
@@ -1610,12 +1607,12 @@ export const IconLocationMap2 = ({ size, color, ...props }: IconProps) => {
     >
       <path
         d="M16 17.907a4.16 4.16 0 1 0 0-8.32 4.16 4.16 0 0 0 0 8.32Z"
-        stroke={color || '#282828'}
+        stroke={color ?? '#282828'}
         strokeWidth={1.5}
       />
       <path
         d="M4.827 11.32C7.453-.227 24.56-.213 27.173 11.333c1.534 6.774-2.68 12.507-6.373 16.054a6.925 6.925 0 0 1-9.613 0c-3.68-3.547-7.894-9.294-6.36-16.067Z"
-        stroke={color || '#282828'}
+        stroke={color ?? '#282828'}
         strokeWidth={1.5}
       />
     </svg>
@@ -1627,7 +1624,7 @@ IconLocationMap2.propTypes = {
   size: PropTypes.any
 }
 
-export const IconGoogleFullColor = ({ size }: IconProps) => {
+export const IconGoogleFullColor: React.FC<IconProps> = ({ size }: IconProps) => {
   return (
     <svg height={size} version="1.1" viewBox="0 0 256 262" width={size}>
       <path
@@ -1654,7 +1651,7 @@ IconGoogleFullColor.propTypes = {
   size: PropTypes.any
 }
 
-export const IconArrowLeft = ({ style = {}, size, color }: IconProps) => {
+export const IconArrowLeft: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
       height={size}
@@ -1689,7 +1686,7 @@ IconChart.propTypes = {
   style: PropTypes.object
 }
 
-export const IconQuestion = (props: IconProps) => {
+export const IconQuestion: React.FC<IconProps> = (props: IconProps) => {
   return (
     <svg
       fill="none"
@@ -1702,7 +1699,7 @@ export const IconQuestion = (props: IconProps) => {
       <path
         clipRule="evenodd"
         d="M7.987 1.333a6.648 6.648 0 0 0-6.654 6.66 6.654 6.654 0 0 0 6.66 6.66 6.646 6.646 0 0 0 5.248-2.558.5.5 0 1 0-.788-.617 5.646 5.646 0 0 1-4.46 2.175c-3.13 0-5.66-2.53-5.66-5.66a5.648 5.648 0 0 1 5.654-5.66c3.13 0 5.66 2.536 5.66 5.66a.5.5 0 0 0 1 0 6.658 6.658 0 0 0-6.66-6.66Zm-.033 3.808a1.16 1.16 0 0 0-1.103.81.535.535 0 0 1-1.022-.317 2.226 2.226 0 1 1 3.15 2.64v.001c-.32.165-.49.43-.49.698v.707a.535.535 0 0 1-1.07 0v-.707c0-.759.482-1.346 1.069-1.648a1.156 1.156 0 0 0-.534-2.184Zm0 6.759a.511.511 0 0 1-.2-.04.522.522 0 0 1-.174-.114.507.507 0 0 1-.16-.38c0-.066.014-.14.04-.206a.581.581 0 0 1 .12-.174.547.547 0 0 1 .753 0 .489.489 0 0 1 .114.174c.033.066.047.14.047.206a.58.58 0 0 1-.16.38.544.544 0 0 1-.38.153Z"
-        fill={props.color || '#A6A6A6'}
+        fill={props.color ?? '#A6A6A6'}
         fillRule="evenodd"
       />
     </svg>

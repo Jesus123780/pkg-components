@@ -93,7 +93,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   console.log(modulesArray)
 
   useEffect(() => {
-    function handleKeyDown (event: KeyboardEvent): void {
+    function handleKeyDown(event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
         setSalesOpen(prevState => !(prevState))
@@ -140,12 +140,14 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               Agregar Nuevo
             </ButtonGlobalCreate>
             <Portal>
-              <LeftNav show={show && !salesOpen}>
-                {location?.pathname !== '/products' && <Info>
-                  <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
-                    Productos
-                  </Button>
-                </Info>}
+              <LeftNav show={show && (salesOpen ?? false)}>
+                {location?.pathname !== '/products' &&
+                  <Info>
+                    <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
+                      Productos
+                    </Button>
+                  </Info>
+                }
                 {location?.pathname === '/products' && <Info>
                   <Button
                     border='gray' color='black'
@@ -158,7 +160,11 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   </Button>
                 </Info>}
                 <Info>
-                  <Button border='gray' color='black' onClick={() => { return setSalesOpen(!salesOpen) }}>
+                  <Button
+                    border='gray'
+                    color='black'
+                    onClick={() => { return setSalesOpen(salesOpen ?? false) }}
+                  >
                     Ventas
                   </Button>
                 </Info>
@@ -167,11 +173,9 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             {(loading)
               ? null
               : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
-                <a>
-                  <h1 className='title_store'>
-                    {storeName}
-                  </h1>
-                </a>
+                <h1 className='title_store'>
+                  {storeName}
+                </h1>
               </Link>)
             }
             {pathname &&
@@ -203,6 +207,18 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       mName={module?.mName}
                     />
                   }
+                  {existSubModules &&
+                    <span style={{
+                      cursor: 'pointer',
+                      fontSize: '.8rem',
+                      padding: '10px',
+                      display: 'block',
+                      fontWeight: '600',
+                      color: '#bebdbe'
+                    }}>
+                      {module.mName}
+                    </span>
+                  }
                   <div>
                     {existSubModules &&
                       <Options
@@ -216,7 +232,12 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       >
                         {subModules?.map((item: any, index: number) => {
                           return (
-                            <div key={item.smId} style={{ marginLeft: '20px', width: '90%' }} >
+                            <div key={item.smId}
+                              style={{
+                                marginLeft: '20px',
+                                width: '90%',
+                                marginTop: '10px'
+                              }} >
                               <CustomLinkAside
                                 size='.8rem'
                                 mPath={item?.smPath}

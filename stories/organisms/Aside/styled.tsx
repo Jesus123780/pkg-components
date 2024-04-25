@@ -1,11 +1,11 @@
 import link from 'next/link'
 import styled, { css } from 'styled-components'
 import {
-    BColor,
-    BGColor,
-    PColor,
-    PLVColor,
-    SFVColor
+  BColor,
+  BGColor,
+  PColor,
+  PLVColor,
+  SFVColor
 } from '../../../assets/colors'
 
 export const Router = styled.div`
@@ -37,7 +37,11 @@ export const CtnAnchor = styled(link)`
     overflow: hidden;
     border-bottom: 1px solid #edf2f932;
 `
-export const ContainerAside = styled.div`
+interface ContainerAsideProps {
+  collapsed: boolean
+}
+
+export const ContainerAside = styled.div<ContainerAsideProps>`
     transition: 300ms ease;
     background-color: ${BGColor};
     height: min-content;
@@ -58,7 +62,10 @@ export const ContainerAside = styled.div`
     }}
     }
 `
-export const LeftNav = styled.div`
+interface LeftNavProps {
+  show: boolean
+}
+export const LeftNav = styled.div<LeftNavProps>`
     display: grid;
     padding: 10px;
     grid-template-columns: 50% repeat(auto-fill, 50%);

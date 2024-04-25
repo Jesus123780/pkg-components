@@ -1,9 +1,9 @@
 import React from 'react'
 import { ActiveLink, Icon } from '../../../atoms'
 import { AnchorRouter } from '../styled'
-import styles from './CustomLinkAside.module.css'
 import { getGlobalStyle } from '../../../../helpers'
 import { useRouter } from 'next/router'
+import styles from './CustomLinkAside.module.css'
 
 interface CustomLinkAsideProps {
   count?: number
@@ -38,7 +38,7 @@ export const CustomLinkAside: React.FC<CustomLinkAsideProps> = ({
     13: 'IconTicket'
   }
   const router = useRouter()
-  const currentPath = `/${mPath}` === router.asPath && router.route === `/${mPath}` && router.pathname === `/${mPath}`
+  const currentPath = `/${mPath}` === router.asPath
   return (
     <>
       {mPath !== ''
