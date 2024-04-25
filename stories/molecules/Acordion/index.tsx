@@ -10,6 +10,7 @@ import {
   Span
 } from './Styled'
 import { getGlobalStyle } from '../../../helpers'
+import { Icon } from '../../atoms'
 
 interface OptionsProps {
   active?: boolean
@@ -18,6 +19,7 @@ interface OptionsProps {
   icon?: React.ReactNode
   index: number
   label: string
+  size: string
   path: string
 }
 
@@ -25,9 +27,10 @@ export const Options: React.FC<OptionsProps> = ({
   active = false,
   children,
   handleClick,
-  icon: IconComponent = <></>,
+  icon = 'none',
   index,
   label,
+  size,
   path
 }) => {
   const refButton = useRef<HTMLDivElement>(null)
@@ -84,7 +87,20 @@ export const Options: React.FC<OptionsProps> = ({
     >
       <Row active={active}>
         <div style={{ display: 'flex' }}>
-          <Span active={active}>{label}</Span>
+          <div style={{
+            minWidth: '30px',
+            minHeight: '20px',
+            width: '30px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }} >
+            <Icon icon={icon} size={20} width={20} height={20} color={getGlobalStyle('--color-icons-gray')} />
+          </div>
+          <Span style={{ fontSize: size }} active={active}>
+            {label}
+          </Span>
         </div>
         <ContainerBurger>
           <button

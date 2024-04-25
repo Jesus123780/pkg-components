@@ -10,6 +10,7 @@ import {
 
 export const Router = styled.div`
     overflow-y: auto;
+    overflow-x: hidden;
     height: 80%;
     @media (max-width: 768px){
         height: auto;
@@ -47,13 +48,14 @@ export const ContainerAside = styled.div`
         width: 80%;
         position: absolute;
         ${({ collapsed }) => {
-    return collapsed
-      ? css`
+        return collapsed
+            ? css`
             transform: translate(0px, 0px);
             `
-      : css`
+            : css`
             transform: translate(-800px, 0px);
-              `}}
+              `
+    }}
     }
 `
 export const LeftNav = styled.div`
@@ -86,19 +88,20 @@ export const LeftNav = styled.div`
         margin: auto;
     }
     ${({ show }) => {
-    return show
-      ? css`
+        return show
+            ? css`
             visibility: visible;
             opacity: 1;
             transform: translateY(0);
                 `
-      : css`
+            : css`
                 
             margin: 0;
             visibility: hidden;
             opacity: 0;
             transform: translateY(-50px);
-    `}}
+    `
+    }}
 `
 export const ButtonGlobalCreate = styled.button`
     border-radius: 20px;
@@ -255,22 +258,16 @@ export const ButtonActionLink = styled.button`
 
 `
 export const AnchorRouter = styled.a`
-cursor: pointer;
+    cursor: pointer;
     &.active {
         color: ${PColor};
         border-left: 2px solid ${PColor};
-        & > svg {
-            fill: ${PColor} !important;
-        }
-    }
-    & > svg {
-        margin-right: 10px;
-        margin-left: 5px;
+        font-weight: 600;
+        background-color: var(--color-primary-pink-light);
     }
     padding: 10px 3px;
     width: 100%;
     word-break: break-word;
-
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -306,4 +303,5 @@ export const Card = styled.div`
     overflow: hidden;
     height: 100vh;
     background-color: ${`${SFVColor}69`};
+    justify-content: space-between;
 `

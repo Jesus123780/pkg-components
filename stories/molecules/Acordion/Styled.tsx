@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import styled, { css } from 'styled-components'
 
-export const Span = styled.span`
+export const Span = styled.span<{ active: boolean }>`
   color: ${(props) => {
-    return !props.active ? '#3e3e3e' : '#090a0a'
+    return !(props.active as boolean) ? '#3e3e3e' : '#090a0a'
   }};
     cursor: pointer;
     width: 100%;
@@ -30,7 +30,7 @@ export const LinkOption = styled(Link)`
 
 export const SideBarLeft = styled.div`
   margin-left: ${(props) => {
-    return props.menu ? '0' : '-100%'
+    return (Boolean(props.menu)) ? '0' : '-100%'
   }};
   width: 280px;
   max-width: 280px;
@@ -84,7 +84,7 @@ export const MenuLeft = styled.button`
   & > div:first-child {
     justify-content: space-between;
     pointer-events: none;
-    padding: 10px;
+    padding: 0px 10px 0px 3px;
     ${(props) => {
     return props.active && css``
   }};
@@ -97,7 +97,7 @@ export const Row = styled.div`
   background-color: transparent;
   display: flex;
   flex-direction: row;
-  height: 40px;
+  height: 30px;
   padding: 8px 0px;
   position: relative;
   width: 100%;
@@ -114,7 +114,6 @@ export const OptionMenu = styled.div`
     return (
       props.active &&
       css`
-        background-color: #cccccc;
         border-bottom: none;
       `
     )

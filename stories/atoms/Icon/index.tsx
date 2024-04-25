@@ -32,6 +32,7 @@ import {
   IconUser,
   IconHorario,
   IconLogo,
+  IconBoxes,
   IconArrowTop,
   IconSearch,
   IconRate,
@@ -80,6 +81,7 @@ export const Icons: IconMap = {
   time: IconTime,
   home: IconHome,
   IconBuys,
+  IconBoxes,
   IconMasterCard,
   IconVisa,
   IconInfo,
@@ -149,6 +151,7 @@ export const Icon: React.FC<IconPropsComponent> = ({
   color
 }: IconPropsComponent) => {
   const Icono = GetIcon(icon)
+  if (icon === 'none') return null
   if (Icono === undefined || Icono === null) {
     return <div>No se encontró el ícono</div>
   }

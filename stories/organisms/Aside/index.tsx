@@ -5,24 +5,12 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import {
-  IconBox,
-  IconBuys,
-  IconChart,
-  IconHome,
-  IconLogo,
-  IconShopping,
-  IconStore,
-  IconTicket,
-  IconTime,
-  IconUser
-} from '../../../assets/icons'
+import { IconLogo } from '../../../assets/icons'
 import {
   Button,
   Overline,
   Text
 } from '../../atoms'
-
 import Link from 'next/link'
 import { Options } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
@@ -50,6 +38,7 @@ interface MemoAsideProps {
   setCollapsed?: any
   setShowComponentModal?: any
   version?: string
+  modules?: any[]
   setSalesOpen?: Dispatch<SetStateAction<boolean>>
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
@@ -68,18 +57,19 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     uState: 1
   },
   loading = false,
+  modules = [],
   handleClick = (state: boolean) => { return state },
   handleOpenDeliveryTime = () => { },
   setSalesOpen = (state: boolean) => { return state },
   setShowComponentModal = (state: boolean) => { return state }
 }) => {
   const [show, setShow] = useState(false)
-  const [active, setActive] = useState<boolean>(false)
+  const [active, setActive] = useState<boolean | number>(false)
   const pathname = location?.pathname === '/dashboard/[...name]'
   interface DataStore {
     storeName: string
     idStore: string
-    uState: number
+    uState: number | string
   }
   const {
     storeName,
@@ -97,103 +87,10 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     setShow(!show)
   }
 
-  const links = [
-    {
-      href: '/dashboard',
-      icon: IconHome,
-      size: '25px',
-      label: 'Home'
-    },
-    {
-      href: '/pedidos',
-      icon: IconTicket,
-      size: '25px',
-      label: 'Pedidos',
-      count: countOrders ?? 0
-    },
-    {
-      href: idStore !== '' ? `/dashboard/${storeName?.replace(' ', '-')?.toLocaleLowerCase()}/${idStore}` : '/dashboard',
-      icon: IconStore,
-      size: '25px',
-      label: 'Perfil'
-    },
-    {
-      href: '/horarios',
-      icon: IconTime,
-      size: '25px',
-      label: 'Horarios'
-    },
-    {
-      icon: IconTime,
-      size: '25px',
-      label: 'Tiempo de entrega',
-      onClick: handleOpenDeliveryTime
-    },
-    {
-      href: '/ventas',
-      icon: IconTicket,
-      size: '25px',
-      label: 'Ventas'
-    },
-    {
-      href: '/informes',
-      icon: IconChart,
-      size: '25px',
-      label: 'Informes'
-    },
-    {
-      href: '/clientes',
-      icon: IconUser,
-      size: '25px',
-      label: 'Clientes'
-    },
-    {
-      href: '/compras',
-      icon: IconBuys,
-      size: '25px',
-      label: 'Compras'
-    },
-    {
-      href: '/categorias',
-      icon: IconBox,
-      size: '25px',
-      label: 'Categorías'
-    },
-    {
-      href: '/products',
-      icon: IconShopping,
-      size: '25px',
-      label: 'Productos',
-      multiple: [
-        {
-          href: '/products',
-          icon: IconTicket,
-          size: '20px',
-          label: 'Productos',
-          subLinks: [
-            {
-              href: '/products/products?all=true',
-              icon: IconTicket,
-              size: '20px',
-              label: 'Productos'
-            },
-            {
-              href: '/products/disabled',
-              icon: IconTicket,
-              size: '20px',
-              label: 'Productos borrados'
-            },
-            {
-              href: '/products/create',
-              icon: IconTicket,
-              size: '20px',
-              label: 'Crear producto'
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  const modulesArray = modules?.map((module) => {
+    return module
+  })
+  console.log(modulesArray)
 
   useEffect(() => {
     function handleKeyDown (event: KeyboardEvent): void {
@@ -208,25 +105,30 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     }
   }, [salesOpen])
 
-  const handleMenu = (index: boolean): void => {
-    setActive((prev: boolean) => {
+  const handleMenu = (index: boolean | number): void => {
+    setActive((prev: boolean | number) => {
       const state = index === prev ? false : index
       return state
     })
   }
-
+  const handleClickAction = (path: string): void => {
+    const action: Record<string, () => void> = {
+      '?time=true': handleOpenDeliveryTime
+    }
+    action[path]?.()
+  }
   return (
     <>
       {isMobile &&
-          <Overline
-            bgColor='rgba(0, 0, 0, 0.162)'
-            onClick={() => { return setCollapsed(!collapsed) }}
-            show={collapsed}
-            zIndex='999'
-          />
+        <Overline
+          bgColor={getGlobalStyle('--color-background-overline')}
+          onClick={() => { return setCollapsed(!collapsed) }}
+          show={collapsed}
+          zIndex='999'
+        />
       }
       <Overline
-        bgColor='rgba(0, 0, 0, 0.162)'
+        bgColor={getGlobalStyle('--color-background-overline')}
         onClick={() => { setShow(!show) }}
         show={show}
         zIndex={getGlobalStyle('--z-index-99999')}
@@ -235,13 +137,13 @@ const MemoAside: React.FC<MemoAsideProps> = ({
         <Card>
           <Info>
             <ButtonGlobalCreate onClick={() => { setShow(!show) }}>
-                Agregar Nuevo
+              Agregar Nuevo
             </ButtonGlobalCreate>
             <Portal>
               <LeftNav show={show && !salesOpen}>
                 {location?.pathname !== '/products' && <Info>
                   <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
-                      Productos
+                    Productos
                   </Button>
                 </Info>}
                 {location?.pathname === '/products' && <Info>
@@ -252,12 +154,12 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       handleClick(4)
                     }}
                   >
-                      Categorías
+                    Categorías
                   </Button>
                 </Info>}
                 <Info>
                   <Button border='gray' color='black' onClick={() => { return setSalesOpen(!salesOpen) }}>
-                      Ventas
+                    Ventas
                   </Button>
                 </Info>
               </LeftNav>
@@ -265,71 +167,69 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             {(loading)
               ? null
               : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
-              <a>
-                <h1 className='title_store'>
-                  {storeName}
-                </h1>
-              </a>
-            </Link>)
+                <a>
+                  <h1 className='title_store'>
+                    {storeName}
+                  </h1>
+                </a>
+              </Link>)
             }
             {pathname &&
-                <h1 className='title_store'>{storeName}</h1>
+              <h1 className='title_store'>{storeName}</h1>
             }
-            {uState == 1 &&
-                <div className='program_state'>
-                  <IconLogo color='var(--color-icons-primary)' size='20px' />
-                  <h3 className='sub_title_store'>En pausa programada</h3>
-                </div>
+            {uState === '1' &&
+              <div className='program_state'>
+                <IconLogo color='var(--color-icons-primary)' size='20px' />
+                <h3 className='sub_title_store'>En pausa programada</h3>
+              </div>
             }
           </Info>
           <Router>
-            {links.map(link => {
-              const multiple = link.multiple || []
+            {modulesArray.map((module: any, index) => {
+              const subModules = module?.subModules ?? []
+              const existSubModules = Boolean(subModules.length > 0)
+              const onAction = module?.mPath?.startsWith('?')
               return (
-                <div key={link.href}>
-                  {Boolean(multiple.length === 0) &&
+                <div key={module.mId}>
+                  {!existSubModules &&
                     <CustomLinkAside
-                      count={link.count}
-                      href={link.href}
-                      icon={link.icon}
-                      label={link.label}
-                      size={link.size}
-                      {...link}
+                      count={0}
+                      onClick={() => {
+                        handleClickAction(module.mPath as string)
+                      }}
+                      size={existSubModules ? '.8rem' : '.9rem'}
+                      mPath={onAction === true ? '' : module?.mPath as string}
+                      mIcon={module?.mIcon}
+                      mName={module?.mName}
                     />
                   }
-                  {Array.isArray(multiple) &&
-                    multiple.map((item, index) => {
-                      const {
-                        label,
-                        href,
-                        icon
-                      } = item ?? {}
-                      return (
-                        <Options
-                          active={Boolean(index === active)}
-                          handleClick={() => { handleMenu(index) }}
-                          icon={icon}
-                          index={index}
-                          key={href}
-                          label={label}
-                          path={href}
-                        >
-                          {item.subLinks?.map((subLink) => {
-                            return (<CustomLinkAside
-                              href={subLink.href}
-                              icon={subLink.icon}
-                              key={subLink.href}
-                              label={subLink.label}
-                              size={subLink.size}
-                              {...subLink}
+                  <div>
+                    {existSubModules &&
+                      <Options
+                        active={Boolean(index === active)}
+                        handleClick={() => { handleMenu(index) }}
+                        index={index}
+                        icon='IconTicket'
+                        size='.9rem'
+                        label={module.mName}
+                        path={`/${module.mPath}`}
+                      >
+                        {subModules.map((item: any, index: number) => {
+                          return (
+                            <div key={item.smId} style={{ marginLeft: '20px', width: '90%' }} >
+                              <CustomLinkAside
+                                size='.8rem'
+                                mPath={item?.smPath}
+                                mIcon={-1}
+                                mName={item?.smName}
+                              />
+                            </div>
+                          )
+                        })}
 
-                            />)
-                          })}
-                        </Options>
+                      </Options>}
+                  </div>
 
-                      )
-                    })
-                  }
                 </div>
               )
             })}

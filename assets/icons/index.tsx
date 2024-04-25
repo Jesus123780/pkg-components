@@ -203,25 +203,25 @@ IconInformationProduct.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconChart = ({ style = {}, size, color, ...props }: IconProps) => {
+export const IconChart: React.FC<IconProps> = ({ style = {}, size, color, ...props }) => {
   return (
     <svg
-      height={size || 800}
+      height={size ?? 800}
       viewBox="0 0 24 24"
-      width={size || 800}
+      width={size ?? 800}
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
-      style={{ ...style, color }}
+      style={{ color }}
+      stroke={color}
     >
       <defs>
         <style>
           {
-            '.a{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd}'
+            `.chart{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd}`
           }
         </style>
       </defs>
-      <path className="a" d="M12 2a10 10 0 1 0 10 10H12Z" />
-      <path className="a" d="M15 9h6.54A10.022 10.022 0 0 0 15 2.46Z" />
+      <path className="chart" d="M12 2a10 10 0 1 0 10 10H12Z" />
+      <path className="chart" d="M15 9h6.54A10.022 10.022 0 0 0 15 2.46Z" />
     </svg>
   )
 }
@@ -380,26 +380,23 @@ export const IconTicket: React.FC<IconProps> = ({
   size,
   color,
   ...props
-}: IconProps): React.FC<IconProps> => {
+}: IconProps) => {
   return (
     <svg
-      className="icon"
-      height={size ?? 800}
-      viewBox="0 0 1024 1024"
-      width={size ?? 800}
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-      style={{ ...style, color }}
-    >
-      <path
-        d="m533 1024-147.7-84.8-136.4 78.3h-11.3c-17.3 0-34.2-3.4-50.1-10.1-15.3-6.5-29.1-15.7-40.8-27.6-11.7-11.7-21-25.5-27.5-40.8-6.7-15.9-10.1-32.7-10.1-50.1V128.5c0-17.4 3.4-34.2 10.1-50.1 6.5-15.3 15.8-29.1 27.6-40.8 11.7-11.8 25.5-21 40.8-27.5C203.3 3.4 220.2 0 237.5 0h590.9c17.3 0 34.2 3.4 50.1 10.1 15.3 6.5 29.1 15.7 40.8 27.6 11.7 11.7 21 25.5 27.5 40.8 6.7 15.9 10.1 32.7 10.1 50.1V889c0 17.4-3.4 34.2-10.1 50.1-6.5 15.3-15.8 29.1-27.6 40.8-11.7 11.8-25.5 21-40.8 27.5-15.8 6.7-32.7 10.1-50 10.1h-11.3l-136.4-78.3L533 1024zm147.7-182.6 157.2 90.3c2.5-.6 5-1.4 7.5-2.4 5.2-2.2 9.9-5.4 13.9-9.4 4.1-4.1 7.2-8.7 9.4-14 2.3-5.3 3.4-11.1 3.4-17V128.5c0-5.9-1.1-11.7-3.4-17-2.2-5.2-5.4-9.9-9.4-13.9-4.1-4.1-8.7-7.2-13.9-9.4-5.4-2.3-11.1-3.4-17-3.4H237.5c-5.9 0-11.6 1.1-17 3.4-5.2 2.2-9.9 5.4-13.9 9.4-4.1 4.1-7.2 8.7-9.4 14-2.3 5.3-3.4 11.1-3.4 17V889c0 5.9 1.1 11.7 3.4 17 2.2 5.2 5.4 9.9 9.4 13.9 4.1 4.1 8.7 7.2 13.9 9.4 2.4 1 4.9 1.8 7.5 2.4l157.2-90.3L533 926.2l147.7-84.8z"
-        fill={color ?? 'var(--color-icons-black)'}
-      />
-      <path
-        d="M490.6 310.9H321c-23.4 0-42.4-19-42.4-42.4s19-42.4 42.4-42.4h169.6c23.4 0 42.4 19 42.4 42.4s-19 42.4-42.4 42.4zm211.9 176.7H321c-23.4 0-42.4-19-42.4-42.4s19-42.4 42.4-42.4h381.6c23.4 0 42.4 19 42.4 42.4-.1 23.4-19 42.4-42.5 42.4z"
-        fill={color ?? 'var(--color-icons-black)'}
-      />
-    </svg>
+    xmlns="http://www.w3.org/2000/svg"
+    xmlSpace="preserve"
+    height={size ?? 800}
+    width={size ?? 800}
+    viewBox="0 0 20 20"
+    style={{
+      ...style,
+      color
+    }}
+    {...props}
+  >
+    <path fill={color ?? 'var(--color-icons-black)'} d="m10.5 19.3-2.6-1.6-2.4 1.4h-.1c-.3 0-.6-.1-.9-.2-.3-.1-.5-.3-.7-.5-.2-.2-.4-.5-.5-.8s-.2-.6-.2-.9V2.6c0-.3.1-.6.2-.9.1-.3.3-.5.5-.8.2-.1.4-.3.7-.4s.6-.2.9-.2h10.3c.3 0 .6.1.9.2s.5.3.7.5.4.5.5.8.2.6.2.9v14.1c0 .3-.1.6-.2.9s-.3.5-.5.8c-.2.2-.4.4-.7.5-.3.1-.6.2-.9.2h-.2l-2.4-1.4-2.6 1.5zm2.9-2.9 3 1.8h.1c.1 0 .2-.1.3-.2.1-.1.1-.2.2-.3 0-.1.1-.2.1-.3V2.5c0-.1 0-.2-.1-.3 0-.1-.1-.2-.2-.3-.1-.1-.2-.1-.3-.2-.1 0-.2-.1-.3-.1H4.9c-.1 0-.2 0-.3.1-.1 0-.2.1-.3.2-.1.1-.1.2-.2.3 0 .1-.1.2-.1.3v14.9c0 .1 0 .2.1.3 0 .1.1.2.2.3.1.1.2.1.3.2h.1l3-1.8 2.8 1.7 2.9-1.7z" />
+    <path fill={color ?? 'var(--color-icons-black)'} d="M9.6 6.1H6.3c-.5 0-.8-.3-.8-.6s.4-.6.8-.6h3.3c.5 0 .8.3.8.6s-.4.6-.8.6zm4.1 3.3H6.3c-.5 0-.8-.3-.8-.6s.4-.6.8-.6h7.5c.5 0 .8.3.8.6s-.4.6-.9.6z" />
+  </svg>
   )
 }
 
@@ -639,6 +636,30 @@ IconHorario.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
+
+export const IconBoxes: React.FC<IconProps> = ({
+  style = {},
+  size,
+  color,
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={800}
+    height={800}
+    viewBox="0 0 32 32"
+    {...props}
+  >
+    <path fill={color} d="M16 8h14v2H16zM16 22h14v2H16zM10 14H4a2.002 2.002 0 0 1-2-2V6a2.002 2.002 0 0 1 2-2h6a2.002 2.002 0 0 1 2 2v6a2.002 2.002 0 0 1-2 2ZM4 6v6h6.001L10 6ZM10 28H4a2.002 2.002 0 0 1-2-2v-6a2.002 2.002 0 0 1 2-2h6a2.002 2.002 0 0 1 2 2v6a2.002 2.002 0 0 1-2 2Zm-6-8v6h6.001L10 20Z" />
+    <path
+      d="M0 0h32v32H0z"
+      data-name="&lt;Transparent Rectangle&gt;"
+      style={{
+        fill: 'none'
+      }}
+    />
+  </svg>
+)
 
 export const IconLogo = ({ style = {}, color, size, ...props }: IconProps) => {
   return (
