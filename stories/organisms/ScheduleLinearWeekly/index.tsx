@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { organizeData } from './helpers'
 import { ScheduleMobile } from './ScheduleMobile'
 import { Divider } from '../../atoms/Divider'
@@ -26,6 +26,7 @@ interface ScheduleLinearWeeklyProps {
   schedules?: any[]
   style?: React.CSSProperties
 }
+
 export const ScheduleLinearWeekly: React.FC<ScheduleLinearWeeklyProps> = ({
   isMobile = false,
   handleClick = (number) => {
@@ -38,6 +39,7 @@ export const ScheduleLinearWeekly: React.FC<ScheduleLinearWeeklyProps> = ({
   style = {}
 }) => {
   const data = organizeData(schedules)
+
   if (isMobile) {
     return (
       <ScheduleMobile
@@ -64,25 +66,34 @@ export const ScheduleLinearWeekly: React.FC<ScheduleLinearWeeklyProps> = ({
           {Object.entries(data).map(([day, hoursData], indexDays) => {
             let isFirstEventShown = false
             let lastEventIndex = 0
-            const totalHours = Object.keys(hoursData).length
+            const totalHours = Object.keys(hoursData as Record<string, any>).length
             let Hours = 0
-            for (const hour in hoursData) {
-              Hours += hoursData[hour].length
+            for (const hour in hoursData as Record<string, any>) {
+              Hours += (hoursData as Record<string, any>)[hour].length
             }
             return (
               <div className={styles.dayColumn} key={day}>
-                <span
+                <button
                   className={styles.dayLabel_action}
                   onClick={() => {
                     return handleClick(Number(indexDays))
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleClick(Number(indexDays))
+                    }
+                  }}
+                  onTouchStart={() => { }}
+                  onTouchEnd={() => { }}
+                  onMouseDown={() => { }}
+                  onMouseUp={() => { }}
                 >
-                  {days[day]}
-                  {(Hours !== null) ? ` ${Hours || 0} h` : null}
-                </span>
+                  {days[day as unknown as keyof typeof days]}
+                  {(Hours !== null) ? ` ${Hours ?? 0} h` : null}
+                </button>
                 {hours?.map((hour, index) => {
-                  const events = hoursData[hour]
-                  if (events && events.length > 0) {
+                  const events = (hoursData as Record<string, any>)[hour]
+                  if ((Boolean(events)) && (events as any[]).length > 0) {
                     const event = events[0]
                     const isFirstEvent = !isFirstEventShown // Verifica si es el primer evento
                     isFirstEventShown = true // Actualiza isFirstEventShown después de mostrar el primer evento
@@ -113,23 +124,25 @@ export const ScheduleLinearWeekly: React.FC<ScheduleLinearWeeklyProps> = ({
                       }
                     }
                     return (
-                      <div
+                      <button
                         className={styles.hourCell}
                         key={`${day}-${hour}`}
                         onClick={() => {
                           handleClick(indexDays)
                         }}
+                        tabIndex={0}
                       >
                         <div className={styles.event} style={borderRadiusStyle}>
-                          {isFirstEvent
-                            ? `${event.schHoSta} - ${event.schHoEnd}`
-                            : null}
+                          {isFirstEvent ? `${event.schHoSta} - ${event.schHoEnd}` : null}
                         </div>
-                      </div>
+                      </button>
                     )
                   }
                   return (
-                    <div className={styles.hourCell} key={`${day}-${hour}`} />
+                    <div className={`${styles.hourCell} ${styles.hourCell_close}`} key={`${day}-${hour}`}>
+                      <div className={styles.line_close}>
+                      </div>
+                    </div>
                   )
                 })}
               </div>
@@ -145,7 +158,6 @@ ScheduleLinearWeekly.propTypes = {
   handleClick: PropTypes.func,
   handleHourPmAM: PropTypes.func,
   isMobile: PropTypes.bool,
-  openStoreEveryDay: PropTypes.bool,
   schedules: PropTypes.array,
   style: PropTypes.object
 }

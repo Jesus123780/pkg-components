@@ -90,7 +90,6 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   const modulesArray = modules?.map((module) => {
     return module
   })
-  console.log(modulesArray)
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent): void {
@@ -140,7 +139,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               Agregar Nuevo
             </ButtonGlobalCreate>
             <Portal>
-              <LeftNav show={show && (salesOpen ?? false)}>
+              <LeftNav show={show && salesOpen === false}>
                 {location?.pathname !== '/products' &&
                   <Info>
                     <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>

@@ -181,7 +181,7 @@ const choices = {
     100: '1'
   },
   width:{
-    maxDesktop:'1160px',
+    maxDesktop:'1366px',
     maxMobile: '960px'
   },
   zIndex: {

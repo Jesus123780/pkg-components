@@ -15,7 +15,7 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
   ...props
 }) => {
   const router = useRouter()
-  console.log("🚀 ~ router:", router)
+
   const { asPath } = router
 
   const child = React.Children.only(children)
@@ -35,6 +35,5 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
 ActiveLink.propTypes = {
   activeClassName: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
-  href: PropTypes.string.isRequired,
-  asPath: PropTypes.string
+  href: PropTypes.string.isRequired
 }

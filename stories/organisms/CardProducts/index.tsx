@@ -110,22 +110,4 @@ export const CardProductsComponent = ({
   )
 }
 
-CardProductsComponent.propTypes = {
-  food: PropTypes.shape({
-    ProDescription: PropTypes.string,
-    ProDescuento: PropTypes.number,
-    ProImage: PropTypes.any,
-    ProPrice: PropTypes.number,
-    pName: PropTypes.string
-  }),
-  handleDelete: PropTypes.func,
-  image: PropTypes.string,
-  isEdit: PropTypes.bool,
-  isVisible: PropTypes.bool,
-  loading: PropTypes.bool,
-  onClick: PropTypes.func,
-  redirect: PropTypes.func,
-  setRef: PropTypes.any,
-  showDiscount: PropTypes.bool
-}
 export const CardProducts = React.memo(CardProductsComponent)

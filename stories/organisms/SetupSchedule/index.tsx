@@ -21,9 +21,9 @@ export const SetupSchedule: React.FC<SetupScheduleProps> = ({
   selectedDays = [],
   dynamicDays = [],
   times = [],
-  handleSelectedDay = () => { },
   hours = 0,
   totalHours = 0,
+  handleSelectedDay = () => { },
   handleDeleteSchedule = () => { },
   setOpenModal = () => { },
   onChangeSaveHour = ({ time, name, day }) => {
@@ -33,7 +33,6 @@ export const SetupSchedule: React.FC<SetupScheduleProps> = ({
       day
     }
   },
-  loading = false
 }) => {
   const disabled = Boolean(Number(totalHours) < 10)
 
@@ -108,19 +107,20 @@ export const SetupSchedule: React.FC<SetupScheduleProps> = ({
                     <InputTimeHours
                       width='200px'
                       times={times}
-                      value={day.schHoSta}
+                      value={day?.schHoSta}
                       onSelected={(time: string) => {
-                        onChangeSaveHour({ time, name: 'schHoSta', day: day.day })
+                        onChangeSaveHour({ time, name: 'schHoSta', day: day?.day })
                       }}
                     />
                     <Icon width={20} height={20} icon='IconLinePart' color={getGlobalStyle('--color-icons-gray')} />
                     <InputTimeHours
                       width='200px'
-                      disabled={day.schHoSta === '' || day.schHoSta === null}
+                      disabled={day?.schHoSta === '' || day?.schHoSta === null}
                       times={times}
-                      value={day.schHoEnd}
+                      value={day?.schHoEnd}
                       onSelected={(time: string) => {
-                        onChangeSaveHour({ time, name: 'schHoEnd', day: day.day })
+                        console.log('Hola')
+                        onChangeSaveHour({ time, name: 'schHoEnd', day: day?.day })
                       }}
                     />
                     {daySelected &&

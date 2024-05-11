@@ -63,26 +63,26 @@ export const WrapperCard = styled.div`
   &:before,
   &:after {
     pointer-events: none;
-    width: 100%;
-    height: 100%;
+    width: 100.5%;
+    height: 100.5%;
     z-index: 1;
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -1px;
+    left: -1px;
     transform: scale(0);
     border-radius: 0;
     transition: transform 0.2s ease, border-radius 0.1s ease 0.1s;
   }
 
   &:before {
-    border-bottom: 1px solid var(--color-background-primary);
-    border-left: 1px solid var(--color-background-primary);
+    border-bottom: .2px solid var(--color-background-primary);;
+    border-left: .2px solid var(--color-background-primary);;
     transform-origin: 0 100%;
   }
   &:after {
-    border-top: 1px solid var(--color-background-primary);
-    border-right: 1px solid var(--color-background-primary);
+    border-top: .2px solid var(--color-background-primary);;
+    border-right: .2px solid var(--color-background-primary);;
     transform-origin: 100% 0;
   }
 
@@ -94,7 +94,7 @@ export const WrapperCard = styled.div`
         &&:after {
           transform: scale(1);
           border-radius: 4px;
-          color: var(--color-background-primary);
+          color: var(--color-background-primary);;
         }
       `
     )

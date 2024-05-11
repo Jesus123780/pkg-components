@@ -1,15 +1,17 @@
 .container {
     display: flex;
-    margin-top: 50px;
+    margin-top: 110px;
 }
 
 .timeColumn {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    justify-content: space-between;
     padding-right: 10px;
-    width: 100px;
-    justify-content: space-between; /* Cambiar de 'center' a 'space-between' */
+    width: 110px;
+    box-shadow: var(--box-shadow-xs);
 }
 
 .time {
@@ -17,7 +19,7 @@
     text-align: right;
     padding-right: 5px;
     position: relative;
-    height: 50px;
+    height: 110px;
     font-size: var(--font-size-xs);
 }
 .time::after {
@@ -30,22 +32,22 @@
     border-top: 1px solid var(--color-neutral-gray);
 }
 .time:last-child {
-    height: 50px;
+    height: 110px;
 }
 
 .scheduleGrid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
     border-radius: 10px;
     border: 1px solid var(--color-neutral-gray);
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: var(--width-max-desktop);
 }
 
 .dayColumn {
-    display: flex;
-    font-family: PFont-Light;
-    flex-direction: column;
     border-left: 1px solid var(--color-neutral-gray);
+    display: flex;
+    flex-direction: column;
+    font-family: PFont-Light;
     position: relative;
 }
 .dayColumn:first-child {
@@ -53,20 +55,21 @@
 }
 
 .dayLabel_action {
-    margin-bottom: 5px;
+    border-radius: 110px;
+    color: rgb(38, 175, 72);
     font-family: PFont-Light;
+    font-size: var(--font-size-xs);
     font-weight: 500;
+    margin-bottom: 5px;
+    padding: 10px;
     position: absolute;
     top: -70px;
-    padding: 10px;
-    font-size: var(--font-size-xs);
-    border-radius: 50px;
-    color: rgb(38, 175, 72)
 }
 
 .hourCell {
     position: relative;
-    height: 50px;
+    height: 110px;
+    background-color: var(--color-base-transparent);
 }
 
 .hourCell:first-child::after {
@@ -84,10 +87,25 @@
     color: rgb(38, 175, 72);
     margin-bottom: 3px;
     font-size: var(--font-size-xs);
-    height: 50px;
+    height: 110px;
     display: flex; /* Hacer que el contenido sea flex */
     align-items: center; /* Alinear verticalmente el contenido */
     padding: 0 10px; /* Añadir espaciado interior */
     width: -webkit-fill-available;
     
+}
+
+.hourCell_close {
+    position: relative;
+    overflow: hidden;
+}
+
+.line_close {
+    position: absolute;
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+    top: 50%;
+    border-top: .5px solid var(--color-neutral-gray);
+    transform: rotate(31deg) scale(1.9) translate(2px, 2px);
 }
