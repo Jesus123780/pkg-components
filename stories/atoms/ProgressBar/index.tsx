@@ -26,11 +26,11 @@ export const ProgressBar = styled.div<ProgressBarProps>`
   background-color: ${PColor};
   height: 5px;
   transition: .2s;
-  z-index: var(--z-index-99999);
+  z-index: var(--z-index-high);
   
   ${props => props.progress && css`
     animation: ${width} 2s forwards;
-    z-index: 9999;
+    z-index: var(--z-index-high);
   `}
 
   ${props => !props.progress && css`

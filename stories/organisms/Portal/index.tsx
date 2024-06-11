@@ -32,4 +32,3 @@ Portal.propTypes = {
   children: PropTypes.any,
   selector: PropTypes.string
 }
-

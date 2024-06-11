@@ -26,7 +26,29 @@ import {
   ContentModal
 } from './styled'
 
-export const CreateExtra = ({
+interface ICreateExtra {
+  LineItems?: {
+    Lines: any[]
+  }
+  loading?: boolean
+  modal?: boolean
+  inputRefs?: any
+  pId?: any
+  selected?: {
+    loading: boolean
+    exPid: any
+  }
+  CleanLines?: () => void
+  handleAdd?: () => void
+  handleEdit?: (i: number, item: any) => void
+  handleFocusChange?: (i: number) => void
+  handleSelect?: (item: any, index: number) => void
+  handleLineChange?: (i: number, extraName: string, value: string) => void
+  handleRemove?: (i: number, exPid: any) => void
+  onSubmitUpdate?: ({ pId }: { pId: any }) => void
+  setModal?: () => void
+}
+export const CreateExtra: React.FC<ICreateExtra> = ({
   LineItems = {
     Lines: []
   },
@@ -68,7 +90,7 @@ export const CreateExtra = ({
     transition
   }
   const endOfListRef = useRef({
-    scrollIntoView: (args) => { return args },
+    scrollIntoView: (args: any) => { return args },
     current: null
   })
 

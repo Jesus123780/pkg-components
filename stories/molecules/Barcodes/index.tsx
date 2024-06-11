@@ -2,13 +2,14 @@ import React from 'react'
 import { useBarcode } from 'next-barcode'
 import { getGlobalStyle } from '../../../helpers'
 
-interface BarcodesProps {
+interface BarCodesProps {
   value: string
 }
-export const Barcodes: React.FC<BarcodesProps> = ({ value = '' }) => {
+
+export const BarCodes: React.FC<BarCodesProps> = ({ value = '' }) => {
   const empty = value === null || value === ''
   const { inputRef } = useBarcode({
-    value: empty ? '123456789012' : value,
+    value: empty ? 'null' : value,
     options: {
       background: getGlobalStyle('--color-background-gray-light')
     }

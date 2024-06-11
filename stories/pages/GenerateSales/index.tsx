@@ -44,11 +44,11 @@ interface GenerateSalesProps {
   values?: {
     cliId: string
     change: string
-    valueDelivery: string
+    ValueDelivery: string
   }
   errors?: {
     change: boolean
-    valueDelivery: boolean
+    ValueDelivery: boolean
   }
   dataClientes?: any[]
   handleClickAction?: () => void
@@ -81,12 +81,12 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   values = {
     cliId: '',
     change: '',
-    valueDelivery: ''
+    ValueDelivery: ''
   },
   totalProductPrice = 0,
   errors = {
     change: false,
-    valueDelivery: false
+    ValueDelivery: false
   },
   show = false,
   openAside = false,

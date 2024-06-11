@@ -3,7 +3,9 @@ import {
   AlertInfo,
   AsideInfoStore,
   InputHooks,
-  NewSelect
+  NewSelect,
+  NumberFormatBase,
+  currencyFormat
 } from '../../molecules'
 import {
   Button,
@@ -19,7 +21,7 @@ interface AsideProps {
   dataClientes?: any[]
   values?: {
     cliId: string
-    valueDelivery: string
+    ValueDelivery: string
     change: string
   }
   data?: {
@@ -27,7 +29,7 @@ interface AsideProps {
   }
   errors?: {
     change: boolean
-    valueDelivery: boolean
+    ValueDelivery: boolean
   }
   paymentMethodTransfer?: boolean
   handleClickAction?: () => void
@@ -45,11 +47,11 @@ export const AsideSales: React.FC<AsideProps> = ({
   values = {
     cliId: '',
     change: '',
-    valueDelivery: ''
+    ValueDelivery: ''
   },
   errors = {
     change: false,
-    valueDelivery: false
+    ValueDelivery: false
   },
   data = {
     payMethodPState: 0
@@ -119,28 +121,39 @@ export const AsideSales: React.FC<AsideProps> = ({
         >
           EFECTIVO
         </Button>
-
-        <InputHooks
+        <NumberFormatBase
+          defaultValue={0}
           autoComplete="off"
           error={errors?.change}
-          name="change"
-          numeric
-          onChange={handleChange}
-          range={{ min: 0, max: 9 }}
-          title="Cambio"
+          format={currencyFormat}
+          label='Cambio'
+          name='change'
+          onChangeDefault={(e) => {
+            handleChange({
+              target: {
+                name: 'change',
+                value: e.floatValue
+              }
+            })
+          }}
           value={values?.change}
-          width="100%"
         />
-        <InputHooks
+        <NumberFormatBase
+          defaultValue={0}
           autoComplete="off"
-          error={errors.valueDelivery}
-          name="valueDelivery"
-          numeric
-          onChange={handleChange}
-          range={{ min: 0, max: 9 }}
-          title="Domicilio"
-          value={values?.valueDelivery}
-          width="100%"
+          error={errors.ValueDelivery}
+          format={currencyFormat}
+          label='Domicilio'
+          name='ValueDelivery'
+          onChangeDefault={(e) => {
+            handleChange({
+              target: {
+                name: 'ValueDelivery',
+                value: e.floatValue
+              }
+            })
+          }}
+          value={values?.ValueDelivery}
         />
       </AsideInfoStore>
     </>

@@ -84,7 +84,6 @@ export const Section = styled.div`
   margin: auto;
   overflow: hidden;
   transition: 0.2s;
-  /* height: 150px; */
   cursor: pointer;
   position: relative;
   transition: 0.2s ease-in-out;
@@ -98,7 +97,7 @@ export const Section = styled.div`
     }
     .wrapper_details__button {
       justify-content: start;
-      margin: 0 40px;
+      margin: 0;
     }
   }
 `

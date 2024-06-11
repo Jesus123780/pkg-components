@@ -1,4 +1,4 @@
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types'
 import React from 'react'
 
 export interface IconProps {
@@ -9,12 +9,32 @@ export interface IconProps {
   height?: number | string
 }
 
+export const IconDragHandle: React.FC<IconProps> = ({
+  style = {},
+  size = 24,
+  color
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    fill="none"
+    viewBox="0 0 24 24"
+    style={style}
+  >
+    <path
+      fill={color ?? '#0F0F0F'}
+      d="M16.192 5.657a1 1 0 0 0 0-1.414l-2.828-2.829a2 2 0 0 0-2.829 0L7.708 4.243a1 1 0 1 0 1.414 1.414L11 3.778v7.272H3.728l1.879-1.878a1 1 0 0 0-1.415-1.415l-2.828 2.829a2 2 0 0 0 0 2.828l2.828 2.829a1 1 0 1 0 1.415-1.415L3.828 13.05H11v7.172l-1.879-1.879a1 1 0 1 0-1.414 1.414l2.829 2.829a2 2 0 0 0 2.828 0l2.828-2.829a1 1 0 0 0-1.414-1.414L13 20.121v-7.07h7.071l-1.778 1.777a1 1 0 0 0 1.414 1.415l2.828-2.829a2 2 0 0 0 0-2.828l-2.828-2.829a1 1 0 1 0-1.414 1.415l1.879 1.878H13V3.88l1.778 1.778a1 1 0 0 0 1.414 0Z"
+    />
+  </svg>
+)
+
 export const IconMiniCheck = ({
   style = {},
   size,
   color
 }: IconProps) => {
-    return <svg
+  return <svg
       fill={color}
       height={size}
       style={style}
@@ -679,7 +699,6 @@ export const IconQrCode = ({
   </svg>
 )
 
-
 export const IconLogoCMFBlue = ({
   width = 138.426,
   height = 35.559,
@@ -761,7 +780,6 @@ export const IconLogoCMFBlue = ({
   </svg>
 )
 
-
 export const IconClose = ({
   width = 56.923,
   height = 56.923,
@@ -797,7 +815,6 @@ IconClose.propTypes = {
   size: PropTypes.any,
   width: PropTypes.number
 }
-
 
 export const IconMainLogo = ({
   size,
@@ -843,8 +860,8 @@ export const IconMainLogo = ({
       data-name="Grupo 8151"
       opacity={0.8}
       style={{
-        mixBlendMode: "multiply",
-        isolation: "isolate",
+        mixBlendMode: 'multiply',
+        isolation: 'isolate'
       }}
     >
       <g data-name="Grupo 8150">
@@ -869,8 +886,8 @@ export const IconMainLogo = ({
       data-name="Grupo 8156"
       opacity={0.4}
       style={{
-        mixBlendMode: "multiply",
-        isolation: "isolate",
+        mixBlendMode: 'multiply',
+        isolation: 'isolate'
       }}
     >
       <g data-name="Grupo 8155">
@@ -906,17 +923,17 @@ export const IconStrokeLogo = ({
     xmlSpace="preserve"
     id="Grupo_8249"
     style={{
-      height: "fit-content",
-      width: "100px",
-      position: "absolute",
-      bottom: "-15px"
+      height: 'fit-content',
+      width: '100px',
+      position: 'absolute',
+      bottom: '-15px'
     }}
     viewBox="0 0 300 300"
     {...props}
   >
     <style>
       {
-        ".st3{stroke:#fff;stroke-width:4;stroke-miterlimit:20}.st3,.st6{fill:none}"
+        '.st3{stroke:#fff;stroke-width:4;stroke-miterlimit:20}.st3,.st6{fill:none}'
       }
     </style>
     <g id="Grupo_8208">
@@ -927,7 +944,7 @@ export const IconStrokeLogo = ({
         <use
           xlinkHref="#SVGID_1_"
           style={{
-            overflow: "visible",
+            overflow: 'visible'
           }}
         />
       </clipPath>
@@ -935,7 +952,7 @@ export const IconStrokeLogo = ({
         id="Enmascarar_grupo_5"
         style={{
           clipPath:
-            "url(#SVGID_00000100346351545699900740000011948262669616435874_)",
+            'url(#SVGID_00000100346351545699900740000011948262669616435874_)'
         }}
       >
         <g id="Grupo_8169" transform="translate(-65.258 722.844)">
@@ -949,7 +966,7 @@ export const IconStrokeLogo = ({
             <use
               xlinkHref="#SVGID_00000143603540551519589340000006006100239887967362_"
               style={{
-                overflow: "visible",
+                overflow: 'visible'
               }}
             />
           </clipPath>
@@ -957,7 +974,7 @@ export const IconStrokeLogo = ({
             id="Grupo_8168"
             style={{
               clipPath:
-                "url(#SVGID_00000109708651981263900830000007838405873673531778_)",
+                'url(#SVGID_00000109708651981263900830000007838405873673531778_)'
             }}
           >
             <g id="Grupo_8167">
@@ -971,7 +988,7 @@ export const IconStrokeLogo = ({
                 <use
                   xlinkHref="#SVGID_00000175303297583066302120000011722304236356822707_"
                   style={{
-                    overflow: "visible",
+                    overflow: 'visible'
                   }}
                 />
               </clipPath>
@@ -979,7 +996,7 @@ export const IconStrokeLogo = ({
                 id="Grupo_8166"
                 style={{
                   clipPath:
-                    "url(#SVGID_00000139269977908429801710000000728549993598244488_)",
+                    'url(#SVGID_00000139269977908429801710000000728549993598244488_)'
                 }}
               >
                 <path
@@ -990,7 +1007,7 @@ export const IconStrokeLogo = ({
                 <g
                   id="Grupo_8165"
                   style={{
-                    opacity: 0.4,
+                    opacity: 0.4
                   }}
                   transform="translate(126.894 99.279)"
                 >
@@ -1005,7 +1022,7 @@ export const IconStrokeLogo = ({
                       <use
                         xlinkHref="#SVGID_00000172421797323369743630000013436532405955903378_"
                         style={{
-                          overflow: "visible",
+                          overflow: 'visible'
                         }}
                       />
                     </clipPath>
@@ -1013,7 +1030,7 @@ export const IconStrokeLogo = ({
                       id="Grupo_8163"
                       style={{
                         clipPath:
-                          "url(#SVGID_00000030463056819404080830000015000140169798954633_)",
+                          'url(#SVGID_00000030463056819404080830000015000140169798954633_)'
                       }}
                     >
                       <path

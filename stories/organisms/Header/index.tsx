@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { PColor } from '../../../assets/colors'
 import { IconLogo, IconSales } from '../../../assets/icons'
-import { 
-  Column, 
-  Row, 
+import {
+  Column,
+  Row,
   Text
 } from '../../atoms'
 import { AwesomeModal } from '../../organisms'
@@ -46,18 +46,18 @@ export const Header = ({
         header={false}
         height={'200px'}
         onCancel={() => { return false }}
-        onHide={() => { return }}
+        onHide={() => { return false }}
         padding={'30px'}
         show={false}
         size='20%'
         zIndex='9999'
       >
         <Column>
-          <Text size='20px'>
+          <Text size='md'>
             Tu session terminara pronto
           </Text>
         </Column>
-        <button onClick={() => { return }}>
+        <button onClick={() => { }}>
           cancelar
         </button>
         <button onClick={() => { return onClickLogout() }}>
@@ -69,25 +69,22 @@ export const Header = ({
         &nbsp;
         &nbsp;
         <Link href={'/dashboard'}>
-          <a>
-            <IconLogo color={PColor} size={isMobile ? '40px' : '90px'} />
-          </a>
+          <IconLogo color={PColor} size={isMobile ? '50px' : '100px'} />
         </Link>
       </Row>
       <CtnItemOps>
-        {!isMobile
-          && <Options
-            countOrders={countOrders}
-            error={false}
-            errorPush={errorPush}
-            loading={false}
-            loadingPush={loadingPush}
-            location={location}
-            onClickAskUserPermission={onClickAskUserPermission}
-            onClickLogout={onClickLogout}
-            pushNotificationSupported={pushNotificationSupported}
-            setIsOpenOrder={setIsOpenOrder}
-          />
+        {!isMobile && <Options
+          countOrders={countOrders}
+          error={false}
+          errorPush={errorPush}
+          loading={false}
+          loadingPush={loadingPush}
+          location={location}
+          onClickAskUserPermission={onClickAskUserPermission}
+          onClickLogout={onClickLogout}
+          pushNotificationSupported={pushNotificationSupported}
+          setIsOpenOrder={setIsOpenOrder}
+        />
         }
         <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }} style={style}>
           <IconSales size={30} />

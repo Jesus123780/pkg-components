@@ -1,18 +1,22 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { PColor } from '../../../../assets/colors';
+import React from 'react'
+import styled, { keyframes } from 'styled-components'
+import { PColor } from '../../../../assets/colors'
 
-interface LoadingProps {}
+interface LoadingProps {
+  bgColor?: string
+}
 
-const Loading: React.FC<LoadingProps> = () => {
+const Loading: React.FC<LoadingProps> = ({
+  bgColor = '#7777774e'
+}) => {
   return (
-    <Container>
+    <Container bgColor={bgColor}>
       <span className='loader'></span>
     </Container>
-  );
-};
+  )
+}
 
-interface SpinnerProps {}
+interface SpinnerProps { }
 
 const SpinnerColor: React.FC<SpinnerProps> = () => {
   return (
@@ -85,7 +89,9 @@ const AnimationRipple = keyframes`
 
 const Container = styled.div`
   align-items: center;
-  background-color: #7777774e;
+  background-color: ${props => {
+    return props.bgColor
+  }};
   display: flex;
   height: 100%;
   justify-content: center;

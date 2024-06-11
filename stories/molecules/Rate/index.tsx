@@ -1,17 +1,17 @@
-import React, { useMemo, useState } from 'react';
-import { IconRate } from '../../../assets/icons';
-import { ContentIcon } from './styled';
+import React, { useMemo, useState } from 'react'
+import { IconRate } from '../../../assets/icons'
+import { ContentIcon } from './styled'
 
 interface RateProps {
-  count: number;
-  rating: number;
+  count: number
+  rating: number
   color: {
-    filled: string;
-    unfilled: string;
-  };
-  size: string;
-  noHover?: boolean;
-  onRating?: (rating: number) => void;
+    filled: string
+    unfilled: string
+  }
+  size: string
+  noHover?: boolean
+  onRating?: (rating: number) => void
 }
 
 export const Rate: React.FC<RateProps> = ({
@@ -20,16 +20,16 @@ export const Rate: React.FC<RateProps> = ({
   color,
   size,
   noHover = false,
-  onRating = () => {},
+  onRating = () => {}
 }) => {
-  const [hoverRating, setHoverRating] = useState<number>(0);
+  const [hoverRating, setHoverRating] = useState<number>(0)
 
   const getColor = (index: number): string => {
     if (hoverRating >= index || (!hoverRating && rating >= index)) {
-      return color?.filled;
+      return color?.filled
     }
-    return color.unfilled;
-  };
+    return color.unfilled
+  }
 
   const starRating = useMemo(() => {
     return (
@@ -48,11 +48,11 @@ export const Rate: React.FC<RateProps> = ({
             </div>
           ))}
       </ContentIcon>
-    );
-  }, [count, getColor, size, onRating, noHover]);
+    )
+  }, [count, getColor, size, onRating, noHover])
 
-  return <div>{starRating}</div>;
-};
+  return <div>{starRating}</div>
+}
 
 Rate.defaultProps = {
   count: 5,
@@ -60,5 +60,5 @@ Rate.defaultProps = {
   color: {
     filled: '#ffbc00',
     unfilled: '#DCDCDC'
-  },
-};
+  }
+}

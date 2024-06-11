@@ -111,7 +111,7 @@ export const CardProductsContent = styled.div`
   grid-gap: 15px;
   grid-template-columns: 1fr 146px;
   height: 147px;
-  min-height: 190px;
+  min-height: 270px;
   min-width: 320px;
   overflow: hidden;
   padding: 20px;
@@ -139,6 +139,8 @@ export const CardProductsContent = styled.div`
   }
   .card__des {
     text-decoration: line-through;
+    font-weight: 100;
+    text-decoration-thickness: from-font;
   }
   .card__description {
     -webkit-box-orient: vertical;

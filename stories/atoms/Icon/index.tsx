@@ -5,7 +5,8 @@ import {
   IconMiniCheck,
   IconQrCode,
   IconClose,
-  IconStrokeLogo
+  IconStrokeLogo,
+  IconDragHandle
 } from '../../assets/public/Icons'
 import {
   Google,
@@ -83,6 +84,7 @@ export const Icons: IconMap = {
   IconBuys,
   IconBoxes,
   IconMasterCard,
+  IconDragHandle,
   IconVisa,
   IconInfo,
   IconMinus,

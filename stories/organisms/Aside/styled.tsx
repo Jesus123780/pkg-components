@@ -11,10 +11,7 @@ import {
 export const Router = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
-    height: 80%;
-    @media (max-width: 768px){
-        height: auto;
-    }
+    height: 75%;
 `
 export const CtnAnchor = styled(link)`
     box-sizing: border-box;

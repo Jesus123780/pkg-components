@@ -31,6 +31,7 @@ interface IOptionalExtraProducts {
   selectedItem: any
   selectedExtra: any
   openModalEditExtra: boolean
+  loadingCreateSubDessert: boolean
   handleCheck: any
   editOneItem: any
   handleRemoveList: any
@@ -53,6 +54,7 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
     lists: []
   },
   isCustomSubOpExPid,
+  loadingCreateSubDessert = false,
   loadingEditSubOptional,
   selectedItem = {
     id: '',
@@ -123,7 +125,7 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
           {dataListIds?.map((listID, index) => {
             const list = data.lists[listID]
             const numberLimit = list?.numberLimit
-            const incompleteList = list.numberLimit === list.cards.length
+            const incompleteList = Number(list.numberLimit) === Number(list.cards.length)
             const messageLimit = `${numberLimit} ${
               numberLimit > 1 ? 'opciones' : 'opción'
             }`
@@ -216,6 +218,7 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                   value={list?.value}
                 />
                 <RippleButton
+                  loading={loadingCreateSubDessert}
                   disabled={incompleteList}
                   margin='16px 0 auto'
                   onClick={() => {

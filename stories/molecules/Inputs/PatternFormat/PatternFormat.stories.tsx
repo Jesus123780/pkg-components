@@ -69,7 +69,7 @@ export const TemplateNumericFormatSuffix = TemplateNumericSuffix.bind({})
 
 // MyCustomNumberFormat
 
-const format = (numStr: string): number | bigint | string => {
+export const format = (numStr: string): number | bigint | string => {
   if (numStr === '') return ''
 
   return new Intl.NumberFormat('es-CO', {
@@ -81,7 +81,7 @@ const format = (numStr: string): number | bigint | string => {
 }
 
 const TemplateMyCustomNumberFormat: React.FC = () => {
-  return <NumberFormatBase value="20020220" placeholder='$' format={format} />
+  return <NumberFormatBase value="20020220" defaultValue={0} format={format} />
 }
 
 export const TemplateCustomNumberFormat = TemplateMyCustomNumberFormat.bind({})

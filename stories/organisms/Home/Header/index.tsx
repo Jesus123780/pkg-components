@@ -1,16 +1,21 @@
 import Link from 'next/link'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { IconLogo, PColor } from '../../../../assets'
 import { ButtonHeader } from '../ButtonHeader'
 import styles from './styles.module.css'
 
-export const Header = ({
+interface HeaderProps {
+  handleLogin?: () => void
+  handleRegister?: () => void
+  isMobile?: boolean
+}
+
+export const Header: React.FC<HeaderProps> = ({
   handleLogin = () => {
-    return
+    return null
   },
   handleRegister = () => {
-    return
+    return null
   },
   isMobile = false
 }) => {
@@ -57,11 +62,4 @@ export const Header = ({
       </div>
     </div>
   )
-}
-
-Header.propTypes = {
-  handleLogin: PropTypes.func,
-  handleRegister: PropTypes.func,
-  isMobile: PropTypes.bool,
-  logo: PropTypes.string
 }

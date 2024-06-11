@@ -27,7 +27,6 @@ import { getGlobalStyle } from '../../../utils'
 
 interface MemoAsideProps {
   collapsed?: boolean
-  countOrders?: number
   dataStore?: any
   handleClick?: any
   handleOpenDeliveryTime?: any
@@ -46,7 +45,6 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   location = {
     pathname: '/'
   },
-  countOrders = 0,
   version = '0.0.0',
   setCollapsed,
   salesOpen,
@@ -116,6 +114,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     }
     action[path]?.()
   }
+
   return (
     <>
       {isMobile &&
@@ -123,137 +122,150 @@ const MemoAside: React.FC<MemoAsideProps> = ({
           bgColor={getGlobalStyle('--color-background-overline')}
           onClick={() => { return setCollapsed(!collapsed) }}
           show={collapsed}
-          zIndex='999'
+          zIndex={getGlobalStyle('--z-index-99999')}
         />
       }
-      <Overline
+      {!isMobile && <Overline
         bgColor={getGlobalStyle('--color-background-overline')}
         onClick={() => { setShow(!show) }}
         show={show}
         zIndex={getGlobalStyle('--z-index-99999')}
-      />
-      <ContainerAside collapsed={isMobile ? collapsed : false}>
+      />}
+      <ContainerAside collapsed={isMobile ? collapsed : false}
+        style={isMobile
+          ? {
+            zIndex: getGlobalStyle('--z-index-99999')
+          }
+          : {}
+        }
+      >
         <Card>
-          <Info>
-            <ButtonGlobalCreate onClick={() => { setShow(!show) }}>
-              Agregar Nuevo
-            </ButtonGlobalCreate>
-            <Portal>
-              <LeftNav show={show && salesOpen === false}>
-                {location?.pathname !== '/products' &&
+          <div style={{
+            overflowY: 'hidden',
+            overflowX: 'hidden',
+            height: '100%'
+          }}>
+            <Info>
+              <ButtonGlobalCreate onClick={() => { setShow(!show) }}>
+                Agregar Nuevo
+              </ButtonGlobalCreate>
+              <Portal>
+                <LeftNav show={show && salesOpen === false}>
+                  {location?.pathname !== '/products' &&
+                    <Info>
+                      <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
+                        Productos
+                      </Button>
+                    </Info>
+                  }
+                  {location?.pathname === '/products' && <Info>
+                    <Button
+                      border='gray' color='black'
+                      onClick={() => {
+                        setShowComponentModal(4)
+                        handleClick(4)
+                      }}
+                    >
+                      Categorías
+                    </Button>
+                  </Info>}
                   <Info>
-                    <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
-                      Productos
+                    <Button
+                      border='gray'
+                      color='black'
+                      onClick={() => { return setSalesOpen(salesOpen ?? false) }}
+                    >
+                      Ventas
                     </Button>
                   </Info>
-                }
-                {location?.pathname === '/products' && <Info>
-                  <Button
-                    border='gray' color='black'
-                    onClick={() => {
-                      setShowComponentModal(4)
-                      handleClick(4)
-                    }}
-                  >
-                    Categorías
-                  </Button>
-                </Info>}
-                <Info>
-                  <Button
-                    border='gray'
-                    color='black'
-                    onClick={() => { return setSalesOpen(salesOpen ?? false) }}
-                  >
-                    Ventas
-                  </Button>
-                </Info>
-              </LeftNav>
-            </Portal>
-            {(loading)
-              ? null
-              : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
-                <h1 className='title_store'>
-                  {storeName}
-                </h1>
-              </Link>)
-            }
-            {pathname &&
-              <h1 className='title_store'>{storeName}</h1>
-            }
-            {uState === '1' &&
-              <div className='program_state'>
-                <IconLogo color='var(--color-icons-primary)' size='20px' />
-                <h3 className='sub_title_store'>En pausa programada</h3>
-              </div>
-            }
-          </Info>
-          <Router>
-            {modulesArray?.map((module: any, index) => {
-              const subModules = module?.subModules ?? []
-              const existSubModules = Boolean(subModules.length > 0)
-              const onAction = module?.mPath?.startsWith('?')
-              return (
-                <div key={module.mId}>
-                  {!existSubModules &&
-                    <CustomLinkAside
-                      count={0}
-                      onClick={() => {
-                        handleClickAction(module.mPath as string)
-                      }}
-                      size={existSubModules ? '.8rem' : '.9rem'}
-                      mPath={onAction === true ? '' : module?.mPath as string}
-                      mIcon={module?.mIcon}
-                      mName={module?.mName}
-                    />
-                  }
-                  {existSubModules &&
-                    <span style={{
-                      cursor: 'pointer',
-                      fontSize: '.8rem',
-                      padding: '10px',
-                      display: 'block',
-                      fontWeight: '600',
-                      color: '#bebdbe'
-                    }}>
-                      {module.mName}
-                    </span>
-                  }
-                  <div>
-                    {existSubModules &&
-                      <Options
-                        active={Boolean(index === active)}
-                        handleClick={() => { handleMenu(index) }}
-                        index={index}
-                        icon='IconTicket'
-                        size='.9rem'
-                        label={module.mName}
-                        path={`/${module.mPath}`}
-                      >
-                        {subModules?.map((item: any, index: number) => {
-                          return (
-                            <div key={item.smId}
-                              style={{
-                                marginLeft: '20px',
-                                width: '90%',
-                                marginTop: '10px'
-                              }} >
-                              <CustomLinkAside
-                                size='.8rem'
-                                mPath={item?.smPath}
-                                mIcon={-1}
-                                mName={item?.smName}
-                              />
-                            </div>
-                          )
-                        })}
-
-                      </Options>}
-                  </div>
-
+                </LeftNav>
+              </Portal>
+              {(loading)
+                ? null
+                : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
+                  <h1 className='title_store'>
+                    {storeName}
+                  </h1>
+                </Link>)
+              }
+              {pathname &&
+                <h1 className='title_store'>{storeName}</h1>
+              }
+              {uState === '1' &&
+                <div className='program_state'>
+                  <IconLogo color='var(--color-icons-primary)' size='20px' />
+                  <h3 className='sub_title_store'>En pausa programada</h3>
                 </div>
-              )
-            })}
-          </Router>
+              }
+            </Info>
+            <Router>{console.log(modulesArray)}
+              {modulesArray?.map((module: any, index) => {
+                const subModules = module?.subModules ?? []
+                const existSubModules = Boolean(subModules.length > 0)
+                const onAction = module?.mPath?.startsWith('?')
+                return (
+                  <div key={module.mId}>
+                    {!existSubModules &&
+                      <CustomLinkAside
+                        count={0}
+                        onClick={() => {
+                          handleClickAction(module.mPath as string)
+                        }}
+                        size={existSubModules ? '.8rem' : '.9rem'}
+                        mPath={onAction === true ? '' : module?.mPath as string}
+                        mIcon={module?.mIcon}
+                        mName={module?.mName}
+                      />
+                    }
+                    {existSubModules &&
+                      <span style={{
+                        cursor: 'pointer',
+                        fontSize: '.8rem',
+                        padding: '10px',
+                        display: 'block',
+                        fontWeight: '600',
+                        color: '#bebdbe'
+                      }}>
+                        {module.mName}
+                      </span>
+                    }
+                    <div>
+                      {existSubModules &&
+                        <Options
+                          active={Boolean(index === active)}
+                          handleClick={() => { handleMenu(index) }}
+                          index={index}
+                          icon='IconTicket'
+                          size='.9rem'
+                          label={module.mName}
+                          path={`/${module.mPath}`}
+                        >
+                          {subModules?.map((item: any, index: number) => {
+                            return (
+                              <div key={item.smId}
+                                style={{
+                                  marginLeft: '20px',
+                                  width: '90%',
+                                  marginTop: '10px'
+                                }} >
+                                <CustomLinkAside
+                                  size='.8rem'
+                                  mPath={item?.smPath}
+                                  mIcon={-1}
+                                  mName={item?.smName}
+                                />
+                              </div>
+                            )
+                          })}
+
+                        </Options>}
+                    </div>
+
+                  </div>
+                )
+              })}
+            </Router>
+          </div>
           <Text color='gray-dark'>
             {version}
           </Text>

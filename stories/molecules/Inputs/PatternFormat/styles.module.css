@@ -1,0 +1,33 @@
+.wrapper {
+    position: relative;
+}
+
+.input {
+    border-radius: 5px;
+    border: 1px solid var(--color-neutral-gray-silver);
+    font-family: PFont-Light;
+    font-size: 16px;
+    font-weight: 200px;
+    margin: 10px 0;
+    outline: 0;
+    padding: 20px 10px;
+    width: 100%;
+}
+
+.label_input {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-transition: .2s;
+    -webkit-user-select: none;
+    background-color: #fafbfc;
+    color: #CCC;
+    font-family: PFont-Light;
+    font-size: 16px;
+    left: 15px;
+    pointer-events: none;
+    position: absolute;
+    text-align: left;
+    top: 3px;
+    transition: color 0.2s ease;
+    user-select: none;
+}
