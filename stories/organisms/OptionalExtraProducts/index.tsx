@@ -126,15 +126,13 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
             const list = data.lists[listID]
             const numberLimit = list?.numberLimit
             const incompleteList = Number(list.numberLimit) === Number(list.cards.length)
-            const messageLimit = `${numberLimit} ${
-              numberLimit > 1 ? 'opciones' : 'opción'
-            }`
+            const messageLimit = `${numberLimit} ${numberLimit > 1 ? 'opciones' : 'opción'
+              }`
             return (
               <Column
                 style={{
-                  border: `2px solid ${
-                    incompleteList ? NorthTexasGreen : 'transparent'
-                  }`,
+                  border: `2px solid ${incompleteList ? NorthTexasGreen : 'transparent'
+                    }`,
                   height: 'min-content'
                 }}
                 key={listID}
@@ -149,9 +147,11 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                   }}
                 >
                   <div>
-                    <p className='garnish-choices__title'>{list?.title}</p>
+                    <p className='garnish-choices__title'>
+                      {list?.title}
+                    </p>
                     <p className='garnish-choices__title-desc'>
-                      Escoge hasta  jejeje{messageLimit}.
+                      Escoge hasta {messageLimit}.
                     </p>
                     {Boolean(list?.required === 1) && <Tag />}
                   </div>

@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { PColor } from '../../../../assets/colors'
 import { IconSearch } from '../../../../assets/icons'
 import styles from './InputQuery.module.css'
+
 interface IInputQuery {
   dataForm: {
     search: string
@@ -37,10 +37,4 @@ export const InputQuery: React.FC<IInputQuery> = ({
       />
     </div>
   )
-}
-
-InputQuery.propTypes = {
-  dataForm: PropTypes.object,
-  handleChange: PropTypes.func,
-  placeholder: PropTypes.string
 }

@@ -62,7 +62,7 @@
     justify-content: center;
     overflow-y: auto;
     padding-left: 20px;
-    row-gap: 35px;
+    row-gap: 60px;
 
 }
 
@@ -74,7 +74,7 @@
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     display: grid;
     column-gap: 5px;
-    row-gap: 35px;
+    row-gap: 60px;
     position: relative;
 }
 

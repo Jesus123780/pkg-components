@@ -28,6 +28,7 @@ import {
   TextAreaInput,
   Tooltip
 } from './styled'
+import { getGlobalStyle } from '../../../../helpers'
 
 interface InputHooksProps {
   autoComplete?: string
@@ -399,16 +400,25 @@ export const InputHooks: React.FC<InputHooksProps> = ({
           value={value || ''}
           width={width}
         />}
-      {<LabelInput
-        error={error}
-        labelColor={labelColor}
-        labelTop={labelTop}
-        onClick={() => { return refInput.current.focus() }}
-        type={type}
-        value={value}
-      >
-        {title}
-      </LabelInput>}
+        <LabelInput
+          error={error}
+          labelColor={labelColor}
+          labelTop={labelTop}
+          onClick={() => { return refInput.current.focus() }}
+          type={type}
+          value={value}
+        >
+           {((title?.includes('*')) ?? false)
+          ? (
+            <>
+              {title?.replace('*', '')}
+              <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>*</span>
+            </>
+            )
+          : (
+            title
+            )}
+        </LabelInput>
       {errors && <Tooltip>{message}</Tooltip>}
     </BoxInput>
   )

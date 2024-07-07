@@ -198,7 +198,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                 </div>
               }
             </Info>
-            <Router>{console.log(modulesArray)}
+            <Router>
               {modulesArray?.map((module: any, index) => {
                 const subModules = module?.subModules ?? []
                 const existSubModules = Boolean(subModules.length > 0)

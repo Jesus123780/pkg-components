@@ -2,7 +2,6 @@ import React from 'react'
 import {
   AlertInfo,
   AsideInfoStore,
-  InputHooks,
   NewSelect,
   NumberFormatBase,
   currencyFormat
@@ -68,12 +67,15 @@ export const AsideSales: React.FC<AsideProps> = ({
       {overline && (
         <Overline
           show={openAside}
-          bgColor="rgba(0,0,0,.4)"
+          bgColor={getGlobalStyle('--color-background-overline')}
           zIndex={getGlobalStyle('--z-index-99999')}
           onClick={() => {
             handleOpenAside()
             handleCloseAside()
           }}
+          style={{
+            padding: getGlobalStyle('--spacing-lg')
+          } as React.CSSProperties}
         />
       )}
       <AsideInfoStore
@@ -104,7 +106,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           title="Mis clientes"
           value={values?.cliId ?? ''}
         />
-        <Divider marginBottom={'20px'} />
+        <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
         <Button
           primary={paymentMethodTransfer}
           onClick={() => {
@@ -121,10 +123,10 @@ export const AsideSales: React.FC<AsideProps> = ({
         >
           EFECTIVO
         </Button>
+        <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
+
         <NumberFormatBase
           defaultValue={0}
-          autoComplete="off"
-          error={errors?.change}
           format={currencyFormat}
           label='Cambio'
           name='change'

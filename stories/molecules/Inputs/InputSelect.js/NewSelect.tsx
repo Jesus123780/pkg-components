@@ -4,6 +4,7 @@ import { IconArrowBottom, IconFolder, IconLoading, IconPlus, IconCancel as IconW
 import { Overline } from '../../../atoms/Overline'
 import { changeSearch, changeValue, findOptionById, renderVal } from './helpers'
 import { BoxOptions, BoxSelect, ButtonAction, ContainerItems, ContentBox, CustomButtonS, IconSel, InputText, LabelInput, MainButton, SpanText, TextNotResult, Tooltip } from './styles'
+import { getGlobalStyle } from '../../../../helpers'
 
 interface NewSelectProps {
   accessor?: string
@@ -13,7 +14,6 @@ interface NewSelectProps {
   disabled?: boolean
   error?: boolean
   fullName?: any
-  handleClickAction?: () => void
   heightBody?: any
   icon?: boolean
   id?: string
@@ -22,7 +22,6 @@ interface NewSelectProps {
   minWidth?: string
   name?: string
   noLabel?: boolean
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
   optionName?: string
   options?: any[]
   overLine?: boolean
@@ -34,7 +33,8 @@ interface NewSelectProps {
   topTitle?: string
   value?: string
   width?: string
-
+  handleClickAction?: () => void
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
 export const NewSelect: React.FC<NewSelectProps> = ({
   options = [],
@@ -138,7 +138,16 @@ export const NewSelect: React.FC<NewSelectProps> = ({
         topTitle={topTitle}
         value={value}
       >
-        {title}
+        {((title?.includes('*')) ?? false)
+          ? (
+            <>
+              {title?.replace('*', '')}
+              <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>*</span>
+            </>
+          )
+          : (
+            title
+          )}
       </LabelInput>
       <BoxSelect
         margin={margin}
@@ -260,7 +269,7 @@ export const NewSelect: React.FC<NewSelectProps> = ({
                 : valueInput && (
                   <TextNotResult>
                     <IconFolder size='40px' />
-                      &nbsp; No hay resultados.
+                    &nbsp; No hay resultados.
                   </TextNotResult>
                 )}
             </BoxOptions>
