@@ -5,6 +5,104 @@ import React from 'react'
 import { type IconProps } from '../../stories/assets/public/Icons'
 import { getGlobalStyle } from '../../helpers'
 
+export const IconExcel: React.FC<IconProps> = ({
+  size
+}) => (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width={size ?? 800}
+    height={size ?? 800}
+    viewBox='0 0 32 32'
+  >
+    <defs>
+      <linearGradient
+        id='a'
+        x1={4.494}
+        x2={13.832}
+        y1={-2092.086}
+        y2={-2075.914}
+        gradientTransform='translate(0 2100)'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop offset={0} stopColor='#18884f' />
+        <stop offset={0.5} stopColor='#117e43' />
+        <stop offset={1} stopColor='#0b6631' />
+      </linearGradient>
+    </defs>
+    <title>{'file_type_excel'}</title>
+    <path
+      d='M19.581 15.35 8.512 13.4v14.409A1.192 1.192 0 0 0 9.705 29h19.1A1.192 1.192 0 0 0 30 27.809V22.5Z'
+      style={{
+        fill: '#185c37'
+      }}
+    />
+    <path
+      d='M19.581 3H9.705a1.192 1.192 0 0 0-1.193 1.191V9.5L19.581 16l5.861 1.95L30 16V9.5Z'
+      style={{
+        fill: '#21a366'
+      }}
+    />
+    <path
+      d='M8.512 9.5h11.069V16H8.512Z'
+      style={{
+        fill: '#107c41'
+      }}
+    />
+    <path
+      d='M16.434 8.2H8.512v16.25h7.922a1.2 1.2 0 0 0 1.194-1.191V9.391A1.2 1.2 0 0 0 16.434 8.2Z'
+      style={{
+        opacity: 0.10000000149011612,
+        isolation: 'isolate'
+      }}
+    />
+    <path
+      d='M15.783 8.85H8.512V25.1h7.271a1.2 1.2 0 0 0 1.194-1.191V10.041a1.2 1.2 0 0 0-1.194-1.191Z'
+      style={{
+        opacity: 0.20000000298023224,
+        isolation: 'isolate'
+      }}
+    />
+    <path
+      d='M15.783 8.85H8.512V23.8h7.271a1.2 1.2 0 0 0 1.194-1.191V10.041a1.2 1.2 0 0 0-1.194-1.191Z'
+      style={{
+        opacity: 0.20000000298023224,
+        isolation: 'isolate'
+      }}
+    />
+    <path
+      d='M15.132 8.85h-6.62V23.8h6.62a1.2 1.2 0 0 0 1.194-1.191V10.041a1.2 1.2 0 0 0-1.194-1.191Z'
+      style={{
+        opacity: 0.20000000298023224,
+        isolation: 'isolate'
+      }}
+    />
+    <path
+      d='M3.194 8.85h11.938a1.193 1.193 0 0 1 1.194 1.191v11.918a1.193 1.193 0 0 1-1.194 1.191H3.194A1.192 1.192 0 0 1 2 21.959V10.041A1.192 1.192 0 0 1 3.194 8.85Z'
+      style={{
+        fill: 'url(#a)'
+      }}
+    />
+    <path
+      d='m5.7 19.873 2.511-3.884-2.3-3.862h1.847L9.013 14.6c.116.234.2.408.238.524h.017c.082-.188.169-.369.26-.546l1.342-2.447h1.7l-2.359 3.84 2.419 3.905h-1.809l-1.45-2.711A2.355 2.355 0 0 1 9.2 16.8h-.024a1.688 1.688 0 0 1-.168.351l-1.493 2.722Z'
+      style={{
+        fill: '#fff'
+      }}
+    />
+    <path
+      d='M28.806 3h-9.225v6.5H30V4.191A1.192 1.192 0 0 0 28.806 3Z'
+      style={{
+        fill: '#33c481'
+      }}
+    />
+    <path
+      d='M19.581 16H30v6.5H19.581Z'
+      style={{
+        fill: '#107c41'
+      }}
+    />
+  </svg>
+)
+
 /**
  * IconBuys component
  * @param {Object} props - Component props
@@ -225,6 +323,7 @@ export const IconChart: React.FC<IconProps> = ({ style = {}, size, color, ...pro
     </svg>
   )
 }
+
 
 /**
  * IconCategorie component
@@ -1163,7 +1262,6 @@ export const IconDelete: React.FC<IconProps> = ({ style = {}, size, color, ...pr
       viewBox="0 0 24 24"
       width={size ?? 24}
       color={color}
-      {...props}
     >
       <path
         fill={color ?? '#FF4242'}
@@ -1779,6 +1877,23 @@ export const IconBox: React.FC<IconProps> = ({ size, color, ...props }) => (
       strokeMiterlimit={10}
       strokeWidth={1.5}
       d="M17 10h2c2 0 3-1 3-3V5c0-2-1-3-3-3h-2c-2 0-3 1-3 3v2c0 2 1 3 3 3ZM5 22h2c2 0 3-1 3-3v-2c0-2-1-3-3-3H5c-2 0-3 1-3 3v2c0 2 1 3 3 3ZM6 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM18 22a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+    />
+  </svg>
+)
+
+export const IconFileUpload: React.FC<IconProps> = ({ size, color, ...props }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke={color ?? getGlobalStyle('--color-icons-black') }
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 19v-7m0 0-2.25 2.333M12 12l2.25 2.333m-7.65 3.5c-1.988 0-3.6-1.641-3.6-3.666 0-1.669 1.094-3.077 2.592-3.521A.152.152 0 0 0 5.7 10.5C5.7 7.462 8.118 5 11.1 5s5.4 2.462 5.4 5.5a.09.09 0 0 0 .11.089c.254-.058.518-.089.79-.089 1.988 0 3.6 1.642 3.6 3.667s-1.612 3.666-3.6 3.666"
     />
   </svg>
 )

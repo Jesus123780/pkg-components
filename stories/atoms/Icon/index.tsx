@@ -11,12 +11,14 @@ import {
 import {
   Google,
   IconArrowRight,
-  IconBuys,
   IconCategorie,
+  IconExcel,
+  IconBuys,
   IconInvoice,
   IconChart,
   IconColombia,
   IconCircleNumber,
+  IconFileUpload,
   IconFilter,
   IconDost,
   IconHome,
@@ -75,6 +77,7 @@ interface IconPropsComponent {
   size?: number
   height?: string | number
   width?: string | number
+  style?: React.CSSProperties
 }
 
 export const Icons: IconMap = {
@@ -93,9 +96,11 @@ export const Icons: IconMap = {
   IconLines,
   IconInvoice,
   IconPdf,
+  IconExcel,
   IconFilter,
   IconInformationProduct,
   IconChart,
+  IconFileUpload,
   IconCategorie,
   IconColombia,
   IconArrowRight,
@@ -152,7 +157,8 @@ export const Icon: React.FC<IconPropsComponent> = ({
   size,
   width,
   height,
-  color
+  color,
+  style
 }: IconPropsComponent) => {
   const Icono = GetIcon(icon)
   if (icon === 'none') return null
@@ -160,6 +166,12 @@ export const Icon: React.FC<IconPropsComponent> = ({
     return <div>No se encontró el ícono</div>
   }
   return (
-    <Icono size={size ?? 24} color={color} width={width} height={height} />
+    <Icono
+      size={size ?? 24}
+      color={color}
+      width={width}
+      height={height}
+      style={{ cursor: 'pointer', ...style }}
+    />
   )
 }

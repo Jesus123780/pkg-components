@@ -1,7 +1,7 @@
 import React, { type FC } from 'react'
 import { Text } from '../../atoms'
-import styles from './HeaderSteps.module.css'
 import { getGlobalStyle } from '../../../utils'
+import styles from './HeaderSteps.module.css'
 
 interface HeaderStepsProps {
   active?: number

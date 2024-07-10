@@ -1,32 +1,37 @@
-import React from 'react';
-import { Rate } from '../../molecules';
-import { AsideInfoStore } from '../../molecules/AsideInfoStore';
-import { HeaderSteps } from '../../molecules/HeaderSteps';
-import { Text, Button, Row, Column } from '../../atoms';
-import { Divider } from '../../atoms/Divider';
+import React from 'react'
+import { Rate } from '../../molecules'
+import { AsideInfoStore } from '../../molecules/AsideInfoStore'
+import { HeaderSteps } from '../../molecules/HeaderSteps'
+import {
+  Text,
+  Button,
+  Row,
+  Column
+} from '../../atoms'
+import { Divider } from '../../atoms/Divider'
 
 interface Schedule {
-  day: string;
-  horarios: { horaInicio: string; horaFin: string }[];
+  day: string
+  horarios: Array<{ horaInicio: string, horaFin: string }>
 }
 
 interface LateralStoreInfoProps {
-  active?: number;
-  fState?: number;
-  idStore?: string;
-  minOrder?: number;
-  overActive?: number;
-  rating?: number;
-  show: boolean;
-  steps?: string[];
-  schedulesStore: Schedule[];
-  setRatingStar: (props: any) => void;
-  handleClose: () => void;
-  setActive: (active: number) => void;
-  setRating: (rating: number) => void;
-  handleOverActive: (index: number) => void;
-  removeFav: (idStore: string, fState: number) => void;
-  addFav: (idStore: string) => void;
+  active?: number
+  fState?: number
+  idStore?: string
+  minOrder?: number
+  overActive?: number
+  rating?: number
+  show: boolean
+  steps?: string[]
+  schedulesStore: Schedule[]
+  setRatingStar: (props: any) => void
+  handleClose: () => void
+  setActive: (active: number) => void
+  setRating: (rating: number) => void
+  handleOverActive: (index: number) => void
+  removeFav: (idStore: string, fState: number) => void
+  addFav: (idStore: string) => void
 }
 
 export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
@@ -45,7 +50,7 @@ export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
   setRating,
   handleOverActive,
   removeFav,
-  addFav,
+  addFav
 }) => {
   return (
     <AsideInfoStore handleClose={handleClose} show={show}>
@@ -64,14 +69,14 @@ export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
               <div style={{ width: 'min-content' }}>
                 <Rate
                   onRating={(rate) => {
-                    setRating(rate);
+                    setRating(rate)
                     setRatingStar({
                       variables: {
                         data: {
-                          rScore: rate,
-                        },
-                      },
-                    });
+                          rScore: rate
+                        }
+                      }
+                    })
                   }}
                   rating={rating}
                 />
@@ -82,7 +87,7 @@ export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
               className='containe'
               style={{ width: '50%', justifyContent: 'end' }}
             >
-              {!!minOrder && (
+              {!(minOrder == null) && (
                 <Text size='3xl'>
                   Precio de Producto mínimo $ {minOrder}
                 </Text>
@@ -92,7 +97,7 @@ export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
               </Text>
               <Button
                 onClick={() => {
-                  return fState === 1 ? removeFav(idStore, fState) : addFav(idStore);
+                  return fState === 1 ? removeFav(idStore, fState) : addFav(idStore)
                 }}
               >
                 {fState === 1 ? 'Eliminar' : 'Añadir'}
@@ -110,11 +115,11 @@ export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
                     <div key={i}>
                       <Row>
                         <Text>
-                          {horario.horaInicio || 'Cerrado'}
+                          {horario.horaInicio !== '' ? horario.horaInicio : 'Cerrado'}
                         </Text>
                         <Text> - </Text>
                         <Text>
-                          {horario.horaFin || 'Cerrado'}
+                          {horario.horaFin !== '' ? horario.horaFin : 'Cerrado'}
                         </Text>
                       </Row>
                     </div>
@@ -122,9 +127,9 @@ export const LateralStoreInfo: React.FC<LateralStoreInfoProps> = ({
                 </Row>
                 <Divider borderTop={true} />
               </Column>
-            );
+            )
           })}
       </div>
     </AsideInfoStore>
-  );
-};
+  )
+}
