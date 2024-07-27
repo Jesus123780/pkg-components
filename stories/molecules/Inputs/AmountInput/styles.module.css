@@ -1,0 +1,25 @@
+.input { 
+    border-radius: 5px;
+    border: 1px solid var(--color-neutral-gray-silver);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    margin: 10px 0;
+    outline: 0;
+    padding: 21px 10px;
+    width: 100%;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.label {
+    background-color: var(--color-neutral-gray-light);
+    color: var(--color-neutral-gray-dark);
+    font-family: PFont-Light;
+    font-size: 16px;
+    left: 15px;
+    pointer-events: none;
+    position: absolute;
+    text-align: left;
+    top: 5px;
+    transition: color 0.2s ease;
+    user-select: none;
+}

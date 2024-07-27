@@ -1,0 +1,35 @@
+
+.section {
+    align-items: center;
+    display: grid;
+    height: 56px;
+    margin: 0 auto;
+    gap: var(--spacing-xl);
+}
+
+.section__content {
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+    font-size: 15px;
+}
+
+.section__content--label__hidden input {
+    height: 0;
+    opacity: 0;
+}
+
+.arrow_label {
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    justify-content: space-between;
+    position: relative;
+}
+
+.title {
+    color: var(--color-neutral-gray-dark);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+}

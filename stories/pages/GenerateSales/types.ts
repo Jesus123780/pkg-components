@@ -12,7 +12,7 @@ export interface ProductFood {
   fId: string | null
   pName: string
   ProPrice: number | string
-  ProDescuento: string
+  ProDescuento: number
   free?: boolean
   ProUniDisponibles: any | null // Reemplaza 'any' por el tipo correcto si es conocido
   ProDescription: string

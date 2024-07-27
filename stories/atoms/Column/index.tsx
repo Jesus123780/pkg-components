@@ -1,13 +1,39 @@
-import styled from 'styled-components'
+// Column.tsx
+import React from 'react'
+import clsx from 'clsx'
+import styles from './styles.module.css'
 
-export interface ColumnProps {
-  alignItems?: string
-  justifyContent?: string
+interface ColumnProps {
+  alignItems?: 'center' | 'flex-start' | 'flex-end'
+  justifyContent?: 'center' | 'flex-start' | 'flex-end'
+  children: React.ReactNode
+  width?: string
+  style?: React.CSSProperties
+  className?: string
+  as?: React.ElementType
 }
 
-export const Column = styled.div<ColumnProps>`
-  align-items: ${({ alignItems }) => alignItems ?? 'flex-start'};
-  display: flex;
-  flex-direction: column;
-  justify-content: ${({ justifyContent }) => justifyContent ?? 'flex-start'};
-`
+export const Column: React.FC<ColumnProps> = ({
+  alignItems,
+  justifyContent,
+  children,
+  className,
+  style,
+  as: Component = 'div',
+  ...props
+}) => {
+  const columnClasses = clsx(
+    styles.column,
+    alignItems && styles[`align-items-${alignItems}`],
+    justifyContent && styles[`justify-content-${justifyContent}`],
+    className
+  )
+
+  return <Component
+    className={columnClasses}
+    style={style}
+    {...props}
+  >
+    {children}
+  </Component>
+}

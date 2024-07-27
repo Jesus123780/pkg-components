@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import { QuantityButtonProps } from './types'
+import { type QuantityButtonProps } from './types'
 
 export const ContainerQuantity = styled.div<QuantityButtonProps>`
   display: inline-flex;
   border: ${({ border }) => {
-    return border || '1px solid #dcdcdc'
+    return border ?? '1px solid #dcdcdc'
   }};
   border-radius: 4px;
   margin-right: 10px;
@@ -16,10 +16,10 @@ export const ContainerQuantity = styled.div<QuantityButtonProps>`
   border-radius: 4px;
   margin-right: 15px;
   width: ${({ width }) => {
-    return width || '100%'
+    return width ?? '100%'
   }};
   margin: ${({ margin }) => {
-    return margin || 'auto'
+    return margin ?? 'auto'
   }};
   @media only screen and (min-width: 960px) {
     .dish-action__counter {

@@ -169,9 +169,12 @@ const Button = styled.button<RippleButtonProps>`
   background-color: ${({ bgColor }) => bgColor || 'red'};
   color: ${({ color }) => color || BGColor};
   font-family: ${({ family }) => family || 'PFont-Light'};
-  width: ${({ widthButton }) => widthButton || '100%'};
+  width: ${({ widthButton }) => widthButton ?? '100%'};
   ${({ margin }) => margin && css`margin: ${margin};`}
   ${({ border }) => border && css`border: ${border};`}
   ${({ radius }) => radius && css`border-radius: ${radius};`}
   ${({ height }) => height && css`height: ${height};`}
+  overflow: hidden; /* Oculta cualquier contenido que se desborde */
+  white-space: nowrap; /* Evita el salto de línea */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se desborda */
 `

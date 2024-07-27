@@ -90,10 +90,10 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   })
 
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent): void {
+    function handleKeyDown (event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
-        setSalesOpen(prevState => !(prevState))
+        setSalesOpen((prevState: boolean) => !(prevState))
       }
     }
     document.addEventListener('keydown', handleKeyDown)
@@ -134,8 +134,8 @@ const MemoAside: React.FC<MemoAsideProps> = ({
       <ContainerAside collapsed={isMobile ? collapsed : false}
         style={isMobile
           ? {
-            zIndex: getGlobalStyle('--z-index-99999')
-          }
+              zIndex: getGlobalStyle('--z-index-99999')
+            }
           : {}
         }
       >
@@ -154,7 +154,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   {location?.pathname !== '/products' &&
                     <Info>
                       <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
-                        Productos
+                        Nuevo producto
                       </Button>
                     </Info>
                   }

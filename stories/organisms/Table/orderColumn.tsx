@@ -1,6 +1,4 @@
-// Funcion para hacer el filtro de las respectivas columnas
-// eslint-disable-next-line consistent-return
-export const orderColumn = (prev, post, currentColumn = { key: '' }) => {
+export const orderColumn = (prev: Record<string, any>, post: Record<string, any>, currentColumn = { key: '' }): any => {
   const { key } = currentColumn
   const keys = key?.split('.')
 

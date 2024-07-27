@@ -27,7 +27,7 @@ export const MiniCardProductPrimary: Story = {
     pName: 'Test con muchos sub items',
     getOneTags: null,
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     free: 0,
     ProUniDisponibles: null,
     ProDescription:
@@ -76,7 +76,7 @@ export const MiniCardProductQuantity: Story = {
     pName: 'Test con muchos sub items',
     getOneTags: null,
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     free: 0,
     ProUniDisponibles: null,
     ProDescription:

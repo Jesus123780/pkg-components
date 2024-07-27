@@ -234,7 +234,7 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                   }}
                   widthButton='100%'
                 >
-                  Adicionar
+                  Agregar
                 </RippleButton>
               </Column>
             )

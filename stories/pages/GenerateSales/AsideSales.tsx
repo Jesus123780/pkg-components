@@ -42,7 +42,9 @@ export const AsideSales: React.FC<AsideProps> = ({
   openAside = false,
   loadingClients = false,
   paymentMethodTransfer = false,
-  dataClientes = [],
+  dataClientes = {
+    data: []
+  },
   values = {
     cliId: '',
     change: '',
@@ -73,9 +75,9 @@ export const AsideSales: React.FC<AsideProps> = ({
             handleOpenAside()
             handleCloseAside()
           }}
-          style={{
+          style={React.useMemo(() => ({
             padding: getGlobalStyle('--spacing-lg')
-          } as React.CSSProperties}
+          }), [])}
         />
       )}
       <AsideInfoStore
@@ -101,7 +103,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           width="100%"
           onChange={handleChange}
           optionName="clientName"
-          options={dataClientes ?? []}
+          options={dataClientes?.data ?? []}
           search={true}
           title="Mis clientes"
           value={values?.cliId ?? ''}

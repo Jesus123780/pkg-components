@@ -15,7 +15,7 @@ export interface TypeModalDetailOrder {
   saleGroup?: boolean
   saleKey: any[]
   stateSale: number
-  totalProductsPrice: string
+  totalProductsPrice: number
   HandleChangeState: () => void
   handleModalItem: (pId: string, ShoppingCardId: string) => void
   handleModalProductSale: () => void

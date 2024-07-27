@@ -103,7 +103,7 @@ export const mockDataProduct = {
     fId: null,
     pName: 'Cocacola 2',
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     ProUniDisponibles: null,
     ProDescription: '32432423423423',
     ValueDelivery: null,

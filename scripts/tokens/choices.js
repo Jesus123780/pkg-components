@@ -1,4 +1,4 @@
-const choices = {
+export const choices = {
   color: {
     brand: {
       // Primary
@@ -204,3 +204,4 @@ const choices = {
 
 
 module.exports = choices
+module.exports = { choices }

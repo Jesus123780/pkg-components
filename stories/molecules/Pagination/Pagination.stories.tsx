@@ -29,7 +29,6 @@ export default {
     isVisableButtonLeft: false,
     isVisableButtonRight: false,
     isVisableButtons: true
-  
   }
 }
 

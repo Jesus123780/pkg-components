@@ -1,13 +1,4 @@
-import PropTypes from 'prop-types'
-
-import React, {
-  useEffect,
-  useReducer,
-  useRef,
-  useState
-} from 'react'
-import { SFVColor } from '../../../../assets/colors'
-import { IconNoShow, IconShowEye } from '../../../../assets/icons'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   isCC,
   isEmail,
@@ -17,23 +8,14 @@ import {
   valNit,
   validatePhoneNumber
 } from '../../../../utils'
-import { simpleVerifyEmail } from './helpers'
-import {
-  BoxInput,
-  InputV,
-  LabelInput,
-  List,
-  Listbox,
-  ShowPass,
-  TextAreaInput,
-  Tooltip
-} from './styled'
 import { getGlobalStyle } from '../../../../helpers'
+import { Icon, Row } from '../../../atoms'
+import styles from './styles.module.css'
 
 interface InputHooksProps {
   autoComplete?: string
   border?: string
-  Cc?: any
+  cc?: boolean
   checked?: boolean
   autoFocus?: any
   dataForm?: object
@@ -41,7 +23,6 @@ interface InputHooksProps {
   display?: string
   email?: any
   error?: string | boolean
-  fontSize?: string
   height?: any
   labelColor?: any
   labelTop?: any
@@ -57,33 +38,36 @@ interface InputHooksProps {
   paddingInput?: string
   pass?: any
   passConfirm?: {
-    passValue: any
-    validate: any
+    passValue: number | string
+    validate: number | string
   }
   placeholder?: string
   radius?: string
   range?: {
-    max: any
-    min: any
+    max: number | string
+    min: number | string
   }
-  reference?: any
-  required?: any
-  setDataValue?: (e: any) => void
+  reference?: React.RefObject<HTMLInputElement>
+  required?: boolean
   title?: string
   messageError?: string
   type?: string
   typeTextarea?: boolean
   value?: string
   width?: string
+  info?: string
+  marginBottom?: string
+  max?: number
+  setDataValue?: (e: any) => void
   onFocus?: () => void
   onInvalid?: () => void
   onBlur?: () => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
+
 export const InputHooks: React.FC<InputHooksProps> = ({
   autoComplete = 'off',
   border = '',
-  Cc,
   checked = false,
   autoFocus,
   dataForm = {},
@@ -92,386 +76,222 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   email = false,
   error = false,
   labelTop = '',
-  fontSize = '14px',
   height,
   labelColor,
-  letters,
+  letters = false,
   margin = '0',
   maxWidth = '',
   minWidth = '',
   name = '',
   nit = false,
   numeric = false,
-  onChange = (e) => {
-    return e
-  },
   padding = '',
   paddingInput = '',
   pass,
   passConfirm,
   placeholder = '',
   radius = '',
-  range,
+  range = null,
   reference,
   required,
   title = '',
-  messageError = '',
+  cc = false,
+  messageError = 'El campo no debe estar vacío',
   type = 'text',
   typeTextarea = false,
   value = '',
+  marginBottom = getGlobalStyle('--spacing-5xl'),
   width = '100%',
+  info = '',
+  max = Infinity,
+  onChange = (e) => e,
   onFocus = () => { },
   onInvalid = () => { },
   setDataValue = () => { },
-  onBlur = () => { },
-  onKeyDown = () => { },
+  onBlur = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    e.preventDefault()
+  },
+  onKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+    }
+  },
   ...rest
 }) => {
-  // STATE
-  const [errors, setError] = useState(error)
-  const [isPasswordShown, setIsPasswordShown] = useState(false)
-  const [message, setMessage] = useState(messageError || 'El campo no debe estar vacío')
-  const [showSuggestions, setShowSuggestions] = useState(false)
-  const [suggestionList, setSuggestionList] = useState([])
-  const errorFunc = (e, v, m) => {
-    setError(v)
-    v && setMessage(m)
-    onChange(e, v)
+  const [errors, setError] = useState<string | boolean>(error)
+  const [message, setMessage] = useState<string>(messageError)
+  const refInput = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
+
+  const validationRules: Record<string, { validate: (value: string) => boolean, message: string }> = {
+    required: {
+      validate: (value) => Boolean(required) && value.length === 0,
+      message: 'El campo no debe estar vacío'
+    },
+    numeric: {
+      validate: (value) => numeric && isNaN(value),
+      message: 'El campo debe ser numérico'
+    },
+    range: {
+      validate: (value) => range && (Number(value?.length) < Number(range?.min) || Number(value?.length) > Number(range?.max)),
+      message: `El rango de caracteres es de ${range?.min} a ${range?.max}`
+    },
+    letters: {
+      validate: (value) => Boolean(letters) && onlyLetters(value),
+      message: 'El campo debe contener solo letras'
+    },
+    email: {
+      validate: (value) => email === true && isEmail(value),
+      message: 'El formato de email no es válido'
+    },
+    pass: {
+      validate: (value) => Boolean(pass) && !isPassword(value),
+      message:
+        'La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.'
+    },
+    nit: {
+      validate: (value) => nit && !valNit(value),
+      message: 'El nit no es correcto'
+    },
+    cc: {
+      validate: (value) => cc && !isCC(value),
+      message: 'El número de documento no es correcto'
+    },
+    tel: {
+      validate: (value) => type === 'tel' && !validatePhoneNumber(value),
+      message: 'El número de teléfono no es correcto'
+    },
+    passConfirm: {
+      validate: (value) =>
+        Boolean(passConfirm?.validate) && value !== passConfirm?.passValue,
+      message: 'Las contraseñas no coinciden.'
+    }
+  };
+
+  const validateInput = (value: string): { valid: boolean, message: string } => {
+    for (const key in validationRules) {
+      if (validationRules[key].validate(value)) {
+        return { valid: false, message: validationRules[key].message };
+      }
+    }
+    return { valid: true, message: '' }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>): void => {
+    const { value } = e.target
+    const { valid, message } = validateInput(value)
+    setError(!valid)
+    setMessage(message)
+    onChange(e, !valid)
   }
+
+  const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLInputElement>): void => {
+    const { value } = e.target
+    const { valid, message } = validateInput(value)
+    setError(!valid)
+    setMessage(message)
+    onBlur(e)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (['Enter', 'Tab', 'Escape', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Backspace', 'Delete'].includes(e.key)) {
+      const { value } = e.target as HTMLInputElement
+      const { valid, message } = validateInput(value)
+      setError(!valid)
+      setMessage(message)
+    }
+    onKeyDown(e)
+  }
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    const value = e.clipboardData.getData('text')
+    const { valid, message } = validateInput(value)
+    setError(!valid)
+    setMessage(message)
+    onChange(e, !valid)
+  }
+
   useEffect(() => {
     setError(error)
   }, [error])
 
-  const topLevelEmailDomainList = [
-    'gmail.com',
-    'outlook.com',
-    'hotmail.com',
-    'live.com',
-    'yahoo.com',
-    'icloud.com'
-  ]
-  const otherLevelEmailDomainList = [
-    'gmail.com',
-    'gmail.co.uk',
-    'outlook.com',
-    'outlook.co.uk',
-    'yahoo.com',
-    'yahoo.ca',
-    'hotmail.com',
-    'live.com',
-    'icloud.com'
-  ]
-  const provideEmailSuggestion = (email) => {
-    const emailParts = email.split('@')
-    const emailUsername = emailParts[0]
-    const emailDomain = emailParts[1]
-    let suggestionList = []
-    if (emailDomain !== undefined) {
-      if (emailDomain === '') {
-        suggestionList = topLevelEmailDomainList?.map(
-          domain => { return emailUsername + '@' + domain }
-        )
-      } else {
-        suggestionList = otherLevelEmailDomainList.filter(domain => { return domain.startsWith(emailDomain) }).map(domain => { return emailUsername + '@' + domain })
-      }
-    }
-    return suggestionList
-  }
+  const Component = typeTextarea ? 'textarea' : 'input'
 
-  const autoCompleteEmail = (email) => {
-    setShowSuggestions(false)
-    // errorMessage: '',
-    if (email) {
-      const suggestionList = provideEmailSuggestion(email)
-      if (suggestionList.length > 1) {
-        setShowSuggestions(true)
-        setSuggestionList(suggestionList)
-      } else {
-        const errorMessage = simpleVerifyEmail(email, setMessage)
-        // eslint-disable-next-line no-empty
-        if (errorMessage) {
-          // mysql.services.clever-cloud.co
-        }
-      }
-    }
-  }
-  // const arrowUpPressed = useKeyPress('ArrowUp')
-  // const backSpace = useKeyPress('backSpace')
-  // const arrowDownPressed = useKeyPress('ArrowDown')
-  const arrowUpPressed = ''
-  const backSpace = ''
-  const arrowDownPressed = ''
-  const initialState = { selectedIndex: 0 }
-
-  function reducer(state, action) {
-    switch (action.type) {
-      case 'arrowUp':
-        return {
-          selectedIndex: state.selectedIndex !== 0 ? state.selectedIndex - 1 : topLevelEmailDomainList.length - 1
-        }
-      case 'arrowDown':
-        return {
-          selectedIndex: state.selectedIndex !== topLevelEmailDomainList.length - 1 ? state.selectedIndex + 1 : 0
-        }
-      case 'Backspace':
-        return {
-          selectedIndex: 0
-        }
-      case 'select':
-        return { selectedIndex: action.payload }
-      default: return null
-    }
-  }
-  const [state, dispatch] = useReducer(reducer, initialState)
-  useEffect(() => {
-    if (arrowUpPressed) {
-      dispatch({ type: 'arrowUp' })
-    }
-    if (arrowDownPressed) {
-      dispatch({ type: 'arrowDown' })
-    }
-    if (backSpace) {
-      dispatch({ type: 'Backspace' })
-    }
-  }, [arrowUpPressed, arrowDownPressed, backSpace])
-  const refInput = useRef({
-    focus: () => { return }
-  })
-  const handleSuggestionOnClick = () => {
-    // setEmail(suggestion)
-    setShowSuggestions(!showSuggestions)
-    // setValue(suggestion)
-    setTimeout(() => {
-      refInput.current.focus()
-    })
-  }
-  /**
-     * @description Which function to validate the text fields by the onChange method
-     * @version 0.0.1
-     * @param {object} e change method event
-     * @return {boolean} returns true or false if validation is successful or unsuccessful
-     *
-     */
-  // eslint-disable-next-line consistent-return
-  const validations = e => {
-    autoCompleteEmail(e.target.value)
-    // Valida que el campo no sea nulo
-    if (required) {
-      if (e.target.value.length == 0) return errorFunc(e, true, 'El campo no debe estar vacío')
-      errorFunc(e, false, '')
-    }
-    // Valida que el campo sea tipo numérico
-    if (numeric) {
-      if (isNaN(parseFloat(e.target.value))) return errorFunc(e, true, 'El campo debe ser numérico')
-      errorFunc(e, false, '')
-    }
-    // Valida que el campo sea solo letras
-    if (letters) {
-      if (onlyLetters(e.target.value)) return errorFunc(e, true, 'El campo debe contener solo letras')
-      errorFunc(e, false, '')
-    }
-    // Valida que el campo esté en el rango correcto
-    if (range) {
-      if (rangeLength(e.target.value, range.min, range.max)) return errorFunc(e, true, `El rango de caracteres es de ${range.min} a ${range.max}`)
-      errorFunc(e, false, '')
-    }
-    // Valida si el campo tiene un formato de email correcto
-    if (email) {
-      if (isEmail(e.target.value)) return errorFunc(e, true, 'El formato de email no es válido')
-      errorFunc(e, false, '')
-    }
-    if (pass) {
-      if (isPassword(e.target.value)) { return errorFunc(e, true, 'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.') } errorFunc(e, false, '')
-    }
-    if (nit) {
-      if (valNit(e.target.value)) { return errorFunc(e, true, 'El nit no es correcto') } errorFunc(e, false, '')
-    }
-    if (Cc) {
-      if (isCC(e.target.value)) { return errorFunc(e, true, 'El numero de documento no es correcto') } errorFunc(e, false, '')
-    }
-    if (type == 'tel') {
-      if (validatePhoneNumber(e.target.value)) { return errorFunc(e, true, 'El numero de teléfono no es correcto') } errorFunc(e, false, '')
-    }
-    // Valida que las contraseñas coincidan
-    if (passConfirm?.validate) {
-      if (validatePhoneNumber(e.target.value, passConfirm?.passValue)) { return errorFunc(e, true, 'Las contraseñas no coinciden.') } errorFunc(e, false, '')
-    }
-    if (e) {
-      return errorFunc(e, false, '')
-    }
-  }
-  const isAutoComplete = !autoComplete ? 'off' : autoComplete
-  const isEmailValue = email ? 'off' : isAutoComplete
-  const handleBlur = () => {
-  }
-  const handleFocus = () => {
-  }
-  const asType = numeric ? 'number' : type
   return (
-    <BoxInput
-      {...rest}
-      maxWidth={maxWidth}
-      minWidth={minWidth}
-      padding={padding}
-      width={width}
+    <div
+      style={{
+        border: errors === true ? `1px solid ${getGlobalStyle('--color-feedback-error-dark')}` : border,
+        maxWidth,
+        padding: paddingInput,
+        width,
+        marginBottom,
+        maxHeight: typeTextarea ? '12.5rem' : 'auto',
+        minHeight: typeTextarea ? '12.5rem' : 'auto'
+      }}
+      className={styles.wrap_input}
     >
-      {pass && <ShowPass onClick={() => { return setIsPasswordShown(!isPasswordShown) }} type='button'>
-        {isPasswordShown ? <IconNoShow size='20px' /> : <IconShowEye size='20px' />}
-      </ShowPass>}
-      {!typeTextarea
-        ? <div>
-          <InputV
-            {...rest}
-            autoComplete={type === 'password' ? 'current-password' : isEmailValue}
-            autoFocus={autoFocus}
-            border={border}
-            checked={checked}
-            data-required={required}
-            disabled={disabled}
-            display={display}
-            error={errors}
-            focus={onFocus}
-            margin={margin}
-            name={name}
-            numeric={numeric}
-            onBlur={onBlur || handleBlur}
-            onChange={(e) => { return validations(e) }}
-            onFocus={handleFocus}
-            onInvalid={onInvalid}
-            paddingInput={paddingInput}
-            placeholder={placeholder}
-            radius={radius}
-            ref={email ? refInput : reference}
-            size={fontSize}
-            type={isPasswordShown ? 'text' : asType}
-            value={value}
-            onKeyDown={onKeyDown}
-          />
-          {(!!showSuggestions) && (
-            <div>
-              <Listbox role='listbox'>
-                {suggestionList.map((suggestion, index) => {
-                  return (
-                    <List
-                      aria-pressed={index === state.selectedIndex}
-                      key={index}
-                      onClick={() => {
-                        dispatch({ type: 'select', payload: index })
-                        handleSuggestionOnClick()
-                        setDataValue({ ...dataForm, [name]: suggestion })
-                      }}
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault()
-                          dispatch({ type: 'select', payload: index })
-                          e.target.blur()
-                        }
-                      }}
-                      style={{ cursor: 'pointer', backgroundColor: index === state.selectedIndex ? `${SFVColor}2e` : 'transparent' }}
-                      tabIndex={0}
-                    >
-                      {suggestion}
-                    </List>
-                  )
-                })}
-              </Listbox>
-            </div>
-          )}
-        </div>
-        : <TextAreaInput
-          autoFocus={autoFocus}
-          border={border}
-          data-required={required}
-          disabled={disabled}
-          error={errors}
-          height={height}
-          maxWidth={maxWidth}
-          minWidth={minWidth}
-          name={name}
-          numeric={numeric}
-          onBlur={onBlur}
-          onChange={validations}
-          padding={padding}
-          paddingInput={paddingInput}
-          placeholder={placeholder}
-          radius={radius}
-          ref={reference}
-          size={fontSize}
-          value={value || ''}
-          width={width}
-        />}
-        <LabelInput
-          error={error}
-          labelColor={labelColor}
-          labelTop={labelTop}
-          onClick={() => { return refInput.current.focus() }}
-          type={type}
-          value={value}
-        >
-           {((title?.includes('*')) ?? false)
+      <Component
+        {...rest}
+        autoFocus={autoFocus}
+        data-required={required}
+        disabled={disabled}
+        name={name}
+        max={max}
+        onChange={handleChange}
+        onPaste={handlePaste}
+        onBlur={handleBlur}
+        placeholder={placeholder}
+        value={value}
+        onKeyDown={handleKeyDown as any}
+        className={styles.input}
+        type={type}
+        style={{
+          maxHeight: typeTextarea ? '11.5rem' : 'auto',
+          minHeight: typeTextarea ? '11.5rem' : 'auto'
+        }}
+      />
+      <label
+        className={styles['label-input']}
+        onClick={() => refInput.current?.focus()}
+        style={{
+          top: value !== '' ? '-8px' : '20px'
+        }}
+      >
+        {title?.includes('*')
           ? (
             <>
-              {title?.replace('*', '')}
-              <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>*</span>
+              {title.replace('*', '')}
+              <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>
+                *
+              </span>
             </>
             )
           : (
-            title
+              title
             )}
-        </LabelInput>
-      {errors && <Tooltip>{message}</Tooltip>}
-    </BoxInput>
+      </label>
+      {errors === true && (
+        <Row className={styles.wrap_tooltip} alignItems='center'>
+          <Icon icon='IconInfo' size={10} color={getGlobalStyle('--color-icons-error')} />
+          <span className={styles.tooltip}>{message}</span>
+        </Row>
+      )}
+      {info !== '' && (
+        <Row
+          className={styles.wrap_tooltip}
+          alignItems='center'
+          style={errors === true ? { bottom: '-30px' } : {}}
+        >
+          <Icon icon='IconInfo' size={10} color={getGlobalStyle('--color-icons-info')} />
+          <span
+            className={styles.tooltip}
+            style={{
+              color: getGlobalStyle('--color-text-black')
+            }}
+          >
+            {info}
+          </span>
+        </Row>
+      )}
+    </div>
   )
-}
-
-InputHooks.propTypes = {
-  Cc: PropTypes.any,
-  autoComplete: PropTypes.string,
-  autoFocus: PropTypes.any,
-  border: PropTypes.string,
-  checked: PropTypes.bool,
-  dataForm: PropTypes.object,
-  disabled: PropTypes.bool,
-  display: PropTypes.string,
-  email: PropTypes.shape({
-    split: PropTypes.func
-  }),
-  error: PropTypes.string,
-  fontSize: PropTypes.string,
-  height: PropTypes.any,
-  labelColor: PropTypes.any,
-  labelTop: PropTypes.any,
-  letters: PropTypes.any,
-  margin: PropTypes.string,
-  maxWidth: PropTypes.string,
-  minWidth: PropTypes.string,
-  name: PropTypes.string,
-  nit: PropTypes.bool,
-  numeric: PropTypes.bool,
-  onBlur: PropTypes.func,
-  onChange: PropTypes.func,
-  onFocus: PropTypes.func,
-  messageError: PropTypes.string,
-  onInvalid: PropTypes.func,
-  padding: PropTypes.string,
-  paddingInput: PropTypes.string,
-  pass: PropTypes.any,
-  passConfirm: PropTypes.shape({
-    passValue: PropTypes.any,
-    validate: PropTypes.any
-  }),
-  placeholder: PropTypes.string,
-  radius: PropTypes.string,
-  range: PropTypes.shape({
-    max: PropTypes.any,
-    min: PropTypes.any
-  }),
-  reference: PropTypes.any,
-  required: PropTypes.any,
-  setDataValue: PropTypes.func,
-  title: PropTypes.string,
-  type: PropTypes.string,
-  typeTextarea: PropTypes.bool,
-  value: PropTypes.string,
-  width: PropTypes.string
 }

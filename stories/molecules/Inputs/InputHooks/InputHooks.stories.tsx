@@ -1,24 +1,41 @@
-import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { InputHooks } from './InputHooks'
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-export default {
-  title: 'molecules/InputHooks',
+const meta: Meta<typeof InputHooks> = {
   component: InputHooks,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' }
+  title: 'molecules/InputHooks',
+  args: {
   }
 }
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => {
-  return <InputHooks {...args} />
+export default meta
+
+type Story = StoryObj<typeof InputHooks>
+
+export const InputHooksPrimary: Story = {
+  args: {
+    autoComplete: 'off',
+    value: 'Hello World!',
+    title: 'Hello World!',
+    error: false
+  }
 }
 
-export const TemplateInputHookProducts = Template.bind({})
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-TemplateInputHookProducts.args = {
-  label: 'InputHooks',
-  value: 'Hello, world'
+export const InputHooksError: Story = {
+  args: {
+    autoComplete: 'off',
+    value: 'Hello World!',
+    title: 'Hello World!',
+    error: true
+  }
+}
+
+export const InputHooksInfo: Story = {
+  args: {
+    autoComplete: 'off',
+    value: 'Hello World!',
+    title: 'Hello World!',
+    error: true,
+    info: 'This is an info message'
+  }
 }

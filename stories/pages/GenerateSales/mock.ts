@@ -13,7 +13,7 @@ export const products: ProductFood[] = [
     pName: 'Test con muchos sub items',
     getOneTags: null,
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     free: 0,
     ProUniDisponibles: null,
     ProDescription:
@@ -58,7 +58,7 @@ export const products: ProductFood[] = [
     pName: 'Test con muchos sub items',
     getOneTags: null,
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     free: 0,
     ProUniDisponibles: null,
     ProDescription:
@@ -103,7 +103,7 @@ export const products: ProductFood[] = [
     pName: 'Test con muchos sub items',
     getOneTags: null,
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     free: 0,
     ProUniDisponibles: null,
     ProDescription:
@@ -148,7 +148,7 @@ export const products: ProductFood[] = [
     pName: 'Test con muchos sub items',
     getOneTags: null,
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     free: 0,
     ProUniDisponibles: null,
     ProDescription:
@@ -193,7 +193,7 @@ export const products: ProductFood[] = [
     pName: 'Test con muchos sub items',
     getOneTags: null,
     ProPrice: 5000,
-    ProDescuento: '3',
+    ProDescuento: 3,
     free: 0,
     ProUniDisponibles: null,
     ProDescription:
@@ -242,7 +242,7 @@ export const data: Data = {
       getOneTags: {
         nameTag: 'Tag 1'
       },
-      ProDescuento: '3',
+      ProDescuento: 3,
       ValueDelivery: '0'
     },
     {

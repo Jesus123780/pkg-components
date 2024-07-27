@@ -42,7 +42,7 @@ export const mockDataOrder: TypeModalDetailOrder = {
             idStore: '013e5387-34a1-6a78-303d-5098f17bf640',
             pName: 'Hamburguesa  mas papas',
             ProPrice: 5000,
-            ProDescuento: '3',
+            ProDescuento: 3,
             ProDescription: 'wedsdasdasasdasdadasd',
             ValueDelivery: null,
             ProImage:
@@ -81,7 +81,7 @@ export const mockDataOrder: TypeModalDetailOrder = {
             idStore: '013e5387-34a1-6a78-303d-5098f17bf640',
             pName: 'Test con muchos sub items',
             ProPrice: 5000,
-            ProDescuento: '3',
+            ProDescuento: 3,
             ProDescription:
               'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
             ValueDelivery: null,
@@ -333,5 +333,5 @@ export const mockDataOrder: TypeModalDetailOrder = {
   },
   saleGroup: false,
   saleKey: [],
-  totalProductsPrice: '56.000'
+  totalProductsPrice: 56.00
 }

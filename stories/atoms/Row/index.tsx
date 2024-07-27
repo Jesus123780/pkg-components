@@ -1,14 +1,23 @@
 // Row.tsx
-import styled from 'styled-components'
+import React from 'react'
+import clsx from 'clsx'
+import styles from './styles.module.css'
 
-export interface RowProps {
-  alignItems?: string
-  justifyContent?: string
+interface RowProps {
+  alignItems?: 'center' | 'flex-start'
+  justifyContent?: 'center' | 'flex-start' | 'space-between'
+  children: React.ReactNode
+  style?: React.CSSProperties
+  className?: string
 }
 
-export const Row = styled.div<RowProps>`
-  display: flex;
-  flex-direction: row;
-  align-items: ${({ alignItems }) => alignItems ?? 'flex-start'};
-  justify-content: ${({ justifyContent }) => justifyContent ?? 'flex-start'};
-`
+export const Row: React.FC<RowProps> = ({ alignItems, justifyContent, children, style, className }) => {
+  const rowClasses = clsx(
+    styles.row,
+    alignItems && styles[`align-items-${alignItems}`],
+    justifyContent && styles[`justify-content-${justifyContent}`],
+    className
+  );
+
+  return <div className={rowClasses} style={style}>{children}</div>
+}

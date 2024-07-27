@@ -12,14 +12,18 @@ import {
   IconEdit,
   IconMiniCheck
 } from '../../../assets/icons'
-import { getGlobalStyle, numberFormat } from '../../../utils'
+import { getGlobalStyle } from '../../../utils'
 import {
   Checkbox,
   RippleButton,
   Row,
   Tag
 } from '../../atoms'
-import { InputHooks, QuantityButton } from '../../molecules'
+import {
+  AmountInput,
+  InputHooks,
+  QuantityButton
+} from '../../molecules'
 import {
   Action,
   ContentLinesItems,
@@ -47,6 +51,7 @@ interface ICreateExtra {
   handleRemove?: (i: number, exPid: any) => void
   onSubmitUpdate?: ({ pId }: { pId: any }) => void
   setModal?: () => void
+  useAmountInput?: () => { inputValue: string, preProcess: (value: string) => void }
 }
 export const CreateExtra: React.FC<ICreateExtra> = ({
   LineItems = {
@@ -68,7 +73,15 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
   handleLineChange = (i, extraName, value) => { return { i, extraName, value } },
   handleRemove = (i, exPid) => { return { i, exPid } },
   onSubmitUpdate = ({ pId }) => { return pId },
-  setModal = () => { }
+  setModal = () => { },
+  useAmountInput = () => {
+    return {
+      inputValue: '',
+      preProcess: (value = '') => {
+        return value
+      }
+    }
+  }
 }) => {
   const disabled = false
   const transition = { type: 'spring', stiffness: 300, damping: 30 }
@@ -96,7 +109,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
 
   return (
     <AwesomeModal
-      borderRadius='4px'
+      borderRadius={getGlobalStyle('--border-radius-xs')}
       btnCancel={true}
       btnConfirm={false}
       customHeight='60vh'
@@ -116,93 +129,96 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
       <ContentModal>
         <AnimatePresence>
           <div className='content'>
-            {LineItems?.Lines?.length
+            {LineItems?.Lines?.length > 0
               ? LineItems?.Lines?.map((extra, i) => {
-                const price = numberFormat(extra?.extraPrice)
+                const price = extra?.extraPrice
                 const exPid = extra?.exPid ?? null
-                const forEdit = extra?.forEdit || false
+                const forEdit = (Boolean((extra?.forEdit))) || false
                 const isSelect = selected.exPid === exPid
 
                 return (
-                <motion.div {...animations} key={extra?.exPid || i} >
-                  <ContentLinesItems loading={isSelect}>
-                    <Row>
-                      <InputHooks
-                        name={extra?.extraName}
-                        onChange={e => {
-                          const value = e.target.value
-                          return handleLineChange(i, 'extraName', value)
-                        }}
-                        onFocus={() => { return handleFocusChange(i) }}
-                        placeholder='Nombre'
-                        reference={inputRefs?.current[i]}
-                        value={extra?.extraName}
-                      />
-                      <InputHooks
-                        error={extra.error}
-                        messageError={extra.messageError}
-                        name={extra?.extraPrice}
-                        onChange={e => {
-                          const value = e.target.value
-                          const price = numberFormat(value)
-                          return handleLineChange(i, 'extraPrice', price)
-                        }}
-                        onFocus={() => { return handleFocusChange(i) }}
-                        placeholder='Precio'
-                        value={price}
-                      />
-                    </Row>
-                    <Checkbox
-                      checked={extra?.exState}
-                      id={i}
-                      margin='10px 0'
-                      name={extra?.exState}
-                      onChange={value => { return handleLineChange(i, 'exState', value) }}
-                    />
-                    <RippleButton
-                      bgColor={getGlobalStyle('--color-base-transparent')}
-                      disabled={disabled}
-                      margin='0px'
-                      onClick={() => { return handleRemove(i, exPid) }}
-                      type='button'
-                      widthButton='min-content'
-                    >
-                      <IconDelete color={EColor} size='25px' />
-                    </RippleButton>
-                    {forEdit
-                      ? <>
-                        <RippleButton
-                          bgColor='transparent'
-                          disabled={disabled}
-                          margin='0px'
-                          onClick={() => {
-                            if (isSelect) return handleEdit(i, exPid)
-                            return handleSelect(extra, i)
+                  <motion.div {...animations} key={extra?.exPid || i} >
+                    <ContentLinesItems loading={isSelect}>
+                      <Row>
+                        <InputHooks
+                          name={extra?.extraName}
+                          onChange={e => {
+                            const value = e.target.value
+                            return handleLineChange(i, 'extraName', `${value}`)
                           }}
-                          type='button'
-                          widthButton='min-content'
-                        >
-                          {selected?.exPid === exPid ? <IconMiniCheck color={APColor} size='25px' /> : <IconEdit color={EColor} size='25px' />}
-                        </RippleButton>
-                        <span style={{ marginLeft: '15px' }}>
-                          <Tag label={'guardado'} />
-                        </span>
-                      </>
-                      : <>
-                        <RippleButton
-                          bgColor='transparent'
-                          disabled={disabled}
-                          margin='0px'
-                          type='button'
-                          widthButton='min-content'
-                        >
-                          <IconEdit color={getGlobalStyle('--color-icons-gray-light')} size='25px' />
-                        </RippleButton>
-                        <Tag label='sin guardar' />
-                      </>
-                    }
-                  </ContentLinesItems>
-                </motion.div>
+                          onFocus={() => { return handleFocusChange(i) }}
+                          placeholder='Nombre'
+                          reference={inputRefs?.current[i]}
+                          value={extra?.extraName}
+                        />
+                        <AmountInput
+                          allowDecimals={true}
+                          decimalSeparator=','
+                          decimalsLimit={2}
+                          error={extra.error}
+                          useAmountInput={useAmountInput}
+                          name={extra?.extraPrice}
+                          onChange={e => {
+                            return handleLineChange(i, 'extraPrice', e)
+                          }}
+                          onFocus={() => { return handleFocusChange(i) }}
+                          placeholder='Precio'
+                          defaultValue={price}
+                        />
+                      </Row>
+                      <Checkbox
+                        checked={extra?.exState}
+                        id={i}
+                        name={extra?.exState}
+                        onChange={value => { return handleLineChange(i, 'exState', value) }}
+                      />
+                      <RippleButton
+                        bgColor={getGlobalStyle('--color-base-transparent')}
+                        disabled={disabled}
+                        margin='0px'
+                        onClick={() => { return handleRemove(i, exPid) }}
+                        type='button'
+                        widthButton='min-content'
+                      >
+                        <IconDelete color={EColor} size='25px' />
+                      </RippleButton>
+                      {forEdit
+                        ? <>
+                          <RippleButton
+                            bgColor='transparent'
+                            disabled={disabled}
+                            margin='0px'
+                            onClick={() => {
+                              if (isSelect) return handleEdit(i, exPid)
+                              return handleSelect(extra, i)
+                            }}
+                            type='button'
+                            widthButton='min-content'
+                          >
+                            {selected?.exPid === exPid
+                              ? <IconMiniCheck color={APColor} size='25px' />
+                              : <IconEdit color={EColor} size='25px' />
+                            }
+                          </RippleButton>
+                          <span style={{ marginLeft: '15px' }}>
+                            <Tag label={'guardado'} />
+                          </span>
+                        </>
+                        : <>
+                          <RippleButton
+                            bgColor='transparent'
+                            disabled={disabled}
+                            margin='0px'
+                            type='button'
+                            widthButton='min-content'
+                          >
+                            <IconEdit color={getGlobalStyle('--color-icons-gray-light')} size='25px' />
+                          </RippleButton>
+                          <Tag label='sin guardar' />
+                        </>
+                      }
+                    </ContentLinesItems>
+                  </motion.div>
 
                 )
               })
@@ -219,18 +235,17 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
             type='button'
             widthButton='140px'
           >
-              Eliminar
+            Eliminar
           </RippleButton>
           <QuantityButton
             handleIncrement={() => {
-              if (endOfListRef?.current) {
+              if (endOfListRef?.current !== null) {
                 endOfListRef.current.scrollIntoView({ behavior: 'smooth' })
               }
               handleAdd()
             }}
-            quantity={Number(LineItems?.Lines?.length || 0)}
+            quantity={Number(((LineItems?.Lines?.length) !== 0) || 0)}
             showNegativeButton={true}
-            style={{ margin: '0 20px 0 0', width: '60%' }}
           />
           <RippleButton
             loading={loading}

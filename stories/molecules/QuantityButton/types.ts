@@ -1,17 +1,16 @@
 export interface QuantityButtonProps {
-    border: any
-    classNameQuantity: string
-    disabled?: boolean
-    handleDecrement?: () => void
-    handleIncrement?: () => void
-    label?: string
-    margin: any
-    padding: any
-    quantity: number
-    showNegativeButton?: boolean
-    showPositiveButton?: boolean
-    validationOne?: any
-    validationZero?: boolean
-    width?: string
-  
-  }
+  border: string
+  classNameQuantity: string
+  disabled?: boolean
+  label?: string
+  margin: any
+  padding: any
+  quantity: number
+  showNegativeButton?: boolean
+  showPositiveButton?: boolean
+  validationOne?: boolean
+  validationZero?: boolean
+  width?: string
+  handleDecrement?: () => void
+  handleIncrement?: () => void
+}

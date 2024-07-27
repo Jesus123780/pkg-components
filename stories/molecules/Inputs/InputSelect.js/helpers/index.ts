@@ -58,4 +58,4 @@ export const changeValue = ({
   onChange({ target: { name, value: v[id] } }, !v[id], refSelect)
 }
 
-export const findOptionById = (options, id, value) => {return options?.find(option => {return option[id] === value})}
+export const findOptionById = (options: any[], id: string, value: string) => { return (options?.length > 0 && Array.isArray(options)) && options?.find(option => { return option[id] === value }) }

@@ -5,6 +5,27 @@ import React from 'react'
 import { type IconProps } from '../../stories/assets/public/Icons'
 import { getGlobalStyle } from '../../helpers'
 
+export const IconCalendar: React.FC<IconProps> = ({
+  size,
+  color
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size ?? 20}
+    height={size ?? 20}
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke={color ?? getGlobalStyle('--color-icons-black')}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3 9h18M7 3v2m10-2v2M6 13h2m-2 4h2m3-4h2m-2 4h2m3-4h2m-2 4h2M6.2 21h11.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C21 19.48 21 18.92 21 17.8V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C19.48 5 18.92 5 17.8 5H6.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C3 6.52 3 7.08 3 8.2v9.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C4.52 21 5.08 21 6.2 21Z"
+    />
+  </svg>
+)
+
 export const IconExcel: React.FC<IconProps> = ({
   size
 }) => (
@@ -851,23 +872,51 @@ IconMiniCheck.propTypes = {
   size: PropTypes.any,
   style: PropTypes.object
 }
-export const IconArrowTop: React.FC<IconProps> = ({ size, style = {}, color }: IconProps) => {
+export const IconArrowTop = ({ size, style = {}, color, ...props }: IconProps) => {
   return (
     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      data-name="Capa 1"
+      viewBox="0 0 10 6"
       height={size}
       style={style}
-      version="1.1"
-      viewBox="0 0 330 330"
       width={size}
-      x="0px"
-      xmlns="http://www.w3.org/2000/svg"
-      y="0px"
+      {...props}
     >
       <path
-        d="M325.606,229.393l-150.004-150C172.79,76.58,168.974,75,164.996,75c-3.979,0-7.794,1.581-10.607,4.394
-l-149.996,150c-5.858,5.858-5.858,15.355,0,21.213c5.857,5.857,15.355,5.858,21.213,0l139.39-139.393l139.397,139.393
-C307.322,253.536,311.161,255,315,255c3.839,0,7.678-1.464,10.607-4.394C331.464,244.748,331.464,235.251,325.606,229.393z"
-        fill={color}
+        d="m1 5 4-4 4 4"
+        style={{
+          fill: "none",
+          stroke: color || "#667085",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          strokeWidth: 2,
+        }}
+      />
+    </svg>
+  )
+}
+
+export const IconArrowBottom = ({ style = {}, color, size }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      data-name="Capa 1"
+      viewBox="0 0 10 6"
+      color={color}
+      height={size}
+      width={size}
+      style={style}
+    >
+      <path
+        d="M9 1 5 5 1 1"
+        style={{
+          fill: "none",
+          stroke: color || "#667085",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          strokeWidth: 2,
+        }}
       />
     </svg>
   )
@@ -1467,24 +1516,6 @@ IconCancel.propTypes = {
   color: PropTypes.string,
   size: PropTypes.any,
   style: PropTypes.object
-}
-// Icon de Arrow
-export const IconArrowBottom: React.FC<IconProps> = ({ style = {}, color, size }: IconProps) => {
-  return (
-    <svg
-      color={color}
-      height={size}
-      style={style}
-      version="1.1"
-      viewBox="0 0 129 129"
-      width={size}
-    >
-      <path
-        d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"
-        fill={color}
-      />
-    </svg>
-  )
 }
 
 IconArrowBottom.propTypes = {

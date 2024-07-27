@@ -1,0 +1,62 @@
+.section {
+  display: grid;
+  height: auto;
+  align-items: center;
+  margin: 0 auto;
+  place-content: center;
+  border-bottom: 1px solid #f0f0f0;
+  gap: var(--spacing-xl);
+
+}
+
+.sectionPadding {
+  padding: var(--section-padding);
+}
+
+.sectionOdd:nth-of-type(odd),
+.sectionOdd .thead-default th {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.sectionDisabled {
+  background-color: #e9e9e933;
+}
+
+.sectionHover:hover {
+  background-color: #e9e9e933;
+}
+
+.sectionHover:hover:first-child {
+  background-color: #fff;
+}
+
+.sectionBg1 {
+  background-color: var(--tbga-color);
+}
+
+.sectionBg2 {
+  background-color: var(--bg-color);
+}
+
+.sectionBg3 {
+  background-color: var(--tbg-b-color);
+}
+
+.sectionBg4 {
+  background-color: var(--tbg-s-color);
+}
+
+.sectionBg5 {
+  background-color: var(--tbga-color);
+}
+
+.sectionBg6 {
+  background-color: var(--tbge-color);
+}
+
+.sectionBg7 {
+  background-color: var(--tbgr-color);
+}
+
+.sectionBg8 {
+  background-color: var(--tbgd-color);
+}

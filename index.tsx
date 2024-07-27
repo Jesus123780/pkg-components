@@ -7,6 +7,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
+
+// calendar
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+
 // UI components
 export * from './stories/atoms'
 export * from './stories/molecules'
@@ -24,3 +29,7 @@ export * from '@dnd-kit/core'
 export * from 'react-beautiful-dnd'
 
 
+
+
+// colors choices
+export * from './scripts/tokens/choices'

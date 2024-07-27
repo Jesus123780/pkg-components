@@ -1,51 +1,51 @@
-import React from 'react';
-import { Toast, ToastProps } from './index';
+import React from 'react'
+import { Toast, type ToastProps } from './index'
 
 export default {
   title: 'molecules/Toast',
   component: Toast,
   argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-};
+    backgroundColor: { control: 'color' }
+  }
+}
 
 const Template = (args: ToastProps) => {
-  return <Toast {...args} />;
-};
+  return <Toast {...args} />
+}
 
-export const TemplateToast = Template.bind({});
-// @ts-ignore
+export const TemplateToast = Template.bind({})
+// @ts-expect-error
 TemplateToast.args = {
   toastList: [
     {
       backgroundColor: 'red',
       title: 'Title',
-      description: 'Description',
-    },
-  ],
-};
+      description: 'Description'
+    }
+  ]
+}
 
 export const MultipleToasts = Template.bind({})
-// @ts-ignore
+// @ts-expect-error
 MultipleToasts.args = {
   toastList: [
     {
       backgroundColor: 'red',
       title: 'Title 1',
       description: 'Description 1',
-      id: 1,
+      id: 1
     },
     {
       backgroundColor: 'green',
       title: 'Title 2',
       description: 'Description 2',
-      id: 2,
+      id: 2
     },
     {
       backgroundColor: 'blue',
       title: 'Title 3',
       description: 'Description 3',
-      id: 3,
-    },
-  ],
-};
+      id: 3
+    }
+  ]
+}
