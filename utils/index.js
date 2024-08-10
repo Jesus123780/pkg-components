@@ -101,10 +101,16 @@ export const Match = (dato1, dato2) => {
 }
 
 export const isEmail = email => {
-  const validar = /^[-\w.%+]{1,64}@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/i
-  if (!validar.test(`${email}`) && email !== '' && email !== undefined && email !== null) {
-    return true
-  } return false
+  const validar = /^[-\w.%+]{1,64}@[a-z0-9-]{1,63}\.[a-z]{2,63}$/
+  if (
+    !validar.test(email) &&
+    email !== '' &&
+    email !== undefined &&
+    email !== null
+  ) {
+    return true;
+  }
+  return email !== email.toLowerCase()
 }
 
 export const passwordConfirm = (value, valueConfirm) => { return !(value === valueConfirm) }
