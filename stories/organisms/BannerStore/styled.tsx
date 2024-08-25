@@ -80,7 +80,7 @@ export const ButtonCard: IButtonCard = styled.button`
 
 export const Section = styled.div`
   padding: 30px 0;
-  max-width: 1366px;
+  max-width: var(--width-max-desktop);
   margin: auto;
   overflow: hidden;
   transition: 0.2s;

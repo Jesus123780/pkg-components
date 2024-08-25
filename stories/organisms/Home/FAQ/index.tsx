@@ -27,7 +27,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ handleMenu = (index) => 
         <Options
           active={index === active}
           handleClick={() => { return handleMenu(index) }}
-          icon={false}
+          icon='none'
           index={index}
           key={'/'}
           label={faq.question}

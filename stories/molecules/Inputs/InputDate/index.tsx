@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { DateRange, type Range, Calendar } from 'react-date-range'
 import { Icon } from '../../../atoms'
-import { getGlobalStyle } from '../../../../helpers'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { getGlobalStyle } from '../../../../helpers'
 import styles from './styles.module.css'
 
 interface InputDateProps {
@@ -20,6 +20,7 @@ interface InputDateProps {
   style?: React.CSSProperties
   value?: Date
   withRange?: boolean
+  showClearButton?: boolean
   onChange: (date: Date) => void
   onCleanValue?: () => void
   onSelect?: (ranges: Range[]) => void
@@ -32,6 +33,7 @@ export const InputDate: React.FC<InputDateProps> = ({
   label,
   date = null,
   style,
+  showClearButton = false,
   keySelection,
   minDate,
   maxDate,
@@ -104,7 +106,7 @@ export const InputDate: React.FC<InputDateProps> = ({
           <span className={styles.text_date}>
             {formattedDate}
           </span>
-          <button style={{
+          {showClearButton && <button style={{
             background: 'none',
             border: 'none',
             cursor: 'pointer',
@@ -118,7 +120,7 @@ export const InputDate: React.FC<InputDateProps> = ({
               color={getGlobalStyle('--color-icons-black')}
               icon='IconCancel'
             />
-          </button>
+          </button>}
           <>
             <Icon
               color={getGlobalStyle(date !== null ? '--color-icons-primary' : '--color-icons-black')}
