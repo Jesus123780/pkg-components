@@ -16,6 +16,7 @@ interface TableTitleColumn {
   justify: 'flex-start' | 'flex-end' | 'center'
   width: string
   arrow?: boolean
+  render?: () => JSX.Element | null
 }
 
 interface TableProps {
@@ -79,15 +80,13 @@ export const Table: React.FC<TableProps> = ({
   }
   const gridColumnStyles = titles.length > 0
     ? {
-      gridTemplateColumns: titles.map((x) => x.width).join(' ')
-    }
+        gridTemplateColumns: titles.map((x) => x.width).join(' ')
+      }
     : { gridTemplateColumns: '1fr' }
-
   return (
     <>
       <div style={{
-        overflow: 'hidden',
-        overflowX: 'auto'
+        overflow: 'initial'
       }}>
         <div style={{
           minWidth: 'max-content',
@@ -103,11 +102,13 @@ export const Table: React.FC<TableProps> = ({
                   backgroundColor: bgRow,
                   cursor: pointer ? 'pointer' : 'default'
                 }} key={i}>
-                <label htmlFor={x.key}>
+                {(x.render != null)
+                  ? x.render()
+                  : <label htmlFor={x.key}>
                   <span onClick={onTargetClick} className={styles.title}>
                     {x.name}
                   </span>
-                </label>
+                </label>}
                 {Boolean(x.arrow) && <label className={styles.arrow_label} htmlFor={x.key}>
                   <input
                     style={{

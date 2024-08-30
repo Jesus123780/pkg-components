@@ -1,10 +1,10 @@
 import React from 'react'
 import { Meta } from '@storybook/react'
-import { Checkbox } from './index'
+import { CheckboxCube } from './index'
 
 export default {
-  title: 'atoms/Checkbox',
-  component: Checkbox,
+  title: 'atoms/CheckboxCube',
+  component: CheckboxCube,
   argTypes: {
     checked: {
       control: 'boolean',
@@ -18,13 +18,13 @@ export default {
     label: {
       control: 'text',
     },
-    onChange: { action: 'Checkbox Changed' },
+    onChange: { action: 'CheckboxCube Changed' },
   },
 } as Meta
 
 export const Default = (args: any) => (
-  <Checkbox
-    label="Default Checkbox"
+  <CheckboxCube
+    label="Default CheckboxCube"
     checked={false}
     onChange={(event: React.ChangeEvent<HTMLInputElement>, id?: any) => {}}
     {...args}
@@ -32,8 +32,8 @@ export const Default = (args: any) => (
 )
 
 export const Checked = (args: any) => (
-  <Checkbox
-    label="Checked Checkbox"
+  <CheckboxCube
+    label="Checked CheckboxCube"
     checked={true}
     onChange={(event: React.ChangeEvent<HTMLInputElement>, id?: any) => {}}
     {...args}

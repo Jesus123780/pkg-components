@@ -236,10 +236,14 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         disabled={disabled}
         name={name}
         max={max}
+        onFocus={() => {
+
+        }}
         onChange={handleChange}
         onPaste={handlePaste}
         onBlur={handleBlur}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         value={value}
         onKeyDown={handleKeyDown as any}
         className={styles.input}

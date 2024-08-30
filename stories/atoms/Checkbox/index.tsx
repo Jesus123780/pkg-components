@@ -49,7 +49,7 @@ const CheckboxLabel = styled.label<{ checked: boolean }>`
     align-items: center;
     background: transparent;
     border-radius: 5px;
-    box-shadow: 0 0 0 2px #53a600 inset;
+    box-shadow: 0 0 0 2px var(--color-feedback-success-light) inset;
     content: "";
     cursor: pointer;
     display: flex;
@@ -66,15 +66,19 @@ const CheckboxLabel = styled.label<{ checked: boolean }>`
         content: "";
         color: #fff;
         cursor: pointer;
-        box-shadow: 0 0 0 1em #53a600 inset;
+        box-shadow: 0 0 0 1em var(--color-feedback-success-light) inset;
         animation: ${checkboxCheck} 200ms cubic-bezier(0.4, 0, 0.23, 1);
       `}
   }
 `
 
 const CheckboxAtom = styled.input`
-  width: 0;
-  height: 0;
+  bottom: 5.5px;
+      opacity: 0;
+  left: -5.5px;
+  position: absolute;
+  z-index: var(--z-index-10);
+  cursor: pointer;
 `
 
 interface CheckboxProps {
@@ -88,7 +92,7 @@ interface CheckboxProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>, id?: any) => void
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({
+export const CheckboxCubeToMemo: React.FC<CheckboxProps> = ({
   checked,
   className = '',
   disabled = false,
@@ -101,8 +105,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   const inputEl = useRef<HTMLInputElement>(null)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event, id)
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    return onChange(event, id)
   }
 
   const disabledStyles = { color: '#CCC' }
@@ -121,11 +125,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     width: 1em;
     top: 10px;
-    z-index: 99;
+    z-index: var(--z-index-5);
+    cursor: pointer;
   `
   return (
     <Span
-      className={className || ''}
+      className={className ?? ''}
       id={id}
       style={disabled ? disabledStyles : {}}
       {...restProps}
@@ -144,9 +149,17 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         ref={inputEl}
         type="checkbox"
       />
-      <CheckboxLabel checked={checked} htmlFor={`checkbox-${id}`}>
+      <CheckboxLabel
+        className={className ?? ''}
+        checked={checked}
+        htmlFor={`checkbox-${id}`}
+      >
         {label}
       </CheckboxLabel>
     </Span>
   )
 }
+
+export const CheckboxCube = React.memo(CheckboxCubeToMemo, (prevProps, nextProps) => {
+  return prevProps.checked === nextProps.checked
+})

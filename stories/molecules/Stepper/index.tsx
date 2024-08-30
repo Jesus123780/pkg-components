@@ -17,8 +17,8 @@ export const Stepper: React.FC<StepperProps> = ({
     return step
   }
 }) => {
-  const titleHeaders = steps.length > 0 ? steps : ['Con cédula', 'Con NIT', 'Otro']
-  const tabWidth = 100 / titleHeaders.length
+  const titleHeaders = steps?.length > 0 ? steps : ['Con cédula', 'Con NIT', 'Otro']
+  const tabWidth = 100 / titleHeaders?.length
 
   return (
     <div className={styles.container} style={style} >

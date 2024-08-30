@@ -32,7 +32,6 @@
   border-radius: 50px;
   height: 95%;
   position: absolute;
-  transition: all 0.3s ease;
   z-index: -1;
   transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
@@ -47,7 +46,7 @@
   overflow: hidden;
   text-align: center;
   text-overflow: ellipsis;
-  transition: color .5s ease-in-out;
+  transition: .6s ease-in-out;
 }
 
 .tabs.active .text {

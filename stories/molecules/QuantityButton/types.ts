@@ -1,6 +1,6 @@
 export interface QuantityButtonProps {
   border: string
-  classNameQuantity: string
+  classNameQuantity?: string
   disabled?: boolean
   label?: string
   margin: any

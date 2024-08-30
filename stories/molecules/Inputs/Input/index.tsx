@@ -56,11 +56,6 @@ interface ValidationRange {
   max: number
 }
 
-interface InputState {
-  errors: string
-  message: string
-}
-
 export const Input: FC<InputProps> = ({
   autoComplete = 'off',
   border = '',

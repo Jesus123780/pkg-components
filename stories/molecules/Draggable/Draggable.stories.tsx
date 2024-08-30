@@ -1,17 +1,17 @@
 import React from 'react'
-import { Draggable } from './index'
+import { DraggableComponent } from './index'
 
 export default {
-  title: 'molecules/Draggable',
-  component: Draggable
+  title: 'molecules/DraggableComponent',
+  component: DraggableComponent
 }
 
 export const Default = () => {
   return (
-    <Draggable>
-      <div data-testid='draggable-element' style={{ width: '100%', height: '100vh', backgroundColor: 'red' }}>
-        Draggable Element
+    <DraggableComponent>
+      <div data-testid='DraggableComponent-element' style={{ width: '100%', height: '100vh', backgroundColor: 'red' }}>
+        DraggableComponent Element
       </div>
-    </Draggable>
+    </DraggableComponent>
   )
 }

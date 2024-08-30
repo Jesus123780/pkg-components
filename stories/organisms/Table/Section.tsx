@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styles from './section.module.css'
 
 interface SectionProps {
@@ -9,26 +9,36 @@ interface SectionProps {
   children: React.ReactNode
 }
 
-export const Section: React.FC<SectionProps> = ({
+// eslint-disable-next-line react/display-name
+export const Section = forwardRef<HTMLTableCellElement, SectionProps>(({
   children,
   columnWidth,
   bgRow,
   padding,
-  odd
-}) => {
+  odd,
+  ...res
+}, ref) => {
   const columnStyles = {
     gridTemplateColumns: columnWidth.length > 0 ? columnWidth.map(x => x.width).join(' ') : '1fr',
     padding
   }
 
-  const bgClass = (bgRow != null) ? `sectionBg${bgRow}` : ''
+  // Combine res styles with columnStyles
+  const combinedStyles = {
+    ...columnStyles,
+    ...res.style
+  }
+
+  const bgClass = bgRow != null ? `sectionBg${bgRow}` : ''
 
   return (
-        <th
-            className={`${styles.section} ${styles.sectionHover} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles[bgClass]}`}
-            style={columnStyles}
-        >
-            {children}
-        </th>
+    <th
+      className={`${styles.section} ${styles.sectionHover} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles[bgClass]}`}
+      ref={ref}
+      {...res}
+      style={combinedStyles}
+    >
+      {children}
+    </th>
   )
-}
+})

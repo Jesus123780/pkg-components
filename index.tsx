@@ -26,10 +26,10 @@ export * from './hooks'
 // dev tools
 export * from 'framer-motion'
 export * from '@dnd-kit/core'
-export * from 'react-beautiful-dnd'
 
 
 
 
 // colors choices
 export * from './scripts/tokens/choices'
+export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'

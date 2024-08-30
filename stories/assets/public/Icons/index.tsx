@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { getGlobalStyle } from '../../../../helpers'
 
 export interface IconProps {
   style?: React.CSSProperties
@@ -15,21 +16,21 @@ export const IconDragHandle: React.FC<IconProps> = ({
   color
 }) => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    style={style}
-  >
-    <path
-      fill={color ?? '#0F0F0F'}
-      d="M16.192 5.657a1 1 0 0 0 0-1.414l-2.828-2.829a2 2 0 0 0-2.829 0L7.708 4.243a1 1 0 1 0 1.414 1.414L11 3.778v7.272H3.728l1.879-1.878a1 1 0 0 0-1.415-1.415l-2.828 2.829a2 2 0 0 0 0 2.828l2.828 2.829a1 1 0 1 0 1.415-1.415L3.828 13.05H11v7.172l-1.879-1.879a1 1 0 1 0-1.414 1.414l2.829 2.829a2 2 0 0 0 2.828 0l2.828-2.829a1 1 0 0 0-1.414-1.414L13 20.121v-7.07h7.071l-1.778 1.777a1 1 0 0 0 1.414 1.415l2.828-2.829a2 2 0 0 0 0-2.828l-2.828-2.829a1 1 0 1 0-1.414 1.415l1.879 1.878H13V3.88l1.778 1.778a1 1 0 0 0 1.414 0Z"
-    />
-  </svg>
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  fill="none"
+  viewBox="0 0 24 24"
+  style={style}
+>
+  <path
+    fill={color ?? getGlobalStyle('--color-icons-black')}
+    d="M5.995 7a2 2 0 0 0 0 4C7.098 11 8 10.1 8 9s-.902-2-2.005-2ZM11.995 7a2 2 0 0 0 0 4C13.098 11 14 10.1 14 9s-.902-2-2.005-2ZM17.995 7a2 2 0 0 0 0 4C19.098 11 20 10.1 20 9s-.902-2-2.005-2ZM17.995 13a2 2 0 0 0 0 4C19.098 17 20 16.1 20 15s-.902-2-2.005-2ZM11.995 13a2 2 0 0 0 0 4C13.098 17 14 16.1 14 15s-.902-2-2.005-2ZM5.995 13a2 2 0 0 0 0 4C7.098 17 8 16.1 8 15s-.902-2-2.005-2Z"
+  />
+</svg>
 )
 
-export const IconMiniCheck = ({
+export const IconMiniCheck: React.FC<IconProps> = ({
   style = {},
   size,
   color
@@ -54,7 +55,7 @@ IconMiniCheck.propTypes = {
   style: PropTypes.object
 }
 
-export const IconLogoCMF = ({
+export const IconLogoCMF: React.FC<IconProps> = ({
   style = {},
   size,
   color
@@ -135,15 +136,15 @@ export const IconLogoCMF = ({
   </svg>
 )
 
-export const IconQrCode = ({
+export const IconQrCode: React.FC<IconProps> = ({
   style = {},
   size = 68.056,
   color
 }: IconProps) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    width={size || 68.056}
-    height={size || 68.056}
+    width={size ?? 68.056}
+    height={size ?? 68.056}
     style={style}
     color={color}
     viewBox='0 0 68.056 68.056'
@@ -699,7 +700,7 @@ export const IconQrCode = ({
   </svg>
 )
 
-export const IconLogoCMFBlue = ({
+export const IconLogoCMFBlue: React.FC<IconProps> = ({
   width = 138.426,
   height = 35.559,
   ...props
@@ -780,7 +781,7 @@ export const IconLogoCMFBlue = ({
   </svg>
 )
 
-export const IconClose = ({
+export const IconClose: React.FC<IconProps> = ({
   width = 56.923,
   height = 56.923,
   size,
@@ -790,8 +791,8 @@ export const IconClose = ({
   <svg
   viewBox='0 0 56.923 56.923'
     xmlns='http://www.w3.org/2000/svg'
-    width={size || width}
-    height={size || height}
+    width={size ?? width}
+    height={size ?? height}
     data-name='cancel_black_24dp (1)'
     {...props}
   >
@@ -802,7 +803,7 @@ export const IconClose = ({
       opacity={0.87}
     />
     <path
-      fill={color || '#666b76'}
+      fill={color ?? '#666b76'}
       d='M28.462 4.744A23.718 23.718 0 1 0 52.18 28.462 23.7 23.7 0 0 0 28.462 4.744Zm10.2 33.917a2.362 2.362 0 0 1-3.344 0l-6.854-6.854-6.854 6.854a2.365 2.365 0 0 1-3.344-3.344l6.854-6.854-6.854-6.854a2.365 2.365 0 0 1 3.344-3.344l6.854 6.854 6.854-6.854a2.365 2.365 0 1 1 3.344 3.344l-6.854 6.854 6.854 6.854a2.406 2.406 0 0 1 0 3.344Z'
       data-name='Trazado 4379'
     />
@@ -816,7 +817,7 @@ IconClose.propTypes = {
   width: PropTypes.number
 }
 
-export const IconMainLogo = ({
+export const IconMainLogo: React.FC<IconProps> = ({
   size,
   height = 53.181,
   width = 40.828,
@@ -825,8 +826,8 @@ export const IconMainLogo = ({
   <svg
   viewBox="0 0 40.828 53.181"
     xmlns="http://www.w3.org/2000/svg"
-    width={size || width}
-    height={size || height}
+    width={size ?? width}
+    height={size ?? height}
     data-name="Grupo 8159"
     {...props}
   >
@@ -911,7 +912,7 @@ export const IconMainLogo = ({
   </svg>
 )
 
-export const IconStrokeLogo = ({
+export const IconStrokeLogo: React.FC<IconProps> = ({
   size,
   height,
   width,

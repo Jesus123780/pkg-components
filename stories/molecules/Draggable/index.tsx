@@ -5,7 +5,7 @@ import React, {
   useRef
 } from 'react'
 
-export const Draggable = ({
+export const DraggableComponent = ({
   children,
   moveY = false,
   moveX = false,
@@ -94,7 +94,7 @@ export const Draggable = ({
     </div >
   )
 }
-Draggable.propTypes = {
+DraggableComponent.propTypes = {
   children: PropTypes.any,
   maxX: PropTypes.any,
   maxY: PropTypes.any,

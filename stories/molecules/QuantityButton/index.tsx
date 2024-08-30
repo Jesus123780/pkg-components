@@ -88,7 +88,7 @@ export const QuantityButton: React.FC<QuantityButtonProps> = ({
 
 QuantityButton.propTypes = {
   border: PropTypes.any,
-  classNameQuantity: PropTypes.string.isRequired,
+  classNameQuantity: PropTypes.string,
   disabled: PropTypes.bool,
   handleDecrement: PropTypes.func,
   handleIncrement: PropTypes.func,
