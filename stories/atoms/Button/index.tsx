@@ -1,6 +1,8 @@
 import React from 'react'
 import { classNames, getGlobalStyle } from '../../../helpers'
 import style from './button.module.css'
+import { IconLoading } from '../../../assets'
+import { Icon } from '../Icon'
 
 export interface ButtonProps {
   width?: string
@@ -34,6 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
   onClick = () => {},
   ...res
 }) => {
+  console.log("🚀 ~ loading:", loading)
   const buttonStyle = {
     padding: padding ?? '10px 20px',
     borderRadius: borderRadius ?? '',
@@ -59,7 +62,16 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       {...res}
     >
-      {children}
+     {loading && (
+        <div className={style.loadingWrapper} id="loading">
+          <Icon
+          icon='IconLoading'
+          size={30}
+          color={getGlobalStyle('--color-base-white')}
+          />
+        </div>
+     )}
+      <span style={loading ? { opacity: 0 } : {}}>{children}</span>
     </button>
   )
 }

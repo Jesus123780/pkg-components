@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import styled, { css, keyframes } from 'styled-components'
-import { IconMiniCheck } from '../../assets/public/Icons'
+import { getGlobalStyle } from '../../../helpers'
+import { Icon } from '../Icon'
 
 const checkboxCheck = keyframes`
   0%: {
@@ -61,8 +62,8 @@ const CheckboxLabel = styled.label<{ checked: boolean }>`
     width: 1.5em;
 
     ${(props) =>
-      props.checked &&
-      css`
+    props.checked &&
+    css`
         content: "";
         color: #fff;
         cursor: pointer;
@@ -100,7 +101,7 @@ export const CheckboxCubeToMemo: React.FC<CheckboxProps> = ({
   indeterminate = false,
   label,
   name,
-  onChange = () => {},
+  onChange = () => { },
   ...restProps
 }) => {
   const inputEl = useRef<HTMLInputElement>(null)
@@ -117,14 +118,14 @@ export const CheckboxCubeToMemo: React.FC<CheckboxProps> = ({
         ${zoomIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)
       `};
     height: 1em;
-    left: 8px;
+    left: 4px;
     position: absolute;
     right: 0;
     stroke-width: 2;
     transform-origin: center;
     transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     width: 1em;
-    top: 10px;
+    top: 12px;
     z-index: var(--z-index-5);
     cursor: pointer;
   `
@@ -137,7 +138,11 @@ export const CheckboxCubeToMemo: React.FC<CheckboxProps> = ({
     >
       {checked && (
         <CheckboxSvg checked={checked}>
-          <IconMiniCheck size={10} color="#ffffff" />
+          <Icon
+            color={getGlobalStyle('--color-icons-white')}
+            icon='IconMiniCheck'
+            size={15}
+          />
         </CheckboxSvg>
       )}
       <CheckboxAtom

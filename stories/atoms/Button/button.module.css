@@ -2,6 +2,7 @@
     border-radius: 2.1875rem;
     outline: none;
     border: none;
+    position: relative;
     padding: 20px;
     font-family: 'PFont-Regular';
 }
@@ -9,7 +10,7 @@
 .button:disabled {
     background-color: var(--color-primary-pink-light);
     border: 1px solid var(--color-primary-pink-light);
-    
+
 }
 
 .button-secondary {
@@ -37,4 +38,29 @@
 
 .button--black {
     color: var(--color-text-black) !important;
+}
+
+
+.loadingWrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 5px;
+}
+
+.loadingWrapper svg {
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

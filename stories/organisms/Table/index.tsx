@@ -86,7 +86,7 @@ export const Table: React.FC<TableProps> = ({
   return (
     <>
       <div style={{
-        overflow: 'initial'
+        overflow: 'auto hidden'
       }}>
         <div style={{
           minWidth: 'max-content',
