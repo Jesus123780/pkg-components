@@ -16,7 +16,9 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
 }) => {
   const router = useRouter()
 
-  const { asPath } = router
+  const { asPath } = router ?? {
+    asPath: ''
+  }
 
   const child = React.Children.only(children)
   const childClassName = child.props.className ?? ''
