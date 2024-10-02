@@ -1,45 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { BGColor, PColor, SECColor, SEGColor, SFColor } from '../../../../assets/colors'
-import { IconArrowBottom, IconFolder, IconLoading, IconPlus, IconCancel as IconWarning } from '../../../../assets/icons'
-import { Overline } from '../../../atoms/Overline'
-import { changeSearch, changeValue, findOptionById, renderVal } from './helpers'
-import { BoxOptions, BoxSelect, ButtonAction, ContainerItems, ContentBox, CustomButtonS, IconSel, InputText, LabelInput, MainButton, SpanText, TextNotResult, Tooltip } from './styles'
+import React, {
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import {
+  changeSearch,
+  changeValue,
+  renderVal
+} from './helpers'
+import type { NewSelectProps } from './types'
+import styles from './styles.module.css'
+import { Column, Icon, Row } from '../../../atoms'
 import { getGlobalStyle } from '../../../../helpers'
 
-interface NewSelectProps {
-  accessor?: string
-  action?: boolean
-  beforeLabel?: string
-  border?: any
-  disabled?: boolean
-  error?: boolean
-  fullName?: any
-  heightBody?: any
-  icon?: boolean
-  id?: string
-  loading?: boolean
-  margin?: string
-  minWidth?: string
-  name?: string
-  noLabel?: boolean
-  optionName?: string
-  options?: any[]
-  overLine?: boolean
-  padding?: string
-  required?: boolean
-  search?: boolean
-  sideLabel?: string
-  title?: string
-  topTitle?: string
-  value?: string
-  width?: string
-  handleClickAction?: () => void
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
-}
 export const NewSelect: React.FC<NewSelectProps> = ({
   options = [],
   beforeLabel = '',
-  noLabel = false,
   disabled = false,
   id = '',
   icon = true,
@@ -48,7 +24,6 @@ export const NewSelect: React.FC<NewSelectProps> = ({
   name = '',
   action = false,
   optionName = '',
-  topTitle = '15px',
   value = '',
   border,
   width = '100%',
@@ -56,7 +31,6 @@ export const NewSelect: React.FC<NewSelectProps> = ({
   title = '',
   padding = '',
   margin = '',
-  heightBody,
   minWidth = '',
   error = false,
   required = false,
@@ -67,227 +41,147 @@ export const NewSelect: React.FC<NewSelectProps> = ({
     return null
   },
   handleClickAction = () => {
-    return
+    return null
   }
 }) => {
-  /** Hooks */
-  const bodyHeight = 100
-  const [select, setSelect] = useState(false)
-  const [selectRef, setSelectRef] = useState(0)
-  const [valueInput, setValueInput] = useState()
-  const [selectBody, setSelectBody] = useState(0)
-  const [newOption, setNewOption] = useState(false)
-  const inputSearch = useRef(null)
-  const [refSelect, setRefSelect] = useState(false)
-  const refComponente = useRef(null)
+  // HOOKS
+  const componentRef = useRef<HTMLDivElement>(null)
+
+  const [valueInput, setValueInput] = useState('')
+  const [showOptions, setShowOptions] = useState(false)
+  const [newOption, setNewOption] = useState([] as any)
+
+  // HANDLESS
+  const handleClickOutside = (event: MouseEvent): void => {
+    if ((componentRef.current != null) && !componentRef.current.contains(event.target as Node)) {
+      setShowOptions(false)
+    }
+  }
+
+  // EFFECTS
+  useEffect(() => { setNewOption(options) }, [options])
 
   useEffect(() => {
-    const handleDocumentClick = (event) => {
-      if (refComponente.current && !refComponente.current.contains(event.target)) {
-        setSelect(false)
-      }
-    }
-
-    const handleWindowBlur = () => {
-      setSelect(false)
-    }
-
-    document.addEventListener('mousedown', handleDocumentClick)
-    window.addEventListener('blur', handleWindowBlur)
-
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleDocumentClick)
-      window.removeEventListener('blur', handleWindowBlur)
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
 
-  // guarda la referencia de la caja */
-  const changeRef = (v) => {
-    setSelectRef(v.offsetTop + selectBody)
-    setRefSelect(v)
-  }
-
-  const handleClick = (e) => {
-    e.preventDefault()
-    setSelect(!select)
-    setTimeout(() => {
-      return setNewOption(options)
-    }, 500)
-  }
-
-  const handleBlur = () => {
-    return setSelect(false)
-  }
-  const val = findOptionById(options, id, value)
-
-  useEffect(() => {
-    setNewOption(options)
-  }, [options])
-
-  useEffect(() => {
-    if (search) {
-      select && inputSearch.current.focus()
-    }
-  }, [select, search])
-
   return (
-    <div ref={refComponente} style={{ position: 'relative' }}>
-      <LabelInput
-        error={error}
-        noLabel={noLabel}
-        topTitle={topTitle}
-        value={value}
-      >
-        {((title?.includes('*')) ?? false)
-          ? (
-            <>
-              {title?.replace('*', '')}
-              <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>*</span>
-            </>
-          )
-          : (
-            title
-          )}
-      </LabelInput>
-      <BoxSelect
-        margin={margin}
-        minWidth={minWidth}
-        padding={padding}
-        ref={(v) => {
-          return !!v && changeRef(v)
-        }}
-        width={width}
-      >
-        {overLine && (
-          <Overline
-            bgColor={`${SECColor}56`}
-            onClick={() => {
-              return setSelect(false)
-            }}
-            show={select}
-          />
-        )}
-        <MainButton
-          border={border}
-          color={val ? SFColor : '#757575'}
-          disabled={disabled}
-          error={error}
-          height={heightBody}
-          minWidth={minWidth}
-          onClick={handleClick}
-          type='button'
-          value={value}
-        >
-          <SpanText noLabel={noLabel}>
-            {renderVal(val, optionName, accessor)} {val && sideLabel}
-          </SpanText>
-          {icon && (
-            <IconSel
-              loading={loading}
-              style={{
-                top: '13px',
-                width: '20px',
-                right: '15px'
-              }}
-            >
-              {loading ? <IconLoading color={PColor} size='15px' /> : <IconArrowBottom color={error ? BGColor : SEGColor} size='15px' />}
-            </IconSel>
-          )}
-        </MainButton>
-        {error && <Tooltip>Este campo es requerido</Tooltip>}
-        <ContainerItems active={select} top={top}>
-          {search && (
-            <>
-              <InputText
-                onChange={(e) => {
-                  const value = e.target.value
-                  changeSearch({
-                    value,
-                    options,
-                    optionName,
-                    accessor,
-                    setValueInput,
-                    setNewOption
-                  })
-                }}
-                placeholder='Buscar'
-                ref={inputSearch}
-                value={valueInput || ''}
-              />
-            </>
-          )}
-          {action && (
-            <ButtonAction
-              onClick={() => {
-                return handleClickAction()
-              }}
-              type='button'
-            >
-              <IconPlus color={PColor} size='15px' /> &nbsp; {` Añadir nuevo `}
-              <>{!newOption.length && valueInput}</>
-            </ButtonAction>
-          )}
-          <ContentBox search={search} style={{ zIndex: '9999999' }}>
-            <BoxOptions
-              autoHeight
-              autoHeightMax='200px'
-              autoHeightMin={0}
-              autoHideDuration={700}
-              autoHideTimeout={1500}
-              bottom={selectRef > bodyHeight}
-              fullName={fullName}
-              onBlur={handleBlur}
-              ref={(v) => {
-                return setSelectBody(v?.offsetHeight)
-              }}
-              search={search}
-              style={{ width: '100%', overflowY: 'auto' }}
-              top={selectRef < bodyHeight}
-            >
-              {newOption.length > 0
-                ? newOption.map((x) => {
-                  return (
-                    <CustomButtonS
-                      key={x[id]}
-                      onClick={() => {
-                        return changeValue({
-                          v: x,
-                          id,
-                          name,
-                          refSelect,
-                          setSelect,
-                          onChange
-                        })
-                      }}
-                      option
-                      type='button'
-                    >
-                      {beforeLabel} {`${renderVal(x, optionName, accessor)}`} {sideLabel}
-                    </CustomButtonS>
-                  )
-                })
-                : valueInput && (
-                  <TextNotResult>
-                    <IconFolder size='40px' />
-                    &nbsp; No hay resultados.
-                  </TextNotResult>
-                )}
-            </BoxOptions>
-          </ContentBox>
-        </ContainerItems>
+    <div
+      className={styles['input-wrapper']}
+      ref={componentRef}
+      style={{
+        outline: `2px solid ${getGlobalStyle(showOptions ? '--color-secondary-blue' : '--color-base-transparent')}`,
+        cursor: disabled ? 'no-drop' : 'pointer'
+      }}
+    >
+      <Row className={styles['input-wrapper_content']} justifyContent='space-between'>
         <input
+          autoCorrect='off'
+          autoComplete='off'
           data-required={required}
           id={id}
           name={name}
-          type='hidden'
-          value={value || ''}
+          tabIndex={0}
+          role='combobox'
+          aria-autocomplete='list'
+          disabled={disabled}
+          className={styles['input-wrapper_content_input']}
+          onClick={() => {
+            return null
+          }}
+          onFocus={() => {
+            if (disabled) return null
+            setShowOptions(true)
+          }}
+          onChange={(e) => {
+            const value = e.target.value
+            if (disabled) return null
+            changeSearch({
+              value,
+              options,
+              optionName,
+              accessor,
+              setValueInput,
+              setNewOption
+            })
+          }}
+          placeholder='Buscar'
+          value={valueInput ?? ''}
+          style={{
+            cursor: disabled ? 'no-drop' : 'pointer'
+          }}
         />
-        <IconWarning
-          color={PColor}
-          size={20}
-          style={{ position: 'absolute', right: 5, bottom: 10, opacity: 0, pointerEvents: 'none' }}
-        />
-      </BoxSelect>
+        <Column
+          onClick={() => {
+            if (disabled) return null
+            return setShowOptions(!showOptions)
+          }}
+          type='button'
+          alignItems='center'
+          justifyContent='center'
+          style={{
+            display: icon ? 'flex' : 'none',
+            width: '40px'
+          }}>
+          <Icon
+            color={getGlobalStyle('--color-icons-black')}
+            icon={loading ? 'IconLoading' : (showOptions ? 'IconSearch' : 'IconArrowBottom')}
+            size={15} />
+        </Column>
+      </Row>
+      <div className={styles['input-wrapper__list']} style={{
+        display: showOptions ? 'block' : 'none'
+      }}>
+        {action && <button
+          className={styles['input-wrapper__list-option_action']}
+          key='select_action'
+          onClick={() => {
+            return handleClickAction()
+          }}
+        >
+          <Icon icon='IconPlus' size={25} style={{
+            margin: getGlobalStyle('')
+          }} />
+          {newOption.length > 0
+            ? 'Agregar'
+            : `Agregar ${
+          (valueInput.length > 0) && typeof valueInput === 'string' && valueInput.length > 0
+            ? valueInput.charAt(0).toUpperCase() + valueInput?.slice(1)
+            : ''
+        }`}
+        </button>
+        }
+        {newOption.length > 0
+          ? newOption.map((x: any) => {
+            return (
+              <div
+                className={styles['input-wrapper__list-option']}
+                key={x[id]}
+                onClick={() => {
+                  changeValue({
+                    v: x,
+                    id,
+                    name,
+                    optionName,
+                    setShowOptions,
+                    setValueInput,
+                    onChange
+                  })
+                }}
+              >
+                {beforeLabel} {`${renderVal(x, optionName, accessor)}`} {sideLabel}
+              </div>
+            )
+          })
+          : Boolean(valueInput) && (
+            <div className={styles['input-wrapper__list-option']}>
+              No hay resultados.
+            </div>
+          )}
+      </div>
     </div>
   )
 }

@@ -18,7 +18,6 @@ import {
 } from './styled'
 
 export const Header = ({
-  scrollNav,
   errorPush,
   loadingPush,
   pushNotificationSupported,
@@ -29,14 +28,14 @@ export const Header = ({
   countOrders = 0,
   isMobile = false,
   loadingCount = false,
-  onClickLogout = () => { return },
-  setIsOpenOrder = (boolean) => { return boolean },
-  handleOpenMenu = () => { return },
-  onClickAskUserPermission = () => { return },
-  setSalesOpen = (boolean) => { return boolean }
+  onClickLogout = () => { return null },
+  setIsOpenOrder = (boolean: boolean) => { return boolean },
+  handleOpenMenu = () => { return null },
+  onClickAskUserPermission = () => { return null },
+  setSalesOpen = (boolean: boolean) => { return boolean }
 }) => {
   return (
-    <HeaderC scrollNav={scrollNav} style={style} >
+    <HeaderC>
       <AwesomeModal
         backdrop='static'
         borderRadius='10px'
@@ -86,7 +85,7 @@ export const Header = ({
           setIsOpenOrder={setIsOpenOrder}
         />
         }
-        <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }} style={style}>
+        <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }}>
           <IconSales size={30} />
           <div className='info-sales'>
             <span>Crear una venta</span>
@@ -108,12 +107,12 @@ Header.propTypes = {
   loadingPush: PropTypes.bool,
   location: PropTypes.object,
   onClickAskUserPermission: PropTypes.func,
-  setIsOpenOrder: PropTypes.func,
   onClickLogout: PropTypes.func,
   pushNotificationSupported: PropTypes.any,
   salesOpen: PropTypes.bool,
   scrollNav: PropTypes.any,
   setAlertBox: PropTypes.func,
+  setIsOpenOrder: PropTypes.func,
   setSalesOpen: PropTypes.func,
   style: PropTypes.object
 }

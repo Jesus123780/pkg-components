@@ -10,7 +10,9 @@ interface ColumnProps {
   width?: string
   style?: React.CSSProperties
   className?: string
+  type?: string
   as?: React.ElementType
+  onClick: () => any
 }
 
 export const Column: React.FC<ColumnProps> = ({
@@ -19,6 +21,7 @@ export const Column: React.FC<ColumnProps> = ({
   children,
   className,
   style,
+  onClick,
   as: Component = 'div',
   ...props
 }) => {
@@ -32,6 +35,7 @@ export const Column: React.FC<ColumnProps> = ({
   return <Component
     className={columnClasses}
     style={style}
+    onClick={onClick}
     {...props}
   >
     {children}

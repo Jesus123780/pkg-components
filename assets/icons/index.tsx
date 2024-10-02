@@ -931,8 +931,7 @@ IconArrowTop.propTypes = {
 export const IconSearch: React.FC<IconProps | any> = ({
   style = {},
   size,
-  color,
-  ...props
+  color
 }: IconProps) => {
   return (
     <svg
@@ -941,7 +940,6 @@ export const IconSearch: React.FC<IconProps | any> = ({
       viewBox="0 0 16.39 16.23"
       width={size}
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
       <circle cx="6.91" cy="6.91" fill="none" r="6.41" stroke={color} />
       <rect
@@ -1888,6 +1886,25 @@ export const IconFilter: React.FC<IconProps> = ({ size, color, ...props }) => (
       fillRule="evenodd"
       d="M15 10.5A3.502 3.502 0 0 0 18.355 8H21a1 1 0 1 0 0-2h-2.645a3.502 3.502 0 0 0-6.71 0H3a1 1 0 0 0 0 2h8.645A3.502 3.502 0 0 0 15 10.5zM3 16a1 1 0 1 0 0 2h2.145a3.502 3.502 0 0 0 6.71 0H21a1 1 0 1 0 0-2h-9.145a3.502 3.502 0 0 0-6.71 0H3z"
       clipRule="evenodd"
+    />
+  </svg>
+)
+
+export const IconConfig: React.FC<IconProps> = ({ size, color }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size ?? 800}
+    height={size ?? 800}
+    fill="none"
+    viewBox="0 0 48 48"
+  >
+    <path fill={getGlobalStyle('--color-icons-white')} fillOpacity={0.01} d="M0 0h48v48H0z" />
+    <path
+      stroke={color ?? getGlobalStyle('--color-icons-black')}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4}
+      d="M41.5 10h-6M27.5 6v8M27.5 10h-22M13.5 24h-8M21.5 20v8M43.5 24h-22M41.5 38h-6M27.5 34v8M27.5 38h-22"
     />
   </svg>
 )

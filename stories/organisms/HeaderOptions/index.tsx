@@ -5,8 +5,7 @@ import { PColor, SECColor } from '../../../assets/colors'
 import {
   IconLogout,
   IconNotification,
-  IconShopping,
-  IconUser
+  IconShopping
 } from '../../../assets/icons'
 import {
   Button,
@@ -30,17 +29,17 @@ export const Options = ({
   onClickSendSubscriptionToPushServer,
   location = {
     push: () => {
-      return
+
     }
   },
   onClickAskUserPermission = () => {
-    return
+
   },
   setIsOpenOrder = (state) => {
     return state
   },
   onClickLogout = () => {
-    return
+
   }
 }) => {
   const [show, setShow] = useState(false)
@@ -49,7 +48,7 @@ export const Options = ({
     setShow(index === show ? false : index)
   }
   const handleSignOut = async () => {
-    return await onClickLogout()
+    return onClickLogout()
   }
 
   const isConsentGranted = userConsent === 'granted'

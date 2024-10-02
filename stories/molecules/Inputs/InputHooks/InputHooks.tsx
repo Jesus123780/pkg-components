@@ -105,7 +105,9 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   info = '',
   max = Infinity,
   onChange = (e) => e,
-  onFocus = () => { },
+  onFocus = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    e.preventDefault()
+  },
   onInvalid = () => { },
   setDataValue = () => { },
   onBlur = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -120,6 +122,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
 }) => {
   const [errors, setError] = useState<string | boolean>(error)
   const [message, setMessage] = useState<string>(messageError)
+  const [focused, setFocused] = useState(false)
   const refInput = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
 
   const validationRules: Record<string, { validate: (value: string) => boolean, message: string }> = {
@@ -165,16 +168,16 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         Boolean(passConfirm?.validate) && value !== passConfirm?.passValue,
       message: 'Las contraseñas no coinciden.'
     }
-  };
+  }
 
   const validateInput = (value: string): { valid: boolean, message: string } => {
     for (const key in validationRules) {
       if (validationRules[key].validate(value)) {
-        return { valid: false, message: validationRules[key].message };
+        return { valid: false, message: validationRules[key].message }
       }
     }
     return { valid: true, message: '' }
-  };
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target
@@ -189,6 +192,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
     const { valid, message } = validateInput(value)
     setError(!valid)
     setMessage(message)
+    setFocused(false)
     onBlur(e)
   }
 
@@ -200,6 +204,10 @@ export const InputHooks: React.FC<InputHooksProps> = ({
       setMessage(message)
     }
     onKeyDown(e)
+  }
+  const handleFocus = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    setFocused(true) // El input está en foco
+    onFocus(e)
   }
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -219,7 +227,11 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   return (
     <div
       style={{
-        border: errors === true ? `1px solid ${getGlobalStyle('--color-feedback-error-dark')}` : border,
+        outline: errors === true
+          ? `2px solid ${getGlobalStyle('--color-feedback-error-dark')}`
+          : focused
+            ? `2px solid ${getGlobalStyle('--color-secondary-blue')}` // Borde azul cuando está en foco
+            : border,
         maxWidth,
         padding: paddingInput,
         width,
@@ -236,9 +248,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         disabled={disabled}
         name={name}
         max={max}
-        onFocus={() => {
-
-        }}
+        onFocus={handleFocus}
         onChange={handleChange}
         onPaste={handlePaste}
         onBlur={handleBlur}

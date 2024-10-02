@@ -9,7 +9,7 @@ import {
   EditButton,
   Title,
   Label,
-  Input,
+  Input
 } from '../styled'
 import { SkeletonProfile } from '../Skeleton'
 
@@ -21,10 +21,10 @@ export const ProfileInfo = ({
   editingProfile = false,
   loadingSubmit = false,
   loading = true,
-  handleProfileEditClick = () => { return },
-  handleAddressEditClick = () => { return },
-  handleProfileDataEditClick = () => { return },
-  onChange = () => { return }
+  handleProfileEditClick = () => { return null },
+  handleAddressEditClick = () => { return null },
+  handleProfileDataEditClick = () => { return null },
+  onChange = () => { return null }
 }) => {
   const label = editingDataProfile ? 'Guardar' : 'Editar'
   const labelProfile = (editingProfile ? 'Guardar' : 'Editar')
@@ -49,7 +49,6 @@ export const ProfileInfo = ({
               editing={editingProfile}
               asEdited={asEdited}
               onClick={handleProfileEditClick}
-              
             >
               {loadingSubmit ? 'Cargando' : labelProfile}
               <svg width='30' height='30' viewBox='0 0 21 21' fill='none' xmlns='http://www.w3.org/2000/svg'>

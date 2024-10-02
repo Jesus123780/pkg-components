@@ -35,7 +35,8 @@ export const CustomLinkAside: React.FC<CustomLinkAsideProps> = ({
     10: 'IconTicket',
     11: 'IconTicket',
     12: 'IconTicket',
-    13: 'IconTicket'
+    13: 'IconTicket',
+    14: 'IconConfig'
   }
   const router = useRouter()
   const currentPath = `/${mPath}` === router.asPath

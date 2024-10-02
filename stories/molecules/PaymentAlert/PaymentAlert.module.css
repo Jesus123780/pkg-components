@@ -1,0 +1,9 @@
+.payment-state-msg-wrapper {
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--color-feedback-warning-light);
+  cursor: default;
+  display: flex;
+  font-size: 17px;
+  line-height: 24px;
+  position: relative;
+}

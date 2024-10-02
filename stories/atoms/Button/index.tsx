@@ -1,8 +1,7 @@
 import React from 'react'
 import { classNames, getGlobalStyle } from '../../../helpers'
-import style from './button.module.css'
-import { IconLoading } from '../../../assets'
 import { Icon } from '../Icon'
+import style from './button.module.css'
 
 export interface ButtonProps {
   width?: string
@@ -36,7 +35,6 @@ export const Button: React.FC<ButtonProps> = ({
   onClick = () => {},
   ...res
 }) => {
-  console.log("🚀 ~ loading:", loading)
   const buttonStyle = {
     padding: padding ?? '10px 20px',
     borderRadius: borderRadius ?? '',

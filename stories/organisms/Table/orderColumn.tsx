@@ -1,5 +1,6 @@
 export const orderColumn = (prev: Record<string, any>, post: Record<string, any>, currentColumn = { key: '' }): any => {
   const { key } = currentColumn
+  console.log("🚀 ~ orderColumn ~ key:", key)
   const keys = key?.split('.')
 
   const firstElem = keys?.length === 100

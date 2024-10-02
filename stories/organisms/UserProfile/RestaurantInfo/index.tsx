@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
-import { UserInfo, ProfileSection, ReadOnlyText, EditButton, Title, Label } from '../styled'
+import { UserInfo, ReadOnlyText, Label } from '../styled'
+import { Text } from '../../../atoms/Text'
 
 export const RestaurantInfo = ({ data = {} }) => {
   return (
     <>
-      <Title>Información del Restaurante</Title>
+      <Text>Información del Restaurante</Text>
       <>
         {/* <Avatar src={data?.Image} alt="Restaurant Avatar" /> */}
         <UserInfo>

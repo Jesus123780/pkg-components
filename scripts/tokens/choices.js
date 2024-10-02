@@ -201,7 +201,3 @@ export const choices = {
     high: '999999999'
   }
 }
-
-
-module.exports = choices
-module.exports = { choices }

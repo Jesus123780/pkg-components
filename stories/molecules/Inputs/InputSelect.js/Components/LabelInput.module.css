@@ -1,0 +1,81 @@
+.labelInput {
+    position: absolute;
+    text-align: left;
+    transition: 0.2s ease;
+    font-family: PFont-Light;
+    pointer-events: none;
+    white-space: nowrap;
+    width: min-content;
+    z-index: 9;
+  }
+  
+  .fontSizeLarge {
+    font-size: 1rem;
+  }
+  
+  .fontSizeSmall {
+    font-size: 16px;
+  }
+  
+  .topNegative {
+    top: -8px;
+  }
+  
+  .topDefault {
+    top: 15px;
+  }
+  
+  .leftNegative {
+    left: -8px;
+  }
+  
+  .leftDefault {
+    left: 10px;
+  }
+  
+  .colorDefault {
+    color: var(--SFColor);
+  }
+  
+  .colorError {
+    color: var(--PColor);
+  }
+  
+  .colorSFV {
+    color: var(--SFVColor);
+  }
+  
+  .bgColor {
+    background-color: var(--BGColor);
+  }
+  
+  .bgTransparent {
+    background-color: transparent;
+  }
+  
+  .paddingLeft {
+    padding-left: 16px;
+  }
+  
+  .paddingNone {
+    padding-left: 0px;
+  }
+  
+  @media only screen and (max-width: 960px) {
+    .topResponsive {
+      top: 0px;
+    }
+  
+    .topResponsiveDefault {
+      top: 25px;
+    }
+  }
+  
+  .noLabel {
+    top: 13px;
+    font-size: 15px;
+    color: var(--BColor);
+    font-family: PFont-Regular;
+    background-color: transparent;
+  }
+  
