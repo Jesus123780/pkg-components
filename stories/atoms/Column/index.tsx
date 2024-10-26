@@ -12,7 +12,7 @@ interface ColumnProps {
   className?: string
   type?: string
   as?: React.ElementType
-  onClick: () => any
+  onClick?: () => any
 }
 
 export const Column: React.FC<ColumnProps> = ({

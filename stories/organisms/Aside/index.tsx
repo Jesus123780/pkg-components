@@ -24,7 +24,7 @@ import {
   Router
 } from './styled'
 import { getGlobalStyle } from '../../../utils'
-
+import { version as UI_VERSION } from '../../../package.json'
 interface MemoAsideProps {
   collapsed?: boolean
   dataStore?: any
@@ -36,7 +36,8 @@ interface MemoAsideProps {
   salesOpen?: boolean
   setCollapsed?: any
   setShowComponentModal?: any
-  version?: string
+  version: string
+  logicalVersion: string
   modules?: any[]
   setSalesOpen?: Dispatch<SetStateAction<boolean>>
 }
@@ -46,6 +47,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     pathname: '/'
   },
   version = '0.0.0',
+  logicalVersion = '0.0.0',
   setCollapsed,
   salesOpen,
   collapsed = false,
@@ -267,7 +269,13 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             </Router>
           </div>
           <Text color='gray-dark'>
-            {version}
+            version: {version}
+          </Text>
+          <Text color='gray-dark'>
+            UI: {UI_VERSION}
+          </Text>
+          <Text color='gray-dark'>
+            logical: {logicalVersion}
           </Text>
         </Card>
       </ContainerAside>

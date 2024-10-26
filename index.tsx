@@ -33,3 +33,7 @@ export * from '@dnd-kit/core'
 // colors choices
 export * from './scripts/tokens/choices'
 export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+
+
+// version 
+export { version as pkg_version } from './package.json';

@@ -5,10 +5,10 @@ import styles from './AsideInfoStore.module.css'
 
 interface AsideInfoStoreProps {
   children: React.ReactNode
-  handleClose: () => void
   show: boolean
-  zIndex?: string
   style?: React.CSSProperties
+  zIndex?: string
+  handleClose: () => void
 }
 
 export const AsideInfoStore: React.FC<AsideInfoStoreProps> = ({

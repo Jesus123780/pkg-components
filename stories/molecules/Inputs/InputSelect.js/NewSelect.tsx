@@ -9,9 +9,13 @@ import {
   renderVal
 } from './helpers'
 import type { NewSelectProps } from './types'
-import styles from './styles.module.css'
-import { Column, Icon, Row } from '../../../atoms'
+import {
+  Column,
+  Icon,
+  Row
+} from '../../../atoms'
 import { getGlobalStyle } from '../../../../helpers'
+import styles from './styles.module.css'
 
 export const NewSelect: React.FC<NewSelectProps> = ({
   options = [],
@@ -138,7 +142,9 @@ export const NewSelect: React.FC<NewSelectProps> = ({
         {action && <button
           className={styles['input-wrapper__list-option_action']}
           key='select_action'
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
             return handleClickAction()
           }}
         >

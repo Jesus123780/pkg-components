@@ -1,6 +1,6 @@
 import React from 'react'
 import { ContainerToast, ContentToast } from './styled'
-import { AlertContentProps } from './types'
+import { type AlertContentProps } from './types'
 
 export const AlertContent: React.FC<AlertContentProps> = ({ err, closed }) => {
   return (

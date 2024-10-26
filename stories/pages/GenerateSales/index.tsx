@@ -122,12 +122,12 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
 
   return (
     <AwesomeModal
-      title="Crea una venta"
+      title='Crea una venta'
       show={show}
-      size="large"
+      size='large'
       header
       footer={false}
-      borderRadius="0"
+      borderRadius='0'
       onHide={() => {
         setShow(false)
       }}
@@ -143,7 +143,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           <Icon
             height={20}
             width={20}
-            icon="IconFilter"
+            icon='IconFilter'
             size={20}
             color={
               findChecked
@@ -169,8 +169,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             <Skeleton
               height={200}
               numberObject={20}
-              margin="0 0 20px 0"
-              width="100%"
+              margin='0 0 20px 0'
+              width='100%'
             />
               )
             : null}
@@ -199,7 +199,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     })
                   }}
                   pName={producto.pName}
-                  render={<Icon size={20} icon="IconSales" />}
+                  render={<Icon size={20} icon='IconSales' />}
                   tag={producto?.getOneTags?.nameTag !== null && tag}
                 />
                   )
@@ -270,7 +270,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     })
                   }}
                   pName={producto.pName}
-                  render={<Icon size={20} icon="IconSales" />}
+                  render={<Icon size={20} icon='IconSales' />}
                   tag={producto?.getOneTags?.nameTag !== null && tag}
                 />
                   )
@@ -297,17 +297,17 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
               </span>
               <Icon
                 size={20}
-                icon="IconInformationProduct"
+                icon='IconInformationProduct'
                 height={20}
                 width={20}
                 color={getGlobalStyle('--color-icons-primary')}
               />
             </div>
             <Text
-              align="center"
-              size="2xl"
-              color="gray-dark"
-              lineHeight="2xl"
+              align='center'
+              size='2xl'
+              color='gray-dark'
+              lineHeight='2xl'
               styles={{ margin: '0 20px 0 20px' }}
             >
               {totalProductPrice}

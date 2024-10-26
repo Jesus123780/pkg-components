@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Button, Column, Row, Text } from '../../atoms'
+import { 
+  Button, 
+  Column, 
+  Row, 
+  Text
+} from '../../atoms'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
-import styles from './DeliveryTime.module.css'
 import { TimeInput } from './Input'
 import { getGlobalStyle } from '../../../utils'
+import styles from './DeliveryTime.module.css'
 
 interface DeliveryTimeProps {
   isOpen?: boolean
@@ -69,6 +74,7 @@ export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
                 if (!deliveryTime || deliveryTime === '0') {
                   return null
                 }
+                setDeliveryTimeOpen()
                 return createDeliveryTime(deliveryTime)
               }}
               primary
