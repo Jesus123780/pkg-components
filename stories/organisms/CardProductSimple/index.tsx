@@ -52,7 +52,7 @@ export const MemoCardProductSimple = ({
   activeComment,
   dataExtra = [],
   dataOptional = [],
-  dispatch = () => { },
+  dispatch = (p0: { type: string, payload: { value: string, name: string, index: never, id: any } }) => { },
   handleComment = () => { },
   handleDecrement = () => { },
   handleDelete = () => { },
@@ -107,7 +107,7 @@ export const MemoCardProductSimple = ({
   // Formatea los datos extras
   const formattedExtraData = dataExtra
     .slice(0, 4)
-    .map(product => { return `$ ${numberFormat(product?.extraPrice)}, ${product.extraName}` })
+    .map(product => { return `${numberFormat(product?.extraPrice)}, ${product.extraName}` })
   const finalExtraFormat = conjunctionFormatter.format(formattedExtraData)
   // Formatea los datos opcionales
   const formattedOptionalData = dataOptional
@@ -117,7 +117,7 @@ export const MemoCardProductSimple = ({
   // Une las dos listas
   const listCategories = `${finalExtraFormat}, ${finalOptionalFormat}`
 
-  const priceOrFree = ProPrice > 0 ? `$ ${numberFormat(ProPrice)}` : 'Gratis'
+  const priceOrFree = ProPrice > 0 ? `${numberFormat(ProPrice)}` : 'Gratis'
 
   return (
     <>
@@ -182,7 +182,7 @@ export const MemoCardProductSimple = ({
           <div className='dish-card__info'>
             {ValueDelivery > 0 && (
               <span className='description'>
-                Domicilio ${' '}
+                Domicilio {' '}
                 {ValueDelivery > 0 ? numberFormat(ValueDelivery) : 'Gratis'}
               </span>
             )}

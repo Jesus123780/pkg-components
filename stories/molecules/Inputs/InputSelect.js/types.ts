@@ -8,6 +8,7 @@ export interface NewSelectProps {
   fullName?: any
   heightBody?: any
   icon?: boolean
+  canDelete?: boolean
   id?: string
   loading?: boolean
   margin?: string
@@ -25,6 +26,9 @@ export interface NewSelectProps {
   topTitle?: string
   value?: string
   width?: string
+  dataForm: any
   handleClickAction?: () => void
+  setDataValue?: (dataForm: any) => void
+  handleClean?: () => void
   onChange?: (e: { target: { name: string, value: any } }) => void
 }

@@ -32,7 +32,7 @@ export const Button: React.FC<ButtonProps> = ({
   loading = false,
   styles = {},
   type = '',
-  onClick = () => {},
+  onClick = () => { },
   ...res
 }) => {
   const buttonStyle = {
@@ -60,16 +60,25 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       {...res}
     >
-     {loading && (
+      {loading && (
         <div className={style.loadingWrapper} id="loading">
           <Icon
-          icon='IconLoading'
-          size={30}
-          color={getGlobalStyle('--color-base-white')}
+            icon='IconLoading'
+            size={30}
+            color={getGlobalStyle('--color-base-white')}
           />
         </div>
-     )}
-      <span style={loading ? { opacity: 0 } : {}}>{children}</span>
+      )}
+      <span style={loading
+        ? { opacity: 0 }
+        : {
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            display: 'flex'
+          }}>
+            {children}
+      </span>
     </button>
   )
 }

@@ -1,4 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, {
+  useState,
+  useRef,
+  useEffect
+} from 'react'
 import { DateRange, type Range, Calendar } from 'react-date-range'
 import { Icon } from '../../../atoms'
 import { format } from 'date-fns'
@@ -41,7 +45,6 @@ export const InputDate: React.FC<InputDateProps> = ({
   onChange = () => { },
   onCleanValue = () => { }
 }) => {
-  console.log(date)
   const [open, setOpen] = useState<boolean>(false)
   const componentRef = useRef<HTMLDivElement>(null)
 

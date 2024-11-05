@@ -18,19 +18,24 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   hoverFree = false,
   openQuantity = false,
   free = false,
+  editable = false,
+  editing = false,
   ProQuantity = 0,
   comment = '',
-  onClick = () => {},
-  handleDecrement = () => {},
-  handleIncrement = () => {},
-  handleGetSubItems = () => {},
-  handleComment = () => {},
-  handleFreeProducts = () => {},
+  onClick = () => { },
+  handleDecrement = () => { },
+  handleIncrement = () => { },
+  handleGetSubItems = () => { },
+  handleComment = () => { },
+  handleToggleEditingStatus = () => { },
+  handleFreeProducts = () => { },
+  handleCancelUpdateQuantity = () => { },
+  handleSuccessUpdateQuantity = () => { },
+  handleChangeQuantity = () => { },
   dataExtra = [],
   dataOptional = []
 }) => {
   const urlImage = '/images/DEFAULTBANNER.png'
-
   return (
     <div
       style={{
@@ -45,7 +50,13 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           <QuantityButtonFloat
             handleDecrement={handleDecrement}
             handleIncrement={handleIncrement}
+            handleToggleEditingStatus={handleToggleEditingStatus}
+            handleSuccessUpdateQuantity={handleSuccessUpdateQuantity}
+            handleCancelUpdateQuantity={handleCancelUpdateQuantity}
+            handleChangeQuantity={handleChangeQuantity}
             open={openQuantity}
+            editable={editable}
+            editing={editing}
             quantity={ProQuantity}
           />
         </div>
@@ -55,7 +66,11 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           className={styles.productCardWrapperFree}
           onClick={handleFreeProducts}
         >
-          <Text color="white" align="center" size="sm">
+          <Text
+            align='center'
+            color='white'
+            size='sm'
+          >
             {free ? 'Gratis' : 'Marcar gratis'}
           </Text>
         </div>
@@ -63,11 +78,11 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
       <div className={styles.productCardWrapper} onClick={onClick}>
         <div
           className={styles['product-card-content']}
-          data-test-id="product-card-test-id"
+          data-test-id='product-card-test-id'
         >
           <div
             className={styles['product-card-image__container']}
-            data-test-id="product-card-image"
+            data-test-id='product-card-image'
           >
             <div className={styles['wrapper-image']}>
               <img className={styles['product-card-image']} src={urlImage} />
@@ -76,7 +91,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           </div>
           <div
             className={styles['product-card__price']}
-            data-test-id="product-card-price"
+            data-test-id='product-card-price'
           >
             {ProPrice}
           </div>
@@ -90,7 +105,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             {ProDescription}
           </span>
         </div>
-        {Boolean(free) && <Tag label="Gratis" backgroundColor="green" />}
+        {Boolean(free) && <Tag label='Gratis' backgroundColor='green' />}
       </div>
       <div style={{
         height: '30px',
@@ -103,13 +118,13 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
               onClick={handleGetSubItems}
             >
               <Icon
-                icon="IconBox"
+                icon='IconBox'
                 size={30}
                 height={30}
                 width={30}
                 color={
                   Boolean(dataExtra?.length > 0) ||
-                  Boolean(dataOptional?.length > 0)
+                    Boolean(dataOptional?.length > 0)
                     ? getGlobalStyle('--color-icons-primary')
                     : getGlobalStyle('--color-icons-gray')
                 }
@@ -149,7 +164,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         <div className={styles.suggestion}>
           <button onClick={handleComment}>
             <Icon
-              icon="IconLines"
+              icon='IconLines'
               size={25}
               height={25}
               width={25}

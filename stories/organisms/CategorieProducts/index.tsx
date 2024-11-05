@@ -1,6 +1,6 @@
 import React from 'react'
 import { Carousel } from '../../molecules/Slider'
-import { Text } from '../../atoms'
+import { Icon, Text } from '../../atoms'
 import type { Root } from './types'
 import styles from './styles.module.css'
 import { getGlobalStyle } from '../../../helpers'
@@ -24,16 +24,15 @@ export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
     return id
   }
 }) => {
-  const findChecked = data?.some((item) => Boolean(item?.checked))
   return (
     <div>
-      <Carousel breakpoints={breakpoints} pagination={false}>
-        {data.map((item, index) => (
+      <Carousel breakpoints={breakpoints as any} pagination={false}>
+        {data.map((item) => (
           <div
             key={item.carProId}
             className={styles.categorie}
             title={item.pName}
-            style={item?.checked ? { border: `1px solid ${getGlobalStyle('--color-text-primary')} ` } : {}}
+            style={(typeof item?.checked === 'boolean' && item?.checked) ? { border: `1px solid ${getGlobalStyle('--color-text-primary')} ` } : {}}
             onClick={() => {
               handleChangeCheck(item.carProId)
             }}
@@ -47,6 +46,11 @@ export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
               >
                 {item.pName}
               </Text>
+              <Icon
+                color={getGlobalStyle('--color-icons-gray')}
+                icon='IconBox'
+                size={25}
+              />
             </div>
           </div>
         ))}

@@ -140,7 +140,7 @@
     top: 10px;
     transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     user-select: none;
-    width: 95%;
+    width: 90%;
 }
 
 .product-card:hover .productCardWrapperFree {

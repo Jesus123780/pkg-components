@@ -8,7 +8,7 @@ export interface DividerProps {
   margin?: number
   marginBottom?: string
   marginTop?: string
-  style: object
+  style?: object
 }
 
 export const Divider: React.FC<DividerProps> = ({

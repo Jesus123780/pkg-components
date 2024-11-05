@@ -21,6 +21,7 @@ const locale = {
  * Si el valor no es un número válido, lo devuelve tal como está.
  *
  * @param {string|number} value - El valor a formatear.
+ * @param {string} [currency='COP'] - La moneda a utilizar (opcional).
  * @returns {string} El valor formateado como número o el valor original si no es numérico.
  */
 export const numberFormat = (value, currency = 'COP') => {
@@ -29,8 +30,9 @@ export const numberFormat = (value, currency = 'COP') => {
     return value
   }
 
+  // Verifica si el valor es numérico
   if (!isNaN(value)) {
-    const settings = { style: 'currency', currency, currencyDisplay: 'code' }
+    const settings = { style: 'currency', currency, minimumFractionDigits: 0, maximumFractionDigits: 2 }
     return new Intl.NumberFormat(locale[currency], settings).format(value)
   }
 
@@ -108,7 +110,7 @@ export const isEmail = email => {
     email !== undefined &&
     email !== null
   ) {
-    return true;
+    return true
   }
   return email !== email.toLowerCase()
 }

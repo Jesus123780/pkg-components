@@ -345,7 +345,6 @@ export const IconChart: React.FC<IconProps> = ({ style = {}, size, color, ...pro
   )
 }
 
-
 /**
  * IconCategorie component
  * @param {Object} props - Component props
@@ -444,7 +443,6 @@ export const IconColombia: React.FC<IconProps> = ({ style = {}, size }: IconProp
   )
 }
 
-
 export const IconCircleNumber: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -457,7 +455,7 @@ export const IconCircleNumber: React.FC<IconProps> = ({ style = {}, size, color 
       viewBox="0 0 55.98 57.38"
     >
       <defs>
-        <style>{".cls-1{fill:#f6110c}"}</style>
+        <style>{'.cls-1{fill:#f6110c}'}</style>
       </defs>
       <circle cx={35.24} cy={36.64} r={20.74} className="cls-1" />
       <path
@@ -466,13 +464,13 @@ export const IconCircleNumber: React.FC<IconProps> = ({ style = {}, size, color 
       />
       <text
         style={{
-          fontSize: "18.78px",
-          fill: "#fff",
-          fontFamily: "MicrosoftYaHei,Microsoft YaHei",
+          fontSize: '18.78px',
+          fill: '#fff',
+          fontFamily: 'MicrosoftYaHei,Microsoft YaHei'
         }}
         transform="translate(30.37 43.26)"
       >
-        {"1"}
+        {'1'}
       </text>
     </svg>
 
@@ -886,11 +884,11 @@ export const IconArrowTop = ({ size, style = {}, color, ...props }: IconProps) =
       <path
         d="m1 5 4-4 4 4"
         style={{
-          fill: "none",
-          stroke: color || "#667085",
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-          strokeWidth: 2,
+          fill: 'none',
+          stroke: color || '#667085',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          strokeWidth: 2
         }}
       />
     </svg>
@@ -911,11 +909,11 @@ export const IconArrowBottom = ({ style = {}, color, size }: IconProps) => {
       <path
         d="M9 1 5 5 1 1"
         style={{
-          fill: "none",
-          stroke: color || "#667085",
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-          strokeWidth: 2,
+          fill: 'none',
+          stroke: color || '#667085',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          strokeWidth: 2
         }}
       />
     </svg>
@@ -1483,7 +1481,7 @@ IconComment.propTypes = {
 export const IconCancel: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
-      fill={color ?? '#717171'}
+      fill={color}
       height={size}
       style={style}
       viewBox="0 0 32 32"
@@ -1909,14 +1907,13 @@ export const IconConfig: React.FC<IconProps> = ({ size, color }) => (
   </svg>
 )
 
-export const IconBox: React.FC<IconProps> = ({ size, color, ...props }) => (
+export const IconBox: React.FC<IconProps> = ({ size, color }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size ?? 800}
     height={size ?? 800}
     fill="none"
     viewBox="0 0 24 24"
-    {...props}
   >
     <path
       stroke={color ?? '#292D32'}

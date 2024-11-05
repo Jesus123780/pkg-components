@@ -1,0 +1,30 @@
+.editableInput_anim {
+    animation: fadeIn 0.3s ease-in-out;
+    height: 100%;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: var(--font-size-xs);
+    background-color: var(--color-neutral-gray-light);
+}
+
+.button_actions {
+    width: 30px !important;
+    transition: cubic-bezier(0.39, 0.575, 0.565, 1)s ease-in-out;
+}
+
+.button_actions:hover {
+    background-color: var(--color-neutral-gray) !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

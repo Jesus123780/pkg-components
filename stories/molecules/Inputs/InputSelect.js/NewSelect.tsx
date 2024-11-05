@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, {
+  useCallback,
   useEffect,
   useRef,
   useState
@@ -28,19 +30,12 @@ export const NewSelect: React.FC<NewSelectProps> = ({
   name = '',
   action = false,
   optionName = '',
-  value = '',
-  border,
-  width = '100%',
-  search = ' ',
-  title = '',
-  padding = '',
-  margin = '',
-  minWidth = '',
   error = false,
+  canDelete = false,
   required = false,
-  overLine = false,
   accessor = '',
-  fullName,
+  dataForm = {},
+  handleClean = (dataForm: any) => { return null },
   onChange = () => {
     return null
   },
@@ -56,28 +51,40 @@ export const NewSelect: React.FC<NewSelectProps> = ({
   const [newOption, setNewOption] = useState([] as any)
 
   // HANDLESS
-  const handleClickOutside = (event: MouseEvent): void => {
-    if ((componentRef.current != null) && !componentRef.current.contains(event.target as Node)) {
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
       setShowOptions(false)
     }
-  }
+  }, [])
+
 
   // EFFECTS
   useEffect(() => { setNewOption(options) }, [options])
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+    if (showOptions) {
+      document.addEventListener('pointerdown', handleClickOutside)
+    } else {
+      document.removeEventListener('pointerdown', handleClickOutside)
     }
-  }, [])
+    return () => {
+      document.removeEventListener('pointerdown', handleClickOutside)
+    }
+  }, [showOptions])
 
+  const handleCleanInput = (): null => {
+    setValueInput('')
+    handleClean({ ...dataForm, [name]: undefined })
+    setShowOptions(false)
+    return null
+  }
+  const thereValue = (valueInput.length > 0) && typeof valueInput === 'string' && valueInput.length > 0
   return (
     <div
       className={styles['input-wrapper']}
       ref={componentRef}
       style={{
-        outline: `2px solid ${getGlobalStyle(showOptions ? '--color-secondary-blue' : '--color-base-transparent')}`,
+        outline: `2px solid ${getGlobalStyle(showOptions ? '--color-secondary-blue' : error ? '--color-text-error' : '--color-base-transparent')}`,
         cursor: disabled ? 'no-drop' : 'pointer'
       }}
     >
@@ -133,8 +140,18 @@ export const NewSelect: React.FC<NewSelectProps> = ({
           <Icon
             color={getGlobalStyle('--color-icons-black')}
             icon={loading ? 'IconLoading' : (showOptions ? 'IconSearch' : 'IconArrowBottom')}
-            size={15} />
+            size={15}
+          />
         </Column>
+        {(thereValue && canDelete) &&
+        <button onClick={handleCleanInput} type='button'>
+          <Icon
+            color={getGlobalStyle('--color-icons-black')}
+            icon='IconCancel'
+            size={20}
+          />
+        </button>
+      }
       </Row>
       <div className={styles['input-wrapper__list']} style={{
         display: showOptions ? 'block' : 'none'
@@ -148,16 +165,19 @@ export const NewSelect: React.FC<NewSelectProps> = ({
             return handleClickAction()
           }}
         >
-          <Icon icon='IconPlus' size={25} style={{
-            margin: getGlobalStyle('')
-          }} />
+          <Icon
+            icon='IconPlus'
+            size={25}
+            style={{
+              margin: getGlobalStyle('')
+            }}
+          />
           {newOption.length > 0
             ? 'Agregar'
-            : `Agregar ${
-          (valueInput.length > 0) && typeof valueInput === 'string' && valueInput.length > 0
-            ? valueInput.charAt(0).toUpperCase() + valueInput?.slice(1)
-            : ''
-        }`}
+            : `Agregar ${(thereValue)
+              ? valueInput.charAt(0).toUpperCase() + valueInput?.slice(1)
+              : ''
+            }`}
         </button>
         }
         {newOption.length > 0

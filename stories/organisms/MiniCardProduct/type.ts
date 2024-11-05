@@ -32,11 +32,17 @@ export interface MiniCardProductProps extends ProductFood {
   withQuantity?: boolean
   showDot?: boolean
   openQuantity?: boolean
+  editable?: boolean
   hoverFree?: boolean
+  editing: boolean
   render: React.ReactNode | null
   handleDecrement?: () => void
   handleComment?: () => void
   handleFreeProducts?: () => void
   handleIncrement?: () => void
+  handleSuccessUpdateQuantity?: () => void
+  handleCancelUpdateQuantity?: () => void
+  handleChangeQuantity?: () => void
+  handleToggleEditingStatus?: () => void
   handleGetSubItems?: () => void
 }

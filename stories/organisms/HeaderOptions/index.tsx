@@ -52,7 +52,7 @@ export const Options = ({
   }
 
   const isConsentGranted = userConsent === 'granted'
-
+  const showNotification = false
   return (
     <ContainerOption>
       <Overline
@@ -85,11 +85,9 @@ export const Options = ({
       </ButtonOption>
       <ContainerOption>
         <FloatingBoxTwo show={Boolean(show === 2)}>
-          <Row alignItems={'center'}>
+          {showNotification && <Row alignItems={'center'}>
             <Column
-              display={'grid'}
               justifyContent='flex-start'
-              margin='0 13px 0 15px'
               width='10%'
             >
               <IconNotification size={20} />
@@ -176,8 +174,8 @@ export const Options = ({
               </pre>
             </section> */}
             </Column>
-          </Row>
-          <Option Theme={false}>
+          </Row>}
+          <Option>
             <ButtonOption
               onClick={() => {
                 return location.push('/configuration')

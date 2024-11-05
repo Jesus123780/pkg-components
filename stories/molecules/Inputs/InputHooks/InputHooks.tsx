@@ -4,7 +4,6 @@ import {
   isEmail,
   isPassword,
   onlyLetters,
-  rangeLength,
   valNit,
   validatePhoneNumber
 } from '../../../../utils'

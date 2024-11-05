@@ -1,21 +1,20 @@
-import React from "react";
-import SwiperCore from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, A11y } from "swiper/modules";
-import styles from "./styles.module.css";
-SwiperCore.use([Navigation, Pagination, A11y]);
+import React from 'react'
+import SwiperCore from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, A11y } from 'swiper/modules'
+import styles from './styles.module.css'
+
+SwiperCore.use([Navigation, Pagination, A11y])
 
 interface CarouselProps {
-  children: React.ReactNode[] | React.ReactNode;
-  navigation?: boolean;
-  pagination?: boolean;
-  scrollbar?: boolean;
-  breakpoints?: {
-    [key: string]: {
-      slidesPerView: number;
-      spaceBetween: number;
-    };
-  };
+  children: React.ReactNode[] | React.ReactNode
+  navigation?: boolean
+  pagination?: boolean
+  scrollbar?: boolean
+  breakpoints?: Record<string, {
+    slidesPerView: number
+    spaceBetween: number
+  }>
 }
 
 export const Carousel: React.FC<CarouselProps> = ({
@@ -23,7 +22,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   navigation = true,
   pagination = true,
   scrollbar = false,
-  breakpoints,
+  breakpoints
 }) => {
   return (
     <div className={styles.swiper_container}>
@@ -42,5 +41,5 @@ export const Carousel: React.FC<CarouselProps> = ({
         ))}
       </Swiper>
     </div>
-  );
-};
+  )
+}

@@ -18,11 +18,12 @@ import styles from './styles.module.css'
 
 interface InputFilesProps {
   actionCallBack?: boolean
-  imageOnly?: boolean
-  onlyOne?: boolean
   reset?: boolean
+  allowedFileTypes?: string[]
   limit?: number
   callBack?: () => void
+  removeAllFiles?: () => void
+  removeLastFile?: () => void
   onChange?: (images: File[], previewImg: PreviewImage[]) => void
   sendNotification?: (notification: NotificationProps) => void
 }
@@ -34,9 +35,9 @@ interface PreviewImage {
 }
 
 interface NotificationProps {
-  message: string
-  duration: number
-  color: string
+  description: string
+  title: string
+  backgroundColor: string
 }
 
 /**
@@ -46,10 +47,12 @@ interface NotificationProps {
  */
 export const InputFiles: React.FC<InputFilesProps> = ({
   actionCallBack = false,
-  imageOnly = false,
-  limit = 0,
+  limit = 100,
+  allowedFileTypes = [],
   callBack = () => { },
   onChange = () => { },
+  removeAllFiles = () => { },
+  removeLastFile = () => { },
   sendNotification = () => { }
 }) => {
   const [images, setImages] = useState<File[]>([])
@@ -71,7 +74,13 @@ export const InputFiles: React.FC<InputFilesProps> = ({
     '.xlsb': <Icon icon='IconExcel' size={50} />,
     '.xltx': <Icon icon='IconExcel' size={50} />,
     '.xls': <Icon icon='IconExcel' size={50} />,
+    '.csv': <Icon icon='IconExcel' size={50} />,
     default: <i>FILE COMUN</i>
+  }
+
+  const isFileTypeAllowed = (file: File): boolean => {
+    const fileExt = file.name.substring(file.name.lastIndexOf('.')).toLowerCase()
+    return allowedFileTypes.includes(fileExt)
   }
 
   const resetFileInput = (): void => {
@@ -82,18 +91,35 @@ export const InputFiles: React.FC<InputFilesProps> = ({
 
   const onFileInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { files } = event.target
+    if (files == null) return
 
-    if (imageOnly && files !== null && !/\.(jpg|png|gif|jpeg)$/i.test(files[0]?.name)) {
+    const newFiles = Array.from(files).filter(file => {
+      if (!isFileTypeAllowed(file)) {
+        sendNotification({
+          title: 'Error',
+          backgroundColor: 'warning',
+          description: `Tipo de archivo no permitido: ${file.name}`
+        })
+        return false
+      }
+
+      return true
+    })
+    const totalFilesCount = newFiles.length + images.length
+    if (limit > 0 && totalFilesCount > limit) {
       sendNotification({
-        message: 'El archivo a adjuntar no es una imagen',
-        duration: 20000,
-        color: 'red'
+        description: `Se permite un máximo de ${limit} ${limit > 1 ? 'archivos' : 'archivo'}.`,
+        title: 'Límite alcanzado',
+        backgroundColor: 'warning'
       })
       resetFileInput()
       return
     }
+    if (newFiles.length === 0) {
+      resetFileInput()
+      return
+    }
 
-    const newFiles = files !== null ? Array.from(files) : []
     setImages([...images, ...newFiles])
     onChange([...images, ...newFiles], [...previewImg])
 
@@ -124,12 +150,36 @@ export const InputFiles: React.FC<InputFilesProps> = ({
     setImages(newImages)
     setPreviewImg(previewNewImages)
     resetFileInput()
+    if (newImages.length === 0 && previewNewImages.length === 0) {
+      removeLastFile()
+    }
   }
 
   const handleDrop = (event: DragEvent<HTMLDivElement>): void => {
     event.preventDefault()
     const files = event.dataTransfer.files
-    const newFiles = Array.from(files)
+    const newFiles = Array.from(files).filter(file => {
+      if (!isFileTypeAllowed(file)) {
+        sendNotification({
+          title: 'Error',
+          backgroundColor: 'warning',
+          description: `Tipo de archivo no permitido: ${file.name}`
+        })
+        return false
+      }
+
+      return true
+    })
+    const totalFilesCount = newFiles.length + images.length
+    if (limit > 0 && totalFilesCount > limit) {
+      sendNotification({
+        description: `Se permite un máximo de ${limit} ${limit > 1 ? 'archivos' : 'archivo'}.`,
+        title: 'Límite alcanzado',
+        backgroundColor: 'warning'
+      })
+      resetFileInput()
+      return
+    }
 
     setImages([...images, ...newFiles])
     onChange([...images, ...newFiles], [...previewImg])
@@ -147,7 +197,7 @@ export const InputFiles: React.FC<InputFilesProps> = ({
   const handleDrag = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault()
     e.stopPropagation()
-    setDragIn(e.type === 'dragenter' || e.type === 'dragover')
+    setDragIn(e.type !== 'dragleave' && e.type !== 'drop')
   }
 
   return (
@@ -166,6 +216,7 @@ export const InputFiles: React.FC<InputFilesProps> = ({
         multiple
         onChange={onFileInputChange}
         ref={fileInputRef}
+        accept={allowedFileTypes.join(',')}
         type='file'
         style={{ display: 'none' }}
       />
@@ -211,7 +262,10 @@ export const InputFiles: React.FC<InputFilesProps> = ({
       <Column justifyContent='flex-end' alignItems='flex-end'>
         <Divider marginTop={getGlobalStyle('--spacing-xl')} />
         <button
-          onClick={handleRemove}
+          onClick={(e) => {
+            handleDelete(e, null as unknown as PreviewImage, 0)
+            handleRemove()
+          }}
           style={{
             color: getGlobalStyle('--color-primary-red'),
             textDecoration: 'underline',

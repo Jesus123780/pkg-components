@@ -7,4 +7,5 @@
   font-size: 17px;
   line-height: 24px;
   position: fixed;
+  z-index: var(--z-index-9999);
 }

@@ -43,3 +43,10 @@ export const QuantityButtonFloatPrimary: Story = {
     open: false
   }
 }
+
+export const QuantityButtonFloatPrimaryEditable: Story = {
+  args: {
+    open: true,
+    editable: true
+  }
+}
