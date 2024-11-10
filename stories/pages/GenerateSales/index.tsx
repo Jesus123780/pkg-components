@@ -76,7 +76,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     counter: 0,
     getOneTags: {
       nameTag: ''
-    }
+    },
+    payMethodPState: 0
   },
   values = {
     cliId: '',
@@ -176,31 +177,31 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             : null}
           {!isLoading && Boolean(productsFood.length > 0)
             ? (
-                productsFood?.map((producto) => {
+                productsFood?.map((product) => {
                   const tag = {
-                    tag: producto?.getOneTags?.nameTag
+                    tag: product?.getOneTags?.nameTag
                   }
                   return (
                 <MiniCardProduct
-                  {...producto}
-                  ProDescription={producto.ProDescription}
-                  ProDescuento={producto.ProDescuento}
-                  ProImage={producto.ProImage}
-                  ProPrice={numberFormat(producto.ProPrice)}
-                  ProQuantity={producto.ProQuantity}
-                  ValueDelivery={producto.ValueDelivery}
+                  {...product}
+                  ProDescription={product.ProDescription}
+                  ProDescuento={product.ProDescuento}
+                  ProImage={product.ProImage}
+                  ProPrice={numberFormat(product.ProPrice)}
+                  ProQuantity={product.ProQuantity}
+                  ValueDelivery={product.ValueDelivery}
                   comment={false}
                   edit={false}
-                  key={producto.pId}
+                  key={product.pId}
                   onClick={() => {
                     dispatch({
                       type: 'ADD_TO_CART',
-                      payload: producto
+                      payload: product
                     })
                   }}
-                  pName={producto.pName}
+                  pName={product.pName}
                   render={<Icon size={20} icon='IconSales' />}
-                  tag={producto?.getOneTags?.nameTag !== null && tag}
+                  tag={product?.getOneTags?.nameTag !== null && tag}
                 />
                   )
                 })
@@ -228,50 +229,81 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         >
           {!isLoading && data.PRODUCT.length > 0
             ? (
-                data.PRODUCT?.map((producto) => {
+                data.PRODUCT?.map((product, index) => {
                   const tag = {
-                    tag: producto?.getOneTags?.nameTag ?? ''
+                    tag: product?.getOneTags?.nameTag ?? ''
                   }
-                  const ProQuantity = producto?.ProQuantity ?? 0
+                  const ProQuantity = product?.ProQuantity ?? 0
                   return (
                 <MiniCardProduct
-                  {...producto}
-                  ProDescription={producto.ProDescription}
-                  ProDescuento={producto.ProDescuento}
-                  ProImage={producto.ProImage}
-                  ProPrice={numberFormat(producto.ProPrice)}
+                  {...product}
+                  editing={product.editing}
+                  editable={true}
+                  handleChangeQuantity={(event) => {
+                    const { value } = event.target
+                    return dispatch({
+                      type: 'ON_CHANGE',
+                      payload: {
+                        id: product.pId,
+                        index,
+                        value
+                      }
+                    })
+                  }}
+                  ProDescription={product.ProDescription}
+                  ProDescuento={product.ProDescuento}
+                  ProImage={product.ProImage}
+                  ProPrice={numberFormat(product.ProPrice)}
                   ProQuantity={ProQuantity}
-                  ValueDelivery={producto.ValueDelivery}
+                  handleToggleEditingStatus={() => {
+                    dispatch({
+                      type: 'TOGGLE_EDITING_PRODUCT',
+                      payload: product
+                    })
+                  }}
+                  handleCancelUpdateQuantity={() => {
+                    dispatch({
+                      type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
+                      payload: product
+                    })
+                  }}
+                  handleSuccessUpdateQuantity={() => {
+                    dispatch({
+                      type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
+                      payload: product
+                    })
+                  }}
+                  ValueDelivery={product.ValueDelivery}
                   withQuantity={true}
                   hoverFree={true}
                   handleComment={() => {
-                    handleComment(producto)
+                    handleComment(product)
                   }}
                   showDot={true}
                   openQuantity={Boolean(ProQuantity)}
                   handleDecrement={() => {
-                    handleDecrement(producto)
+                    handleDecrement(product)
                   }}
                   handleIncrement={() => {
-                    handleIncrement(producto)
+                    handleIncrement(product)
                   }}
                   handleFreeProducts={() => {
-                    handleFreeProducts(producto)
+                    handleFreeProducts(product)
                   }}
                   handleGetSubItems={() => {
-                    onClick(producto)
+                    onClick(product)
                   }}
                   edit={false}
-                  key={producto.pId}
+                  key={product.pId}
                   onClick={() => {
                     dispatch({
                       type: 'ADD_TO_CART',
-                      payload: producto
+                      payload: product
                     })
                   }}
-                  pName={producto.pName}
+                  pName={product.pName}
                   render={<Icon size={20} icon='IconSales' />}
-                  tag={producto?.getOneTags?.nameTag !== null && tag}
+                  tag={product?.getOneTags?.nameTag !== null && tag}
                 />
                   )
                 })

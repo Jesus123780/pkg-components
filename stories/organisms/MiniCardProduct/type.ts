@@ -34,7 +34,7 @@ export interface MiniCardProductProps extends ProductFood {
   openQuantity?: boolean
   editable?: boolean
   hoverFree?: boolean
-  editing: boolean
+  editing?: boolean
   render: React.ReactNode | null
   handleDecrement?: () => void
   handleComment?: () => void
@@ -42,7 +42,7 @@ export interface MiniCardProductProps extends ProductFood {
   handleIncrement?: () => void
   handleSuccessUpdateQuantity?: () => void
   handleCancelUpdateQuantity?: () => void
-  handleChangeQuantity?: () => void
+  handleChangeQuantity?: (event: { target: { name: string, value: string | number } }) => void
   handleToggleEditingStatus?: () => void
   handleGetSubItems?: () => void
 }

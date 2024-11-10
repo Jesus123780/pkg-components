@@ -52,7 +52,12 @@ export const EditableInput: React.FC<EditableInputProps> = ({
         onChange={handleInputChange} // Updated to use handleInputChange
       />
       <button onClick={handleSuccessUpdateQuantity} className={styles.button_actions}>
-        <Icon icon='IconMiniCheck' size={15} width={15} color={getGlobalStyle('--color-feedback-success-light')} />
+        <Icon
+          icon='IconMiniCheck'
+          size={15}
+          width={15}
+          color={getGlobalStyle('--color-feedback-success-light')} 
+        />
       </button>
     </Row>
   )

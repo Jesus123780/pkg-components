@@ -4,6 +4,7 @@ export interface ProductFood {
   __typename: string
   pId: string
   sizeId: string | null
+  editing?: boolean
   colorId: string | null
   cId: string | null
   dId: string | null
