@@ -54,26 +54,26 @@ export const ModalProduct = ({
   loading = false,
   dataExtra = [],
   handleShowModalProduct = () => {
-    return
+
   },
   setComments = (comment) => {
     return comment
   },
   handleDecrementExtra = () => {
-    return
+
   },
   handleIncrementExtra = () => {
-    return
+
   },
   handleDecrease = () => {
-    return
+
   },
   handleIncrease = () => {
-    return
+
   },
   handleAddOptional = ({ exOptional, codeCategory }) => {
     return {
-      exOptional, 
+      exOptional,
       codeCategory
     }
   },
@@ -81,7 +81,7 @@ export const ModalProduct = ({
     return args
   },
   handleAddProducts = () => {
-    return
+
   },
   handleCountProducts = ({
     ProPrice,
@@ -93,11 +93,11 @@ export const ModalProduct = ({
     }
   }
 }) => {
-  const { 
-    ProDescription, 
-    ProDescuento, 
-    ProPrice, 
-    getStore, 
+  const {
+    ProDescription,
+    ProDescuento,
+    ProPrice,
+    getStore,
     pName
   } =
     dataOneProduct || {
@@ -107,7 +107,7 @@ export const ModalProduct = ({
       getStore: {},
       pName: ''
     }
-  
+
   useEvents({
     eventType: 'app.cart',
     callBack: ({ detail: { items } }) => {
@@ -125,7 +125,7 @@ export const ModalProduct = ({
         show={show}
         zIndex='99999'
       />
-      <div className={`${styles['content_modal']} ${show && styles['show'] }`} >
+      <div className={`${styles.content_modal} ${show && styles.show}`} >
         <div className={styles['content__img-container']}>
           <Image
             alt='Picture'
@@ -137,19 +137,19 @@ export const ModalProduct = ({
             width={450}
           />
         </div>
-        <header className={styles['content_header']}>
+        <header className={styles.content_header}>
           <Text className={styles['nav-header__title']} color={PLColor}>
             {pName}
           </Text>
           <button
-            className={styles['button_close']}
+            className={styles.button_close}
             onClick={handleShowModalProduct}
             onMouseDown={handleShowModalProduct}
           >
             <IconArrowBottom color={PColor} size={20} />
           </button>
         </header>
-        <div className={styles['content__scrolling']}>
+        <div className={styles.content__scrolling}>
           <div className={styles['content__img-container_mobile']}>
             <Image
               alt='Picture'
@@ -161,11 +161,11 @@ export const ModalProduct = ({
               width={450}
             />
           </div>
-          <p className={styles['description']} color={PLColor}>
+          <p className={styles.description} color={PLColor}>
             {ProDescription}
           </p>
           {ProDescuento && <Text
-            className={styles['description']}
+            className={styles.description}
             color={PLColor}
             margin='12px 0 0 5px'
             size='14px'
@@ -289,7 +289,7 @@ export const ModalProduct = ({
             )
           })}
         </div>
-        <div className={styles['content__action']}>
+        <div className={styles.content__action}>
           <QuantityButton
             disabled={false}
             handleDecrement={handleDecrease}
@@ -309,7 +309,7 @@ export const ModalProduct = ({
             padding='5px'
             size='12px'
           >
-            Agregar
+            Agregar Hola
           </RippleButton>
         </div>
       </div>

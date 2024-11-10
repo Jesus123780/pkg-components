@@ -192,7 +192,7 @@ export const MemoCardProductSimple = ({
                 { free === 1 ? 'Gratis' : priceOrFree }
               </span>
               {ProDescuento > 0 && (
-                <span className='price discount'>{` $ ${numberFormat(
+                <span className='price discount'>{`${numberFormat(
                   ProDescuento
                 )}`}</span>
               )}
