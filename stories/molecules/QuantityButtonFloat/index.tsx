@@ -9,8 +9,10 @@ interface QuantityButtonFloatProps extends EditableInputProps {
   editable?: boolean
   editing?: boolean
   open?: boolean
-  handleIncrement?: () => void
-  handleDecrement?: () => void
+  increment?: boolean
+  decrement?: boolean
+  handleIncrement?: (event?: React.MouseEvent<HTMLButtonElement>) => void
+  handleDecrement?: (event?: React.MouseEvent<HTMLButtonElement>) => void
   handleToggleEditingStatus?: () => void
 }
 
@@ -19,6 +21,8 @@ export const QuantityButtonFloat: React.FC<QuantityButtonFloatProps> = ({
   open = false,
   editing = false,
   editable = false,
+  decrement = true,
+  increment = true,
   handleChangeQuantity = () => null,
   handleIncrement = () => null,
   handleDecrement = () => null,
@@ -45,16 +49,20 @@ export const QuantityButtonFloat: React.FC<QuantityButtonFloatProps> = ({
           />
         ) : (
           <>
-            <button onClick={handleDecrement} style={{
-              paddingRight: 0
-            }}>
-              <Icon
-                size={24}
-                width={24}
-                height={24}
-                icon='IconMinus'
-              />
-            </button>
+            {decrement &&
+              <button onClick={(event) => {
+                return handleDecrement(event)
+              }} style={{
+                paddingRight: 0
+              }}>
+                <Icon
+                  size={24}
+                  width={24}
+                  height={24}
+                  icon='IconMinus'
+                />
+              </button>
+            }
             <button onClick={() => {
               return handleToggleEditingStatus()
             }} >
@@ -65,9 +73,13 @@ export const QuantityButtonFloat: React.FC<QuantityButtonFloatProps> = ({
                 {quantity}
               </Text>
             </button>
-            <button onClick={handleIncrement}>
-              <Icon icon='IconPlus' />
-            </button>
+            {increment &&
+              <button onClick={(event) => {
+                return handleIncrement(event)
+              }}>
+                <Icon icon='IconPlus' />
+              </button>
+            }
           </>
         )}
       </div>

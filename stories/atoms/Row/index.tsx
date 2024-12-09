@@ -9,15 +9,33 @@ interface RowProps {
   children: React.ReactNode
   style?: React.CSSProperties
   className?: string
+  as?: React.ElementType
+  onClick?: () => void
 }
 
-export const Row: React.FC<RowProps> = ({ alignItems, justifyContent, children, style, className }) => {
+export const Row: React.FC<RowProps> = ({
+  alignItems,
+  justifyContent,
+  children,
+  style,
+  className,
+  as = 'div',
+  onClick
+}) => {
+  const Components = as
   const rowClasses = clsx(
     styles.row,
-    alignItems && styles[`align-items-${alignItems}`],
+    alignItems ? styles[`align-items-${alignItems}`] : '',
+    justifyContent ? styles[`justify-content-${justifyContent}`] : '',
     justifyContent && styles[`justify-content-${justifyContent}`],
     className
-  );
+  )
 
-  return <div className={rowClasses} style={style}>{children}</div>
+  return <Components
+    className={rowClasses}
+    style={style}
+    onClick={onClick}
+    >
+    {children}
+  </Components>
 }

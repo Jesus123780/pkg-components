@@ -1,5 +1,6 @@
 import React from 'react'
-import { classNames, getGlobalStyle } from '../../../helpers'
+import { getGlobalStyle } from '../../../helpers'
+import classNames from 'classnames'
 import { Icon } from '../Icon'
 import style from './button.module.css'
 
@@ -16,7 +17,8 @@ export interface ButtonProps {
   disabled?: boolean
   children?: React.ReactNode
   styles?: React.CSSProperties
-  onClick?: () => void
+  className?: string // Nuevo prop para className
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -31,8 +33,9 @@ export const Button: React.FC<ButtonProps> = ({
   primary = false,
   loading = false,
   styles = {},
+  className = '', // Default vacío
   type = '',
-  onClick = () => { },
+  onClick = () => {},
   ...res
 }) => {
   const buttonStyle = {
@@ -49,13 +52,17 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       disabled={disabled}
-      className={classNames(style.button, {
-        [style[`button--${type}`]]: type,
-        [style[`button--${color}`]]: color,
-        [style['button--primary']]: primary,
-        [style[`button--border-${border}`]]: border,
-        [style['button--secondary']]: !primary
-      })}
+      className={classNames(
+        style.button,
+        {
+          [style[`button--${type}`]]: border !== undefined,
+          [style[`button--${color}`]]: border !== undefined,
+          [style['button--primary']]: primary,
+          [style[`button--border-${border}`]]: border !== undefined,
+          [style['button--secondary']]: !primary
+        },
+        className // Se añade aquí el className externo
+      )}
       style={buttonStyle}
       onClick={onClick}
       {...res}
@@ -63,21 +70,25 @@ export const Button: React.FC<ButtonProps> = ({
       {loading && (
         <div className={style.loadingWrapper} id="loading">
           <Icon
-            icon='IconLoading'
+            icon="IconLoading"
             size={30}
             color={getGlobalStyle('--color-base-white')}
           />
         </div>
       )}
-      <span style={loading
-        ? { opacity: 0 }
-        : {
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            display: 'flex'
-          }}>
-            {children}
+      <span
+        style={
+          loading
+            ? { opacity: 0 }
+            : {
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                display: 'flex'
+              }
+        }
+      >
+        {children}
       </span>
     </button>
   )

@@ -129,7 +129,7 @@ const SliderLabel = styled.div`
   align-items: center;
   margin-right: 10px;
   width: 75px;
-  font-size: 12px;
+  font-size: var(--font-size-base);
 
   sub,
   sup {

@@ -6,7 +6,6 @@ import { AwesomeModal } from '../AwesomeModal'
 import { CardProductSimple } from '../CardProductSimple'
 import { ResisesColumns } from '../ResisesColumns'
 import { RippleButton, Text } from './../../atoms'
-import { Button } from './../../atoms/Button/index'
 import { Skeleton } from './../../molecules/Skeleton'
 import {
   ContainerGrid,
@@ -31,10 +30,7 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
   LoadingStatusOrder = false,
   handleOpenActions = () => {},
   handleModalProductSale = () => {},
-  setStateSale = (state: number | null) => {
-    return state
-  },
-  stateSale = -1,
+  stateSale = null,
   handleModalItem = (pId: string, ShoppingCardId: string) => {
     return {
       pId,
@@ -44,7 +40,7 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
   setModalItem = (boolean) => {
     return boolean
   },
-  HandleChangeState = (value: number, pCodeRef?: string) => {
+  handleChangeState = (value: number, pCodeRef?: string) => {
     return {
       value,
       pCodeRef
@@ -59,7 +55,16 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
     channel,
     change,
     getAllPedidoStore
-  } = dataModal
+  } = dataModal ?? {
+    payMethodPState: 0,
+    pSState: 0,
+    locationUser: null,
+    pCodeRef: '',
+    channel: 0,
+    change: 0,
+    getAllPedidoStore: []
+  }
+  console.log({stateSale})
   const dataLocation = ((locationUser !== null && locationUser) && JSON.parse(locationUser)) ?? {
     cName: '',
     country: '',
@@ -73,19 +78,13 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
     uLocationKnow
   } = dataLocation
 
-  const stateOrder: {
-    1: string
-    2: string
-    3: string
-    4: string
-    5: string
-  } = {
+  const stateOrder = {
     1: 'Confirmado',
     2: 'En Proceso',
     3: 'Listo Para Entrega',
     4: 'Pedido Concluido',
     5: 'Rechazado'
-  }
+  } as const
   const { yearMonthDay, hourMinutes12, longDayName } = pDatCre ?? {
     yearMonthDay: '',
     hourMinutes12: '',
@@ -124,11 +123,9 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
    * @returns {any}
    **/
   const handleChangeStateSale = (value: number, pCodeRef?: string): void => {
-    if (stateSale !== value) {
-      HandleChangeState(value, pCodeRef)
-      setStateSale(value)
-    }
+    handleChangeState(value, pCodeRef)
   }
+
   const options = [
     { value: 1, label: 'Confirmar pedido' },
     { value: 2, label: 'Pedido en proceso' },
@@ -160,6 +157,7 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
             {...oneProductToComment}
             edit={false}
             pName={oneProductToComment?.pName ?? ''}
+            ProPrice={Number(oneProductToComment?.ProPrice)}
             render={null}
           />
           <InputHooks
@@ -259,7 +257,7 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
               </ContainerGrid>
             </div>
           </div>
-          <div>{console.log(stateOrder[stateSale])}
+          <div>
             {Boolean(edit) && (
               <Column>
                 <RippleButton
@@ -276,7 +274,7 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
                       {options.map((option, index) => {
                         return (
                           <button
-                            className={`${styles.menu_options__option} ${stateSale === index && styles.menu_options__option_active}`}
+                            className={`${styles.menu_options__option} ${stateSale === index + 1 && styles.menu_options__option_active}`}
                             key={option.value}
                             onClick={() => {
                               return handleChangeStateSale(
@@ -304,24 +302,34 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
 
                 <div className='header-responsible'>
                   <Column>
-                    <Text size='md'>Responsable</Text>
+                    <Text size='md'>
+                      Responsable
+                    </Text>
                   </Column>
                   <Column>
-                    <Text size='md'>{dataStore?.storeName}</Text>
+                    <Text size='md'>
+                      {dataStore?.storeName}
+                    </Text>
                   </Column>
                 </div>
                 <div className='header-responsible'>
                   <Column>
-                    <Text size='md'>Código</Text>
+                    <Text size='md'>
+                      Código
+                    </Text>
                   </Column>
                   <Column>
-                    <Text size='md'>{pCodeRef}</Text>
+                    <Text size='md'>
+                      {pCodeRef}
+                    </Text>
                   </Column>
                 </div>
 
                 <div className='header-responsible'>
                   <Column>
-                    <Text size='md'>Ubicación</Text>
+                    <Text size='md'>
+                      Ubicación
+                    </Text>
                   </Column>
                   <Column>
                     <Text size='md'>

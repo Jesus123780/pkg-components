@@ -330,5 +330,5 @@ export const InputText = styled.input`
   padding: 20px 8px;
   outline: none;
   border: 1px solid #ccc;
-  font-size: 12px;
+  font-size: var(--font-size-base);
 `

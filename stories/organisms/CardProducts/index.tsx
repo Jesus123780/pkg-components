@@ -1,13 +1,26 @@
 import Image from 'next/image'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { PColor } from './../../../assets/colors/index'
 import { CardProductsContent, CtnBox, TooltipCardProduct, WrapperCard } from './styled'
 import { IconEdit, IconDelete } from '../../../assets'
+import { numberFormat } from '../../../utils'
+import { type ProductFood } from '../../pages/GenerateSales/types'
 
-export const CardProductsComponent = ({
-  isVisible,
-  image,
+interface CardProductsProps {
+  isVisible?: boolean
+  image?: string | React.ReactNode | null
+  food?: ProductFood
+  setRef?: any
+  isEdit?: boolean
+  showDiscount?: boolean
+  loading?: boolean
+  onClick?: () => void
+  redirect?: () => void
+  handleDelete?: (food: ProductFood) => ProductFood
+}
+export const CardProductsComponent: React.FC<CardProductsProps> = ({
+  isVisible = false,
+  image = null,
   food = {
     ProDescription: '',
     ProDescuento: 0,
@@ -16,33 +29,30 @@ export const CardProductsComponent = ({
     pName: '',
     pId: null
   },
-  setRef,
+  setRef = null,
   isEdit = true,
   showDiscount = true,
   loading = false,
   onClick = () => {
-    return
+
   },
   redirect = () => {
-    return
+
   },
-  handleDelete = (food) => {
+  handleDelete = (food: ProductFood) => {
     return food
   }
 }) => {
-  const calculateDiscountPercentage = (price, discount) => {
-    if (!price || !discount) return 0
+  const calculateDiscountPercentage = (price: number | string, discount: number | string): number => {
+    const parsedPrice = typeof price === 'string' ? parseFloat(price.replace(/\./g, '')) : price
+    const parsedDiscount = typeof discount === 'string' ? parseFloat(discount.replace(/\./g, '')) : discount
 
-    const value = typeof price === 'string' ? parseFloat(price.replace(/\./g, '')) : parseFloat(price)
-    const valueDiscount = typeof discount === 'string' ? parseFloat(discount.replace(/\./g, '')) : parseFloat(discount)
-
-    if (value && value > 0) {
-      const percentage = (valueDiscount / value) * 100
+    if (parsedPrice > 0) {
+      const percentage = (parsedDiscount / parsedPrice) * 100
       return Math.round(percentage)
     }
     return 0
   }
-
 
   const discountPercentage = calculateDiscountPercentage(food?.ProPrice, food?.ProDescuento)
 
@@ -60,7 +70,7 @@ export const CardProductsComponent = ({
               <TooltipCardProduct left='50px'>
                 <button
                   onClick={() => {
-                    return handleDelete(food)
+                    return handleDelete(food as ProductFood)
                   }}
                 >
                   <IconDelete color={PColor} size={20} />
@@ -72,15 +82,15 @@ export const CardProductsComponent = ({
             <CtnBox>
               {isVisible && (
                 <>
-                  <h3 className='card__description'>{food?.pName || ''}</h3>
-                  <h3 className='card__description'>{food?.ProDescription || ''}</h3>
+                  <h3 className='card__description'>{((food?.pName).length > 0) || ''}</h3>
+                  <h3 className='card__description'>{((food?.ProDescription).length > 0) || ''}</h3>
                   <div className='footer'>
-                    <span className={food?.ProPrice > 0 ? 'card__price' : 'card__price free'}>
-                      {food?.ProPrice > 0 ? `$ ${food?.ProPrice}` : 'Gratis'}
+                    <span className={Number(food?.ProPrice) > 0 ? 'card__price' : 'card__price free'}>
+                      {Number(food?.ProPrice) > 0 ? `${numberFormat(food?.ProPrice)}` : 'Gratis'}
                     </span>
 
                     <span className='card__des'>
-                      {food?.ProDescuento > 0 ? `$ ${food?.ProDescuento}` : null}
+                      {food?.ProDescuento > 0 ? `${numberFormat(food?.ProDescuento)}` : null}
                     </span>
                     {showDiscount && food?.ProDescuento > 0 && (
                       <span className={discountPercentage > 100 ? 'discount red' : 'discount green'}>
@@ -92,15 +102,17 @@ export const CardProductsComponent = ({
               )}
             </CtnBox>
             <CtnBox>
-              {!image && isVisible && <Image
-                alt={food?.ProDescription || 'img'}
-                blurDataURL='/images/DEFAULTBANNER.png'
-                height={300}
-                layout='fill'
-                objectFit='cover'
-                src={'/images/DEFAULTBANNER.png' || food.ProImage}
-                width={300}
-              />}
+              {image === null && isVisible &&
+                <Image
+                  alt={food?.ProDescription?.length > 0 ? food.ProDescription : 'img'}
+                  blurDataURL='/images/default-banner.png'
+                  height={300}
+                  layout='fill'
+                  objectFit='cover'
+                  src={typeof food.ProImage === 'string' && food.ProImage.trim() !== '' ? food.ProImage : '/images/default-banner.png'}
+                  width={300}
+                />}
+
               {image}
             </CtnBox>
           </CardProductsContent>

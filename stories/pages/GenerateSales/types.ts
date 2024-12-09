@@ -2,7 +2,7 @@ import type { ExtProductFoodOptional } from '../../organisms/MiniCardProduct/typ
 
 export interface ProductFood {
   __typename: string
-  pId: string
+  pId: string | null
   sizeId: string | null
   editing?: boolean
   colorId: string | null

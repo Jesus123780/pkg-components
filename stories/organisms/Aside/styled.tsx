@@ -120,7 +120,7 @@ export const ButtonGlobalCreate = styled.button`
     border: 2px solid ${PColor};
     color: ${BColor};
     height: 30px;
-    font-size: 12px;
+    font-size: var(--font-size-base);
     cursor: pointer;
     margin: 10px auto;
     transition: 0.2s;
@@ -288,7 +288,7 @@ export const AnchorRouter = styled.a`
         border-radius: 50%;
         padding: 1px;
         height: 28px;
-        font-size: 12px;
+        font-size: var(--font-size-base);
         width: 28px;
         align-items: center;
         display: flex;

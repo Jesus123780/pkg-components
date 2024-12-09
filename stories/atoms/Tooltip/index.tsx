@@ -31,7 +31,7 @@ const TooltipText = styled.span<TooltipProps>`
   z-index: 99;
   opacity: ${({ hover }) => (hover ? 0 : 1)};
   transition: opacity 0.3s, visibility 0.3s;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   line-height: 1.4;
   border-radius: ${({ borderRadius }) => borderRadius || '4px'};
   border: 1px solid var(--color-primary-red);

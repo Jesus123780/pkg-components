@@ -243,7 +243,7 @@ import{a as n,F as ke,j as t}from"./jsx-runtime-DI8_P1Ft.js";import{I as Pe}from
     transform: translateY(-50%) scaleX(0.7);
   }
 `,u=i.button`
-  font-size: 12px;
+  font-size: var(--font-size-base);
   font-family: PFont-Light;
   cursor: pointer;
   word-break: break-word;

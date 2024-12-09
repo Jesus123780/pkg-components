@@ -1,0 +1,19 @@
+.overline {
+    background-color: transparent;
+    cursor: auto;
+    display: none;
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: var(--z-index-50);
+}
+
+.overline.show {
+    display: block;
+}
+
+.overline.clickable {
+    cursor: pointer;
+}

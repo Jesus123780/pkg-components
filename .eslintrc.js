@@ -8,31 +8,16 @@ module.exports = {
         "standard-with-typescript",
         "plugin:react/recommended"
     ],
-    // "overrides": [
-    //     {
-    //         "env": {
-    //             "node": true
-    //         },
-    //         "files": [
-    //             "*.stories.@(ts|tsx|js|jsx|mjs|cjs)"
-    //         ],
-    //         "parserOptions": {
-    //             "sourceType": "script"
-    //         }
-    //     }
-    // ],
-        "overrides": [
-          {
-            // or whatever matches stories specified in .storybook/main.js
-            "files": ['*/.@(ts|tsx|js|jsx|mjs|cjs)'],
+    "overrides": [
+        {
+            // Configuración específica para archivos de historias
+            "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
             "rules": {
-              // example of overriding a rule
-              'storybook/hierarchy-separator': 'error',
-              // example of disabling a rule
-              'storybook/default-exports': 'off',
+                "storybook/hierarchy-separator": "error",
+                "storybook/default-exports": "off"
             }
-          }
-        ],
+        }
+    ],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
@@ -41,14 +26,21 @@ module.exports = {
         "react"
     ],
     "rules": {
+        'storybook/hierarchy-separator': 'off',
         "react/prop-types": "off",
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "error",
+        "no-unused-vars": "error", // Para detectar variables sin usar en JavaScript
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "args": "after-used", // Detecta parámetros no usados
+                "argsIgnorePattern": "^_", // Permite parámetros que inicien con "_"
+                "vars": "all", // Detecta todas las variables no usadas
+                "varsIgnorePattern": "^_" // Permite variables que inicien con "_"
+            }
+        ],
         "semi": ["error", "never"],
         "@typescript-eslint/no-confusing-void-expression": "off"
-
-    },
-
+    }
 }

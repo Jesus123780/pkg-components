@@ -4,7 +4,10 @@ import {
   HorizontalBarChart,
   Circle,
   DoughnutChar,
-  BarChat
+  BarChat,
+  LightweightChartComponent,
+  LargeChartComponent,
+  SalesDashboardChart
 } from './index'
 
 export default {
@@ -62,7 +65,9 @@ const data = [
 HorizontalBarChartStory.args = {
   data
 }
-
 export const CircleStory = () => <Circle />
 export const DoughnutCharStory = () => <DoughnutChar />
 export const BarChatStory = () => <BarChat />
+export const LightweightChart = () => <LightweightChartComponent />
+export const LargeChart = () => <LargeChartComponent />
+export const SalesDashboard = () => <SalesDashboardChart />

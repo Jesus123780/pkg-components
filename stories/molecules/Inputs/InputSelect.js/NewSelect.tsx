@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, {
   useCallback,
@@ -27,9 +28,11 @@ export const NewSelect: React.FC<NewSelectProps> = ({
   icon = true,
   loading = false,
   sideLabel = '',
+  title = '',
   name = '',
   action = false,
   optionName = '',
+  value = '',
   error = false,
   canDelete = false,
   required = false,
@@ -52,11 +55,10 @@ export const NewSelect: React.FC<NewSelectProps> = ({
 
   // HANDLESS
   const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
+    if ((componentRef.current != null) && !componentRef.current.contains(event.target as Node)) {
       setShowOptions(false)
     }
   }, [])
-
 
   // EFFECTS
   useEffect(() => { setNewOption(options) }, [options])
@@ -88,6 +90,10 @@ export const NewSelect: React.FC<NewSelectProps> = ({
         cursor: disabled ? 'no-drop' : 'pointer'
       }}
     >
+      <span className={`${styles['input-wrapper__title']} ${styles['input-wrapper__title--animated']} ${showOptions || value.length > 0 ? styles['input-wrapper__title--active'] : ''}`}>
+        {title}
+      </span>
+
       <Row className={styles['input-wrapper_content']} justifyContent='space-between'>
         <input
           autoCorrect='off'
@@ -144,14 +150,14 @@ export const NewSelect: React.FC<NewSelectProps> = ({
           />
         </Column>
         {(thereValue && canDelete) &&
-        <button onClick={handleCleanInput} type='button'>
-          <Icon
-            color={getGlobalStyle('--color-icons-black')}
-            icon='IconCancel'
-            size={20}
-          />
-        </button>
-      }
+          <button onClick={handleCleanInput} type='button'>
+            <Icon
+              color={getGlobalStyle('--color-icons-black')}
+              icon='IconCancel'
+              size={20}
+            />
+          </button>
+        }
       </Row>
       <div className={styles['input-wrapper__list']} style={{
         display: showOptions ? 'block' : 'none'

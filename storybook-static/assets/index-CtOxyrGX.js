@@ -13,7 +13,7 @@ import{a as c,j as a}from"./jsx-runtime-DI8_P1Ft.js";import{r as M}from"./router
 `,v=t(L)`
   display: block;
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   padding: 5px 10px;
   padding-left: 10px;
   text-align: left;

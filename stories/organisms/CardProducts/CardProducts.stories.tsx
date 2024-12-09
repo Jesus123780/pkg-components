@@ -1,21 +1,71 @@
-import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
+import DEFAULTBANNER from '../../../public/Images/DEFAULTBANNER.png'
 import { CardProducts } from './index'
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-export default {
-  title: 'organisms/CardProducts',
+const meta: Meta<typeof CardProducts> = {
   component: CardProducts,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' }
+  title: 'organisms/CardProducts'
+}
+export default meta
+type Story = StoryObj<typeof CardProducts>
+
+const productProps = {
+  ProDescription: 'description',
+  ProDescuento: 0,
+  ProImage: DEFAULTBANNER.src,
+  ProPrice: 1500.01,
+  pName: 'name',
+  fId: null,
+  pId: null,
+  cId: null,
+  colorId: null,
+  ctId: null,
+  dId: null,
+  editing: false,
+  edit: false,
+  ProAssurance: null,
+  ProDelivery: 0,
+  ProHeight: null,
+  ProOutstanding: 0,
+  ProProtegido: null,
+  ProQuantity: null,
+  ProStar: 0,
+  ProUniDisponibles: null,
+  ProVoltaje: null,
+  ProWeight: undefined,
+  pDatCre: '',
+  pDatMod: '',
+  pState: 1,
+  sTateLogistic: 0,
+  sizeId: null,
+  tag: null,
+  ValueDelivery: null,
+  area: null,
+  comment: false,
+  dataExtra: [],
+  dataOptional: [],
+  feat: null,
+  getOneTags: null,
+  onClick: () => {},
+  render: null,
+  __typename: 'ProductFood'
+}
+export const Primary: Story = {
+  args: {
+    isVisible: true,
+    food: {
+      ...productProps
+    },
+    loading: false
   }
 }
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => {
-  return <CardProducts {...args} />
+export const Secondary: Story = {
+  args: {
+    isVisible: true,
+    food: {
+      ...productProps
+    },
+    loading: true
+  }
 }
-
-export const TemplateCardProducts = Template.bind({})
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-TemplateCardProducts.args = {}

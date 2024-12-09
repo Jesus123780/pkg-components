@@ -15,7 +15,7 @@ import{j as a,F as _,a as g}from"./jsx-runtime-DI8_P1Ft.js";import{P as n}from".
     `}
     width: auto;
 `,l=s.span`
-    font-size: 12px;
+    font-size: var(--font-size-base);
     font-weight: 500;
     text-align: left;
     padding: 6px;

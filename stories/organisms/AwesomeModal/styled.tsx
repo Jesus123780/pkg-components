@@ -236,7 +236,7 @@ export const BtnConfirm = styled.button`
     cursor: pointer;
     border: ${({ border }) => { return border ? `1px solid  ${SEGColor}` : 'none' }};
     border-radius: 30px;
-    font-size: 12px;
+    font-size: var(--font-size-base);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -29,12 +29,14 @@ export const CtnBox = styled.div`
     background-color: green;
   }
 `
-
-export const TooltipCardProduct = styled.div`
+interface TooltipCardProductProps {
+  left?: string
+}
+export const TooltipCardProduct = styled.div<TooltipCardProductProps>`
   position: absolute;
   ${({ left }) => {
     return (
-      left &&
+      (left != null) &&
       css`
         left: ${left};
       `
@@ -51,8 +53,10 @@ export const TooltipCardProduct = styled.div`
     cursor: pointer;
   }
 `
-
-export const WrapperCard = styled.div`
+interface WrapperCardProps {
+  loading: boolean
+}
+export const WrapperCard = styled.div<WrapperCardProps>`
   position: relative;
   z-index: var(--z-index-999);
 

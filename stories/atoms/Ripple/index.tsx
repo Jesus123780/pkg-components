@@ -63,7 +63,7 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
     ripple.style.width = ripple.style.height = `${size}px`
     ripple.style.left = `${left}px`
     ripple.style.top = `${top}px`
-    ripple.classList.add(styles.ripple)
+    ripple.classList.add(styles.ripple as string)
 
     const currentRipple = buttonElement.querySelector(`.${styles.ripple}`)
     if (currentRipple !== null) {
@@ -166,7 +166,7 @@ const Button = styled.button<RippleButtonProps>`
   }
   position: relative;
   padding: ${({ padding }) => padding || '1em'};
-  background-color: ${({ bgColor }) => bgColor || 'red'};
+  background-color: ${({ bgColor }) => bgColor || 'var(--color-primary-red)'};
   color: ${({ color }) => color || BGColor};
   font-family: ${({ family }) => family || 'PFont-Light'};
   width: ${({ widthButton }) => widthButton ?? '100%'};

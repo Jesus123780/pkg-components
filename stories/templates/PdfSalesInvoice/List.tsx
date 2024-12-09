@@ -1,5 +1,9 @@
 import React from 'react'
-import { Column, Row, Text } from '../PDF'
+import {
+  Column,
+  Row,
+  Text
+} from '../PDF'
 import { View } from '@react-pdf/renderer'
 import type { ProductFood } from '../../pages/GenerateSales/types'
 import { styles } from './styles'
@@ -11,7 +15,7 @@ interface ListPDFProps {
 
 export const ListPDF: React.FC<ListPDFProps> = ({
   data = [],
-  numberFormat
+  numberFormat = (number: number) => number.toFixed(2)
 }) => {
   return (
     <View>
@@ -71,10 +75,9 @@ export const ListPDF: React.FC<ListPDFProps> = ({
                   const isLastItem = idx === dataOptional.length - 1
                   return subItems.map((subItem, index) => (
                     <Text key={index} style={{ fontSize: '6px' }}>
-                     - {subItem?.OptionalSubProName !== null
-                      ? `1x ${subItem?.OptionalSubProName}`
-                      : ''}
-                      {isLastItem ? '' : ', '}
+                      {`- ${subItem?.OptionalSubProName !== null
+                        ? `1x ${subItem?.OptionalSubProName}`
+                        : ''}${isLastItem ? '' : ', '}`}
                     </Text>
                   ))
                 })}
@@ -89,16 +92,16 @@ export const ListPDF: React.FC<ListPDFProps> = ({
               style={[styles.column, styles.otherColumns, { flexBasis: '10%' }]}
             >
               <Text>
-                {Boolean(free)
+                {(free === true)
                   ? 'Gratis'
-                  : `$ ${numberFormat(unitPrice)}`
+                  : `${numberFormat(unitPrice ?? 0)}`
                   }
               </Text>
             </Column>
             <Column
               style={[styles.column, styles.otherColumns, { flexBasis: '10%' }]}
             >
-              <Text>{`$ ${numberFormat(ProPrice) ?? ''}`}</Text>
+              <Text>{numberFormat(ProPrice as number)}</Text>
             </Column>
           </Row>
         )

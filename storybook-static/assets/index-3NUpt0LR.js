@@ -8,7 +8,7 @@ import{a as b,j as n}from"./jsx-runtime-DI8_P1Ft.js";import{r as f,R as s}from".
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   cursor: default;
   background: transparent;
 

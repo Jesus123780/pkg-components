@@ -29,44 +29,52 @@ export const HeaderInfo: React.FC<HeaderInfoProps> = ({
   },
   totalProductPrice = 0,
   payMethodPState = '',
-  handleOpenAside = () => {}
+  handleOpenAside = () => { }
 }) => {
   return (
-    <div className={styles['header-info']}>
-      <Column alignItems="start" justifyContent="center">
-        <Row alignItems="center" className={styles['header-info_content']} onClick={handleOpenAside}>
-          <div style={{ width: 'min-content' }}>
-            <Icon
-              icon="IconUser"
-              size={30}
-              height={30}
-              width={30}
-              color={getGlobalStyle('--color-icons-primary')}
-            />
-          </div>
-          <Text
-            className={styles['header-info__client-name']}
-            title={client?.clientName}
+    <Column className={styles['header-info']}>
+      <Row>
+        <Column alignItems='flex-start' justifyContent='center'>
+          <Row
+            alignItems='center'
+            className={styles['header-info_content']}
+            onClick={handleOpenAside}
           >
-            {client?.clientName !== null
-              ? client?.clientName
-              : 'No hay cliente seleccionado'}
-          </Text>
-        </Row>
-      </Column>
-      <button className={styles['header-info__client-info_payment']} onClick={handleOpenAside}>
-        <Icon
-          icon="IconSales"
-          size={30}
-          height={30}
-          width={30}
-          color={getGlobalStyle('--color-icons-primary')}
-        />
-        <Column alignItems="start" justifyContent="center">
-          <Text size="sm">{totalProductPrice}</Text>
-          <Text size="sm">{payMethodPState}</Text>
+            <div style={{ width: 'min-content' }}>
+              <Icon
+                icon='IconUser'
+                size={30}
+                height={30}
+                width={30}
+                color={getGlobalStyle('--color-icons-primary')}
+              />
+            </div>
+            <Text className={styles['header-info__client-name']} title={client?.clientName}>
+              {client?.clientName !== null
+                ? client?.clientName
+                : 'No hay cliente seleccionado'
+              }
+            </Text>
+          </Row>
         </Column>
-      </button>
-    </div>
+        <button className={styles['header-info__client-info_payment']} onClick={handleOpenAside}>
+          <Icon
+            icon='IconSales'
+            size={30}
+            height={30}
+            width={30}
+            color={getGlobalStyle('--color-icons-primary')}
+          />
+          <Column alignItems='flex-start' justifyContent='center'>
+            <Text size='sm'>
+              {totalProductPrice}
+            </Text>
+            <Text size='sm'>
+              {payMethodPState}
+            </Text>
+          </Column>
+        </button>
+      </Row>
+    </Column>
   )
 }

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import { Button, Column, Icon, Row, Text } from '../../atoms'
-import { EmptyData, Skeleton } from '../../molecules'
+import { EmptyData, type Methods, Skeleton } from '../../molecules'
 import type { Data, ProductFood } from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
@@ -45,16 +45,19 @@ interface GenerateSalesProps {
     cliId: string
     change: string
     ValueDelivery: string
+    tableId: string
   }
   errors?: {
     change: boolean
     ValueDelivery: boolean
   }
+  paymentMethods?: Methods[]
   dataClientes?: any[]
   handleClickAction?: () => void
   handleChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
   dispatch?: React.Dispatch<any>
   fetchMoreProducts?: () => void
+  useAmountInput?: () => void
   handleDecrement?: (product: ProductFood) => void
   handleIncrement?: (product: ProductFood) => void
   handleFreeProducts?: (product: ProductFood) => void
@@ -68,6 +71,8 @@ interface GenerateSalesProps {
 export const GenerateSales: React.FC<GenerateSalesProps> = ({
   productsFood = [],
   dataClientes = [],
+  storeTables = [],
+  paymentMethods = [],
   propsSliderCategory = {
     data: []
   },
@@ -82,7 +87,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   values = {
     cliId: '',
     change: '',
-    ValueDelivery: ''
+    ValueDelivery: '',
+    tableId: ''
   },
   totalProductPrice = 0,
   errors = {
@@ -92,7 +98,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   show = false,
   openAside = false,
   isLoading = false,
-  loadingProduct = false,
   loadingClients = false,
   client = {
     clientName: '',
@@ -100,19 +105,20 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     ClientAddress: '',
     clientNumber: ''
   },
-  dispatch = () => {},
-  handleFreeProducts = () => {},
+  dispatch = () => { },
+  useAmountInput = () => { },
+  handleFreeProducts = () => { },
   onClick = (product: MiniCardProductProps) => {
     return product
   },
-  fetchMoreProducts = () => {},
-  handleChange = () => {},
-  setShow = () => {},
-  handleDecrement = () => {},
-  handleIncrement = () => {},
-  handleSave = () => {},
-  handleComment = () => {},
-  handleOpenAside = () => {},
+  fetchMoreProducts = () => { },
+  handleChange = () => { },
+  setShow = () => { },
+  handleDecrement = () => { },
+  handleIncrement = () => { },
+  handleSave = () => { },
+  handleComment = () => { },
+  handleOpenAside = () => { },
   numberFormat = (number) => {
     return number
   }
@@ -146,11 +152,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             width={20}
             icon='IconFilter'
             size={20}
-            color={
-              findChecked
-                ? getGlobalStyle('--color-icons-primary')
-                : getGlobalStyle('--color-icons-gray')
-            }
+            color={getGlobalStyle(findChecked ? '--color-icons-primary' : '--color-icons-gray')}
           />
         </div>
         <div
@@ -167,12 +169,12 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           </button>
           {isLoading
             ? (
-            <Skeleton
-              height={200}
-              numberObject={20}
-              margin='0 0 20px 0'
-              width='100%'
-            />
+              <Skeleton
+                height={200}
+                numberObject={20}
+                margin='0 0 20px 0'
+                width='100%'
+              />
               )
             : null}
           {!isLoading && Boolean(productsFood.length > 0)
@@ -182,32 +184,31 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     tag: product?.getOneTags?.nameTag
                   }
                   return (
-                <MiniCardProduct
-                  {...product}
-                  ProDescription={product.ProDescription}
-                  ProDescuento={product.ProDescuento}
-                  ProImage={product.ProImage}
-                  ProPrice={numberFormat(product.ProPrice)}
-                  ProQuantity={product.ProQuantity}
-                  ValueDelivery={product.ValueDelivery}
-                  comment={false}
-                  edit={false}
-                  key={product.pId}
-                  onClick={() => {
-                    dispatch({
-                      type: 'ADD_TO_CART',
-                      payload: product
-                    })
-                  }}
-                  pName={product.pName}
-                  render={<Icon size={20} icon='IconSales' />}
-                  tag={product?.getOneTags?.nameTag !== null && tag}
-                />
+                  <MiniCardProduct
+                    {...product}
+                    ProDescription={product.ProDescription}
+                    ProDescuento={product.ProDescuento}
+                    ProImage={product.ProImage}
+                    ProPrice={numberFormat(product.ProPrice)}
+                    ProQuantity={product.ProQuantity}
+                    ValueDelivery={product.ValueDelivery}
+                    comment={false}
+                    edit={false}
+                    key={product.pId}
+                    onClick={() => {
+                      dispatch({
+                        type: 'ADD_TO_CART',
+                        payload: product
+                      })
+                    }}
+                    pName={product.pName}
+                    tag={product?.getOneTags?.nameTag !== null && tag}
+                  />
                   )
                 })
               )
             : (
-            <EmptyData height={200} width={200} />
+              <EmptyData height={200} width={200} />
               )}
         </div>
         <div className={styles.content__action_product}>
@@ -219,9 +220,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           client={client}
           handleOpenAside={handleOpenAside}
           totalProductPrice={totalProductPrice}
-          payMethodPState={
-            data?.payMethodPState === 1 ? 'TRANSFERENCIA' : 'EFECTIVO'
-          }
+          payMethodPState={paymentMethods[data?.payMethodPState - 1]?.name ?? paymentMethods[0]?.name}
         />
         <div
           className={styles.content__scrolling}
@@ -235,81 +234,85 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   }
                   const ProQuantity = product?.ProQuantity ?? 0
                   return (
-                <MiniCardProduct
-                  {...product}
-                  editing={product.editing}
-                  editable={true}
-                  handleChangeQuantity={(event) => {
-                    const { value } = event.target
-                    return dispatch({
-                      type: 'ON_CHANGE',
-                      payload: {
-                        id: product.pId,
-                        index,
-                        value
-                      }
-                    })
-                  }}
-                  ProDescription={product.ProDescription}
-                  ProDescuento={product.ProDescuento}
-                  ProImage={product.ProImage}
-                  ProPrice={numberFormat(product.ProPrice)}
-                  ProQuantity={ProQuantity}
-                  handleToggleEditingStatus={() => {
-                    dispatch({
-                      type: 'TOGGLE_EDITING_PRODUCT',
-                      payload: product
-                    })
-                  }}
-                  handleCancelUpdateQuantity={() => {
-                    dispatch({
-                      type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
-                      payload: product
-                    })
-                  }}
-                  handleSuccessUpdateQuantity={() => {
-                    dispatch({
-                      type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
-                      payload: product
-                    })
-                  }}
-                  ValueDelivery={product.ValueDelivery}
-                  withQuantity={true}
-                  hoverFree={true}
-                  handleComment={() => {
-                    handleComment(product)
-                  }}
-                  showDot={true}
-                  openQuantity={Boolean(ProQuantity)}
-                  handleDecrement={() => {
-                    handleDecrement(product)
-                  }}
-                  handleIncrement={() => {
-                    handleIncrement(product)
-                  }}
-                  handleFreeProducts={() => {
-                    handleFreeProducts(product)
-                  }}
-                  handleGetSubItems={() => {
-                    onClick(product)
-                  }}
-                  edit={false}
-                  key={product.pId}
-                  onClick={() => {
-                    dispatch({
-                      type: 'ADD_TO_CART',
-                      payload: product
-                    })
-                  }}
-                  pName={product.pName}
-                  render={<Icon size={20} icon='IconSales' />}
-                  tag={product?.getOneTags?.nameTag !== null && tag}
-                />
+                  <MiniCardProduct
+                    {...product}
+                    editing={product.editing}
+                    editable={true}
+                    canDelete={true}
+                    handleDelete={() => {
+                      dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
+                    }}
+                    handleChangeQuantity={(event) => {
+                      const { value } = event.target
+                      return dispatch({
+                        type: 'ON_CHANGE',
+                        payload: {
+                          id: product.pId,
+                          index,
+                          value
+                        }
+                      })
+                    }}
+                    ProDescription={product.ProDescription}
+                    ProDescuento={product.ProDescuento}
+                    ProImage={product.ProImage}
+                    ProPrice={numberFormat(product.ProPrice)}
+                    ProQuantity={ProQuantity}
+                    handleToggleEditingStatus={() => {
+                      dispatch({
+                        type: 'TOGGLE_EDITING_PRODUCT',
+                        payload: product
+                      })
+                    }}
+                    handleCancelUpdateQuantity={() => {
+                      dispatch({
+                        type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
+                        payload: product
+                      })
+                    }}
+                    handleSuccessUpdateQuantity={() => {
+                      dispatch({
+                        type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
+                        payload: product
+                      })
+                    }}
+                    ValueDelivery={product.ValueDelivery}
+                    withQuantity={true}
+                    hoverFree={true}
+                    handleComment={() => {
+                      handleComment(product)
+                    }}
+                    showDot={true}
+                    openQuantity={Boolean(ProQuantity)}
+                    handleDecrement={() => {
+                      handleDecrement(product)
+                    }}
+                    handleIncrement={() => {
+                      handleIncrement(product)
+                    }}
+                    handleFreeProducts={() => {
+                      handleFreeProducts(product)
+                    }}
+                    handleGetSubItems={() => {
+                      onClick(product)
+                    }}
+                    edit={false}
+                    key={product.pId}
+                    onClick={() => {
+                      dispatch({
+                        type: 'ADD_TO_CART',
+                        payload: product
+                      })
+                    }}
+                    pName={product.pName}
+                    render={<Icon size={20} icon='IconSales' />}
+                    tag={product?.getOneTags?.nameTag !== null && tag}
+                  />
                   )
                 })
               )
             : (
-            <EmptyData height={200} width={200} />
+              <EmptyData height={200} width={200} />
               )}
           <button
             style={{ right: '0.3125rem', left: 'unset' }}
@@ -345,7 +348,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
               {totalProductPrice}
             </Text>
           </Row>
-          <Row style={{ width: 'min-content' }}>
+          <Row style={{ width: 'min-content', display: 'flex' }}>
             <Button
               onClick={() => {
                 dispatch({ type: 'REMOVE_ALL_PRODUCTS' })
@@ -365,11 +368,14 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       </div>
       <AsideSales
         values={values}
-        handleChange={handleChange}
+        paymentMethods={paymentMethods}
+        handleChange={handleChange as any}
         errors={errors}
         dispatch={dispatch}
+        storeTables={storeTables as any}
+        useAmountInput={useAmountInput}
         overline={true}
-        paymentMethodTransfer={data?.payMethodPState === 1}
+        payMethodPState={data?.payMethodPState}
         handleOpenAside={handleOpenAside}
         dataClientes={dataClientes}
         loadingClients={loadingClients}

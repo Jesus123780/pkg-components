@@ -117,7 +117,7 @@ export const CardsComponent = styled.div`
   }
   .price-neto {
     color: #717171;
-    font-size: 12px;
+    font-size: var(--font-size-base);
     left: 5px;
     margin: 10px 0 0 0;
     position: absolute;

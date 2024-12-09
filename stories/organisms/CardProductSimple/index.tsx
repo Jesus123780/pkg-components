@@ -1,59 +1,47 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import {
-  IconComment,
-  IconDelete,
-  IconEdit
-} from '../../../assets/icons'
-import { Tag } from '../../atoms'
-import { RippleButton } from '../../atoms/Ripple'
-import { BGColor, PColor } from './../../../assets/colors/index'
-import { numberFormat } from './../../../utils/index'
-import {
-  ActionName,
   Button,
-  ButtonCard,
-  Card,
-  ContainerActions,
-  InputCounter,
-  ItemProQuantity,
-  OverlineCategory,
-  OverlineFree,
-  WrapperButton,
-  WrapperCard
-} from './styled'
+  Column,
+  Icon,
+  Row,
+  Tag,
+  Text
+} from '../../atoms'
+import { getGlobalStyle, numberFormat } from './../../../utils/index'
+import type { IButton, CardProductSimpleProps } from './types'
+import {
+  accepts,
+  handleAnimation,
+  formatProductData
+} from './utils'
+import { QuantityButtonFloat } from '../../molecules/QuantityButtonFloat'
+import styles from './styles.module.css'
 
-export const MemoCardProductSimple = ({
-  del,
-  edit,
-  fileInputRef,
+export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
+  del = false,
+  edit = false,
+  fileInputRef = null,
   free = false,
-  buttonComment = false,
-  asComment = false,
+  index = 0,
   decrement = true,
   increment = true,
   handleFree,
   height,
-  index = 0,
   pId,
   pName = '',
   ProDescription = '',
   ProDescuento = 0,
   ProPrice = 0,
   ProQuantity = 0,
-  render = null,
-  sum,
-  margin,
-  tag,
-  ValueDelivery,
-  widthButton,
-  activeComment,
-  dataExtra = [],
-  dataOptional = [],
-  dispatch = (p0: { type: string, payload: { value: string, name: string, index: never, id: any } }) => { },
-  handleComment = () => { },
+  sum = false,
+  tag = { tag: '' },
+  ValueDelivery = 0,
+  ProImage = '/images/DEFAULTBANNER.png',
+  dataExtra = [] as Array<{ extraPrice: number, extraName: string }>,
+  dataOptional = [] as Array<{ ExtProductFoodsSubOptionalAll: Array<{ OptionalSubProName: string }> }>,
+  dispatch = (_p0: { type: string, payload: { value: string, name: string, index: number, id: any } }) => { },
   handleDecrement = () => { },
   handleDelete = () => { },
   handleFreeProducts = () => { },
@@ -62,269 +50,156 @@ export const MemoCardProductSimple = ({
   onFileInputChange = () => { },
   onTargetClick = () => { }
 }) => {
+  console.log(ProImage)
+  // HOOKS
   const router = useRouter()
   const [startAnimateUp, setStartAnimateUp] = useState('')
+  console.log('🚀 ~ startAnimateUp:', startAnimateUp)
   const [animateType, setAnimateType] = useState('')
-  const [show, setShow] = useState(false)
+  console.log('🚀 ~ animateType:', animateType)
 
-  const handle = (): void => {
-    setTimeout(() => {
-      setAnimateType('move-up')
-      setStartAnimateUp('')
-    }, 250)
+  // HANDLERS
+  const handleEdit = (): void => {
+    void router.push(`/update/products/editar/${pId}`)
   }
-  const handleDown = (event): void => {
-    handleDecrement(event)
-    setStartAnimateUp('')
-    setAnimateType('')
-    setTimeout(() => {
-      setStartAnimateUp('start-animate-down')
-      setTimeout(() => {
-        setAnimateType('move-down')
-        setStartAnimateUp('')
-      }, 150)
-    }, 0)
+  const handleDown = (event?: React.MouseEvent<HTMLButtonElement>): void => {
+    if (event != null) handleDecrement(event)
+    handleAnimation('down', setStartAnimateUp, setAnimateType)
   }
 
-  const handleUp = (event) => {
-    handleIncrement(event)
-    setStartAnimateUp('')
-    setAnimateType('')
-    setTimeout(() => {
-      setStartAnimateUp('start-animate-up')
-      handle()
-    }, 0)
+  const handleUp = (event?: React.MouseEvent<HTMLButtonElement>): void => {
+    if (event != null) handleIncrement(event)
+    handleAnimation('up', setStartAnimateUp, setAnimateType)
   }
 
-  const urlImage = '/images/DEFAULTBANNER.png'
-
+  const urlImage = 'https://via.placeholder.com/250'
   // Determina si mostrar las categorías
   const showCategories = dataExtra.length > 0 || dataOptional.length > 0
 
-  // Crea los formateados
-  const conjunctionFormatter = new Intl.ListFormat('es', { style: 'long', type: 'conjunction' })
-  const unitFormatter = new Intl.ListFormat('es', { style: 'narrow', type: 'unit' })
-  // Formatea los datos extras
-  const formattedExtraData = dataExtra
-    .slice(0, 4)
-    .map(product => { return `${numberFormat(product?.extraPrice)}, ${product.extraName}` })
-  const finalExtraFormat = conjunctionFormatter.format(formattedExtraData)
-  // Formatea los datos opcionales
-  const formattedOptionalData = dataOptional
-    .slice(0, 4)
-    .map(product => { return product?.ExtProductFoodsSubOptionalAll?.map(subProduct => { return subProduct.OptionalSubProName }).join(', ') })
-  const finalOptionalFormat = unitFormatter.format(formattedOptionalData)
-  // Une las dos listas
-  const listCategories = `${finalExtraFormat}, ${finalOptionalFormat}`
+  const listCategories = formatProductData(dataExtra ?? [], dataOptional ?? [])
 
-  const priceOrFree = ProPrice > 0 ? `${numberFormat(ProPrice)}` : 'Gratis'
+  const priceOrFree = ProPrice > 0 ? `${numberFormat(ProPrice as number)}` : 'Gratis'
+  const delivery = `Domicilio: ${ValueDelivery > 0 ? numberFormat(ValueDelivery) : 'Gratis'}`
+
+  const actions = [
+    (del) && {
+      icon: 'IconDelete',
+      onClick: handleDelete,
+      className: styles['delete-button']
+    },
+    (edit) && {
+      icon: 'IconEdit',
+      onClick: handleEdit,
+      className: styles['edit-button']
+    }
+  ].filter(Boolean) as IButton[]
 
   return (
     <>
       <input
-        accept='.jpg, .png .jpeg'
+        accept={accepts}
         id='iFile'
         onChange={onFileInputChange}
         ref={fileInputRef}
         style={{ display: 'none' }}
         type='file'
       />
-      <WrapperCard margin={margin}>
-        {handleFree && (
-          <OverlineFree
-            free={free}
-            onClick={handleFreeProducts}
+      <div style={{ position: 'relative' }} className={styles.card_container_list_categories}>
+        {handleFree != null && (
+          <button
+            className={styles.overlineFree}
+            style={{ top: free ? '-30px' : '0px' }} // Ajuste dinámico
+            onClick={onClick}
           >
-            <span>Gratis</span>
-          </OverlineFree>
+            <Text>
+              Gratis
+            </Text>
+          </button>
         )}
-        <Card
-          free={free}
-          height={height}
-          radius='15px'
-        >
-          {del && (
-            <ButtonCard grid={false} onClick={handleDelete}>
-              <IconDelete color={PColor} size={20} />
-              <ActionName>Eliminar</ActionName>
-            </ButtonCard>
-          )}
-          {buttonComment && (
-            <ButtonCard
-              delay='.1s'
-              grid={false}
-              onClick={handleComment}
-              right={buttonComment && activeComment}
-              tooltip={asComment}
-              top='90px'
-            >
-              <IconComment
-                color={asComment ? PColor : 'var(--color-neutral-gray-dark)'}
-                size={20}
-              />
-              <ActionName>Comentar</ActionName>
-            </ButtonCard>
-          )}
-          {edit && (
-            <ButtonCard
-              delay='.1s'
-              grid={false}
-              onClick={async () => {
-                return await router.push(`/update/products/editar/${pId}`)
+        <div className={`${styles.card} ${free ? styles.free : ''}`} style={{ height }}>
+          {actions.map((action, index) => Boolean(action) && (
+            <Button
+              key={index}
+              className={action?.className}
+              onClick={action?.onClick}
+              styles={{
+                padding: 0,
+                position: 'absolute',
+                top: `${index * 50 + 10}px`
               }}
-              top={'80px'}
             >
-              <IconEdit color={PColor} size={20} />
-              <ActionName>Editar</ActionName>
-            </ButtonCard>
-          )}
-
-          <div className='dish-card__info'>
+              <Icon
+                icon={action.icon}
+                size={20}
+                color={getGlobalStyle('--color-icons-primary')}
+              />
+            </Button>
+          ))}
+          <Column className={styles['dish-card__info']}>
             {ValueDelivery > 0 && (
-              <span className='description'>
-                Domicilio {' '}
-                {ValueDelivery > 0 ? numberFormat(ValueDelivery) : 'Gratis'}
+              <span className={styles.description}>
+                {delivery}
               </span>
             )}
 
-            <div className='flex-wrap'>
-              <span className='price'>
-                { free === 1 ? 'Gratis' : priceOrFree }
+            <Row justifyContent='space-between'>
+              <span className={styles.price}>
+                {free ? 'Gratis' : priceOrFree}
               </span>
               {ProDescuento > 0 && (
-                <span className='price discount'>{`${numberFormat(
-                  ProDescuento
-                )}`}</span>
+                <span className={styles.price_discount}>
+                  {numberFormat(ProDescuento)}
+                </span>
               )}
-            </div>
-          </div>
+            </Row>
+          </Column>
           {sum && (
-            <WrapperButton>
-              {decrement && (
-                <Button
-                  delay='.1s'
-                  grid={false}
-                  onClick={handleDown}
-                  top={'80px'}
-                >
-                  <svg
-                    height='24'
-                    viewBox='0 0 24 24'
-                    width='24'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M17.993 11c.556 0 1.007.444 1.007 1 0 .552-.45 1-1.007 1H6.007A1.001 1.001 0 0 1 5 12c0-.552.45-1 1.007-1h11.986z'
-                      fill={'#ffff'}
-                      fillRule='evenodd'
-                    >
-                      {' '}
-                    </path>
-                  </svg>
-                </Button>
-              )}
-
-              <ItemProQuantity className='ProQuantity'>
-                <div
-                  className='counts--container'
-                  onClick={() => {
-                    return setShow(index)
-                  }}
-                >
-                  <div className={`count ${startAnimateUp}${animateType}`}>
-                    {ProQuantity}
-                  </div>
-                </div>
-                {show === index && (
-                  <InputCounter
-                    max={999}
-                    min={1}
-                    onBlur={() => {
-                      return setShow(false)
-                    }}
-                    onChange={(event) => {
-                      return dispatch({
-                        type: 'ON_CHANGE',
-                        payload: {
-                          value: event.target.value,
-                          name: 'name',
-                          index,
-                          id: pId
-                        }
-                      })
-                    }}
-                    onFocus={(event) => {
-                      return dispatch({
-                        type: 'ON_CHANGE',
-                        payload: {
-                          value: event.target.value,
-                          name: 'name',
-                          index,
-                          id: pId
-                        }
-                      })
-                    }}
-                    onKeyDown={(event) => {
-                      return event.key === 'Enter' ? setShow(false) : null
-                    }}
-                    show={show}
-                    type='number'
-                    value={ProQuantity}
-                  />
-                )}
-              </ItemProQuantity>
-              {increment && (
-                <Button
-                  delay='.1s'
-                  grid={false}
-                  onClick={handleUp}
-                  top={'80px'}
-                >
-                  <svg
-                    height='24'
-                    viewBox='0 0 24 24'
-                    width='24'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M13 11h4.993c.556 0 1.007.444 1.007 1 0 .552-.45 1-1.007 1H13v4.993C13 18.55 12.556 19 12 19c-.552 0-1-.45-1-1.007V13H6.007A1.001 1.001 0 0 1 5 12c0-.552.45-1 1.007-1H11V6.007C11 5.45 11.444 5 12 5c.552 0 1 .45 1 1.007V11z'
-                      fill='#ffffff'
-                      fillRule='evenodd'
-                    ></path>
-                  </svg>
-                </Button>
-              )}
-            </WrapperButton>
+            <div className={styles.quantity_container}>
+              <QuantityButtonFloat
+                handleIncrement={(event) => {
+                  if (event != null) return handleUp(event)
+                }}
+                handleDecrement={(event) => {
+                  if (event != null) return handleDown(event)
+                }}
+                handleChangeQuantity={(event) => {
+                  return dispatch({
+                    type: 'ON_CHANGE',
+                    payload: {
+                      value: String(event.target.value),
+                      name: 'name',
+                      index,
+                      id: pId
+                    }
+                  })
+                }}
+                increment={increment}
+                decrement={decrement}
+                open={true}
+                editable={false}
+                editing={true}
+                quantity={ProQuantity}
+              />
+            </div>
           )}
-          <div className='info-price'>
-            <span>
-              <h3 className='dish-card__description'>{pName}</h3>
-              <span className='description'>{ProDescription}</span>
-            </span>
-            <ContainerActions>
-              {render && (
-                <RippleButton
-                  bgColor={BGColor}
-                  margin='5px auto'
-                  onClick={() => {
-                    return onClick()
-                  }}
-                  padding='0'
-                  widthButton={widthButton}
-                >
-                  {render}
-                </RippleButton>
-              )}
-            </ContainerActions>
-          </div>
+          <Row style={{ padding: '0 1.25rem', marginTop: getGlobalStyle('--spacing-xl') }}>
+            <Column>
+              <Text as='h3' className={styles['dish-card__description']}>
+                {pName}
+              </Text>
+              <Text className={styles.description}>
+                {ProDescription}
+              </Text>
+            </Column>
+          </Row>
           <div
-            className='dish-card__container-image'
+            className={styles['dish-card__container-image']}
             onClick={() => {
               return onTargetClick()
             }}
           >
             <Image
-              alt={pName || ''}
+              alt={pName !== '' ? pName : ''}
               blurDataURL={urlImage}
               className='store_image'
               layout='fill'
@@ -334,73 +209,25 @@ export const MemoCardProductSimple = ({
               unoptimized
             />
           </div>
-          {!!tag?.tag && (
-            <div className='tag'>
-              <Tag label={tag?.tag} />
-            </div>
-          )}
-        </Card>
+          {Boolean(tag?.tag) &&
+            (
+              <div className='tag'>
+                <Tag label={tag?.tag} />
+              </div>
+            )}
+        </div>
         {showCategories && (
-          <OverlineCategory
+          <button
+            className={styles.overline_categories}
             onClick={handleFreeProducts}
           >
-            <span>{listCategories}</span>
-          </OverlineCategory>
+            <Text className={styles.overline_categories_list} >
+              {listCategories}
+            </Text>
+          </button>
         )}
-        {showCategories && (
-          <div className='content-dots'>
-            <div className='menu-icon'>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        )}
-      </WrapperCard>
+      </div>
     </>
   )
 }
 export const CardProductSimple = React.memo(MemoCardProductSimple)
-
-MemoCardProductSimple.propTypes = {
-  ProDescription: PropTypes.any,
-  ProDescuento: PropTypes.number,
-  ProImage: PropTypes.string,
-  ProPrice: PropTypes.any,
-  ProQuantity: PropTypes.any,
-  ValueDelivery: PropTypes.number,
-  activeComment: PropTypes.any,
-  asComment: PropTypes.bool,
-  buttonComment: PropTypes.bool,
-  dataExtra: PropTypes.array,
-  dataOptional: PropTypes.array,
-  decrement: PropTypes.bool,
-  del: PropTypes.any,
-  dispatch: PropTypes.func,
-  edit: PropTypes.any,
-  fileInputRef: PropTypes.any,
-  free: PropTypes.number,
-  handleComment: PropTypes.func,
-  handleDecrement: PropTypes.func,
-  handleDelete: PropTypes.func,
-  handleFree: PropTypes.any,
-  handleFreeProducts: PropTypes.func,
-  handleIncrement: PropTypes.func,
-  height: PropTypes.any,
-  increment: PropTypes.bool,
-  index: PropTypes.any,
-  key: PropTypes.any,
-  margin: PropTypes.any,
-  onClick: PropTypes.func,
-  onFileInputChange: PropTypes.any,
-  onTargetClick: PropTypes.func,
-  pId: PropTypes.any,
-  pName: PropTypes.string,
-  render: PropTypes.any,
-  src: PropTypes.any,
-  sum: PropTypes.any,
-  tag: PropTypes.shape({
-    tag: PropTypes.any
-  }),
-  widthButton: PropTypes.any
-}

@@ -75,7 +75,7 @@ const TabButton = styled.button<{ selected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   cursor: default;
   background: transparent;
 

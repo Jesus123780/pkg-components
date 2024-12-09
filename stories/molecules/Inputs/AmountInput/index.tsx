@@ -16,6 +16,7 @@ export interface AmountInputProps {
   placeholder?: string
   prefix?: string
   textHelper?: string
+  value?: string
   onChange: (amount: string) => void
   onFocus?: () => void
   useAmountInput?: () => { inputValue: string, preProcess: (value: string) => void }

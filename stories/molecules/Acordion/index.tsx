@@ -96,7 +96,13 @@ export const Options: React.FC<OptionsProps> = ({
             alignItems: 'center',
             justifyContent: 'center'
           }} >
-            <Icon icon={icon} size={20} width={20} height={20} color={getGlobalStyle('--color-icons-gray')} />
+            <Icon
+              color={getGlobalStyle('--color-icons-gray')}
+              height={20}
+              icon={icon}
+              size={20}
+              width={20}
+            />
           </div>
           <Span style={{ fontSize: size }} active={active}>
             {label}

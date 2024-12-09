@@ -16,7 +16,7 @@ export interface TypeModalDetailOrder {
   saleKey: any[]
   stateSale: number
   totalProductsPrice: number
-  HandleChangeState: () => void
+  handleChangeState: () => void
   handleModalItem: (pId: string, ShoppingCardId: string) => void
   handleModalProductSale: () => void
   handleOpenActions: () => void
@@ -27,7 +27,6 @@ export interface TypeModalDetailOrder {
   onClose: () => void
   onPress: () => void
   setModalItem: (boolean: boolean) => void
-  setStateSale: Dispatch<SetStateAction<string>>
 }
 
 export interface DataModal {

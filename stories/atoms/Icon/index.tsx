@@ -64,11 +64,16 @@ import {
   IconPromo,
   IconBox,
   IconEdit,
+  IconChair,
   IconSendMessage,
   IconLocationMap2,
   IconGoogleFullColor,
   IconArrowLeft,
-  IconQuestion
+  IconQuestion,
+  IconVisaSimple,
+  IconMasterCardSimple,
+  IconDollar,
+  IconTransfer
 } from '../../../assets'
 
 type IconMap = Record<string, FC<IconProps>>
@@ -98,7 +103,9 @@ export const Icons: IconMap = {
   IconLines,
   IconInvoice,
   IconPdf,
+  IconVisaSimple,
   IconExcel,
+  IconChair,
   IconFilter,
   IconConfig,
   IconInformationProduct,
@@ -135,7 +142,10 @@ export const Icons: IconMap = {
   IconStrokeLogo,
   IconCalendar,
   IconComment,
+  IconMasterCardSimple,
+  IconTransfer,
   IconCancel,
+  IconDollar,
   IconArrowBottom,
   IconPlus,
   IconLinePart,

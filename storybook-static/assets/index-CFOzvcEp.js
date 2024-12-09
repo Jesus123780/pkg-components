@@ -93,7 +93,7 @@ import{j as a,F as Q,a as d}from"./jsx-runtime-DI8_P1Ft.js";import{r as y}from".
     border: 2px solid ${f};
     color: ${ee};
     height: 30px;
-    font-size: 12px;
+    font-size: var(--font-size-base);
     cursor: pointer;
     margin: 10px auto;
     transition: 0.2s;
@@ -257,7 +257,7 @@ cursor: pointer;
         border-radius: 50%;
         padding: 1px;
         height: 28px;
-        font-size: 12px;
+        font-size: var(--font-size-base);
         width: 28px;
         align-items: center;
         display: flex;

@@ -5,6 +5,7 @@ import { PColor } from '../../../assets/colors'
 import { IconLogo, IconSales } from '../../../assets/icons'
 import {
   Column,
+  Icon,
   Row,
   Text
 } from '../../atoms'
@@ -16,6 +17,7 @@ import {
   HeaderC,
   HeaderWrapperButton
 } from './styled'
+import { getGlobalStyle } from '../../../helpers'
 
 export const Header = ({
   errorPush,
@@ -86,10 +88,17 @@ export const Header = ({
         />
         }
         <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }}>
-          <IconSales size={30} />
+          <Icon
+            color={getGlobalStyle('--color-primary-red')}
+            icon='IconSales'
+            size={40}
+          />
           <div className='info-sales'>
             <span>Crear una venta</span>
-            {loadingCount ? <span>Cargando...</span> : <span>Total de ventas hoy  {count}</span>}
+            {loadingCount
+              ? <span>Cargando...</span>
+              : <span>Total de ventas hoy  {count}</span>
+            }
           </div>
         </HeaderWrapperButton>
       </CtnItemOps>

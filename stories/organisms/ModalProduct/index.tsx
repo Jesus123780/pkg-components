@@ -309,7 +309,7 @@ export const ModalProduct = ({
             padding='5px'
             size='12px'
           >
-            Agregar Hola
+            Agregar
           </RippleButton>
         </div>
       </div>

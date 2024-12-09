@@ -29,7 +29,7 @@ import{a as C,F as Te,j as s}from"./jsx-runtime-DI8_P1Ft.js";import{r as i,R as 
   z-index: -900;
   padding: 1px 30px;
 `,dt=w.button`
-  font-size: 12px;
+  font-size: var(--font-size-base);
   font-family: PFont-Light;
   cursor: pointer;
   word-break: break-word;
@@ -1528,7 +1528,7 @@ ${({modal:e})=>e?te`
   }
   .price-neto {
     color: #717171;
-    font-size: 12px;
+    font-size: var(--font-size-base);
     left: 5px;
     margin: 10px 0 0 0;
     position: absolute;
@@ -1856,7 +1856,7 @@ ${({modal:e})=>e?te`
   border-radius: 10rem;
   background-color: ${({theme:e,color:t})=>t===1&&e.SCColor};
   color: ${({color:e,theme:t})=>e===1?t.TFSColor:e===2?t.TFEColor:e===3?t.TFBColor:"#272b41"};
-  font-size: 12px;
+  font-size: var(--font-size-base);
   min-width: 100px;
   text-align: center;
   padding: 2px;
@@ -1882,7 +1882,7 @@ ${({modal:e})=>e?te`
   border: 1px solid ${ss};
   background-color: ${({color:e,theme:t})=>e===1?t.TFSColor:e===2?t.TFEColor:e===3?t.TFBColor:le};
 
-  font-size: 12px;
+  font-size: var(--font-size-base);
   :hover {
     cursor: pointer;
   }
@@ -2348,9 +2348,9 @@ ${({modal:e})=>e?te`
     return\r
   }`},description:"",name:"handleModalItem",required:!1,type:{name:"(() => void)"}},setModalItem:{defaultValue:{value:`() => {\r
     return\r
-  }`},description:"",name:"setModalItem",required:!1,type:{name:"(() => void)"}},HandleChangeState:{defaultValue:{value:`() => {\r
+  }`},description:"",name:"setModalItem",required:!1,type:{name:"(() => void)"}},handleChangeState:{defaultValue:{value:`() => {\r
     return\r
-  }`},description:"",name:"HandleChangeState",required:!1,type:{name:"(() => void)"}},onPress:{defaultValue:{value:`() => {\r
+  }`},description:"",name:"handleChangeState",required:!1,type:{name:"(() => void)"}},onPress:{defaultValue:{value:`() => {\r
     return\r
   }`},description:"",name:"onPress",required:!1,type:{name:"(() => void)"}},onClose:{defaultValue:{value:`() => {\r
     return\r
@@ -2360,9 +2360,9 @@ ${({modal:e})=>e?te`
     return\r
   }`},description:"",name:"handleModalItem",required:!1,type:{name:"(() => void)"}},setModalItem:{defaultValue:{value:`() => {\r
     return\r
-  }`},description:"",name:"setModalItem",required:!1,type:{name:"(() => void)"}},HandleChangeState:{defaultValue:{value:`() => {\r
+  }`},description:"",name:"setModalItem",required:!1,type:{name:"(() => void)"}},handleChangeState:{defaultValue:{value:`() => {\r
     return\r
-  }`},description:"",name:"HandleChangeState",required:!1,type:{name:"(() => void)"}},onPress:{defaultValue:{value:`() => {\r
+  }`},description:"",name:"handleChangeState",required:!1,type:{name:"(() => void)"}},onPress:{defaultValue:{value:`() => {\r
     return\r
   }`},description:"",name:"onPress",required:!1,type:{name:"(() => void)"}},onClose:{defaultValue:{value:`() => {\r
     return\r

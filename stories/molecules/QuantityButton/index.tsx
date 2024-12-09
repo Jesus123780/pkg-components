@@ -9,6 +9,7 @@ import {
 import { type QuantityButtonProps } from './types'
 import { Icon } from '../../atoms'
 import styles from './styles.module.css'
+import { getGlobalStyle } from '../../../helpers'
 
 export const QuantityButton: React.FC<QuantityButtonProps> = ({
   border,
@@ -57,10 +58,8 @@ export const QuantityButton: React.FC<QuantityButtonProps> = ({
               <span className={styles['icon-marmita icon-marmita--minus-sign']}>
                 <Icon
                   size={24}
-                  width={24}
-                  height={24}
                   icon='IconMinus'
-                  color={validateZero ? 'transparent' : '#EA1D2C'}
+                  color={validateZero ? 'transparent' : getGlobalStyle('--color-primary-red')}
                 />
               </span>
             </ButtonDecrement>

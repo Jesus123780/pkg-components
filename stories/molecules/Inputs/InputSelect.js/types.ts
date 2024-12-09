@@ -14,6 +14,7 @@ export interface NewSelectProps {
   margin?: string
   minWidth?: string
   name?: string
+  resetValue?: boolean
   noLabel?: boolean
   optionName?: string
   options?: any[]
@@ -26,9 +27,10 @@ export interface NewSelectProps {
   topTitle?: string
   value?: string
   width?: string
-  dataForm: any
+  dataForm?: any
   handleClickAction?: () => void
   setDataValue?: (dataForm: any) => void
   handleClean?: () => void
+  onReset?: () => void
   onChange?: (e: { target: { name: string, value: any } }) => void
 }

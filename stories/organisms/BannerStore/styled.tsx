@@ -37,7 +37,7 @@ interface IButtonCard {
   delay?: string
 }
 export const ButtonCard: IButtonCard = styled.button`
-  font-size: 12px;
+  font-size: var(--font-size-base);
   font-family: PFont-Light;
   cursor: pointer;
   word-break: break-word;

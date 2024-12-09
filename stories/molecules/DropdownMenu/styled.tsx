@@ -24,7 +24,7 @@ export const Container = styled.div`
 `
 
 export const ContextTitle = styled.span`
-  font-size: 12px;
+  font-size: var(--font-size-base);
   font-weight: 500;
   text-align: left;
   padding: 6px;

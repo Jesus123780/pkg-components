@@ -104,7 +104,7 @@ const InputText = styled.input`
     max-width: inherit;
     display: inline-block;
     max-height: 20px;
-    font-size: 12px;
+    font-size: var(--font-size-base);
     &:disabled {
       cursor: no-drop;
       background-color: ${SFVColor};

@@ -1,3 +1,34 @@
+/* Container for the table */
+.table-container {
+  position: relative;
+  width: 200px;  /* default size for the table */
+  height: 200px; /* default size for the table */
+  border-radius: 50%; /* Round table */
+  background-color: #ddd; /* Light gray for the table */
+  margin: 50px auto; /* Centering the table */
+}
+
+/* Each seat around the table */
+.seat {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: #ff7b00; /* Seat color */
+  border-radius: 50%; /* Seat shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+/* When the table becomes large, it should have a bigger size */
+.table-container.large {
+  width: 300px;
+  height: 300px;
+}
+
+
 body,
 div,
 dl,

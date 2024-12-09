@@ -21,7 +21,7 @@ export const Span = styled.span<{ active: boolean }>`
 export const LinkOption = styled(Link)`
   display: block;
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   padding: 5px 10px;
   padding-left: 10px;
   text-align: left;

@@ -186,7 +186,7 @@ import{j as o,a as b}from"./jsx-runtime-DI8_P1Ft.js";import{r as i}from"./index-
   cursor: pointer;
   border: ${({border:e})=>e?"1px solid red":"none"};
   border-radius: 30px;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   display: flex;
   justify-content: center;
   align-items: center;

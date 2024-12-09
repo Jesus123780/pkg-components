@@ -11,7 +11,7 @@ import{j as f,a as h}from"./jsx-runtime-DI8_P1Ft.js";import{s as y,n as a}from".
   z-index: 99;
   opacity: ${({hover:e})=>e?0:1};
   transition: opacity 0.3s, visibility 0.3s;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   line-height: 1.4;
   border-radius: ${({borderRadius:e})=>e||"4px"};
   border: 1px solid var(--color-primary-red);

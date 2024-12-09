@@ -1,15 +1,16 @@
 import React from 'react'
 import {
   AlertInfo,
+  AmountInput,
   AsideInfoStore,
+  PaymentMethods,
   NewSelect,
-  NumberFormatBase,
-  currencyFormat
+  type Methods
 } from '../../molecules'
 import {
-  Button,
   Divider,
-  Overline
+  Overline,
+  RippleButton
 } from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 
@@ -17,53 +18,58 @@ interface AsideProps {
   openAside?: boolean
   overline?: boolean
   loadingClients?: boolean
+  payMethodPState?: number
+  storeTables?: any[]
+  paymentMethods?: Methods[]
   dataClientes?: any[]
   values?: {
     cliId: string
     ValueDelivery: string
     change: string
-  }
-  data?: {
-    payMethodPState: number
+    tableId: string
   }
   errors?: {
     change: boolean
     ValueDelivery: boolean
   }
-  paymentMethodTransfer?: boolean
   handleClickAction?: () => void
+  useAmountInput?: () => void
   handleCloseAside?: () => void
   handleOpenAside?: () => void
-  handleChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  handleChange?: (e: { target: { name: string, value: any } }) => void
   dispatch?: React.Dispatch<any>
 }
 
 export const AsideSales: React.FC<AsideProps> = ({
   openAside = false,
   loadingClients = false,
-  paymentMethodTransfer = false,
+  payMethodPState = 0,
+  paymentMethods = [],
+  storeTables = {
+    storeTables: []
+  },
   dataClientes = {
     data: []
   },
   values = {
     cliId: '',
     change: '',
+    tableId: '',
     ValueDelivery: ''
   },
   errors = {
     change: false,
     ValueDelivery: false
   },
-  data = {
-    payMethodPState: 0
-  },
   overline = false,
-  dispatch = () => {},
-  handleCloseAside = () => {},
-  handleOpenAside = () => {},
-  handleClickAction = () => {},
-  handleChange = () => {}
+  dispatch = () => { },
+  useAmountInput = () => { },
+  handleCloseAside = () => { },
+  handleOpenAside = () => { },
+  handleClickAction = () => { },
+  handleChange = () => { }
 }) => {
+  
   return (
     <>
       {overline && (
@@ -76,6 +82,7 @@ export const AsideSales: React.FC<AsideProps> = ({
             handleCloseAside()
           }}
           style={React.useMemo(() => ({
+            backdropFilter: 'blur(1px)',
             padding: getGlobalStyle('--spacing-lg')
           }), [])}
         />
@@ -93,72 +100,103 @@ export const AsideSales: React.FC<AsideProps> = ({
         <AlertInfo message='Selecciona a un cliente para la venta' type='warning' />
         <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
         <NewSelect
-          action={true}
           handleClickAction={() => {
             handleClickAction()
           }}
-          id="cliId"
+          id='cliId'
+          action={false}
           loading={loadingClients}
-          name="cliId"
-          width="100%"
-          onChange={handleChange}
-          optionName="clientName"
+          name='cliId'
+          width='100%'
+          onChange={(e) => handleChange({ target: { name: e.target.name, value: e.target.value } })}
+          optionName='clientName'
           options={dataClientes?.data ?? []}
           search={true}
-          title="Mis clientes"
+          canDelete={true}
+          handleClean={() => {
+            return handleChange({ target: { name: 'cliId', value: '' } })
+          }}
+          title='Selecciona un cliente'
           value={values?.cliId ?? ''}
         />
         <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
-        <Button
-          primary={paymentMethodTransfer}
-          onClick={() => {
-            dispatch({ type: 'PAYMENT_METHOD_TRANSACTION' })
+        <NewSelect
+          name='tableId'
+          width='100%'
+          optionName='tableName'
+          beforeLabel='Mesa'
+          options={storeTables?.storeTables ?? []}
+          onChange={(e) => handleChange({ target: { name: e.target.name, value: e.target.value } })}
+          title='Selecciona una mesa'
+          value={values?.tableId ?? ''}
+          handleClean={() => {
+            return handleChange({ target: { name: 'tableId', value: '' } })
           }}
-        >
-          TRANSFERENCIA
-        </Button>
-        <Button
-          onClick={() => {
-            dispatch({ type: 'PAYMENT_METHOD_MONEY' })
-          }}
-          primary={!paymentMethodTransfer}
-        >
-          EFECTIVO
-        </Button>
+          canDelete={true}
+          id='tableId'
+        />
+        <PaymentMethods
+          dispatch={dispatch}
+          methods={paymentMethods}
+          payMethodPState={payMethodPState}
+        />
         <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
-
-        <NumberFormatBase
-          defaultValue={0}
-          format={currencyFormat}
+        <AmountInput
+          allowDecimals={true}
+          decimalSeparator=','
+          decimalsLimit={2}
+          disabled={false}
+          groupSeparator='.'
           label='Cambio'
           name='change'
-          onChangeDefault={(e) => {
+          onChange={(value) => {
             handleChange({
               target: {
                 name: 'change',
-                value: e.floatValue
+                value
               }
             })
           }}
+          placeholder='$ 0.00'
+          prefix='$'
+          useAmountInput={useAmountInput as any}
           value={values?.change}
         />
-        <NumberFormatBase
-          defaultValue={0}
-          autoComplete="off"
-          error={errors.ValueDelivery}
-          format={currencyFormat}
-          label='Domicilio'
+        <AmountInput
+          allowDecimals={true}
+          decimalSeparator=','
+          decimalsLimit={2}
+          disabled={false}
+          groupSeparator='.'
+          label='Precio del domicilio'
           name='ValueDelivery'
-          onChangeDefault={(e) => {
+          onChange={(value) => {
             handleChange({
               target: {
                 name: 'ValueDelivery',
-                value: e.floatValue
+                value
               }
             })
           }}
+          placeholder='$ 0.00'
+          prefix='$'
+          useAmountInput={useAmountInput as any}
           value={values?.ValueDelivery}
         />
+
+        <RippleButton
+          style={{
+            position: 'absolute',
+            bottom: '0',
+            left: '0',
+            width: '100%'
+          }}
+          onClick={() => {
+            handleOpenAside()
+          }}
+        >
+          Aceptar
+        </RippleButton>
       </AsideInfoStore>
     </>
   )

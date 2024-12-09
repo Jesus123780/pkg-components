@@ -7,6 +7,7 @@ interface HeaderStepsProps {
   active?: number
   steps: string[]
   overActive?: number | null
+  style?: React.CSSProperties
   handleOverActive?: (index: number) => void
   setActive?: (index: number) => void
 }
@@ -20,11 +21,12 @@ export const HeaderSteps: FC<HeaderStepsProps> = ({
   },
   setActive = (index) => {
     return index
-  }
+  },
+  style = {}
 }) => {
   const tabWidth = 100 / steps.length
   return (
-    <div className={styles.header_step}>
+    <div style={style} className={styles.header_step} >
       {steps.map((title, index) => {
         return (
           <div
