@@ -32,7 +32,7 @@ export const numberFormat = (value, currency = 'COP') => {
 
   // Verifica si el valor es numérico
   if (!isNaN(value)) {
-    const settings = { style: 'currency', currency, minimumFractionDigits: 0, maximumFractionDigits: 2 }
+    const settings = { style: 'currency', currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }
     return new Intl.NumberFormat(locale[currency], settings).format(value)
   }
 

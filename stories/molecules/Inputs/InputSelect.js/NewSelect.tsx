@@ -90,7 +90,7 @@ export const NewSelect: React.FC<NewSelectProps> = ({
         cursor: disabled ? 'no-drop' : 'pointer'
       }}
     >
-      <span className={`${styles['input-wrapper__title']} ${styles['input-wrapper__title--animated']} ${showOptions || value.length > 0 ? styles['input-wrapper__title--active'] : ''}`}>
+      <span className={`${styles['input-wrapper__title']} ${styles['input-wrapper__title--animated']} ${showOptions || value?.length > 0 ? styles['input-wrapper__title--active'] : ''}`}>
         {title}
       </span>
 

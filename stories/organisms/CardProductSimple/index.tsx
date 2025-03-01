@@ -50,7 +50,6 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   onFileInputChange = () => { },
   onTargetClick = () => { }
 }) => {
-  console.log(ProImage)
   // HOOKS
   const router = useRouter()
   const [startAnimateUp, setStartAnimateUp] = useState('')

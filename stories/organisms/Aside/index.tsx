@@ -24,7 +24,8 @@ import {
   Router
 } from './styled'
 import { getGlobalStyle } from '../../../utils'
-import { version as UI_VERSION } from '../../../package.json'
+import packageJson from '../../../package.json'
+
 interface MemoAsideProps {
   collapsed?: boolean
   dataStore?: any
@@ -272,7 +273,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             version: {version}
           </Text>
           <Text color='gray-dark'>
-            UI: {UI_VERSION}
+            UI: {packageJson.version}
           </Text>
           <Text color='gray-dark'>
             logical: {logicalVersion}
