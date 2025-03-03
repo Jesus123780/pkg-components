@@ -299,6 +299,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     edit={false}
                     key={product.pId}
                     onClick={() => {
+                      console.log('product', product)
                       dispatch({
                         type: 'ADD_TO_CART',
                         payload: product

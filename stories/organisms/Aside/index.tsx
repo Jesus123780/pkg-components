@@ -150,7 +150,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
           }}>
             <Info>
               <ButtonGlobalCreate onClick={() => { setShow(!show) }}>
-                Agregar Nuevo
+                Agregar nuevo
               </ButtonGlobalCreate>
               <Portal>
                 <LeftNav show={show && salesOpen === false}>
@@ -243,7 +243,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                           label={module.mName}
                           path={`/${module.mPath}`}
                         >
-                          {subModules?.map((item: any, index: number) => {
+                          {subModules?.map((item: any) => {
                             return (
                               <div key={item.smId}
                                 style={{
