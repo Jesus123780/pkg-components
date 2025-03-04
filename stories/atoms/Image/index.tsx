@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styles from './styles.module.css'
 
 export interface ImageProps {
   src: string
@@ -9,11 +9,14 @@ export interface ImageProps {
   className?: string
 }
 
-const StyledImage = styled.img<Pick<ImageProps, 'width' | 'height'>>`
-  width: ${({ width }) => width ?? 'auto'};
-  height: ${({ height }) => height ?? 'auto'};
-`
-
 export const Image: React.FC<ImageProps> = ({ src, alt, width, height, className }) => {
-  return <StyledImage src={src} alt={alt} width={width} height={height} className={className} />
+  return (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      className={`${styles.image} ${className ?? ''}`}
+    />
+  )
 }
