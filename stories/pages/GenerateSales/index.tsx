@@ -125,7 +125,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
 }) => {
   const findChecked = propsSliderCategory.data?.some((item) =>
     Boolean(item?.checked)
-  )
+)
 
   return (
     <AwesomeModal
@@ -203,6 +203,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     }}
                     pName={product.pName}
                     tag={product?.getOneTags?.nameTag !== null && tag}
+                    withStock={true}
+                    showInfo={true}
                   />
                   )
                 })

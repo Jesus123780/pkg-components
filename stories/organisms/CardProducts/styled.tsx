@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 export const CtnBox = styled.div`
   position: relative;
   overflow: hidden;
+  place-content: center;
   img {
     width: 170px;
     height: 170px;

@@ -38,7 +38,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   sum = false,
   tag = { tag: '' },
   ValueDelivery = 0,
-  ProImage = '/images/DEFAULTBANNER.png',
+  ProImage = '/images/placeholder-image.webp',
   dataExtra = [] as Array<{ extraPrice: number, extraName: string }>,
   dataOptional = [] as Array<{ ExtProductFoodsSubOptionalAll: Array<{ OptionalSubProName: string }> }>,
   dispatch = (_p0: { type: string, payload: { value: string, name: string, index: number, id: any } }) => { },
@@ -53,9 +53,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   // HOOKS
   const router = useRouter()
   const [startAnimateUp, setStartAnimateUp] = useState('')
-  console.log('🚀 ~ startAnimateUp:', startAnimateUp)
   const [animateType, setAnimateType] = useState('')
-  console.log('🚀 ~ animateType:', animateType)
 
   // HANDLERS
   const handleEdit = (): void => {
@@ -71,7 +69,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
     handleAnimation('up', setStartAnimateUp, setAnimateType)
   }
 
-  const urlImage = 'https://via.placeholder.com/250'
+  const urlImage = ProImage
   // Determina si mostrar las categorías
   const showCategories = dataExtra.length > 0 || dataOptional.length > 0
 
@@ -201,9 +199,9 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
               alt={pName !== '' ? pName : ''}
               blurDataURL={urlImage}
               className='store_image'
-              layout='fill'
+              height={200}
               objectFit='cover'
-              placeholder='empty'
+              width={450}
               src={urlImage}
               unoptimized
             />

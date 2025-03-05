@@ -82,7 +82,7 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
             <CtnBox>
               {isVisible && (
                 <>
-                  <h3 className='card__description'>{((food?.pName).length > 0) || ''}</h3>
+                  <h3 className='card__description'>{food?.pName}</h3>
                   <h3 className='card__description'>{((food?.ProDescription).length > 0) || ''}</h3>
                   <div className='footer'>
                     <span className={Number(food?.ProPrice) > 0 ? 'card__price' : 'card__price free'}>

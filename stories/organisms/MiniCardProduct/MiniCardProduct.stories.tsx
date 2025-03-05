@@ -21,13 +21,13 @@ const argsProduct = {
   dId: null,
   ctId: null,
   fId: null,
-  pName: 'Test con muchos sub items que se pueden agregar, ademas de tener un precio muy accesible',
+  pName: 'Test con muchos sub items que se pueden agregar, ademas de tener un precio muy accesible, also have a lot of sub items that you can add, also have a very',
   getOneTags: null,
   ProPrice: 5000,
   ProDescuento: 3,
   free: false,
   ProUniDisponibles: null,
-  ProDescription: 'Alta calidad, con el mejor sabor y textura que puedas encontrar en el mercado, te lo garantizamos, ven y comprueba por ti mismo.',
+  ProDescription: 'Alta calidad, con el mejor sabor y textura que puedas encontrar en el mercado, te lo garantizamos, ven y comprueba por ti mismo. also have a lot of sub items that you can add, also have a very',
   ProProtegido: null,
   ProAssurance: null,
   ValueDelivery: null,
@@ -84,5 +84,32 @@ export const MiniCardProductCanDeleted: Story = {
     canDelete: true,
     editable: true,
     hoverFree: true
+  }
+}
+
+export const MiniCardProductOnlyStock: Story = {
+  args: {
+    ...argsProduct,
+    free: false,
+    canDelete: false,
+    withQuantity: false,
+    withStock: false,
+    editable: false,
+    hoverFree: false
+  }
+}
+
+export const MiniCardProductShowInfo: Story = {
+  args: {
+    ...argsProduct,
+    free: false,
+    canDelete: false,
+    withQuantity: false,
+    withStock: false,
+    editable: false,
+    hoverFree: false,
+    showInfo: true,
+    withStock: true,
+    stock: 10
   }
 }

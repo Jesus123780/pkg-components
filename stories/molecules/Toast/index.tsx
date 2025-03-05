@@ -5,6 +5,7 @@ import { IconClose } from './../../../assets/icons/index'
 import styles from './styles.module.css'
 
 export interface ToastItem {
+  position: any
   id: number
   title: string
   description: string
@@ -41,7 +42,6 @@ export const Toast: React.FC<ToastProps> = (props) => {
     return () => {
       clearInterval(interval)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toastList, autoDelete, autoDeleteTime, list])
 
   const deleteToast = (id: number) => {
@@ -83,7 +83,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
       {list.map((toast, i) => {
         return (
         <div
-          className={`${styles.notification} ${styles.toast} ${styles[position]}`}
+          className={`${styles.notification} ${styles.toast} ${styles[toast.position ?? position]}`}
           draggable
           key={i}
           onDrag={handleDrag}
@@ -91,8 +91,9 @@ export const Toast: React.FC<ToastProps> = (props) => {
           style={{
             position: 'relative',
             left: `${divPosition}px`,
-            transition: 'left 0.5s ease-in-out',
-            backgroundColor: backgroundColor[toast.backgroundColor] ?? backgroundColor.success
+            zIndex: 1000 + i,
+            transition: 'transform 0.4s ease-in-out, opacity 0.4s ease-in-out, z-index 0.4s ease-in-out',
+            backgroundColor: getBackgroundColor(toast.backgroundColor)
           }}
         >
           <button className={styles['notification-button']} onClick={() => { return deleteToast(toast.id) }}>

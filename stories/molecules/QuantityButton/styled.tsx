@@ -35,6 +35,7 @@ export const MarmitaCounter = styled.div<MarmitaCounterProps>`
   display: flex;
   align-items: center;
   position: relative;
+  overflow: hidden;
   ${({ padding }) => {
     return `padding: ${padding ?? '10px'}`
   }}

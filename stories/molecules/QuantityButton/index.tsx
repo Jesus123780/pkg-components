@@ -8,8 +8,9 @@ import {
 } from './styled'
 import { type QuantityButtonProps } from './types'
 import { Icon } from '../../atoms'
-import styles from './styles.module.css'
 import { getGlobalStyle } from '../../../helpers'
+import { handleAnimationQuantity } from './helpers/index'
+import styles from './styles.module.css'
 
 export const QuantityButton: React.FC<QuantityButtonProps> = ({
   border,
@@ -33,7 +34,7 @@ export const QuantityButton: React.FC<QuantityButtonProps> = ({
   ...props
 }) => {
   const validateZero = validationZero && quantity >= 0
-
+  const [animation, setAnimation] = React.useState('')
   return (
     <div {...props}>
       <ContainerQuantity
@@ -47,11 +48,10 @@ export const QuantityButton: React.FC<QuantityButtonProps> = ({
               className={styles['btn-icon btn-icon--primary btn-icon--size-m btn-icon--transparent marmita-counter__btn-decrement']}
               disabled={showNegativeButton || validateZero || disabled}
               onClick={() => {
-                return validationOne
-                  ? () => {
-
-                    }
-                  : handleDecrement()
+                if (!validationOne) {
+                  handleDecrement()
+                  handleAnimationQuantity('down', setAnimation)
+                }
               }}
               type='button'
             >
@@ -64,12 +64,18 @@ export const QuantityButton: React.FC<QuantityButtonProps> = ({
               </span>
             </ButtonDecrement>
           )}
-          <span className={styles['marmita-counter__value_label']}>{label}</span>
-          {Number(quantity) !== 0 && <div className={`${styles['marmita-counter__value']} ${classNameQuantity}`}>{validateZero ? null : quantity}</div>}
+          <span className={styles['marmita-counter__value_label']}>
+            {label}
+          </span>
+          {Number(quantity) !== 0 && <div className={`${styles['marmita-counter__value']} ${classNameQuantity} ${styles[animation]}`}>
+            {validateZero ? null : quantity}
+          </div>
+          }
           {
             <ButtonIncrement
               disabled={showPositiveButton || disabled}
               onClick={() => {
+                handleAnimationQuantity('up', setAnimation)
                 return handleIncrement()
               }}
               type='button'

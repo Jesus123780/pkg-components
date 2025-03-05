@@ -1,6 +1,6 @@
 import React from 'react'
 import { Carousel } from '../../molecules/Slider'
-import { Icon, Text } from '../../atoms'
+import { Column, Icon, Text } from '../../atoms'
 import type { Root } from './types'
 import styles from './styles.module.css'
 import { getGlobalStyle } from '../../../helpers'
@@ -24,6 +24,20 @@ export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
     return id
   }
 }) => {
+  const iconsByNames: Record<string, string> = {
+    Combos: 'IconLunch',
+    Desayunos: 'IconEgg',
+    Entradas: 'IconNoodles',
+    Panadería: 'IconBread',
+    Sopas: 'IconSoup',
+    Ensaladas: 'IconPlatter',
+    'Platos Fuertes': 'IconDinner',
+    Acompañamientos: 'IconPotate',
+    'Menú Infantil': 'IconPancake',
+    Postres: 'IconDonut',
+    Bebidas: 'IconDrink',
+    NINGUNO: 'IconBox'
+  }
   return (
     <div>
       <Carousel breakpoints={breakpoints as any} pagination={false}>
@@ -38,19 +52,29 @@ export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
             }}
           >
             <div className={styles.cat_item}>
-              <Text
-                className={styles.cat_title}
-                size="sm"
-                align="center"
-                color="gray"
-              >
-                {item.pName}
-              </Text>
               <Icon
                 color={getGlobalStyle('--color-icons-gray')}
-                icon='IconBox'
-                size={25}
+                icon={iconsByNames[item.pName] ?? 'IconBox'}
+                size={30}
               />
+              <Column justifyContent='flex-start' alignItems='flex-start'>
+                <Text
+                  className={styles.cat_title}
+                  size="sm"
+                  align="center"
+                  color="gray"
+                >
+                  {item.pName}
+                </Text>
+                <Text
+                  className={styles.cat_items}
+                  size="sm"
+                  align="center"
+                  color="gray"
+                >
+                  {Number(item?.productFoodsAll?.length)} items
+                </Text>
+              </Column>
             </div>
           </div>
         ))}

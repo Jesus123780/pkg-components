@@ -13,6 +13,7 @@ import styles from './styles.module.css'
 export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   ProPrice,
   ProDescription = '',
+  ProImage = '/images/placeholder-image.webp',
   pName = '',
   withQuantity = false,
   showDot = false,
@@ -21,8 +22,12 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   free = false,
   editable = false,
   editing = false,
+  withStock = false,
   canDelete = false,
+  showInfo = false,
+  manageStock = false,
   ProQuantity = 0,
+  stock = 0,
   comment = '',
   onClick = () => { },
   handleDecrement = () => { },
@@ -38,14 +43,26 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   dataExtra = [],
   dataOptional = []
 }) => {
-  const urlImage = '/images/DEFAULTBANNER.png'
+  const urlImage = ProImage
   return (
-    <div style={{
-      position: 'relative',
-      width: 'min-content',
-      height: '270px'
-    }} className={styles.product}>
-
+    <div
+      style={{
+        position: 'relative',
+        width: 'min-content',
+        height: '270px',
+        filter: stock === 0 ? 'grayscale(1)' : 'none'
+      }}
+      className={styles.product}>
+      {/* {showInfo &&
+      <div className={styles.productCard_info_slider}>
+        <Row justifyContent='space-between' alignItems='center'>
+          <Text size='sm'>
+            Informacion
+          </Text>
+          <Icon icon='IconInfo' size={15} />
+        </Row>
+      </div>
+      } */}
       <div
         style={{
           position: 'relative',
@@ -53,6 +70,17 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         }}
         className={styles['product-card']}
       >
+        {(withStock && manageStock) && <div className={styles.stock_container} >
+          <Text
+            align='center'
+            color='default'
+            size='sm'
+          >
+            <span style={{ marginLeft: getGlobalStyle('--spacing-xs') }}>
+              {stock <= 0 ? 'Agotado' : `${stock} Disponibles`}
+            </span>
+          </Text>
+        </div>}
         {withQuantity && (
           <div className={styles.quantity_container}>
             <QuantityButtonFloat
@@ -93,7 +121,11 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
               data-test-id='product-card-image'
             >
               <div className={styles['wrapper-image']}>
-                <img className={styles['product-card-image']} src={urlImage} />
+                <img
+                  className={styles['product-card-image']}
+                  alt={`${pName ?? ''}-product`}
+                  src={urlImage.startsWith('/images/placeholder-image.webp') ? '/images/placeholder-image.webp' : `/api/images/${urlImage}`}
+                />
               </div>
               <div className={styles['product-card-image__overlay']}></div>
             </div>

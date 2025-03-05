@@ -11,6 +11,7 @@
   text-decoration: none;
   transition: all .2s linear;
   width: auto;
+  height: 80px;
 }
 
 .categorie:hover {
@@ -19,10 +20,11 @@
 }
 
 .cat_item {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   margin-right: 8px;
   overflow: hidden;
+  flex-direction: column;
   width: 100px;
   max-width: 100px;
   min-width: 100px;
