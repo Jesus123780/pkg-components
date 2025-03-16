@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, type FC } from 'react'
 import PropTypes from 'prop-types'
 import { choices } from '../../../scripts/tokens/choices'
-import { createChart, LineStyle, CrosshairMode } from 'lightweight-charts'
-
+import { createChart, LineStyle, CrosshairMode, type LineWidth } from 'lightweight-charts'
+import { ChartComponent } from '../ChartComponentLightWeight'
 import {
   Bar,
   Doughnut,
@@ -19,6 +19,8 @@ import {
   ResponsiveContainer,
   Legend
 } from 'recharts'
+import { Text } from '../../atoms'
+import { newAreaConfig } from '../ChartComponentLightWeight/chartConfig'
 
 interface ChartData {
   labels: string[]
@@ -370,15 +372,65 @@ export const SalesDashboardChart = () => {
       color: '#4e73df',
       lineStyle: LineStyle.Solid,
       crosshairMarkerVisible: true,
-      crosshairMarkerRadius: 5,
-    });
+      crosshairMarkerRadius: 5
+    })
 
     // Establecer los datos en la serie
-    lineSeries.setData(chartData.map((item) => ({ time: item.time, value: item.value })));
-
-  }, []);
+    lineSeries.setData(chartData.map((item) => ({ time: item.time, value: item.value })))
+  }, [])
 
   return (
     <div id="chart-container" style={{ position: 'relative', width: '600px', height: '400px' }}></div>
-  );
-};
+  )
+}
+
+interface StockMovementsChartProps {
+  className?: string
+  width?: number
+  title?: string
+  height?: number
+  chartData: Array<{
+    date: string
+    TotalIn: number
+    TotalOut: number
+  }>
+}
+
+export const StockMovementsChart: FC<StockMovementsChartProps> = ({
+  chartData,
+  className,
+  width = 600,
+  height = 400,
+  title = ''
+}) => {
+  const stockOutData = chartData.map((item) => ({
+    time: new Date(item.date).getTime(),
+    value: item.TotalOut
+  }))
+
+  const stockInData = chartData.map((item) => ({
+    time: new Date(item.date).getTime(),
+    value: item.TotalIn
+  }))
+  const dataSets = [
+    { name: 'stock_in', data: stockInData, config: newAreaConfig },
+    { name: 'stock_out', data: stockOutData, config: newAreaConfig }
+  ]
+  console.log(dataSets)
+  return (
+    <div className={className}>
+      <Text size='5xl'>
+        {title}
+      </Text>
+      <ChartComponent
+        width={width}
+        height={height}
+        data={dataSets}
+        currentPrice={{
+          time: Date.now(),
+          value: 19.10
+        }}
+      />
+    </div>
+  )
+}

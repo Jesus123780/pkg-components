@@ -1,8 +1,19 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
-import { Button, Column, Icon, Row, Text } from '../../atoms'
-import { EmptyData, type Methods, Skeleton } from '../../molecules'
+import {
+  Button,
+  Column,
+  Icon,
+  Row,
+  Text
+} from '../../atoms'
+import {
+  EmptyData,
+  type Methods,
+  Pagination,
+  Skeleton
+} from '../../molecules'
 import type { Data, ProductFood } from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
@@ -32,6 +43,11 @@ interface Client {
 }
 interface GenerateSalesProps {
   productsFood?: ProductFood[]
+  pagination: {
+    currentPage: number
+    totalPages: number
+  }
+  storeTables: any[]
   show: boolean
   loadingProduct: boolean
   client: Client
@@ -57,6 +73,7 @@ interface GenerateSalesProps {
   handleChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
   dispatch?: React.Dispatch<any>
   fetchMoreProducts?: () => void
+  handlePageChange?: (pageNumber: number | string) => void
   useAmountInput?: () => void
   handleDecrement?: (product: ProductFood) => void
   handleIncrement?: (product: ProductFood) => void
@@ -95,6 +112,10 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     change: false,
     ValueDelivery: false
   },
+  pagination = {
+    currentPage: 1,
+    totalPages: 0
+  },
   show = false,
   openAside = false,
   isLoading = false,
@@ -111,7 +132,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   onClick = (product: MiniCardProductProps) => {
     return product
   },
-  fetchMoreProducts = () => { },
+  handlePageChange = () => { },
   handleChange = () => { },
   setShow = () => { },
   handleDecrement = () => { },
@@ -125,8 +146,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
 }) => {
   const findChecked = propsSliderCategory.data?.some((item) =>
     Boolean(item?.checked)
-)
-
+  )
   return (
     <AwesomeModal
       title='Crea una venta'
@@ -213,11 +233,16 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
               <EmptyData height={200} width={200} />
               )}
         </div>
-        <div className={styles.content__action_product}>
-          <Button primary={true} onClick={fetchMoreProducts}>
-            ver más
-          </Button>
-        </div>
+        <Pagination
+          currentPage={pagination.currentPage}
+          handleNextPage={() => { return handlePageChange(pagination.currentPage + 1) }}
+          handleOnClick={(pageNumber) => { return handlePageChange(pageNumber) }}
+          handlePrevPage={() => { return handlePageChange(pagination.currentPage - 1) }}
+          isVisableButtonLeft={pagination.currentPage > 1}
+          isVisableButtonRight={pagination.currentPage < pagination.totalPages}
+          isVisableButtons={Boolean(pagination?.totalPages ?? 0 > 1)}
+          items={Array.from({ length: pagination.totalPages ?? 0 }, (_, index) => { return index + 1 })}
+        />
         <HeaderInfo
           client={client}
           handleOpenAside={handleOpenAside}

@@ -6,7 +6,8 @@ import {
   IconQrCode,
   IconClose,
   IconStrokeLogo,
-  IconDragHandle
+  IconDragHandle,
+  IconUpTrend
 } from '../../assets/public/Icons'
 import {
   Google,
@@ -172,6 +173,7 @@ export const Icons: IconMap = {
   IconEgg,
   IconPancake,
   IconSendMessage,
+  IconUpTrend,
   IconInventory,
   IconLocationMap2,
   IconClose,

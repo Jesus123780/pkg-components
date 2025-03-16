@@ -1,3 +1,6 @@
+a#tv-attr-logo {
+  display: none;
+}
 /* Container for the table */
 .table-container {
   position: relative;

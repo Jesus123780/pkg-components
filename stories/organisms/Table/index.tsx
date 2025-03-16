@@ -25,6 +25,7 @@ interface TableProps {
   data?: any
   pointer: boolean
   loading?: boolean
+  header?: boolean
   checkbox?: boolean
   pagination?: {
     currentPage: number
@@ -39,7 +40,8 @@ export const Table: React.FC<TableProps> = ({
   bgRow,
   data,
   pointer,
-  renderBody = []
+  renderBody = [],
+  header = true,
 }) => {
   type CurrentColumnState = Record<string, number>
 
@@ -94,7 +96,7 @@ export const Table: React.FC<TableProps> = ({
           border: `.1px solid ${getGlobalStyle('--color-neutral-gray')}`,
           borderRadius: getGlobalStyle('--border-radius-2xs')
         }}>
-          <div className={styles.section} style={{ ...gridColumnStyles, borderBottom: `1px solid ${getGlobalStyle('--color-neutral-gray')}` }}>
+          {header && <div className={styles.section} style={{ ...gridColumnStyles, borderBottom: `1px solid ${getGlobalStyle('--color-neutral-gray')}` }}>
             {titles?.map((x, i) => {
               return <div className={styles.section__content}
                 style={{
@@ -154,7 +156,7 @@ export const Table: React.FC<TableProps> = ({
                 }
               </div>
             })}
-          </div>
+          </div>}
           {renderBody(data?.filter((x, i) => { return ((i >= properties.indexFirstElem) && i < properties.indexLastElem) })?.sort((prev, post) => { return orderColumn(prev, post, currentColumn) }), titles, properties.indexFirstElem)}
         </div>
       </div>

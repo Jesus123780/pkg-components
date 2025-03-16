@@ -24,7 +24,13 @@ const locale = {
  * @param {string} [currency='COP'] - La moneda a utilizar (opcional).
  * @returns {string} El valor formateado como número o el valor original si no es numérico.
  */
-export const numberFormat = (value, currency = 'COP') => {
+export const numberFormat = (value, options = {
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+  style: 'currency',
+  notation: 'standard'
+}) => {
   // Verifica si el valor es nulo o indefinido, devolviendo el mismo valor.
   if (value === null || value === undefined) {
     return value
@@ -32,8 +38,9 @@ export const numberFormat = (value, currency = 'COP') => {
 
   // Verifica si el valor es numérico
   if (!isNaN(value)) {
-    const settings = { style: 'currency', currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }
-    return new Intl.NumberFormat(locale[currency], settings).format(value)
+    const settings = { ...options }
+    // Si el número es muy alto, agrega K o M
+    return new Intl.NumberFormat(locale[options.currency], settings).format(value)
   }
 
   // Devuelve el valor original si no es un número.

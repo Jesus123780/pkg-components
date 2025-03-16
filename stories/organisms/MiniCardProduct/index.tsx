@@ -124,7 +124,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
                 <img
                   className={styles['product-card-image']}
                   alt={`${pName ?? ''}-product`}
-                  src={urlImage.startsWith('/images/placeholder-image.webp') ? '/images/placeholder-image.webp' : `/api/images/${urlImage}`}
+                  src={urlImage?.startsWith('/images/placeholder-image.webp') ? '/images/placeholder-image.webp' : `/api/images/${urlImage}`}
                 />
               </div>
               <div className={styles['product-card-image__overlay']}></div>
