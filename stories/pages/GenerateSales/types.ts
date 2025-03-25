@@ -5,6 +5,8 @@ export interface ProductFood {
   pId: string | null
   sizeId: string | null
   editing?: boolean
+  manageStock?: boolean
+  existsInSale?: boolean
   colorId: string | null
   cId: string | null
   dId: string | null

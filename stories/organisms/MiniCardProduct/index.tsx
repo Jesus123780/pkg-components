@@ -29,6 +29,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   ProQuantity = 0,
   stock = 0,
   comment = '',
+  style = {},
   onClick = () => { },
   handleDecrement = () => { },
   handleIncrement = () => { },
@@ -82,7 +83,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           </Text>
         </div>}
         {withQuantity && (
-          <div className={styles.quantity_container}>
+          <div className={styles.quantity_container} style={{ ...style.quantity_container }}>
             <QuantityButtonFloat
               handleDecrement={handleDecrement}
               handleIncrement={handleIncrement}

@@ -20,7 +20,7 @@ import {
   Legend
 } from 'recharts'
 import { Text } from '../../atoms'
-import { newAreaConfig } from '../ChartComponentLightWeight/chartConfig'
+import { areaConfig, newAreaConfig } from '../ChartComponentLightWeight/chartConfig'
 
 interface ChartData {
   labels: string[]
@@ -404,19 +404,26 @@ export const StockMovementsChart: FC<StockMovementsChartProps> = ({
   title = ''
 }) => {
   const stockOutData = chartData.map((item) => ({
-    time: new Date(item.date).getTime(),
+    time: item.date,
     value: item.TotalOut
   }))
 
   const stockInData = chartData.map((item) => ({
-    time: new Date(item.date).getTime(),
+    time: item.date,
     value: item.TotalIn
   }))
+
+  const TotalAdjustment = chartData.map((item) => ({
+    time: item.date,
+    value: item.TotalAdjustment
+  }))
+
   const dataSets = [
-    { name: 'stock_in', data: stockInData, config: newAreaConfig },
-    { name: 'stock_out', data: stockOutData, config: newAreaConfig }
+    { name: 'stock_in', data: stockInData, config: areaConfig },
+    { name: 'stock_out', data: stockOutData, config: areaConfig },
+    { name: 'total_adjustment', data: TotalAdjustment, config: { ...areaConfig, lineColor: 'rgba(187, 160, 6, 0.89)' } }
   ]
-  console.log(dataSets)
+
   return (
     <div className={className}>
       <Text size='5xl'>

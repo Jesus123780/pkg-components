@@ -2399,3 +2399,68 @@ export const IconMasterCard: React.FC<IconProps> = ({ size, color, ...props }) =
     />
   </svg>
 )
+
+export const IconUpRightArrow: React.FC<IconProps> = ({ size, color }) => {
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    className="icon flat-line"
+    data-name="Flat Line"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M18.36 5.64 5 19"
+      style={{
+        fill: 'none',
+        stroke: color ?? getGlobalStyle('--color-icons-black'),
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: 2
+      }}
+    />
+    <path
+      d="M9 5h10v9.9"
+      data-name="primary"
+      style={{
+        fill: 'none',
+        stroke: color ?? getGlobalStyle('--color-icons-black'),
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: 2
+      }}
+    />
+  </svg>
+  )
+}
+export const IconDownRightArrow: React.FC<IconProps> = ({ size, color }) => {
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    className="icon multi-color"
+    data-name="Multi Color"
+    viewBox="0 0 24 24"
+  >
+    <title
+      style={{
+        strokeWidth: 2
+      }}
+    >
+      {'down right'}
+    </title>
+    <path
+      d="M19 9v10H9.1m9.26-.64L5 5"
+      style={{
+        fill: 'none',
+        stroke: color ?? getGlobalStyle('--color-icons-black'),
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: 2
+      }}
+    />
+  </svg>
+  )
+}

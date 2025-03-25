@@ -42,6 +42,9 @@ export interface MiniCardProductProps extends ProductFood {
   free?: boolean
   canDelete?: boolean
   render: React.ReactNode | null
+  style?: React.CSSProperties & {
+    quantity_container?: React.CSSProperties
+  }
   handleDecrement?: () => void
   handleComment?: () => void
   handleDelete?: () => void

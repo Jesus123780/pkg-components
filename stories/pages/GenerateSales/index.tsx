@@ -203,9 +203,14 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   const tag = {
                     tag: product?.getOneTags?.nameTag
                   }
+                  const isExistInSale = Boolean(product?.existsInSale)
+                  const manageStock = Boolean(product?.manageStock)
                   return (
                   <MiniCardProduct
                     {...product}
+                    openQuantity={isExistInSale}
+                    withQuantity={true}
+                    style={manageStock ? { quantity_container: { top: 35 } } : {}}
                     ProDescription={product.ProDescription}
                     ProDescuento={product.ProDescuento}
                     ProImage={product.ProImage}
@@ -216,6 +221,15 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     edit={false}
                     key={product.pId}
                     onClick={() => {
+                      dispatch({
+                        type: 'ADD_TO_CART',
+                        payload: product
+                      })
+                    }}
+                    handleDecrement={() => {
+                      handleDecrement(product)
+                    }}
+                    handleIncrement={() => {
                       dispatch({
                         type: 'ADD_TO_CART',
                         payload: product
@@ -315,7 +329,10 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                       handleDecrement(product)
                     }}
                     handleIncrement={() => {
-                      handleIncrement(product)
+                      dispatch({
+                        type: 'ADD_TO_CART',
+                        payload: product
+                      })
                     }}
                     handleFreeProducts={() => {
                       handleFreeProducts(product)
@@ -326,7 +343,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     edit={false}
                     key={product.pId}
                     onClick={() => {
-                      console.log('product', product)
                       dispatch({
                         type: 'ADD_TO_CART',
                         payload: product
@@ -354,7 +370,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         </div>
         <div className={styles.content__action}>
           <Row style={{ width: '50%', display: 'flex', alignItems: 'center' }}>
-            <div className={styles.content__counter}>
+            {/* <div className={styles.content__counter}>
               <span className={styles.counter}>
                 {data?.counter > 99 ? '+99' : data?.counter ?? 0}
               </span>
@@ -365,7 +381,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                 width={20}
                 color={getGlobalStyle('--color-icons-primary')}
               />
-            </div>
+            </div> */}
             <Text
               align='center'
               size='2xl'

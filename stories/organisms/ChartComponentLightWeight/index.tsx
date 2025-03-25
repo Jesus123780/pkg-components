@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, type FC } from 'react'
-import { createChart, LineType } from 'lightweight-charts'
-import { chartConfig, areaConfig, theme, newChartConfig } from './chartConfig'
+import { type AreaStyleOptions, createChart, type DeepPartial, type IChartApi, type ISeriesApi, LineType, type SeriesOptionsCommon, type Time } from 'lightweight-charts'
+import { theme, newChartConfig } from './chartConfig'
 
 /**
  *
@@ -23,8 +23,8 @@ const compareValues = (startValue: number, selectedValue: number): CompareValues
   }
 }
 interface ChartComponentProps {
-  data: Array<{ name: string, data: Array<{ time: number, value: number }>, config: any }>
-  currentPrice: { time: number, value: number }
+  data: Array<{ name: string, data: Array<{ time: number, value: number }>, config: DeepPartial<AreaStyleOptions & SeriesOptionsCommon> }>
+  currentPrice: { time: number | string, value: number }
   width?: number
   height?: number
 }
@@ -40,22 +40,23 @@ export const ChartComponent: FC<ChartComponentProps> = ({
    * @method setLabel - method to update label data
    */
   const [label, setLabel] = useState<{
-    time: number
+    time: number | string
     price: number
     delta: number
     isPositive: boolean
     percents: number
   } | null>(null)
-  const chartRef = useRef()
-  const areaSeriesRef = useRef()
+
+  const chartRef = useRef<IChartApi | null>(null)
+  const areaSeriesRef = useRef<Record<string, any> | null>(null)
 
   const chartContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (data.length === 0 || !chartContainerRef.current) return
+    if (data.length === 0 || (chartContainerRef.current == null)) return
 
     // Si ya hay un gráfico, limpiarlo antes de crear uno nuevo
-    if (chartRef.current) {
+    if (chartRef.current != null) {
       chartRef.current.remove()
       chartRef.current = null
     }
@@ -69,13 +70,21 @@ export const ChartComponent: FC<ChartComponentProps> = ({
     const seriesRefs: Record<string, any> = {}
 
     // Iterar sobre los data y crear múltiples AreaSeries
-    data.forEach(({ name, data, config }) => {
+    data.forEach(({
+      name,
+      data,
+      config
+    }) => {
       const series = chart.addAreaSeries({
-        ...config,
         lineType: LineType.Curved,
         lineWidth: 2,
+        ...config
       })
-      series.setData(data)
+      const array = data.map((item) => ({
+        time: (Math.floor(new Date(item.time).getTime() / 1000)) as Time, // Ensure time is of type Time
+        value: item.value
+      }))
+      series.setData(array)
       seriesRefs[name] = series
     })
 
@@ -83,13 +92,17 @@ export const ChartComponent: FC<ChartComponentProps> = ({
     chartRef.current = chart
 
     // Obtener valores iniciales de la primera serie
-    const firstSeriesData = data[0]?.data || []
-    const startValue = firstSeriesData[0]?.value || 0
-    const { delta, isPositive, percents } = compareValues(startValue, currentPrice?.value)
+    const firstSeriesData = data[0]?.data ?? []
+    const startValue = Number.isFinite(firstSeriesData[0]?.value) ? firstSeriesData[0]?.value : 0
+    const {
+      delta,
+      isPositive,
+      percents
+    } = compareValues(startValue, currentPrice?.value)
 
     // Setear label inicial
     setLabel({
-      time: currentPrice?.time,
+      time: new Date(currentPrice?.time).toISOString().split('T')[0],
       price: currentPrice?.value,
       delta,
       isPositive,
@@ -97,7 +110,7 @@ export const ChartComponent: FC<ChartComponentProps> = ({
     })
 
     // Función para actualizar el gráfico
-    const updateChart = (isPositive: boolean) => {
+    const updateChart = (isPositive: boolean): void => {
       chart.applyOptions({
         crosshair: {
           horzLine: { color: isPositive ? theme.lineColorMax : theme.lineColorMin }
@@ -130,15 +143,21 @@ export const ChartComponent: FC<ChartComponentProps> = ({
       const firstSeries = seriesRefs[data[0]?.name]
       if (firstSeries === null || firstSeries === undefined) return
 
-      const price = param.seriesData.get(firstSeries)
-      const { delta, isPositive, percents } = compareValues(startValue, price)
-      setLabel({ time: param.time, price, delta, isPositive, percents })
+      const price = param.seriesData.get(firstSeries as ISeriesApi<'Area'>) as { value: number } | undefined
+      const { delta, isPositive, percents } = compareValues(startValue, price?.value ?? 0)
+      setLabel({
+        time: new Date(Number(param.time) * 1000).toISOString().split('T')[0],
+        price: Number(price?.value),
+        delta,
+        isPositive,
+        percents
+      })
       updateChart(isPositive)
     })
 
     // Cleanup: eliminar el gráfico cuando el componente se desmonte
     return () => {
-      if (chartRef.current) {
+      if (chartRef.current != null) {
         chartRef.current.remove()
         chartRef.current = null
       }

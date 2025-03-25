@@ -82,34 +82,38 @@ export const newChartConfig = {
     }
   },
   priceFormat: {
-    type: 'price', // Tipo de formato de precio
-    minMove: 1, // Mueve el decimal mínimo (1 para números enteros, 0.01 para 2 decimales, etc.)
-    precision: 0 // Cantidad de decimales (0 para enteros, 2 para dos decimales, etc.)
+    type: 'price',
+    minMove: 0, // Mueve el decimal mínimo (1 para números enteros, 0.01 para 2 decimales, etc.)
+    precision: 2 // Cantidad de decimales (0 para enteros, 2 para dos decimales, etc.)
   },
   rightPriceScale: {
     visible: true,
-    borderVisible: false
+    borderVisible: false,
+    scaleMargins: {
+      top: 0.1,
+      bottom: 0.1
+    },
+    lockVisibleTimeRangeOnResize: true
   },
   leftPriceScale: {
     visible: false
   },
 
   timeScale: {
-    visible: true, // Habilita el eje de tiempo
-    borderVisible: true, // Muestra la línea divisoria con el gráfico
-    timeVisible: true, // Asegura que se muestren los valores de tiempo
-    secondsVisible: false, // Evita que se muestren segundos si no es necesario
-    tickMarkFormatter: (time) => {
-      return new Date(time * 1000).toLocaleDateString('es-CO', { weekday: 'short', day: 'numeric', month: 'short' });
-    }
+    visible: false, // Habilita el eje de tiempo
+    borderVisible: false, // Muestra la línea divisoria con el gráfico
+    timeVisible: false, // Asegura que se muestren los valores de tiempo
+    secondsVisible: false // Evita que se muestren segundos si no es necesario
   },
   crosshair: {
+    // hide the horizontal crosshair line
     horzLine: {
-      visible: false
+      color: theme.lineColorMax,
+      style: LineStyle.SparseDotted
     },
+    // hide the vertical crosshair label
     vertLine: {
-      width: 1.5,
-      style: LineStyle.Solid,
+      style: LineStyle.LargeDashed,
       color: theme.textColor
     }
   }
@@ -118,16 +122,14 @@ export const newChartConfig = {
 // configure line
 export const areaConfig = {
   lineWidth: 1,
-  lineColor: theme.lineColorMax,
-  topColor: theme.topColorMax,
-  bottomColor: theme.bottomColorMax,
   crosshairMarkerRadius: 6,
   crosshairMarkerBorderWidth: 6,
   crosshairMarkerBorderColor: theme.markerBorderColorMax,
   crosshairMarkerBackgroundColor: theme.lineColorMax,
   lastPriceAnimation: LastPriceAnimationMode.OnDataUpdate,
   priceLineVisible: false,
-  lastValueVisible: false
+  lastValueVisible: false,
+  baseLineVisible: false // Ensure the baseline (line at the bottom) is not visible
 }
 
 export const newAreaConfig = {
