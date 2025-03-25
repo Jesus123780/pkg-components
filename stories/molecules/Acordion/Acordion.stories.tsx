@@ -1,30 +1,48 @@
-import React, { useState } from 'react'
-import { Options } from './index'
+import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Options } from '.'
+import {
+  AppRouterContext,
+  type AppRouterInstance
+} from 'next/dist/shared/lib/app-router-context.shared-runtime'
 
-export default {
+const meta: Meta<typeof Options> = {
+  component: Options,
   title: 'molecules/Acordion',
-  component: Options
+  args: {
+  },
+  decorators: [
+    (Story) => (
+      <AppRouterContext.Provider value={{} as AppRouterInstance}>
+        <Story />
+      </AppRouterContext.Provider>
+    )
+  ]
 }
 
-const Template = (args: any) => {
-  const [active, setActive] = useState(false)
+export default meta
 
-  const toggleAccordion = () => {
-    setActive(!active)
-  }
+type Story = StoryObj<typeof Options>
 
-  return <Options
-    {...args}
-    active={active}
-    handleClick={toggleAccordion}
-  />
-}
+export const Default: Story = (args: any) => <Options {...args} />
 
-export const Default = Template.bind({})
 Default.args = {
-  children: <div>Hola mundo</div>, // Reemplaza con el contenido adecuado
-  icon: <></>, // Reemplaza con el componente de icono apropiado
-  index: 1,
-  label: 'Option Label', // Reemplaza con la etiqueta adecuada
-  path: '/path' // Reemplaza con la ruta adecuada
+  children: 'Link Text'
+}
+
+Default.argTypes = {
+  children: {
+    control: {
+      type: 'text'
+    }
+  }
+}
+
+Default.parameters = {
+  controls: { hideNoControlsWarning: true }
+}
+
+Options.propTypes = {
+  children: PropTypes.node
 }

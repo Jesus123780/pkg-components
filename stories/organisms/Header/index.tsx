@@ -70,7 +70,7 @@ export const Header = ({
         &nbsp;
         &nbsp;
         <Link href={'/dashboard'}>
-          <IconLogo color={PColor} size={isMobile ? '50px' : '100px'} />
+          {/* <IconLogo color={PColor} size={isMobile ? '50px' : '100px'} /> */}
         </Link>
       </Row>
       <CtnItemOps>

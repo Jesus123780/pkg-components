@@ -1,48 +1,47 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { CustomLink } from '.';
-
+import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { CustomLink } from '.'
 
 const meta: Meta<typeof CustomLink> = {
   component: CustomLink,
-  title: "atoms/CustomLink",
+  title: 'atoms/CustomLink',
   args: {
-    children: "Link Text",
-    href: "/",
-  },
-};
+    children: 'Link Text',
+    href: '/'
+  }
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof CustomLink>;
+type Story = StoryObj<typeof CustomLink>
 
-export const Default: Story = (args: any) => <CustomLink {...args} />;
+export const Default: Story = (args: any) => <CustomLink {...args} />
 
 Default.args = {
-  children: "Link Text",
-  href: "/",
-};
+  children: 'Link Text',
+  href: '/'
+}
 
 Default.argTypes = {
   children: {
     control: {
-      type: 'text',
-    },
+      type: 'text'
+    }
   },
   href: {
     control: {
-      type: 'text',
-    },
-  },
-};
+      type: 'text'
+    }
+  }
+}
 
 Default.parameters = {
-  controls: { hideNoControlsWarning: true },
-};
+  controls: { hideNoControlsWarning: true }
+}
 
 CustomLink.propTypes = {
   children: PropTypes.any,
   href: PropTypes.string,
   otherProps: PropTypes.any
-};
+}

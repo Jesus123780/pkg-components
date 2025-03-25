@@ -31,23 +31,17 @@ export const Header: React.FC<HeaderProps> = ({
         <ul className={styles.nav}>
           <li className={styles.navItem}>
             <Link href='/entrar'>
-              <a>Vender</a>
+              Vender
             </Link>
           </li>
           <li className={styles.navItem}>
             <Link href='/register'>
-              <a>Primeros pasos</a>
+              Primeros pasos
             </Link>
           </li>
           <li className={styles.navItem}>
             <Link href='/contact'>
-              <a
-                href={process.env.MAIN_URL_BASE}
-                rel='noopener noreferrer'
-                target='_blank'
-              >
-              Comprar
-              </a>
+              Comprar asdfsd
             </Link>
           </li>
           <li className={styles.navItem}>

@@ -16,9 +16,7 @@ const Loading: React.FC<LoadingProps> = ({
   )
 }
 
-interface SpinnerProps { }
-
-const SpinnerColor: React.FC<SpinnerProps> = () => {
+const SpinnerColor: React.FC = () => {
   return (
     <Container>
       <LsRipple>
@@ -41,10 +39,10 @@ const SpinnerColor: React.FC<SpinnerProps> = () => {
         </svg>
       </LsRipple>
     </Container>
-  );
-};
+  )
+}
 
-const SpinnerColorJust: React.FC<SpinnerProps> = () => {
+const SpinnerColorJust: React.FC = () => {
   return (
     <Container>
       <LsRipple>
@@ -67,8 +65,8 @@ const SpinnerColorJust: React.FC<SpinnerProps> = () => {
         </svg>
       </LsRipple>
     </Container>
-  );
-};
+  )
+}
 
 const AnimationRipple = keyframes`
   0% {
@@ -85,9 +83,9 @@ const AnimationRipple = keyframes`
     height: 72px;
     opacity: 0;
   }
-`;
+`
 
-const Container = styled.div`
+const Container = styled.div<{ bgColor?: string }>`
   align-items: center;
   background-color: ${props => {
     return props.bgColor
@@ -128,7 +126,7 @@ const Container = styled.div`
       box-shadow: -24px 0 #fff, 24px 0 ${PColor};
     }
   }
-`;
+`
 
 const LsRipple = styled.div`
   display: inline-block;
@@ -145,6 +143,6 @@ const LsRipple = styled.div`
   & div:nth-child(2) {
     animation-delay: -0.5s;
   }
-`;
+`
 
 export { Loading, SpinnerColor, SpinnerColorJust }

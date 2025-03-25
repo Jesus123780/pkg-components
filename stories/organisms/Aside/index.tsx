@@ -185,11 +185,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               </Portal>
               {(loading)
                 ? null
-                : (!pathname && <Link href={`/dashboard/${storeName?.replace(/\s/g, '-').toLowerCase()}/${idStore}`}>
-                  <h1 className='title_store'>
-                    {storeName}
-                  </h1>
-                </Link>)
+                : null
               }
               {pathname &&
                 <h1 className='title_store'>{storeName}</h1>

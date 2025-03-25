@@ -31,14 +31,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   },
   ...restProps
 }) => {
-  const inputEl = useRef(null)
+  const inputEl = useRef<HTMLInputElement>(null)
   const [clickCount, setClickCount] = useState(0)
   const [lastClickTime, setLastClickTime] = useState(0)
 
   const clickThreshold = 1000 // Umbral de tiempo en milisegundos
 
   const syncIndeterminateState = useCallback(() => {
-    if (inputEl && inputEl.current) {
+    if (inputEl.current !== null) {
       inputEl.current.indeterminate = indeterminate
     }
   }, [inputEl, indeterminate])
@@ -47,7 +47,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     syncIndeterminateState()
   }, [indeterminate, syncIndeterminateState])
 
-  const handleChange = (event): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (indeterminate) {
       syncIndeterminateState()
     }
@@ -75,7 +75,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   return (
     <Span
-      className={className || ''}
+      className={typeof className === 'string' && className.trim() !== '' ? className : ''}
       id={id}
       style={disabled ? disabledStyles : {}}
       {...restProps}
@@ -90,8 +90,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         type="checkbox"
       />
       <CheckboxLabel
-        className={className || ''}
-        checked={checked}
+        className={typeof className === 'string' && className.trim() !== '' ? className : ''}
+        isChecked={checked}
         htmlFor={`checkbox-${id}`}
       >
         {label}
@@ -135,7 +135,7 @@ const Span = styled.span`
   cursor: pointer;
   display: grid;
 `
-const CheckboxLabel = styled.label`
+const CheckboxLabel = styled.label<{ isChecked: boolean }>`
   align-items: center;
   color: #9e9e9e;
   display: flex;
@@ -159,7 +159,7 @@ const CheckboxLabel = styled.label`
   }
   ${(props) => {
     return (
-      props.checked &&
+      props.isChecked &&
       css`
         &&::before {
           content: "";

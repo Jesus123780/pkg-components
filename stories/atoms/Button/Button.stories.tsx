@@ -1,16 +1,30 @@
-import React from 'react'
-import { type Meta } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 import { Button, type ButtonProps } from './index' // Ajusta la ruta según sea necesario
 
-export default {
+const meta: Meta<ButtonProps> = {
   title: 'atoms/Button',
-  component: Button
-} as Meta<ButtonProps>
+  component: Button,
+  argTypes: {
+    primary: { control: 'boolean' },
+    type: { control: 'text' }
+  }
+}
 
-export const Primary: React.FC<ButtonProps> = ({ primary = true, type = 'primary', ...rest }) => (
-  <Button primary={primary} type={type} {...rest}>Primary Button</Button>
-)
+export default meta
 
-export const Secondary: React.FC<ButtonProps> = ({ primary = false, type = 'secondary', ...rest }) => (
-  <Button primary={primary} type={type} {...rest}>Secondary Button</Button>
-)
+// Creación de las historias utilizando StoryObj
+export const Primary: StoryObj<ButtonProps> = {
+  args: {
+    primary: true,
+    type: 'primary',
+    children: 'Primary Button'
+  }
+}
+
+export const Secondary: StoryObj<ButtonProps> = {
+  args: {
+    primary: false,
+    type: 'secondary',
+    children: 'Secondary Button'
+  }
+}

@@ -15,7 +15,7 @@ export const GoogleLogin = ({
   disabledStyle = {},
   buttonText = 'Sign in with Google',
   children = null,
-  render = null,
+  // render = null,
   theme = 'light',
   icon = true,
   disabled: disabledProp = false,
@@ -34,7 +34,7 @@ export const GoogleLogin = ({
   responseType = '',
   jsSrc = 'https://apis.google.com/js/api.js',
   prompt = ''
-} = {}) => {
+} = {}): JSX.Element => {
   const [hovered, setHovered] = useState(false)
   const [active, setActive] = useState(false)
 
@@ -62,9 +62,9 @@ export const GoogleLogin = ({
   })
   const disabled = disabledProp || !loaded
 
-  if (render) {
-    return render({ onClick: signIn, disabled })
-  }
+  // if (render !== null) {
+  //   return render({ onClick: signIn, disabled })
+  // }
 
   const initialStyle = {
     backgroundColor: theme === 'dark' ? 'rgb(66, 133, 244)' : '#fff',
@@ -114,13 +114,13 @@ export const GoogleLogin = ({
   const googleLoginButton = React.createElement(
     tag,
     {
-      onMouseEnter: () => {return setHovered(true)},
+      onMouseEnter: () => { return setHovered(true) },
       onMouseLeave: () => {
         setHovered(false)
         setActive(false)
       },
-      onMouseDown: () => {return setActive(true)},
-      onMouseUp: () => {return setActive(false)},
+      onMouseDown: () => { return setActive(true) },
+      onMouseUp: () => { return setActive(false) },
       onClick: signIn,
       style: defaultStyle,
       type,
@@ -128,9 +128,9 @@ export const GoogleLogin = ({
       className
     },
     [
-      icon && <div active={active} key={1} />,
+      icon && <div key={1} />,
       <ButtonContent icon={icon} key={2}>
-        {children || buttonText}
+        {children ?? buttonText}
       </ButtonContent>
     ]
   )
@@ -188,4 +188,3 @@ GoogleLogin.defaultProps = {
   theme: 'light',
   onRequest: () => {}
 }
-
