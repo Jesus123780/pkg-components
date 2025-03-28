@@ -235,7 +235,7 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
                   fontSize="25px"
                   width='274px'
                 >
-                  {cancel || BUTTONS_TEXT.cancel}
+                  {cancel ?? BUTTONS_TEXT.cancel}
                 </Button>
               )}
               {btnConfirm && (
@@ -247,7 +247,7 @@ export const AwesomeModal: React.FC<AwesomeModalProps> = ({
                   fontSize="25px"
 
                 >
-                  {confirm || BUTTONS_TEXT.confirm}
+                  {confirm ?? BUTTONS_TEXT.confirm}
                   {iconConfirm}
                 </Button>
               )}

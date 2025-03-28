@@ -4,14 +4,15 @@ import { type AlertContentProps } from './types'
 
 export const AlertContent: React.FC<AlertContentProps> = ({ err, closed }) => {
   return (
-    <ContainerToast
-      closed={closed}
-      color={err?.color}
-      error={!!err?.message}
-    >
-      <ContentToast>
-        <div>{err?.message || ''}</div>
-      </ContentToast>
-    </ContainerToast>
+    // <ContainerToast
+    //   closed={closed ? 'true' : undefined}
+    //   color={err?.color}
+    //   error={err?.message !== undefined && err?.message !== ''}
+    // >
+    //   <ContentToast>
+    //     <div>{err?.message !== undefined && err?.message !== '' ? err.message : ''}</div>
+    //   </ContentToast>
+    // </ContainerToast>
+    <div>AlertContent</div>
   )
 }

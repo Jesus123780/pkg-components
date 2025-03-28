@@ -2,7 +2,7 @@ import React from 'react'
 import { ActiveLink, Icon } from '../../../atoms'
 import { AnchorRouter } from '../styled'
 import { getGlobalStyle } from '../../../../helpers'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import styles from './CustomLinkAside.module.css'
 
 interface CustomLinkAsideProps {

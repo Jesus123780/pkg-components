@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import PropTypes from 'prop-types'
 import React, { useMemo } from 'react'
 import { Pagination } from '.'

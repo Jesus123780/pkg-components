@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         <ul className={styles.nav}>
           <li className={styles.navItem}>
-            <Link href='/entrar'>
+            <Link href='/login'>
               Vender
             </Link>
           </li>
@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
           </li>
           <li className={styles.navItem}>
             <Link href='/contact'>
-              Comprar asdfsd
+              Comprar
             </Link>
           </li>
           <li className={styles.navItem}>

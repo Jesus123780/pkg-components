@@ -35,7 +35,7 @@ export const CtnAnchor = styled(link)`
     border-bottom: 1px solid #edf2f932;
 `
 interface ContainerAsideProps {
-  collapsed: boolean
+  collapsed: boolean | undefined
 }
 
 export const ContainerAside = styled.div<ContainerAsideProps>`

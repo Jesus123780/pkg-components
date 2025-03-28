@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ActiveLink } from './index';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
-jest.mock('next/router', () => ({
+jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
 

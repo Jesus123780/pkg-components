@@ -13,7 +13,7 @@ import { getGlobalStyle } from '../../../helpers'
 import { Icon } from '../../atoms'
 
 interface OptionsProps {
-  active?: boolean
+  active?: boolean | number
   children?: React.ReactNode
   handleClick: (index: number) => void
   icon?: React.ReactNode
@@ -78,7 +78,7 @@ export const Options: React.FC<OptionsProps> = ({
   }, [active])
   return (
     <MenuLeft
-      active={active}
+      $active={active}
       height={menuState?.height}
       id={`menu-id__${index}`}
       index={index}
@@ -104,7 +104,7 @@ export const Options: React.FC<OptionsProps> = ({
               width={20}
             />
           </div>
-          <Span style={{ fontSize: size }} active={active}>
+          <Span active={active}>
             {label}
           </Span>
         </div>

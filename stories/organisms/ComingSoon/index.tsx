@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import styled, { keyframes } from 'styled-components'
 import { RippleButton } from '../../atoms'
 

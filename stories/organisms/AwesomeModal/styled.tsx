@@ -108,7 +108,15 @@ export const Wrapper = styled.div`
     justify-content: center;
 `
 
-export const Modal = styled.div`
+interface ModalProps {
+  size?: string
+  backdropA?: boolean
+  borderRadius?: string
+  height?: string
+  state?: boolean | undefined
+}
+
+export const Modal = styled.div<ModalProps>`
     background: #fff;
     width: ${({ size }) => {
     if (size === MODAL_SIZES.small) return '30%'
@@ -173,7 +181,15 @@ export const BtnClose = styled.button`
     cursor: pointer;
 `
 
-export const ModalBody = styled.div`
+interface ModalBodyProps {
+  borderRadius?: string
+  backgroundColor?: string
+  display?: string
+  height?: string
+  padding?: string
+}
+
+export const ModalBody = styled.div<ModalBodyProps>`
     position: relative;
     flex: 1 1 auto;
     overflow-y: auto;

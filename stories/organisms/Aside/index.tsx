@@ -27,7 +27,7 @@ import { getGlobalStyle } from '../../../utils'
 import packageJson from '../../../package.json'
 
 interface MemoAsideProps {
-  collapsed?: boolean
+  collapsed?: boolean | undefined
   dataStore?: any
   handleClick?: any
   handleOpenDeliveryTime?: any
@@ -134,7 +134,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
         show={show}
         zIndex={getGlobalStyle('--z-index-99999')}
       />}
-      <ContainerAside collapsed={isMobile ? collapsed : false}
+      <ContainerAside collapsed={isMobile ? collapsed : undefined}
         style={isMobile
           ? {
               zIndex: getGlobalStyle('--z-index-99999')

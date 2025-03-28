@@ -1,18 +1,15 @@
 import styled, { keyframes } from 'styled-components'
 import { BGColor, PColor } from '../../../assets/colors'
-import { ContainerToastProps } from './types'
+import { type ContainerToastProps } from './types'
 
-interface ColorMap {
-  [key: string]: string;
-}
+type ColorMap = Record<string, string>
 
-const colorMap: ColorMap  = {
+const colorMap: ColorMap = {
   error: PColor,
   warning: '#ebbc26',
   success: '#50a773',
-  default: 'rgba(0, 0, 0, 0.9)',
-};
-
+  default: 'rgba(0, 0, 0, 0.9)'
+}
 
 const slideIn = keyframes`
   from {
@@ -37,9 +34,9 @@ const slideOut = keyframes`
 `
 
 export const ContainerToast = styled.div<ContainerToastProps>`
-  animation: ${({ error, closed }) => {return (error ? (closed ? slideOut : slideIn) : 'none')}} 0.5s cubic-bezier(0.3, 0.7, 0.4, 1.5) forwards;
-  height: ${({ error }) => {return (error ? '89px' : 0)}};
-  padding: ${({ error }) => {return (error ? '15px' : 0)}};
+  animation: ${({ error, closed }) => { return (error ? (closed ? slideOut : slideIn) : 'none') }} 0.5s cubic-bezier(0.3, 0.7, 0.4, 1.5) forwards;
+  height: ${({ error }) => { return (error ? '89px' : 0) }};
+  padding: ${({ error }) => { return (error ? '15px' : 0) }};
   display: flex;
   justify-content: space-between;
   position: fixed;

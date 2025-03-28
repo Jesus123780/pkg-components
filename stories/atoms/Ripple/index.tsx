@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types'
 import React, { useRef, type ReactNode, type CSSProperties } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { IconLoading } from '../../../assets'
 import { getGlobalStyle } from '../../../utils'
 import { BGColor, PColor } from '../../../assets/colors'
@@ -25,7 +24,7 @@ export interface RippleButtonProps {
   padding?: string
   radius?: string
   children?: ReactNode
-  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  onKeyPress?: (e: React.KeyboardEvent<HTMLButtonElement>) => void
 
 }
 
@@ -49,7 +48,7 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
   } = props
   const button = useRef<HTMLButtonElement>(null)
 
-  const handleRippleEffect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleRippleEffect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     if (loading) return
     const buttonElement = button.current
     if (buttonElement == null) return
@@ -117,24 +116,6 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
   )
 }
 
-RippleButton.propTypes = {
-  active: PropTypes.any,
-  bgColor: PropTypes.any,
-  children: PropTypes.any,
-  color: PropTypes.any,
-  family: PropTypes.any,
-  label: PropTypes.any,
-  loading: PropTypes.bool,
-  margin: PropTypes.any,
-  onClick: PropTypes.func,
-  padding: PropTypes.any,
-  radius: PropTypes.any,
-  standard: PropTypes.any,
-  style: PropTypes.any,
-  type: PropTypes.any,
-  widthButton: PropTypes.any
-}
-
 const LoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -160,23 +141,35 @@ const LoadingWrapper = styled.div`
   }
 `
 
-const Button = styled.button<RippleButtonProps>`
+const Button = styled.button.attrs<{
+  padding?: string
+  bgColor?: string
+  color?: string
+  family?: string
+  margin?: string
+  border?: string
+  radius?: string
+  height?: string
+}>(({ padding, bgColor, color, family, margin, border, radius, height }) => ({
+  style: {
+    padding: padding ?? '1em',
+    backgroundColor: bgColor ?? 'var(--color-primary-red)',
+    color: color ?? BGColor,
+    fontFamily: family ?? 'PFont-Light',
+    margin: margin ?? undefined,
+    border: border ?? undefined,
+    borderRadius: radius ?? undefined,
+    height: height ?? undefined
+  }
+}))`
   &:disabled {
     background-color: ${`${PColor}69`} !important;
   }
   position: relative;
-  padding: ${({ padding }) => padding || '1em'};
-  background-color: ${({ bgColor }) => bgColor || 'var(--color-primary-red)'};
-  color: ${({ color }) => color || BGColor};
-  font-family: ${({ family }) => family || 'PFont-Light'};
-  width: ${({ widthButton }) => widthButton ?? '100%'};
-  max-width: ${({ widthButton }) => widthButton ?? '100%'};
-  min-width: ${({ widthButton }) => widthButton ?? '100%'};
-  ${({ margin }) => margin && css`margin: ${margin};`}
-  ${({ border }) => border && css`border: ${border};`}
-  ${({ radius }) => radius && css`border-radius: ${radius};`}
-  ${({ height }) => height && css`height: ${height};`}
-  overflow: hidden; /* Oculta cualquier contenido que se desborde */
-  white-space: nowrap; /* Evita el salto de línea */
-  text-overflow: ellipsis; /* Muestra puntos suspensivos (...) cuando el texto se desborda */
+  width: 100%; /* Se usa en lugar de widthButton para evitar errores */
+  max-width: 100%;
+  min-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `

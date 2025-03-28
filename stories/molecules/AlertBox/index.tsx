@@ -23,7 +23,7 @@ export const AlertBox = ({ err }) => {
         return setClosed(true)
       }}
     >
-      <AlertContent closed={closed} err={err} />
+      {/* <AlertContent closed={closed} err={err} /> */}
     </div>
   )
 }

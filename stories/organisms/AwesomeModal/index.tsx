@@ -160,70 +160,66 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
     hide()
   }
    return (
-    <Container
-      show={show}
-      state={state}
-      zIndex={zIndex}
-    >
-      <Wrapper onMouseDown={onClickBackdrop}>
-        <Modal
-          borderRadius={borderRadius}
-          height={height}
-          onMouseDown={(e) => {
-            return e.stopPropagation()
-          }}
-          size={size}
-          state={state}
-        >
-          {header && (
-            <ModalHeader>
-              <ModalTitle>{title}</ModalTitle>
-              <button
-                style={{ backgroundColor: getGlobalStyle('--color-base-transparent'), cursor: 'pointer' }}
-                onClick={() => {
-                  return question ? onShowQuestion() : hide()
-                }}
-              >
-                <IconClose color={getGlobalStyle('--color-background-primary')} size={sizeIconClose} />
-              </button>
-            </ModalHeader>
-          )}
-          <ModalBody
-            bgColor={backgroundColor}
-            borderRadius={borderRadius}
-            display={display}
-            height={customHeight !== '' ? customHeight : 'calc(100vh - 50px)'}
-            padding={padding}
-          >
-            {children}
-          </ModalBody>
-          {footer && (
-            <div className={styles.footer_modal} >
-              {btnCancel && (
-                <Button
-                  disabled={disabled}
-                  onClick={clickCancel}
-                  type='button'
-                >
-                  {cancel ?? BUTTONS_TEXT.cancel}
-                </Button>
-              )}
-              {btnConfirm && (
-                <Button
-                  primary
-                  border='primary'
-                  onClick={clickConfirm}
-                  type={submit ? 'submit' : 'button'}
-                >
-                  {confirm ?? BUTTONS_TEXT.confirm}
-                  {iconConfirm}
-                </Button>
-              )}
-            </div>
-          )}
-        </Modal>
-      </Wrapper>
-    </Container>
+    <div>AwesomeModal</div>
+    // <Container
+    //   show={show}
+    //   state={state}
+    //   zIndex={zIndex}
+    // >
+    //   <Wrapper onMouseDown={onClickBackdrop}>
+    //     <Modal
+    //       style={{ height: height ?? 'auto', borderRadius: borderRadius ?? undefined }}
+    //       onMouseDown={(e) => {
+    //         return e.stopPropagation()
+    //       }}
+    //       size={size}
+    //       {...(state !== undefined ? { state: state.toString() } : {})}
+    //     >
+    //       {header && (
+    //         <ModalHeader>
+    //           <ModalTitle>{title}</ModalTitle>
+    //           <button
+    //             style={{ backgroundColor: getGlobalStyle('--color-base-transparent'), cursor: 'pointer' }}
+    //             onClick={() => {
+    //               return question ? onShowQuestion() : hide()
+    //             }}
+    //           >
+    //             <IconClose color={getGlobalStyle('--color-background-primary')} size={sizeIconClose} />
+    //           </button>
+    //         </ModalHeader>
+    //       )}
+    //       <ModalBody
+    //         style={{ backgroundColor, borderRadius, display, padding, height: customHeight !== '' ? customHeight : 'calc(100vh - 50px)' }}
+    //       >
+    //         {children}
+    //       </ModalBody>
+    //       {footer && (
+    //         <div className={styles.footer_modal} >
+    //           {btnCancel && (
+    //             <Button
+    //               disabled={disabled}
+    //               onClick={clickCancel}
+    //               type='button'
+    //             >
+    //               {cancel ?? BUTTONS_TEXT.cancel}
+    //             </Button>
+    //           )}
+    //           {btnConfirm && (
+    //             <Button
+    //               primary
+    //               border='primary'
+    //               onClick={clickConfirm}
+    //               type={submit ? 'submit' : 'button'}
+    //             >
+    //               {confirm ?? BUTTONS_TEXT.confirm}
+    //               {iconConfirm}
+    //             </Button>
+    //           )}
+    //         </div>
+    //       )}
+    //     </Modal>
+    //   </Wrapper>
+    // </Container>
   )
 }
 

@@ -6,7 +6,7 @@ import { Options } from '../../../molecules'
 import styles from './FAQ.module.css'
 
 interface FAQSectionProps {
-  active?: any
+  active?: number | boolean
   handleMenu?: (index: number) => void
 }
 export const FAQSection: React.FC<FAQSectionProps> = ({ handleMenu = (index) => { return index }, active }) => {
@@ -22,7 +22,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ handleMenu = (index) => 
       <p className={styles.faqSubtitle}>
         Te acercamos las preguntas más frecuentes que hacen nuestros clientes...
       </p>
-      {faqs.map((faq, index) => {
+      {/* {faqs.map((faq, index) => {
         return (
         <Options
           active={index === active}
@@ -32,13 +32,14 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ handleMenu = (index) => 
           key={'/'}
           label={faq.question}
           path={'/'}
+          size='medium' // Added the required 'size' property
         >
           <div className={styles.answer}>
             <p>{faq.answer}</p>
           </div>
         </Options>
         )
-      })}
+      })} */}
     </div>
   )
 }

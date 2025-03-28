@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 

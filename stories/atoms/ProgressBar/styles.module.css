@@ -1,0 +1,13 @@
+.progressBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    background: var(--color-primary-red-header);
+    transition: width 0.3s ease-in-out, opacity 0.2s linear;
+    z-index: var(--z-index-high);
+}
+
+.hidden {
+    opacity: 0;
+}

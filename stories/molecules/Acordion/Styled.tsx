@@ -28,9 +28,9 @@ export const LinkOption = styled(Link)`
   margin: 0 30px;
 `
 
-export const SideBarLeft = styled.div`
+export const SideBarLeft = styled.div<{ menu?: boolean }>`
   margin-left: ${(props) => {
-    return (Boolean(props.menu)) ? '0' : '-100%'
+    return (props.menu === true) ? '0' : '-100%'
   }};
   width: 280px;
   max-width: 280px;
@@ -54,10 +54,10 @@ export const BoxSideBar = styled.aside`
   padding: 0.8em 0;
   overflow: auto;
 `
-export const MenuLeft = styled.button`
+export const MenuLeft = styled.button<{ height?: string | number, active?: boolean, alignSelf?: string, index?: number }>`
   width: 100%;
   height: ${({ height }) => {
-    return height || 'auto'
+    return height ?? 'auto'
   }}px;
   display: flex;
   flex-direction: column;
@@ -71,7 +71,7 @@ export const MenuLeft = styled.button`
   background: transparent !important;
   ${(props) => {
     return (
-      props.active &&
+      (Boolean(props.active)) &&
       css`
         border-bottom: none;
       `
@@ -79,14 +79,14 @@ export const MenuLeft = styled.button`
   }};
 
   align-self: ${({ alignSelf }) => {
-    return alignSelf || 'auto'
+    return alignSelf ?? 'auto'
   }};
   & > div:first-child {
     justify-content: space-between;
     pointer-events: none;
     padding: 0px 10px 0px 3px;
     ${(props) => {
-    return props.active && css``
+    return (props.active ?? false) && css``
   }};
   }
   transition: 0.4s ease;
@@ -103,7 +103,7 @@ export const Row = styled.div`
   width: 100%;
   z-index: 10;
 `
-export const OptionMenu = styled.div`
+export const OptionMenu = styled.div<{ active?: boolean }>`
   width: 100%;
   display: block;
   overflow: auto;
@@ -112,7 +112,7 @@ export const OptionMenu = styled.div`
   padding: 0;
   ${(props) => {
     return (
-      props.active &&
+      props.active === true &&
       css`
         border-bottom: none;
       `

@@ -74,7 +74,7 @@ export const Header = ({
         </Link>
       </Row>
       <CtnItemOps>
-        {!isMobile && <Options
+        {/* {!isMobile && <Options
           countOrders={countOrders}
           error={false}
           errorPush={errorPush}
@@ -86,7 +86,7 @@ export const Header = ({
           pushNotificationSupported={pushNotificationSupported}
           setIsOpenOrder={setIsOpenOrder}
         />
-        }
+        } */}
         <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }}>
           <Icon
             color={getGlobalStyle('--color-primary-red')}
