@@ -1,23 +1,18 @@
-'use-client'
-import { useRouter } from 'next/navigation'
+'use client'
+
+import { useRouter, usePathname } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { IconArrowBottom, IconArrowTop } from '../../../assets/icons'
-import {
-  ContainerBurger,
-  MenuLeft,
-  OptionMenu,
-  Row,
-  Span
-} from './Styled'
 import { getGlobalStyle } from '../../../helpers'
 import { Icon } from '../../atoms'
+import styles from './styles.module.css'
 
 interface OptionsProps {
-  active?: boolean | number
+  active?: boolean | number | undefined | string
   children?: React.ReactNode
   handleClick: (index: number) => void
   icon?: React.ReactNode
-  index: number
+  index?: number | string | boolean
   label: string
   size: string
   path: string
@@ -36,6 +31,7 @@ export const Options: React.FC<OptionsProps> = ({
   const refButton = useRef<HTMLDivElement>(null)
   const refMenu = useRef<HTMLDivElement>(null)
   const location = useRouter()
+  const pathname = usePathname()
 
   const [menuState, setMenuState] = useState<{
     height: number
@@ -58,10 +54,6 @@ export const Options: React.FC<OptionsProps> = ({
       height: initialHeight,
       heightMenu: initialHeightMenu
     }))
-
-    if (location && location.pathname.includes(path)) {
-      handleClick(index)
-    }
   }, [])
 
   useEffect(() => {
@@ -76,53 +68,52 @@ export const Options: React.FC<OptionsProps> = ({
       status: updatedStatus
     }))
   }, [active])
+
   return (
-    <MenuLeft
-      $active={active}
-      height={menuState?.height}
+    <div
       id={`menu-id__${index}`}
-      index={index}
       onClick={() => { handleClick(index) }}
       ref={refButton}
+      className={styles.optionMenu + (active ? ` ${styles.active}` : '')}
     >
-      <Row active={active}>
+      <div className={styles.row}>
         <div style={{ display: 'flex' }}>
-          <div style={{
-            minWidth: '30px',
-            minHeight: '20px',
-            width: '30px',
-            height: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }} >
+          <div
+            style={{
+              minWidth: '30px',
+              minHeight: '20px',
+              width: '30px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             <Icon
               color={getGlobalStyle('--color-icons-gray')}
               height={20}
-              icon={icon}
+              icon={String(icon)}
               size={20}
               width={20}
             />
           </div>
-          <Span active={active}>
+          <span className={`${styles.span} ${active ? styles.active : ''}`}>
             {label}
-          </Span>
+          </span>
         </div>
-        <ContainerBurger>
+        <div className={styles.containerBurger}>
           <button
             style={{
               backgroundColor: getGlobalStyle('--color-base-transparent')
             }}
-            className='BurgerMenu__container'
+            className={styles.burgerMenuContainer}
             onClick={() => { handleClick(index) }}
           >
-            {active ? <IconArrowTop color='#252525' size={15} /> : <IconArrowBottom color='#25252569' size={15} />}
+            <Icon icon={active === true ? 'IconArrowTop' : 'IconArrowBottom' } size={15} />
           </button>
-        </ContainerBurger>
-      </Row>
-      <OptionMenu active={active} ref={refMenu}>
-        {children}
-      </OptionMenu>
-    </MenuLeft>
+        </div>
+      </div>
+      {children}
+    </div>
   )
 }

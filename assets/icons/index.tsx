@@ -518,7 +518,7 @@ IconCategorie.propTypes = {
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconStore: React.FC<IconProps> = ({ style = {}, size, color, ...props }) => {
+export const IconStore: React.FC<IconProps> = ({ style = {}, size, color }) => {
   return (
     <svg
       fill='none'
@@ -527,6 +527,8 @@ export const IconStore: React.FC<IconProps> = ({ style = {}, size, color, ...pro
       strokeWidth={3}
       viewBox='0 0 64 64'
       width={size ?? 800}
+      xmlns='http://www.w3.org/2000/svg'
+      style={style}
     >
       <path d='M52 27.18v25.58a2.92 2.92 0 0 1-3 2.84H15a2.92 2.92 0 0 1-3-2.84V27.17' />
       <path d='M26.26 55.52V38.45h11.58v17.07M8.44 19.18s-1.1 7.76 6.45 8.94a7.17 7.17 0 0 0 6.1-2A7.43 7.43 0 0 0 32 26a7.4 7.4 0 0 0 5 2.49 11.82 11.82 0 0 0 5.9-2.15 6.66 6.66 0 0 0 4.67 2.15 8 8 0 0 0 7.93-9.3L50.78 9.05a1 1 0 0 0-.94-.65H14a1 1 0 0 0-.94.66ZM8.44 19.18h47.1M21.04 19.18V8.4M32.05 19.18V8.4M43.01 19.18V8.4' />

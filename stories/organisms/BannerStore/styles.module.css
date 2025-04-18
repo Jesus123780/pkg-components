@@ -1,4 +1,154 @@
+.seccion {
+    padding: 30px 0;
+    max-width: var(--width-max-desktop);
+    margin: auto;
+    overflow: hidden;
+    transition: 0.2s;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s ease-in-out;
+}
+
+.seccion:hover .buttonCard {
+    right: 15px;
+}
+
+@media only screen and (max-width: 960px) {
+    .seccion {
+        padding: 0;
+    }
+
+    .seccion .basico_info {
+        flex-direction: column;
+    }
+
+    .seccion .wrapper_details__button {
+        justify-content: start;
+        margin: 0;
+    }
+}
 .wrapper_logo {
     border: 2px dashed var(--color-neutral-gray-silver) !important;
     border-radius: 50% !important;
+}
+
+.merchant-banner__status {
+    line-height: 1.15;
+    text-rendering: optimizeLegibility;
+    font-size: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: 50%;
+    border-radius: 4px;
+    height: 250px;
+    position: relative;
+    justify-content: unset;
+    padding-left: 30px;
+    background-blend-mode: overlay;
+}
+
+.merchant-banner__status:hover .buttonCard {
+width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(0 0 0 / 40%);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.merchant-banner__status.open {
+    background-color: rgb(0 0 0 / 40%);
+}
+
+.merchant-banner__status.closed {
+    background-color: rgb(0 0 0 / 61%);
+}
+
+.merchant-banner__status-description {
+    line-height: 1.15;
+    font-size: 16px;
+}
+
+.merchant-banner__status-title {
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 0 4px;
+    font-size: 25px;
+    margin-bottom: 16px;
+    text-align: left;
+    width: 90%;
+}
+
+.merchant-banner__icon-container {
+    display: none;
+}
+
+.buttonCard {
+    font-size: var(--font-size-base);
+    font-family: PFont-Light;
+    cursor: pointer;
+    word-break: break-word;
+    box-shadow: 0px 0px 6px 0px #16101028;
+    position: absolute;
+    right: -40px;
+    transition: 0.4s ease;
+    width: 35px;
+    height: 35px;
+    max-height: 35px;
+    max-width: 35px;
+    border-radius: 50%;
+    align-items: center;
+    display: grid;
+    justify-content: center;
+    background-color: var(--BGColor);
+}
+
+/* Clase para manejar el hover de ActionName */
+.buttonCard:hover .actionName {
+    opacity: 1;
+    z-index: 900;
+}
+
+/* Variante para cuando se usa grid */
+.grid {
+    top: 80px !important;
+}
+
+
+@media only screen and (max-width: 960px) {
+    .merchant-banner__status {
+        height: 118px;
+    }
+
+    .merchant-banner__status-title {
+        font-size: 1rem;
+        margin-left: 16px;
+    }
+}
+
+
+
+@media only screen and (min-width: 960px) {
+    .merchant-banner__icon-container {
+        height: 70px;
+        width: 70px;
+        min-height: 70px;
+        max-height: 70px;
+        min-width: 70px;
+        max-width: 70px;
+        margin: 30px;
+        place-content: center;
+        display: grid;
+        border: 1px solid var(--sec-bg-color);
+        border-radius: 100%;
+    }
 }

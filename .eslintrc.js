@@ -28,6 +28,7 @@ module.exports = {
     "rules": {
         'storybook/hierarchy-separator': 'off',
         "react/prop-types": "off",
+        "react/no-unknown-property": "error",
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
         "no-unused-vars": "error", // Para detectar variables sin usar en JavaScript

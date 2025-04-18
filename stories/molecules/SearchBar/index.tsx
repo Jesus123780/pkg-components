@@ -4,15 +4,7 @@ import { PColor } from '../../../assets/colors'
 import { IconSearch } from '../../../assets/icons'
 import styled from 'styled-components'
 import { getGlobalStyle } from '../../../utils'
-
-const SearchBarContainer = styled.div`
-  align-items: center;
-  background-color: ${({ backgroundColor }) => { return backgroundColor || getGlobalStyle('--color-base-white') }};
-  border-radius: 4px;
-  border: 1px solid ${({ border = getGlobalStyle('--color-neutral-gray-silver') }) => {return border}};
-  display: flex;
-  padding: ${({ padding = '10px 8px' }) => {return padding}};
-`
+import styles from './styles.module.css'
 
 const SearchInput = styled.input`
   width: 100%;
@@ -39,8 +31,8 @@ export const SearchBar = ({
   handleChange = () => {
     return
   },
-  handleSubmit = () => {
-    return
+  handleSubmit = (_event: React.FormEvent<HTMLFormElement>) => {
+    return null
   }
 }) => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -50,18 +42,14 @@ export const SearchBar = ({
     if (handleChange) handleChange(event)
   }
 
-  const customHandleSubmit = (event) => {
+  const customHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (handleSubmit) handleSubmit(event)
+    handleSubmit(event)
   }
 
   return (
     <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin, width }}>
-      <SearchBarContainer
-        backgroundColor={backgroundColor}
-        border={border}
-        padding={padding}
-      >
+      <div className={styles['search-bar__container']} style={{ border, padding }}>
         <SearchIcon>
           <IconSearch color={PColor} size='25px' />
           <i className='fas fa-search' />
@@ -72,7 +60,7 @@ export const SearchBar = ({
           type='text'
           value={searchQuery}
         />
-      </SearchBarContainer>
+      </div>
     </form>
   )
 }

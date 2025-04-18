@@ -44,3 +44,9 @@
     margin-right: 10px;
     margin-left: 5px;
 }
+
+.linkAside {
+    color: var(--color-text-gray-light);
+    text-decoration: none;
+    transition: 0.3s ease;
+}

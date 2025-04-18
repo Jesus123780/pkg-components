@@ -54,7 +54,7 @@ export const BoxSideBar = styled.aside`
   padding: 0.8em 0;
   overflow: auto;
 `
-export const MenuLeft = styled.button<{ height?: string | number, active?: boolean, alignSelf?: string, index?: number }>`
+export const MenuLeft = styled.div<{ height?: string | number, active?: boolean, alignSelf?: string, index?: number }>`
   width: 100%;
   height: ${({ height }) => {
     return height ?? 'auto'

@@ -11,20 +11,19 @@ import {
   Overline,
   Text
 } from '../../atoms'
-import Link from 'next/link'
 import { Options } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
 import { Portal } from '../Portal'
 import {
   ButtonGlobalCreate,
   Card,
-  ContainerAside,
   Info,
   LeftNav,
   Router
 } from './styled'
 import { getGlobalStyle } from '../../../utils'
 import packageJson from '../../../package.json'
+import styles from './styles.module.css'
 
 interface MemoAsideProps {
   collapsed?: boolean | undefined
@@ -74,7 +73,6 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   }
   const {
     storeName,
-    idStore,
     uState
   }: DataStore = dataStore ?? {
     storeName: '',
@@ -134,14 +132,10 @@ const MemoAside: React.FC<MemoAsideProps> = ({
         show={show}
         zIndex={getGlobalStyle('--z-index-99999')}
       />}
-      <ContainerAside collapsed={isMobile ? collapsed : undefined}
-        style={isMobile
-          ? {
-              zIndex: getGlobalStyle('--z-index-99999')
-            }
-          : {}
-        }
-      >
+<div
+className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
+style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
+        >
         <Card>
           <div style={{
             overflowY: 'hidden',
@@ -203,7 +197,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                 const existSubModules = Boolean(subModules.length > 0)
                 const onAction = module?.mPath?.startsWith('?')
                 return (
-                  <div key={module.mId}>
+                  <div key={module.mId} className={styles.containerOption}>
                     {!existSubModules &&
                       <CustomLinkAside
                         count={0}
@@ -228,12 +222,12 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                         {module.mName}
                       </span>
                     }
-                    <div>
+                     <div>
                       {existSubModules &&
                         <Options
-                          active={Boolean(index === active)}
+                          active={index === active}
                           handleClick={() => { handleMenu(index) }}
-                          index={index}
+                          index={active}
                           icon='IconTicket'
                           size='.9rem'
                           label={module.mName}
@@ -259,7 +253,6 @@ const MemoAside: React.FC<MemoAsideProps> = ({
 
                         </Options>}
                     </div>
-
                   </div>
                 )
               })}
@@ -275,7 +268,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             logical: {logicalVersion}
           </Text>
         </Card>
-      </ContainerAside>
+      </div>
     </>
   )
 }

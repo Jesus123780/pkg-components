@@ -77,30 +77,6 @@ export const ButtonCard: IButtonCard = styled.button`
     )
   }}
 `
-
-export const Section = styled.div`
-  padding: 30px 0;
-  max-width: var(--width-max-desktop);
-  margin: auto;
-  overflow: hidden;
-  transition: 0.2s;
-  cursor: pointer;
-  position: relative;
-  transition: 0.2s ease-in-out;
-  &:hover ${ButtonCard} {
-    right: 15px;
-  }
-  @media only screen and (max-width: 960px) {
-    padding: 0;
-    .basico_info {
-      flex-direction: column;
-    }
-    .wrapper_details__button {
-      justify-content: start;
-      margin: 0;
-    }
-  }
-`
 export const MerchantInfoTitle = styled.h1`
   color: ${SECColor};
   font-weight: 400;
@@ -227,78 +203,7 @@ export const MerchantInfo = styled.div`
     cursor: pointer;
   }
 `
-export const MerchantBannerWrapperInfo = styled.div`
-  line-height: 1.15;
-  text-rendering: optimizeLegibility;
-  font-size: 16px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  color: ${SECBGColor};
-  top: 0;
-  left: 0;
-  background-size: cover;
-  background-position: 50%;
-  border-radius: 4px;
-  height: 250px;
-  position: relative;
-  justify-content: unset;
-  padding-left: 30px;
-  background-color: ${({ open }) => {
-    return open ? 'rgb(0 0 0 / 40%)' : 'rgb(0 0 0 / 61%)'
-  }};
-  background-blend-mode: overlay;
-  background-image: ${({ bannerImage }) => {
-    return bannerImage ?? ''
-  }};
 
-  @media only screen and (max-width: 960px) {
-    height: 118px;
-  }
-
-  .merchant-banner__status-description {
-    line-height: 1.15;
-    font-size: 16px;
-    color: ${SECBGColor};
-    box-sizing: border-box;
-  }
-
-  .merchant-banner__status-title {
-    color: ${SECBGColor};
-    font-weight: 400;
-    line-height: 20px;
-    margin: 0 0 4px;
-    font-size: 25px;
-    margin-bottom: 16px;
-    text-align: left;
-    width: 90%;
-    @media only screen and (max-width: 960px) {
-      font-size: 1rem;
-      margin-left: 16px;
-    }
-  }
-
-  && > span {
-    @media only screen and (min-width: 960px) {
-      height: 70px;
-      width: 70px;
-      min-height: 70px;
-      max-height: 70px;
-      min-width: 70px;
-      max-width: 70px;
-      margin: 30px;
-      place-content: center;
-      display: grid;
-      border: 1px solid ${SECBGColor};
-      border-radius: 100%;
-      && svg {
-        fill: ${BGColor};
-      }
-    }
-  }
-`
 
 // IMAGE
 

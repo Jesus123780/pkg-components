@@ -1,7 +1,7 @@
-import React from 'react'
-import { ActiveLink, Icon } from '../../../atoms'
-import { AnchorRouter } from '../styled'
-import { getGlobalStyle } from '../../../../helpers'
+'use client'
+
+import React, { Children } from 'react'
+import { ActiveLink } from '../../../atoms'
 import { useRouter } from 'next/navigation'
 import styles from './CustomLinkAside.module.css'
 
@@ -16,10 +16,8 @@ interface CustomLinkAsideProps {
 export const CustomLinkAside: React.FC<CustomLinkAsideProps> = ({
   mPath = '',
   mIcon,
-  size,
-  count = 0,
   mName = '',
-  onClick = () => { }
+  children
 }) => {
   const icon = {
     [-1]: 'IconBoxes',
@@ -40,80 +38,20 @@ export const CustomLinkAside: React.FC<CustomLinkAsideProps> = ({
     15: 'IconInventory'
   }
   const router = useRouter()
+
   const currentPath = `/${mPath}` === router.asPath
+
   return (
     <>
-      {mPath !== ''
-        ? (
-          <ActiveLink activeClassName='active' href={`/${mPath}`}>
-            <AnchorRouter style={{
-              display: 'flex',
-              fontSize: size,
-              justifyContent: 'unset'
-            }}>
-              <div style={{
-                minWidth: '30px',
-                minHeight: '20px',
-                width: '30px',
-                height: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }} >
-                <Icon
-                  size={20}
-                  width={20}
-                  color={getGlobalStyle(currentPath ? '--color-icons-primary' : '--color-icons-gray')}
-                  height={20}
-                  icon={icon[mIcon as keyof typeof icon]}
-                />
-              </div>
-              {mName}
-              {count > 0
-                ? <span className={styles['containerOption_count--notification']}>
-                  {count}
-                </span>
-                : null}
-            </AnchorRouter>
-          </ActiveLink>
-          )
-        : (
-          <div className={styles.wrapper_custom_link} style={{
-            display: 'flex',
-            fontSize: size,
-            justifyContent: 'unset',
-            alignItems: 'center',
-            padding: '0px 5px'
-          }}>
-            <div style={{
-              minWidth: '30px',
-              minHeight: '20px',
-              width: '30px',
-              height: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }} >
-              <Icon
-                size={20}
-                width={20}
-                color={getGlobalStyle(currentPath ? '--color-icons-primary' : '--color-icons-gray')}
-                height={20}
-                icon={icon[mIcon as keyof typeof icon]}
-              />
-            </div>
-            <button className={styles.button} onClick={onClick} style={{
-              fontSize: size
-            }}>
-              {mName}
-            </button>
-            {count > 0
-              ? <span className={styles['containerOption_count--notification']}>
-                {count}
-              </span>
-              : null}
-          </div>
-          )}
+          <ActiveLink
+            href={`${mPath}`}
+            className={styles.linkAside}
+            activeClassName={styles.active}
+            name={mName}
+            mIcon={mIcon}
+            currentPath={currentPath}
+            icon={icon}
+            />
     </>
   )
 }

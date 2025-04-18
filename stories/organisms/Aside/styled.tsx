@@ -34,31 +34,6 @@ export const CtnAnchor = styled(link)`
     overflow: hidden;
     border-bottom: 1px solid #edf2f932;
 `
-interface ContainerAsideProps {
-  collapsed: boolean | undefined
-}
-
-export const ContainerAside = styled.div<ContainerAsideProps>`
-    transition: 300ms ease;
-    background-color: ${BGColor};
-    height: min-content;
-    margin-bottom: 20px;
-    @media (max-width: 768px){ 
-        z-index: 999;
-        height: 100%;
-        width: 80%;
-        position: absolute;
-        ${({ collapsed }) => {
-        return collapsed
-            ? css`
-            transform: translate(0px, 0px);
-            `
-            : css`
-            transform: translate(-800px, 0px);
-              `
-    }}
-    }
-`
 interface LeftNavProps {
   show: boolean
 }

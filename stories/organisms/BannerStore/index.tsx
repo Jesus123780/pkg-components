@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types'
 import {
   ActionName,
-  ButtonCard,
   InputFile,
-  MerchantBannerWrapperInfo,
   MerchantInfo,
   MerchantInfoTitle,
   Section
@@ -11,18 +9,49 @@ import {
 
 import Image from 'next/image'
 import React from 'react'
-import { PColor } from '../../../assets/colors'
-import {
-  IconDelete,
-  IconEdit,
-  IconPromo,
-  IconStore
-} from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
 import { Skeleton } from '../../molecules/Skeleton'
+import { Text } from '../../atoms/Text'
+import { Icon } from '../../atoms'
 import styles from './styles.module.css'
 
-export const BannerStore = ({
+interface IBannerStore {
+  altLogo?: string
+  bnImageFileName?: any
+  fileInputRef?: any
+  fileInputRefLogo?: any
+  handleInputChangeLogo?: () => void
+  handleUpdateBanner?: () => void
+  isEdit?: boolean
+  isEmtySchedules?: boolean
+  isLoading?: boolean
+  isMobile?: boolean
+  onTargetClick?: (event: React.MouseEvent) => void
+  onTargetClickLogo?: (event: React.MouseEvent) => void
+  HandleDeleteBanner?: () => void
+  handleClose?: () => void
+  open?: any
+  openNow?: boolean
+  path?: string | undefined | null
+  src?: string | undefined | null
+  srcLogo?: string | undefined | null
+  store: {
+    Image: string | undefined | null
+    storeName: string | undefined | null
+    idStore: string | undefined | null
+    scheduleOpenAll: string | undefined | null
+    scheduleOpen: string | undefined | null
+    scheduleClose: string | undefined | null
+    scheduleCloseAll: string | undefined | null
+    scheduleDay: number | undefined | null
+    scheduleId: number | undefined | null
+    scheduleStatus: number | undefined | null
+    scheduleStatusAll: number | undefined | null
+    storeId: number | undefined | null
+    storeStatus: number | undefined | null
+  }
+}
+export const BannerStore: React.FC<IBannerStore> = ({
   altLogo = '',
   bnImageFileName,
   fileInputRef,
@@ -33,7 +62,7 @@ export const BannerStore = ({
   isMobile = false,
   open,
   openNow = true,
-  path = '',
+  path = '/images/DEFAULTBANNER.png',
   src = '/images/DEFAULTBANNER.png',
   srcLogo = '/images/DEFAULTBANNER.png',
   store = {
@@ -47,8 +76,38 @@ export const BannerStore = ({
   HandleDeleteBanner = () => { },
   onTargetClick = () => { }
 }) => {
+  const actions = [
+    {
+      onClick: () => { return path !== '' && (Boolean(bnImageFileName)) && HandleDeleteBanner() },
+      icon: 'IconDelete',
+      actionName: 'Eliminar',
+      color: getGlobalStyle('--color-icons-primary'),
+      size: 20,
+      top: undefined,
+      delay: undefined
+    },
+    {
+      onClick: onTargetClick,
+      icon: 'IconEdit',
+      actionName: 'Editar',
+      color: getGlobalStyle('--color-icons-primary'),
+      size: 20,
+      top: '60px',
+      delay: '.1s'
+    },
+    {
+      onClick: onTargetClick,
+      icon: 'IconPromo',
+      actionName: 'Subir',
+      color: getGlobalStyle('--color-icons-primary'),
+      size: 20,
+      top: '100px',
+      delay: '.2s'
+    }
+  ]
+
   return (
-    <Section>
+    <div className={styles.seccion}>
       {isEdit &&
         <>
 
@@ -71,48 +130,40 @@ export const BannerStore = ({
       }
       {isLoading
         ? <Skeleton height={isMobile ? 118 : 250} />
-        : <MerchantBannerWrapperInfo bannerImage={(path || src) ? `url(${path || src})` : 'url(\'/images/DEFAULTBANNER.png\')'} open={isEmtySchedules ? true : openNow} >
-          <span>
-            <IconStore color={getGlobalStyle('--color-icons-white')} size={40} />
-          </span>
-          <div className='merchant-banner__status-description' data-test-id='merchant-banner-status-description'>
-            <h2 className='merchant-banner__status-title'>{isEmtySchedules ? `Restaurante ${store?.storeName || ''}` : `Restaurante  ${open}`}</h2>
-          </div>
-        </MerchantBannerWrapperInfo>
+        : <div
+        className={`${styles['merchant-banner__status']} ${isEmtySchedules || openNow ? styles.open : styles.closed}`}
+        style={{ backgroundImage: `url(${path ?? src ?? '/images/DEFAULTBANNER.png'})` }}
+      >
+        <span className={styles['merchant-banner__icon-container']}>
+          <Icon icon='IconStore' color={getGlobalStyle('--color-icons-white')} size={40} />
+        </span>
+        <div className={styles['merchant-banner__status-description']} data-test-id="merchant-banner-status-description">
+          <Text as='h2' className={styles['merchant-banner__status-title']} color='white'>
+            {isEmtySchedules ? `Restaurante ${store?.storeName !== '' ? store?.storeName : ''}` : `Restaurante ${open}`}
+          </Text>
+        </div>
+      </div>
       }
       {isEdit &&
-        <>
-          <ButtonCard onClick={() => { return path && bnImageFileName && HandleDeleteBanner() }}>
-            <IconDelete color={PColor} size={20} />
-            <ActionName >
-              Eliminar
-            </ActionName>
-          </ButtonCard>
-          <ButtonCard
-            color={1}
-            delay='.1s'
-            onClick={onTargetClick}
-            top={'60px'}
-          >
-            <IconEdit color={PColor} size={20} />
-            <ActionName>
-              Editar
-            </ActionName>
-          </ButtonCard>
-          <ButtonCard
-            delay='.2s'
-            onClick={onTargetClick}
-            top={'100px'}
-          >
-            <IconPromo color={PColor} size={20} />
-            <ActionName>
-              Subir
-            </ActionName>
-          </ButtonCard>
-        </>
+        <div className={styles['merchant-banner__actions']}>
+          {actions.map((action, index) => {
+            const { top, delay } = action
+            return (
+              <button
+              className={`${styles.buttonCard}`}
+              style={{ top, transitionDelay: delay }}
+              key={index}
+              onClick={action.onClick}
+            >
+                <Icon icon={action.icon} color={action.color} size={action.size} />
+                <ActionName>{action.actionName}</ActionName>
+              </button>
+            )
+          })}
+        </div>
       }
       <MerchantInfo >
-        {store?.Image
+        {store?.Image !== ''
           ? <span className={styles.wrapper_logo}>
             <Image
               alt={altLogo}
@@ -147,7 +198,7 @@ export const BannerStore = ({
           </div>
         </div>
       </MerchantInfo>
-    </Section>
+    </div>
   )
 }
 BannerStore.propTypes = {
@@ -169,6 +220,5 @@ BannerStore.propTypes = {
   openNow: PropTypes.bool,
   path: PropTypes.string,
   src: PropTypes.string,
-  srcLogo: PropTypes.string,
-  store: PropTypes.object
+  srcLogo: PropTypes.string
 }
