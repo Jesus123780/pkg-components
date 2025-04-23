@@ -57,7 +57,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
 
   // HANDLERS
   const handleEdit = (): void => {
-    void router.push(`/update/products/editar/${pId}`)
+    void router.push(`products/create?pId=${pId}`)
   }
   const handleDown = (event?: React.MouseEvent<HTMLButtonElement>): void => {
     if (event != null) handleDecrement(event)

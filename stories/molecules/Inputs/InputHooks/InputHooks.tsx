@@ -266,7 +266,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         className={styles['label-input']}
         onClick={() => refInput.current?.focus()}
         style={{
-          top: value !== '' ? '-8px' : '20px'
+          top: typeof value === 'string' && value.trim() !== '' ? '-8px' : '20px'
         }}
       >
         {title?.includes('*')

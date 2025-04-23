@@ -1,3 +1,5 @@
+'use client'
+
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -8,10 +10,11 @@ import React, {
 import { IconLogo } from '../../../assets/icons'
 import {
   Button,
+  Icon,
   Overline,
   Text
 } from '../../atoms'
-import { Options } from '../../molecules'
+import { NavigationButtons, Options } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
 import { Portal } from '../Portal'
 import {
@@ -24,6 +27,7 @@ import {
 import { getGlobalStyle } from '../../../utils'
 import packageJson from '../../../package.json'
 import styles from './styles.module.css'
+import Link from 'next/link'
 
 interface MemoAsideProps {
   collapsed?: boolean | undefined
@@ -42,6 +46,7 @@ interface MemoAsideProps {
   setSalesOpen?: Dispatch<SetStateAction<boolean>>
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
+  isElectron = false,
   isMobile = false,
   location = {
     pathname: '/'
@@ -143,6 +148,7 @@ style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
             height: '100%'
           }}>
             <Info>
+              {isElectron && <NavigationButtons />}
               <ButtonGlobalCreate onClick={() => { setShow(!show) }}>
                 Agregar nuevo
               </ButtonGlobalCreate>
@@ -181,9 +187,7 @@ style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
                 ? null
                 : null
               }
-              {pathname &&
                 <h1 className='title_store'>{storeName}</h1>
-              }
               {uState === '1' &&
                 <div className='program_state'>
                   <IconLogo color='var(--color-icons-primary)' size='20px' />

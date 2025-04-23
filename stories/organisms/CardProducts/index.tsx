@@ -59,7 +59,7 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
   return (
     <div ref={setRef} >
       {
-        <WrapperCard loading={loading}>
+        <WrapperCard loading={loading ? true : undefined}>
           {isEdit && (
             <>
               <TooltipCardProduct>

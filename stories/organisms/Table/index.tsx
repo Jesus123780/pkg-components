@@ -41,7 +41,7 @@ export const Table: React.FC<TableProps> = ({
   data,
   pointer,
   renderBody = [],
-  header = true,
+  header = true
 }) => {
   type CurrentColumnState = Record<string, number>
 

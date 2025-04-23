@@ -1,16 +1,14 @@
 import React, { forwardRef } from 'react'
 import styles from './section.module.css'
 
-interface SectionProps {
+interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
   columnWidth: Array<{ width: string }>
   bgRow?: number
   padding?: string
   odd?: boolean
   children: React.ReactNode
 }
-
-// eslint-disable-next-line react/display-name
-export const Section = forwardRef<HTMLTableCellElement, SectionProps>(({
+export const Section = forwardRef<HTMLDivElement, SectionProps>(({
   children,
   columnWidth,
   bgRow,
@@ -23,7 +21,6 @@ export const Section = forwardRef<HTMLTableCellElement, SectionProps>(({
     padding
   }
 
-  // Combine res styles with columnStyles
   const combinedStyles = {
     ...columnStyles,
     ...res.style
@@ -32,13 +29,15 @@ export const Section = forwardRef<HTMLTableCellElement, SectionProps>(({
   const bgClass = bgRow != null ? `sectionBg${bgRow}` : ''
 
   return (
-    <th
+    <div
       className={`${styles.section} ${styles.sectionHover} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles[bgClass]}`}
       ref={ref}
       {...res}
       style={combinedStyles}
     >
       {children}
-    </th>
+    </div>
   )
 })
+
+Section.displayName = 'Section'

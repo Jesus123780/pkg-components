@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { 
-  Button, 
-  Column, 
-  Row, 
+import {
+  Button,
+  Column,
+  Row,
   Text
 } from '../../atoms'
 import { AwesomeModal } from '../../organisms/AwesomeModal'

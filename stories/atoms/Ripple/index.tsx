@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useRef, type ReactNode, type CSSProperties } from 'react'
 import styled from 'styled-components'
 import { IconLoading } from '../../../assets'
@@ -39,7 +41,6 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
     standard = false,
     active,
     type = 'button',
-    widthButton = '100%',
     bgColor,
     color,
     margin,
@@ -84,27 +85,25 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
 
   return (
     <Button
-      active={active}
-      bgColor={bgColor}
-      className={'ripple-button'}
-      color={color}
-      disabled={disabled}
-      family={family}
-      margin={margin}
-      onClick={loading ? () => { } : handleRippleEffect}
-      padding={padding}
-      radius={radius}
-      ref={button}
-      standard={standard}
-      style={{
-        ...style,
-        cursor: loading ? 'not-allowed' : 'pointer',
-        overflow: 'hidden'
-      }}
-      type={type}
-      widthButton={widthButton}
-      {...props}
-    >
+    ref={button}
+    type={type}
+    disabled={disabled}
+    onClick={loading ? () => {} : handleRippleEffect}
+    className='ripple-button'
+    active={active}
+    bgColor={bgColor}
+    color={color}
+    family={family}
+    padding={padding}
+    margin={margin}
+    border={props.border}
+    radius={radius}
+    height={props.height}
+    style={{
+      ...style,
+      cursor: loading ? 'not-allowed' : 'pointer',
+    }}
+  >
       <span id='ripple-button-label'>{label}</span>
       {loading && (
         <LoadingWrapper id='loading'>
@@ -141,7 +140,7 @@ const LoadingWrapper = styled.div`
   }
 `
 
-const Button = styled.button.attrs<{
+const Button = styled.button<{
   padding?: string
   bgColor?: string
   color?: string
@@ -150,26 +149,22 @@ const Button = styled.button.attrs<{
   border?: string
   radius?: string
   height?: string
-}>(({ padding, bgColor, color, family, margin, border, radius, height }) => ({
-  style: {
-    padding: padding ?? '1em',
-    backgroundColor: bgColor ?? 'var(--color-primary-red)',
-    color: color ?? BGColor,
-    fontFamily: family ?? 'PFont-Light',
-    margin: margin ?? undefined,
-    border: border ?? undefined,
-    borderRadius: radius ?? undefined,
-    height: height ?? undefined
-  }
-}))`
+}>`
   &:disabled {
     background-color: ${`${PColor}69`} !important;
   }
   position: relative;
-  width: 100%; /* Se usa en lugar de widthButton para evitar errores */
   max-width: 100%;
   min-width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  padding: ${({ padding }) => padding ?? '1em'};
+  background-color: ${({ bgColor }) => bgColor ?? 'var(--color-primary-red)'};
+  color: ${({ color }) => color ?? BGColor};
+  font-family: ${({ family }) => family ?? 'PFont-Light'};
+  margin: ${({ margin }) => margin ?? '0'};
+  border: ${({ border }) => border ?? 'none'};
+  border-radius: ${({ radius }) => radius ?? '0'};
+  height: ${({ height }) => height ?? 'auto'};
 `

@@ -4,19 +4,12 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import { IconClose } from '../../../assets/icons'
 import { Button } from '../../atoms/Button'
 import { BUTTONS_TEXT, MODAL_SIZES } from './constanst'
-import {
-  Container,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalTitle,
-  Wrapper
-} from './styled'
 import { getGlobalStyle } from '../../../helpers'
+import { Icon, Text } from '../../atoms'
 import styles from './styles.module.css'
+
 interface IPropsAwesomeModal {
   backgroundColor?: string
   title?: string
@@ -46,7 +39,7 @@ interface IPropsAwesomeModal {
   customHeight?: any
   submit?: boolean
   header?: boolean
-  sizeIconClose?: string
+  sizeIconClose?: number
   borderRadius?: string
   onHide?: () => void
   onCancel?: () => void
@@ -70,7 +63,6 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
   keyboard = true,
   footer = true,
   btnCancel = true,
-  openLateral,
   btnConfirm = true,
   children,
   hideOnConfirm = true,
@@ -81,7 +73,7 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
   customHeight = '',
   submit = false,
   header = true,
-  sizeIconClose = '30px',
+  sizeIconClose = 30,
   borderRadius = '.3rem',
   onHide = () => {
   },
@@ -90,7 +82,7 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
   onConfirm = () => {
   }
 }) => {
-  const [state, setState] = useState<boolean | undefined>(show)
+  const [state, setState] = useState<boolean>(Boolean(show))
   const [modal, setModal] = useState<boolean>(false)
   const hide = useCallback(() => {
     setState(false)
@@ -104,23 +96,23 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
   }
 
   useEffect(() => {
-    const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    const handleKeyUp = (e: KeyboardEvent): void => {
       if (e.code === 'Escape') {
         setModal(true)
       }
     }
 
-    if (question && backdrop === 'static' && state && show) {
+    if (question && backdrop === 'static' && state && (show ?? false)) {
       window.addEventListener('keyup', handleKeyUp)
       return () => {
         if (keyboard) window.removeEventListener('keyup', handleKeyUp)
       }
     }
 
-    if (backdrop !== 'static' && keyboard && show) {
+    if (backdrop !== 'static' && keyboard && (show ?? false)) {
       window.addEventListener('keyup', handleKeyUp)
       return () => {
-        window.removeEventListener('keyup', handleKeyUp)
+        window.removeEventListener('keyup', handleKeyUp as EventListener)
       }
     }
 
@@ -129,7 +121,7 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
   }, [keyboard, hide, show, backdrop, question, modal, state])
 
   useEffect(() => {
-    setState(show)
+    return setState(Boolean(show))
   }, [show])
 
   useEffect(() => {
@@ -156,70 +148,97 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
     }
     onConfirm()
   }
-  const onClickBackdrop = () => {
-    hide()
+  const onClickBackdrop = (): void => {
+    return hide()
   }
-   return (
-    <div>AwesomeModal</div>
-    // <Container
-    //   show={show}
-    //   state={state}
-    //   zIndex={zIndex}
-    // >
-    //   <Wrapper onMouseDown={onClickBackdrop}>
-    //     <Modal
-    //       style={{ height: height ?? 'auto', borderRadius: borderRadius ?? undefined }}
-    //       onMouseDown={(e) => {
-    //         return e.stopPropagation()
-    //       }}
-    //       size={size}
-    //       {...(state !== undefined ? { state: state.toString() } : {})}
-    //     >
-    //       {header && (
-    //         <ModalHeader>
-    //           <ModalTitle>{title}</ModalTitle>
-    //           <button
-    //             style={{ backgroundColor: getGlobalStyle('--color-base-transparent'), cursor: 'pointer' }}
-    //             onClick={() => {
-    //               return question ? onShowQuestion() : hide()
-    //             }}
-    //           >
-    //             <IconClose color={getGlobalStyle('--color-background-primary')} size={sizeIconClose} />
-    //           </button>
-    //         </ModalHeader>
-    //       )}
-    //       <ModalBody
-    //         style={{ backgroundColor, borderRadius, display, padding, height: customHeight !== '' ? customHeight : 'calc(100vh - 50px)' }}
-    //       >
-    //         {children}
-    //       </ModalBody>
-    //       {footer && (
-    //         <div className={styles.footer_modal} >
-    //           {btnCancel && (
-    //             <Button
-    //               disabled={disabled}
-    //               onClick={clickCancel}
-    //               type='button'
-    //             >
-    //               {cancel ?? BUTTONS_TEXT.cancel}
-    //             </Button>
-    //           )}
-    //           {btnConfirm && (
-    //             <Button
-    //               primary
-    //               border='primary'
-    //               onClick={clickConfirm}
-    //               type={submit ? 'submit' : 'button'}
-    //             >
-    //               {confirm ?? BUTTONS_TEXT.confirm}
-    //               {iconConfirm}
-    //             </Button>
-    //           )}
-    //         </div>
-    //       )}
-    //     </Modal>
-    //   </Wrapper>
-    // </Container>
+
+  const classNames = [
+    styles.container,
+    (show ?? false) && state ? styles.fadeInFast : '',
+    (show ?? false) && !state ? styles.fadeInSlow : ''
+  ].join(' ')
+
+  const sizeClass = {
+    [MODAL_SIZES.small]: styles.small,
+    [MODAL_SIZES.medium]: styles.medium,
+    [MODAL_SIZES.large]: styles.large
+  }[size as keyof typeof MODAL_SIZES] ?? ''
+
+  return (
+    <div
+    className={classNames}
+    style={{
+      display: (show ?? false) ? 'block' : 'none',
+      zIndex,
+      background: bgColor ?? getGlobalStyle('--color-background-overline')
+    }}
+    >
+      <div className={styles.warper} onMouseDown={onClickBackdrop}>
+        <div
+        className={`${styles.modal} ${sizeClass}`}
+        style={{ height: height ?? 'auto', borderRadius: borderRadius ?? undefined }}
+        onMouseDown={(e) => {
+          return e.stopPropagation()
+        }}
+        >
+        {header && (
+          <div className={styles.modal_header}>
+            <Text className={styles.modal_title} >
+              {title}
+            </Text>
+            <button
+              style={{ backgroundColor: getGlobalStyle('--color-base-transparent'), cursor: 'pointer' }}
+              onClick={() => {
+                return question ? onShowQuestion() : hide()
+              }}
+            >
+              <Icon
+              icon='IconCancel'
+              color={getGlobalStyle('--color-background-primary')}
+              size={sizeIconClose}
+              />
+            </button>
+          </div>
+        )}
+        <div
+          className={styles.modal_body}
+          style={{
+            backgroundColor,
+            borderRadius,
+            display,
+            padding,
+            height: customHeight !== '' ? customHeight : 'calc(100vh - 50px)'
+          }}
+        >
+          {children}
+        </div>
+        {footer && (
+            <div className={styles.footer_modal} >
+              {btnCancel && (
+                <Button
+                  disabled={disabled}
+                  onClick={clickCancel}
+                  type='button'
+                >
+                  {cancel ?? BUTTONS_TEXT.cancel}
+                </Button>
+              )}
+              {btnConfirm && (
+                <Button
+                  primary
+                  border='primary'
+                  onClick={clickConfirm}
+                  type={submit ? 'submit' : 'button'}
+                >
+                  {confirm ?? BUTTONS_TEXT.confirm}
+                  {iconConfirm}
+                </Button>
+              )}
+            </div>
+        )}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -233,7 +252,6 @@ AwesomeModal.propTypes = {
   btnConfirm: PropTypes.bool,
   cancel: PropTypes.string,
   children: PropTypes.any,
-  closeIcon: PropTypes.bool,
   confirm: PropTypes.any,
   customHeight: PropTypes.bool,
   disabled: PropTypes.any,
@@ -252,7 +270,7 @@ AwesomeModal.propTypes = {
   question: PropTypes.bool,
   show: PropTypes.any,
   size: PropTypes.any,
-  sizeIconClose: PropTypes.string,
+  sizeIconClose: PropTypes.number,
   submit: PropTypes.bool,
   timeOut: PropTypes.number,
   title: PropTypes.string,

@@ -178,9 +178,8 @@ export const Options = ({
           <Option>
             <ButtonOption
               onClick={() => {
-                return location.push('/configuration')
+                // return location.push('/configuration')
               }}
-              space
             >
               <span>Configuración</span>
               <Icon
@@ -192,12 +191,12 @@ export const Options = ({
           />
             </ButtonOption>
           </Option>
-          <Option Theme={false}>
-            <ButtonOption onClick={onClickLogout} space>
+          {/* <Option>
+            <ButtonOption onClick={onClickLogout}>
               <span>Cerrar sesión</span>
               <IconLogout color={PColor} size='20px' />
             </ButtonOption>
-          </Option>
+          </Option> */}
         </FloatingBoxTwo>
       </ContainerOption>
     </ContainerOption>

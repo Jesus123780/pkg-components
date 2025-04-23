@@ -1,9 +1,9 @@
+import React, { type FC } from 'react'
 import PropTypes from 'prop-types'
-import React, { FC } from 'react'
 import styles from './ContentQueryCard.module.css'
-import { 
-  IconStore, 
-  IconLogo, 
+import {
+  IconStore,
+  IconLogo,
   PColor
 } from '../../../assets'
 
@@ -42,11 +42,11 @@ export const ContentQueryCard: FC<ContentQueryCardProps> = ({
               title={process.env.BUSINESS_TITLE}
             >
               <IconLogo color={PColor} size='25px' />
-              $ {numberFormat(delivery) || '0.00'}
+              {numberFormat(delivery) || '0.00'}
             </div>
             <div className={styles.cardPrice} title={process.env.BUSINESS_TITLE}>
               <IconStore color={PColor} size='35px' />
-              $ {numberFormat(restaurant) || '0.00'}
+              {numberFormat(restaurant) || '0.00'}
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@ export const ContentQueryCard: FC<ContentQueryCardProps> = ({
             <div className={styles.cardTitle}>Total</div>
           </div>
           <div className={styles.cardTitle}>
-            <span style={{ fontSize: '30px' }}>$ {numberFormat(totalSales) || '0.00'}</span>
+            <span style={{ fontSize: '30px' }}>{numberFormat(totalSales) || '0.00'}</span>
           </div>
         </div>
       </div>

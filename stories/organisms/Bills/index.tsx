@@ -30,12 +30,13 @@ export const Bill = ({
       <h2 className={styles.title} style={{ margin: '0 0 20px 0' }}>{process.env.BUSINESS_TITLE}</h2>
       <div className={styles.columns} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <span style={{ margin: '0 0 20px 0' }}>No dejes de comprar</span>
-        {urlStore &&
+        {/* {urlStore &&
         <QRCode
           size={100}
           value={urlStore}
+
           viewBox={'0 0 256 256'}
-        />}
+        />} */}
       </div>
       <div className={styles.logo}>
         <Image

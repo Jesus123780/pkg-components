@@ -17,10 +17,16 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend
+  Legend,
+  RadialBarChart,
+  Text as TextChart,
+  PolarAngleAxis,
+  RadialBar
 } from 'recharts'
 import { Text } from '../../atoms'
 import { areaConfig, newAreaConfig } from '../ChartComponentLightWeight/chartConfig'
+import { fi } from 'date-fns/locale'
+import { getGlobalStyle } from '../../../helpers'
 
 interface ChartData {
   labels: string[]
@@ -438,6 +444,137 @@ export const StockMovementsChart: FC<StockMovementsChartProps> = ({
           value: 19.10
         }}
       />
+    </div>
+  )
+}
+
+interface KmhGoalChartProps {
+  current: number
+  goal: number
+  size?: number
+  moneyFormat?: boolean
+  numberFormat?: (value: number) => string
+  bgColor?: string // Color del arco de fondo
+  fgColor?: string // Color del arco de progreso
+  strokeWidth?: number // Grosor del arco
+  fontSize?: string // Tamaño de fuente para texto
+  textColor?: string // Color del texto
+  textWeight?: 'normal' | 'bold' | 'bolder' // Peso del texto
+  rotateText?: boolean // Rotar el texto según el gráfico
+  textPosition?: { x: string; y: string } // Personalización de la posición del texto
+  showPercentage?: boolean // Mostrar o no el porcentaje
+  orientation?: 'horizontal' | 'vertical' | 'full' // Orientación del gráfico
+  startAngle?: number // Ángulo desde el que comienza la línea indicadora (0 a 360 grados)
+  reverseDirection?: boolean // Invertir la dirección del gráfico
+  strokeDasharray?: string // Personalización de la línea (opcional)
+}
+
+export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
+  current,
+  goal,
+  size = 300,
+  moneyFormat = false,
+  numberFormat = (value: number) => value.toString(),
+  bgColor = '#eee',
+  fgColor = getGlobalStyle('--color-primary-red'),
+  strokeWidth = 15,
+  fontSize = 'calc(10px + 1vw)',
+  textColor = '#333',
+  textWeight = 'bold',
+  rotateText = false,
+  textPosition = { x: '50%', y: '58%' },
+  showPercentage = true,
+  orientation = 'horizontal', // Default to horizontal
+  startAngle = 180, // Default starting at 180 degrees (top)
+  reverseDirection = false,
+  strokeDasharray = '' // Default to no dash pattern
+}) => {
+  const radius = 100
+  const percentage = Math.min((current / goal) * 100, 100)
+
+  // Calcular el ángulo en base al porcentaje
+  const angle = (percentage / 100) * (orientation === 'full' ? 360 : 180)
+  const adjustedStartAngle = reverseDirection ? startAngle + 180 : startAngle
+  const endAngle = adjustedStartAngle - angle
+
+  const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
+    const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0
+    return {
+      x: centerX + radius * Math.cos(angleInRadians),
+      y: centerY + radius * Math.sin(angleInRadians)
+    }
+  }
+
+  const describeArc = (x: number, y: number, radius: number, startAngle: number, endAngle: number) => {
+    const start = polarToCartesian(x, y, radius, endAngle)
+    const end = polarToCartesian(x, y, radius, startAngle)
+    const largeArcFlag = startAngle - endAngle <= 180 ? '0' : '1'
+
+    return [
+      'M', start.x, start.y,
+      'A', radius, radius, 0, largeArcFlag, 1, end.x, end.y
+    ].join(' ')
+  }
+
+  const transformText = rotateText ? 'rotate(270)' : undefined
+
+  return (
+    <div style={{ width: size, height: size, position: 'relative' }}>
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 240 240"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        {/* Background arc */}
+        <path
+          d={describeArc(120, 120, radius, adjustedStartAngle, 0)}
+          stroke={bgColor}
+          strokeWidth={strokeWidth}
+          rx="10"
+          ry="10"
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray={strokeDasharray} // Optional: Dash pattern
+        />
+        {/* Foreground arc */}
+        <path
+          d={describeArc(120, 120, radius, adjustedStartAngle, endAngle)}
+          stroke={fgColor}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray={strokeDasharray} // Optional: Dash pattern
+        />
+        {/* Percentage text */}
+        {showPercentage && (
+          <text
+            x="50%"
+            y="58%"
+            textAnchor="middle"
+            style={{
+              transform: 'translateY(-20px)'
+            }}
+            fontSize='calc(10px + 1vw)'
+            fill={textColor}
+            fontWeight={textWeight}
+            transform={transformText}
+          >
+            {Math.round(percentage)}%
+          </text>
+        )}
+        {/* Additional text */}
+        <text
+          x={textPosition.x}
+          y={textPosition.y}
+          textAnchor="middle"
+          fontSize={fontSize}
+          fill="#666"
+          transform={transformText}
+        >
+          {moneyFormat ? `${numberFormat(current)} de ${numberFormat(goal)}` : `${current} de ${goal}`}
+        </text>
+      </svg>
     </div>
   )
 }

@@ -2,7 +2,6 @@ import Link from 'next/link'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { PColor } from '../../../assets/colors'
-import { IconLogo, IconSales } from '../../../assets/icons'
 import {
   Column,
   Icon,
@@ -67,14 +66,12 @@ export const Header = ({
       </AwesomeModal>
       <Row alignItems='center'>
         {isMobile && <Burger handleOpenMenu={handleOpenMenu} />}
-        &nbsp;
-        &nbsp;
         <Link href={'/dashboard'}>
-          {/* <IconLogo color={PColor} size={isMobile ? '50px' : '100px'} /> */}
+          <Icon icon='IconLogo' size={100} />
         </Link>
       </Row>
       <CtnItemOps>
-        {/* {!isMobile && <Options
+        {!isMobile && <Options
           countOrders={countOrders}
           error={false}
           errorPush={errorPush}
@@ -86,7 +83,7 @@ export const Header = ({
           pushNotificationSupported={pushNotificationSupported}
           setIsOpenOrder={setIsOpenOrder}
         />
-        } */}
+        }
         <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }}>
           <Icon
             color={getGlobalStyle('--color-primary-red')}

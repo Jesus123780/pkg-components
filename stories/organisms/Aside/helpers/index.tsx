@@ -1,10 +1,20 @@
 'use client'
 
-import React, { Children } from 'react'
+import React, { PropsWithChildren } from 'react'
+import { usePathname } from 'next/navigation'
 import { ActiveLink } from '../../../atoms'
-import { useRouter } from 'next/navigation'
 import styles from './CustomLinkAside.module.css'
 
+/**
+ * Props for the CustomLinkAside component.
+ * @typedef {Object} CustomLinkAsideProps
+ * @property {string} mName - Display name of the link.
+ * @property {string} [mPath] - Path the link navigates to.
+ * @property {number} [mIcon] - Icon identifier.
+ * @property {number} [count] - Optional count badge.
+ * @property {string} [size] - Optional size modifier.
+ * @property {() => void} [onClick] - Optional click handler.
+ */
 interface CustomLinkAsideProps {
   count?: number
   mPath?: string
@@ -13,13 +23,21 @@ interface CustomLinkAsideProps {
   mIcon?: number
   onClick?: () => void
 }
-export const CustomLinkAside: React.FC<CustomLinkAsideProps> = ({
+
+/**
+ * Renders a navigation link with optional icon and active state.
+ *
+ * @param {CustomLinkAsideProps} props - Props for CustomLinkAside.
+ * @returns {JSX.Element}
+ */
+export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> = ({
   mPath = '',
-  mIcon,
-  mName = '',
-  children
+  mIcon = -1,
+  mName,
 }) => {
-  const icon = {
+  const pathname = usePathname()
+
+  const iconMap: Record<number, string> = {
     [-1]: 'IconBoxes',
     1: 'home',
     2: 'IconTicket',
@@ -37,21 +55,18 @@ export const CustomLinkAside: React.FC<CustomLinkAsideProps> = ({
     14: 'IconConfig',
     15: 'IconInventory'
   }
-  const router = useRouter()
 
-  const currentPath = `/${mPath}` === router.asPath
+  const isActive = `/${mPath}` === pathname
 
   return (
-    <>
-          <ActiveLink
-            href={`${mPath}`}
-            className={styles.linkAside}
-            activeClassName={styles.active}
-            name={mName}
-            mIcon={mIcon}
-            currentPath={currentPath}
-            icon={icon}
-            />
-    </>
+    <ActiveLink
+      href={`/${mPath}`}
+      className={styles.linkAside}
+      activeClassName={styles.active}
+      name={mName}
+      mIcon={mIcon}
+      currentPath={isActive}
+      icon={iconMap}
+    />
   )
 }
