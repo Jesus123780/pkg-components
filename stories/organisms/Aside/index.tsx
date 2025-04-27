@@ -10,11 +10,12 @@ import React, {
 import { IconLogo } from '../../../assets/icons'
 import {
   Button,
+  Column,
   Icon,
   Overline,
   Text
 } from '../../atoms'
-import { NavigationButtons, Options } from '../../molecules'
+import { NavigationButtons, Options, ToggleSwitch } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
 import { Portal } from '../Portal'
 import {
@@ -26,11 +27,11 @@ import {
 } from './styled'
 import { getGlobalStyle } from '../../../utils'
 import packageJson from '../../../package.json'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import styles from './styles.module.css'
-import Link from 'next/link'
 
 interface MemoAsideProps {
-  collapsed?: boolean | undefined
+  collapsed?: boolean
   dataStore?: any
   handleClick?: any
   handleOpenDeliveryTime?: any
@@ -44,6 +45,8 @@ interface MemoAsideProps {
   logicalVersion: string
   modules?: any[]
   setSalesOpen?: Dispatch<SetStateAction<boolean>>
+  onDragEnd?: (result: any) => void
+  isElectron?: boolean
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
   isElectron = false,
@@ -66,7 +69,8 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   handleClick = (state: boolean) => { return state },
   handleOpenDeliveryTime = () => { },
   setSalesOpen = (state: boolean) => { return state },
-  setShowComponentModal = (state: boolean) => { return state }
+  setShowComponentModal = (state: boolean) => { return state },
+  onDragEnd = (result: any) => { return result }
 }) => {
   const [show, setShow] = useState(false)
   const [active, setActive] = useState<boolean | number>(false)
@@ -96,7 +100,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   })
 
   useEffect(() => {
-    function handleKeyDown (event: KeyboardEvent): void {
+    function handleKeyDown(event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
         setSalesOpen((prevState: boolean) => !(prevState))
@@ -120,7 +124,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     }
     action[path]?.()
   }
-
+  const [isDragDisabled, setIsDragDisabled] = useState(false)
   return (
     <>
       {isMobile &&
@@ -137,10 +141,10 @@ const MemoAside: React.FC<MemoAsideProps> = ({
         show={show}
         zIndex={getGlobalStyle('--z-index-99999')}
       />}
-<div
-className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
-style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
-        >
+      <div
+        className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
+        style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
+      >
         <Card>
           <div style={{
             overflowY: 'hidden',
@@ -187,7 +191,7 @@ style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
                 ? null
                 : null
               }
-                <h1 className='title_store'>{storeName}</h1>
+              <h1 className='title_store'>{storeName}</h1>
               {uState === '1' &&
                 <div className='program_state'>
                   <IconLogo color='var(--color-icons-primary)' size='20px' />
@@ -196,70 +200,95 @@ style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
               }
             </Info>
             <Router>
-              {modulesArray?.map((module: any, index) => {
-                const subModules = module?.subModules ?? []
-                const existSubModules = Boolean(subModules.length > 0)
-                const onAction = module?.mPath?.startsWith('?')
-                return (
-                  <div key={module.mId} className={styles.containerOption}>
-                    {!existSubModules &&
-                      <CustomLinkAside
-                        count={0}
-                        onClick={() => {
-                          handleClickAction(module.mPath as string)
-                        }}
-                        size={existSubModules ? '.8rem' : '.9rem'}
-                        mPath={onAction === true ? '' : module?.mPath as string}
-                        mIcon={module?.mIcon}
-                        mName={module?.mName}
-                      />
-                    }
-                    {existSubModules &&
-                      <span style={{
-                        cursor: 'pointer',
-                        fontSize: '.8rem',
-                        padding: '10px',
-                        display: 'block',
-                        fontWeight: '600',
-                        color: '#bebdbe'
-                      }}>
-                        {module.mName}
-                      </span>
-                    }
-                     <div>
-                      {existSubModules &&
-                        <Options
-                          active={index === active}
-                          handleClick={() => { handleMenu(index) }}
-                          index={active}
-                          icon='IconTicket'
-                          size='.9rem'
-                          label={module.mName}
-                          path={`/${module.mPath}`}
-                        >
-                          {subModules?.map((item: any) => {
-                            return (
-                              <div key={item.smId}
-                                style={{
-                                  marginLeft: '20px',
-                                  width: '90%',
-                                  marginTop: '10px'
-                                }} >
-                                <CustomLinkAside
-                                  size='.8rem'
-                                  mPath={item?.smPath}
-                                  mIcon={-1}
-                                  mName={item?.smName}
-                                />
-                              </div>
-                            )
-                          })}
+              <DragDropContext onDragEnd={onDragEnd} >
+                <Droppable droppableId="modules" direction="vertical">
+                  {(provided) => (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      className={styles.modulesContainer}
+                    >
+                      {modulesArray?.map((module, index) => {
+                        const subModules = module?.subModules ?? []
+                        const existSubModules = Boolean(subModules.length > 0)
+                        const onAction = module?.mPath?.startsWith('?')
 
-                        </Options>}
+                        return (
+                          <Draggable isDragDisabled={!isDragDisabled} key={module.mId} draggableId={module.mId} index={index}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className={styles.containerOption}
+                              >
+                                {!existSubModules &&
+                                  <CustomLinkAside
+                                    count={0}
+                                    onClick={() => {
+                                      handleClickAction(module.mPath as string)
+                                    }}
+                                    size={existSubModules ? '.8rem' : '.9rem'}
+                                    mPath={onAction === true ? '' : module?.mPath as string}
+                                    mIcon={module?.mIcon}
+                                    mName={module?.mName}
+                                  />
+                                }
+                                {existSubModules &&
+                                  <span style={{
+                                    cursor: 'pointer',
+                                    fontSize: '.8rem',
+                                    padding: '10px',
+                                    display: 'block',
+                                    fontWeight: '600',
+                                    color: '#bebdbe'
+                                  }}>
+                                    {module.mName}
+                                  </span>
+                                }
+                                <div>
+                                  {existSubModules &&
+                                    <Options
+                                      active={index === active}
+                                      handleClick={() => { handleMenu(index) }}
+                                      index={active}
+                                      icon='IconTicket'
+                                      size='.9rem'
+                                      label={module.mName}
+                                      path={`/${module.mPath}`}
+                                    >
+                                      {subModules?.map((item: any) => {
+                                        return (
+                                          <div key={item.smId} style={{ marginLeft: '20px', width: '90%', marginTop: '10px' }} >
+                                            <CustomLinkAside
+                                              size='.8rem'
+                                              mPath={item?.smPath}
+                                              mIcon={-1}
+                                              mName={item?.smName}
+                                            />
+                                          </div>
+                                        )
+                                      })}
+                                    </Options>
+                                  }
+                                </div>
+                              </div>
+                            )}
+                          </Draggable>
+                        )
+                      })}
+                      {provided.placeholder}
                     </div>
-                  </div>
-                )
-              })}
+                  )}
+                </Droppable>
+              </DragDropContext>
+              <ToggleSwitch
+                checked={isDragDisabled}
+                id='edit_modules'
+                label='Editar módulos'
+                onChange={() => setIsDragDisabled(!isDragDisabled)}
+                successColor='green'
+              />
             </Router>
           </div>
           <Text color='gray-dark'>
@@ -277,4 +306,11 @@ style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
   )
 }
 
-export const Aside = memo(MemoAside)
+export const Aside = memo(MemoAside, (prevProps, nextProps) => {
+  return prevProps.collapsed === nextProps.collapsed &&
+    prevProps.dataStore?.storeName === nextProps.dataStore?.storeName &&
+    prevProps.location?.pathname === nextProps.location?.pathname &&
+    prevProps.salesOpen === nextProps.salesOpen &&
+    prevProps.setSalesOpen === nextProps.setSalesOpen &&
+    prevProps.modules === nextProps.modules
+})

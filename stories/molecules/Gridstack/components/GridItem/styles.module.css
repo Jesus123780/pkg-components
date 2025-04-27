@@ -1,0 +1,22 @@
+.container {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #d1d5db; /* gray-300 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: grab;
+  }
+  
+  .container:active {
+    cursor: grabbing;
+  }
+  
+  .resizeHandle {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #3b82f6; /* blue-500 */
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+  }
+  

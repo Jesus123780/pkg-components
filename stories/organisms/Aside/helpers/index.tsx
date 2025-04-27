@@ -1,6 +1,7 @@
 'use client'
 
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
+import type { PropsWithChildren } from 'react'
 import { usePathname } from 'next/navigation'
 import { ActiveLink } from '../../../atoms'
 import styles from './CustomLinkAside.module.css'
@@ -33,7 +34,7 @@ interface CustomLinkAsideProps {
 export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> = ({
   mPath = '',
   mIcon = -1,
-  mName,
+  mName
 }) => {
   const pathname = usePathname()
 

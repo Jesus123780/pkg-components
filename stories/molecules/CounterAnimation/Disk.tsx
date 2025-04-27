@@ -6,7 +6,8 @@ interface DiskProps {
   prevNumber: string
   isIncreasing: boolean
   level: boolean
-  size: number
+  size: string
+  initialValue: number
   unit: 'px' | 'em' | 'rem'
 }
 
@@ -27,36 +28,42 @@ const getDiskNumbers = (
     }
   }
 
+  // Asegurarse de siempre incluir el último número para mostrarlo claramente al final
+  range.push(to % 10)
+
   return level ? [to % 10] : range
 }
-
-let firstLoad = true
 
 const MemoDisk: FC<DiskProps> = ({
   delay,
   size,
   unit,
   prevNumber,
+  initialValue,
   number,
   isIncreasing,
   level
 }) => {
-  const value = parseInt(number, 10)
+  const [value, setValue] = useState(initialValue)
   const prevValue = parseInt(prevNumber, 10)
 
   const [offsetY, setOffsetY] = useState(0)
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    firstLoad = false
-
+    if (isFirstLoad) {
+      setIsFirstLoad(false)
+      return
+    }
+    setValue(parseInt(number, 10))
     const diskValues = getDiskNumbers(prevValue, value, isIncreasing, Boolean(level))
     const finalOffset = -size * (diskValues.length - 1)
 
     let start: number | null = null
-    const duration = 400 // ms
+    const duration = delay // ms
 
-    const animate = (timestamp: number) => {
+    const animate = (timestamp: number): void => {
       if (start === null) start = timestamp
       const elapsed = timestamp - start
 
@@ -72,7 +79,7 @@ const MemoDisk: FC<DiskProps> = ({
     }
 
     requestAnimationFrame(animate)
-  }, [value, prevValue, size])
+  }, [value, prevValue, size, delay, isFirstLoad])
 
   const diskValues = getDiskNumbers(prevValue, value, isIncreasing, Boolean(level))
 
@@ -81,7 +88,7 @@ const MemoDisk: FC<DiskProps> = ({
       style={{
         overflow: 'hidden',
         height: `${size}${unit}`,
-        width: `${size * 0.8}${unit}`,
+        width: `${Number(size) * 0.6}${unit}`,
         display: 'inline-block'
       }}
     >
@@ -92,25 +99,29 @@ const MemoDisk: FC<DiskProps> = ({
           transition: 'transform 0.4s ease-out',
           display: 'flex',
           flexDirection: 'column',
+          width: 'min-content',
           alignItems: 'center'
         }}
       >
-        {diskValues.map((d, i) => (
-          <span
-            key={`${d}-${i}`}
-            style={{
-              fontSize: `${size}${unit}`,
-              lineHeight: 1,
-              height: `${size}${unit}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontVariantNumeric: 'tabular-nums'
-            }}
-          >
-            {d}
-          </span>
-        ))}
+        {diskValues.map((d, i) => {
+          return (
+            <span
+              key={`${d}-${i}`}
+              style={{
+                fontSize: `${size}${unit}`,
+                height: `${size}${unit}`,
+                lineHeight: '0.9',
+                width: 'min-content',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontVariantNumeric: 'tabular-nums'
+              }}
+            >
+              {d}
+            </span>
+          )
+        })}
       </div>
     </div>
   )
@@ -118,4 +129,8 @@ const MemoDisk: FC<DiskProps> = ({
 
 const easeOutCubic = (t: number): number => --t * t * t + 1
 
-export const Disk = memo(MemoDisk)
+export const Disk = memo(MemoDisk, (prevProps, nextProps) => {
+  return (
+    prevProps.number === nextProps.number
+  )
+})

@@ -472,7 +472,7 @@ interface KmhGoalChartProps {
 export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
   current,
   goal,
-  size = 300,
+  size = 250,
   moneyFormat = false,
   numberFormat = (value: number) => value.toString(),
   bgColor = '#eee',
@@ -560,7 +560,7 @@ export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
             fontWeight={textWeight}
             transform={transformText}
           >
-            {Math.round(percentage)}%
+            {!isNaN(percentage) && percentage > 0 ? `${Math.round(percentage)}%` : '0%'}
           </text>
         )}
         {/* Additional text */}

@@ -8,10 +8,11 @@ const { getArrayOfNumber } = utils
 interface Props {
   number: number
   size: string
+  numberformat?: boolean
 }
 
-function getSize (fontSize: string): [string, string] {
-  if (!fontSize) {
+function getSize (fontSize: string): [string, 'px' | 'em' | 'rem'] {
+  if (fontSize === '') {
     throw new Error('Missing param: [fontSize]')
   }
   const [size] = fontSize.match(/^[0-9]*/)
@@ -22,9 +23,13 @@ function getSize (fontSize: string): [string, string] {
   return [size, unit]
 }
 
-export const CounterAnimation: FC<Props> = ({ number, size }) => {
-  const { numbers } = getArrayOfNumber(number)
-  const prevNumbersRef = useRef(null)
+export const MemoCounterAnimation: FC<Props> = ({
+  number,
+  numberformat = true,
+  size
+}) => {
+  const { numbers } = getArrayOfNumber({ number, numberformat })
+  const prevNumbersRef = useRef<string[] | null>(null)
 
   const [fontSize, unit] = getSize(size)
 
@@ -37,34 +42,57 @@ export const CounterAnimation: FC<Props> = ({ number, size }) => {
       ? parseInt(prevNumbersRef.current.join(''), 10) < number
       : number > 0
 
+  const prevNumbersCeros = number.toString().length > 1
+    ? '0'.repeat(number.toString().length - 1) + '0'
+    : '0'
+
   return (
     <div
       style={{
         display: 'flex',
-        alignContent: 'flex-end',
+        alignContent: 'center',
         justifyContent: 'center',
         height: `${fontSize}${unit}`,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        width: 'min-content'
       }}
     >
       {numbers.map((number, i) => {
+      console.log("🚀 ~ {numbers.map ~ number:", number)
+
         const num = parseInt(number, 10)
-        const prevNumString = prevNumbersRef.current
-          ? prevNumbersRef.current[i]
-            ? prevNumbersRef.current[i]
-            : '0'
-          : '0'
+        const prevNumString = prevNumbersRef.current?.[i] ?? '0'
         const prevNum = parseInt(prevNumString, 10)
         const isSomethingZero = num === 0 || prevNum === 0
-        return (
+        const withSeparator = number === ',' || number === '.'
+
+        return withSeparator
+          ? (
+          <span
+            key={`${number}-${i}`}
+            style={{
+              fontSize: `${fontSize}${unit}`,
+              height: `${fontSize}${unit}`,
+              lineHeight: '0.9',
+              width: 'min-content',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {number}
+          </span>
+            )
+
+          : (
           <Disk
-            // 10 -> 9 -> 8 has a problem because of key
+            initialValue={Number(prevNumbersCeros)}
             key={
               prevNum !== num
                 ? `${number}-${i}`
                 : `${number}-${i}-${Math.random()}`
             }
-            delay={500 + i * 100}
+            delay={200 + i * 100}
             size={fontSize}
             unit={unit}
             number={number}
@@ -72,10 +100,14 @@ export const CounterAnimation: FC<Props> = ({ number, size }) => {
             isIncreasing={isSomethingZero ? isTotalIncreasing : prevNum < num}
             level={prevNum - num >= 2}
           />
-        )
+            )
       })}
     </div>
   )
 }
 
-CounterAnimation.displayName = 'Counter'
+MemoCounterAnimation.displayName = 'Counter'
+
+export const CounterAnimation = React.memo(MemoCounterAnimation, (prevProps, nextProps) => {
+  return prevProps.number === nextProps.number
+})

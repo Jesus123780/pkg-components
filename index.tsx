@@ -33,3 +33,10 @@ export * from '@dnd-kit/core'
 // colors choices
 export * from './scripts/tokens/choices'
 export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+
+
+// gridstack styles
+import 'gridstack/dist/gridstack.css'
+import "gridstack/dist/gridstack.min.css";
+export type { GridStackOptions, GridStackWidget } from 'gridstack'
+export { GridStack } from 'gridstack'

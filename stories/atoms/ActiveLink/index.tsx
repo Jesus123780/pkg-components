@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { Icon } from '../Icon'
 import { getGlobalStyle } from '../../../helpers'
+import { Row } from '../Row'
 
 export interface ActiveLinkProps {
   activeClassName: string
@@ -28,14 +29,18 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
 }) => {
   return (
     <>
-     <Link href={href} className={`${className} ${activeClassName}`}>
-     <Icon
-        size={20}
-        width={20}
-        color={getGlobalStyle(currentPath === true ? '--color-icons-primary' : '--color-icons-gray')}
-        height={20}
-        icon={mIcon !== undefined ? icon[String(mIcon)] : icon['-1']}
-      />
+      <Link href={href} className={`${className} ${activeClassName}`} style={{
+        color: getGlobalStyle(currentPath === true ? '--color-icons-primary' : '--color-icons-gray')
+      }}>
+        <Row style={{ marginRight: '10px', width: 'min-content' }}>
+          <Icon
+            size={20}
+            width={20}
+            color={getGlobalStyle(currentPath === true ? '--color-icons-primary' : '--color-icons-gray')}
+            height={20}
+            icon={mIcon !== undefined ? icon[String(mIcon)] : icon['-1']}
+          />
+        </Row>
         {name}
       </Link>
     </>
