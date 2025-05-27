@@ -13,25 +13,33 @@ import {
   Column,
   Icon,
   Overline,
+  Row,
   Text
 } from '../../atoms'
-import { NavigationButtons, Options, ToggleSwitch } from '../../molecules'
+import {
+  NavigationButtons,
+  Options,
+  ToggleSwitch
+} from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
 import { Portal } from '../Portal'
 import {
-  ButtonGlobalCreate,
-  Card,
   Info,
-  LeftNav,
-  Router
+  LeftNav
 } from './styled'
 import { getGlobalStyle } from '../../../utils'
 import packageJson from '../../../package.json'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable
+} from 'react-beautiful-dnd'
 import styles from './styles.module.css'
+import Link from 'next/link'
 
 interface MemoAsideProps {
   collapsed?: boolean
+  isColapsedMenu?: boolean
   dataStore?: any
   handleClick?: any
   handleOpenDeliveryTime?: any
@@ -59,22 +67,22 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   setCollapsed,
   salesOpen,
   collapsed = false,
+  isColapsedMenu = false,
   dataStore = {
     storeName: '',
     idStore: '',
     uState: 1
   },
-  loading = false,
   modules = [],
   handleClick = (state: boolean) => { return state },
   handleOpenDeliveryTime = () => { },
   setSalesOpen = (state: boolean) => { return state },
+  handleColapsedMenu = (state: boolean) => { return state },
   setShowComponentModal = (state: boolean) => { return state },
   onDragEnd = (result: any) => { return result }
 }) => {
   const [show, setShow] = useState(false)
   const [active, setActive] = useState<boolean | number>(false)
-  const pathname = location?.pathname === '/dashboard/[...name]'
   interface DataStore {
     storeName: string
     idStore: string
@@ -143,19 +151,40 @@ const MemoAside: React.FC<MemoAsideProps> = ({
       />}
       <div
         className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
-        style={isMobile ? { zIndex: getGlobalStyle('--z-index-99999') } : {}}
+        style={isMobile
+          ? {
+            width: isColapsedMenu ? '45px' : '80%',
+            zIndex: getGlobalStyle('--z-index-99999')
+          }
+          : {}}
       >
-        <Card>
+        <Column className={styles['sidebar-header-container']}>
           <div style={{
             overflowY: 'hidden',
             overflowX: 'hidden',
             height: '100%'
           }}>
             <Info>
+              <Row className={styles['sidebar-header']}>
+                <Column className={styles['sidebar-header-column']}>
+                  {null}
+                </Column>
+                <Button
+                  className={styles['sidebar-header-button']}
+                  styles={{
+                    border: 'none',
+                    padding: getGlobalStyle('--spacing-lg')
+                  }}
+                  onClick={() => { handleColapsedMenu() }}
+                >
+                  <Icon
+                    color={getGlobalStyle('--color-icons-gray')}
+                    icon='IconAside'
+                    size={20}
+                  />
+                </Button>
+              </Row>
               {isElectron && <NavigationButtons />}
-              <ButtonGlobalCreate onClick={() => { setShow(!show) }}>
-                Agregar nuevo
-              </ButtonGlobalCreate>
               <Portal>
                 <LeftNav show={show && salesOpen === false}>
                   {location?.pathname !== '/products' &&
@@ -187,19 +216,28 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   </Info>
                 </LeftNav>
               </Portal>
-              {(loading)
-                ? null
-                : null
+              {!isColapsedMenu &&
+                typeof dataStore?.storeName === 'string' && dataStore.storeName.trim() !== '' &&
+                typeof dataStore?.idStore === 'string' && dataStore.idStore.trim() !== '' &&
+                <Link href={`/dashboard/${dataStore.storeName.replace(/ /g, '-')}/${dataStore.idStore}`}>
+                  <h1 className='title_store'>
+                    {storeName}
+                  </h1>
+                </Link>
               }
-              <h1 className='title_store'>{storeName}</h1>
               {uState === '1' &&
                 <div className='program_state'>
                   <IconLogo color='var(--color-icons-primary)' size='20px' />
                   <h3 className='sub_title_store'>En pausa programada</h3>
                 </div>
               }
+              {!isColapsedMenu &&
+                <Button onClick={() => { setShow(!show) }} className={styles.button_global_create}>
+                  Agregar nuevo
+                </Button>
+              }
             </Info>
-            <Router>
+            <Column className={styles['sidebar-header-router']}>
               <DragDropContext onDragEnd={onDragEnd} >
                 <Droppable droppableId="modules" direction="vertical">
                   {(provided) => (
@@ -228,13 +266,14 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                     onClick={() => {
                                       handleClickAction(module.mPath as string)
                                     }}
+                                    hiddenTextLink={isColapsedMenu}
                                     size={existSubModules ? '.8rem' : '.9rem'}
                                     mPath={onAction === true ? '' : module?.mPath as string}
                                     mIcon={module?.mIcon}
                                     mName={module?.mName}
                                   />
                                 }
-                                {existSubModules &&
+                                {(existSubModules && !isColapsedMenu) &&
                                   <span style={{
                                     cursor: 'pointer',
                                     fontSize: '.8rem',
@@ -247,7 +286,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                   </span>
                                 }
                                 <div>
-                                  {existSubModules &&
+                                  {(existSubModules && !isColapsedMenu) &&
                                     <Options
                                       active={index === active}
                                       handleClick={() => { handleMenu(index) }}
@@ -285,32 +324,27 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               <ToggleSwitch
                 checked={isDragDisabled}
                 id='edit_modules'
-                label='Editar módulos'
+                label={isColapsedMenu ? '' : 'Editar módulos'}
                 onChange={() => setIsDragDisabled(!isDragDisabled)}
                 successColor='green'
               />
-            </Router>
+            </Column>
           </div>
-          <Text color='gray-dark'>
-            version: {version}
-          </Text>
-          <Text color='gray-dark'>
-            UI: {packageJson.version}
-          </Text>
-          <Text color='gray-dark'>
-            logical: {logicalVersion}
-          </Text>
-        </Card>
+          <Column className={styles['sidebar-footer']} style={isColapsedMenu ? { display: 'none' } : {}}>
+            <Text color='gray-dark'>
+              version: {version}
+            </Text>
+            <Text color='gray-dark'>
+              UI: {packageJson.version}
+            </Text>
+            <Text color='gray-dark'>
+              logical: {logicalVersion}
+            </Text>
+          </Column>
+        </Column>
       </div>
     </>
   )
 }
 
-export const Aside = memo(MemoAside, (prevProps, nextProps) => {
-  return prevProps.collapsed === nextProps.collapsed &&
-    prevProps.dataStore?.storeName === nextProps.dataStore?.storeName &&
-    prevProps.location?.pathname === nextProps.location?.pathname &&
-    prevProps.salesOpen === nextProps.salesOpen &&
-    prevProps.setSalesOpen === nextProps.setSalesOpen &&
-    prevProps.modules === nextProps.modules
-})
+export const Aside = memo(MemoAside)

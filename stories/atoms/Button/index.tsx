@@ -17,7 +17,7 @@ export interface ButtonProps {
   disabled?: boolean
   children?: React.ReactNode
   styles?: React.CSSProperties
-  className?: string // Nuevo prop para className
+  className?: React.HTMLAttributes<HTMLButtonElement>['className']
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
@@ -35,7 +35,7 @@ export const Button: React.FC<ButtonProps> = ({
   styles = {},
   className = '', // Default vacío
   type = '',
-  onClick = () => {},
+  onClick = () => { },
   ...res
 }) => {
   const buttonStyle = {
@@ -51,6 +51,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      type={type as 'submit' | 'reset' | 'button'}
       disabled={disabled}
       className={classNames(
         style.button,
@@ -81,11 +82,11 @@ export const Button: React.FC<ButtonProps> = ({
           loading
             ? { opacity: 0 }
             : {
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                display: 'flex'
-              }
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              display: 'flex'
+            }
         }
       >
         {children}

@@ -13,7 +13,7 @@ export const DropdownMenuHeader = ({
     <section className={styles.container}>
       <header
         className={styles.menuHeader}
-        onClick={() => {return setIsOpen(!isOpen)}}
+        onClick={() => { return setIsOpen(!isOpen) }}
       >
         {index} {!isOpen ? <IconArrowBottom size={15} /> : <IconArrowTop size={15} />}
       </header>

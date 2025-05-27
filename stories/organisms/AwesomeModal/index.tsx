@@ -117,7 +117,7 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
     }
 
     // Cleanup for other cases
-    return () => {}
+    return () => { }
   }, [keyboard, hide, show, backdrop, question, modal, state])
 
   useEffect(() => {
@@ -166,53 +166,53 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
 
   return (
     <div
-    className={classNames}
-    style={{
-      display: (show ?? false) ? 'block' : 'none',
-      zIndex,
-      background: bgColor ?? getGlobalStyle('--color-background-overline')
-    }}
+      className={classNames}
+      style={{
+        display: (show ?? false) ? 'block' : 'none',
+        zIndex,
+        background: bgColor ?? getGlobalStyle('--color-background-overline')
+      }}
     >
       <div className={styles.warper} onMouseDown={onClickBackdrop}>
         <div
-        className={`${styles.modal} ${sizeClass}`}
-        style={{ height: height ?? 'auto', borderRadius: borderRadius ?? undefined }}
-        onMouseDown={(e) => {
-          return e.stopPropagation()
-        }}
-        >
-        {header && (
-          <div className={styles.modal_header}>
-            <Text className={styles.modal_title} >
-              {title}
-            </Text>
-            <button
-              style={{ backgroundColor: getGlobalStyle('--color-base-transparent'), cursor: 'pointer' }}
-              onClick={() => {
-                return question ? onShowQuestion() : hide()
-              }}
-            >
-              <Icon
-              icon='IconCancel'
-              color={getGlobalStyle('--color-background-primary')}
-              size={sizeIconClose}
-              />
-            </button>
-          </div>
-        )}
-        <div
-          className={styles.modal_body}
-          style={{
-            backgroundColor,
-            borderRadius,
-            display,
-            padding,
-            height: customHeight !== '' ? customHeight : 'calc(100vh - 50px)'
+          className={`${styles.modal} ${sizeClass}`}
+          style={{ height: height ?? 'auto', borderRadius: borderRadius ?? undefined }}
+          onMouseDown={(e) => {
+            return e.stopPropagation()
           }}
         >
-          {children}
-        </div>
-        {footer && (
+          {header && (
+            <div className={styles.modal_header}>
+              <Text className={styles.modal_title} >
+                {title}
+              </Text>
+              <button
+                style={{ backgroundColor: getGlobalStyle('--color-base-transparent'), cursor: 'pointer' }}
+                onClick={() => {
+                  return question ? onShowQuestion() : hide()
+                }}
+              >
+                <Icon
+                  icon='IconCancel'
+                  color={getGlobalStyle('--color-background-primary')}
+                  size={sizeIconClose}
+                />
+              </button>
+            </div>
+          )}
+          <div
+            className={styles.modal_body}
+            style={{
+              backgroundColor,
+              borderRadius,
+              display,
+              padding,
+              height: customHeight !== '' ? customHeight : 'calc(100vh - 50px)'
+            }}
+          >
+            {children}
+          </div>
+          {footer && (
             <div className={styles.footer_modal} >
               {btnCancel && (
                 <Button
@@ -235,7 +235,7 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
                 </Button>
               )}
             </div>
-        )}
+          )}
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
 .text {
-    font-size: var(--font-size-base);
-    color: var(--color-neutral-black);
-    letter-spacing: var(--letter-spacing-normal);
-    font-weight: var(--font-weight-normal);
-    font-family: 'PFont-Regular', sans-serif;
+  font-size: var(--font-size-base);
+  color: var(--color-neutral-black);
+  letter-spacing: var(--letter-spacing-normal);
+  font-weight: var(--font-weight-normal);
+  font-family: 'PFont-Regular', sans-serif;
 }
 
 .color-default {
@@ -14,9 +14,11 @@
   color: var(--color-feedback-success-light);
 
 }
+
 .color-gray-dark {
   color: var(--color-neutral-gray-dark);
 }
+
 .font-regular {
   font-family: 'PFont-Regular';
 }
@@ -82,19 +84,19 @@
 }
 
 .size-sm {
-    font-size: var(--font-size-sm);
+  font-size: var(--font-size-sm);
 }
 
 .size-md {
-    font-size: var(--font-size-md);
+  font-size: var(--font-size-md);
 }
 
 .size-lg {
-    font-size: var(--font-size-lg);
+  font-size: var(--font-size-lg);
 }
 
 .size-md2 {
-    font-size: var(--font-size-titles-md2);
+  font-size: var(--font-size-titles-md2);
 }
 
 .size-xs {
@@ -133,6 +135,10 @@
   font-size: var(--font-size-10xl);
 }
 
+.size-xxl {
+  font-size: var(--font-size-titles-2xl);
+}
+
 
 /* Alturas de línea */
 .line-height-none {
@@ -158,6 +164,7 @@
 .line-height-lg {
   line-height: var(--line-height-lg);
 }
+
 .line-height-xl {
   line-height: var(--line-height-xl);
 }

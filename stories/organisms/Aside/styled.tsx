@@ -1,18 +1,13 @@
 import link from 'next/link'
 import styled, { css } from 'styled-components'
 import {
-  BColor,
-  BGColor,
-  PColor,
-  PLVColor,
-  SFVColor
+    BColor,
+    BGColor,
+    PColor,
+    PLVColor,
+    SFVColor
 } from '../../../assets/colors'
 
-export const Router = styled.div`
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 75%;
-`
 export const CtnAnchor = styled(link)`
     box-sizing: border-box;
     font-size: 100%;
@@ -35,7 +30,7 @@ export const CtnAnchor = styled(link)`
     border-bottom: 1px solid #edf2f932;
 `
 interface LeftNavProps {
-  show: boolean
+    show: boolean
 }
 export const LeftNav = styled.div<LeftNavProps>`
     display: grid;
@@ -43,7 +38,6 @@ export const LeftNav = styled.div<LeftNavProps>`
     grid-template-columns: 50% repeat(auto-fill, 50%);
     position: absolute;
     background-color: ${BGColor};
-    transition: all 200ms ease 0s;
     background-color: var(--color-base-white);
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
     z-index: var(--z-index-99999);
@@ -82,33 +76,7 @@ export const LeftNav = styled.div<LeftNavProps>`
     `
     }}
 `
-export const ButtonGlobalCreate = styled.button`
-    border-radius: 20px;
-    position: relative;
-    min-width: 100px;
-    width: 100%;
-    padding: 0px 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    border: 2px solid ${PColor};
-    color: ${BColor};
-    height: 30px;
-    font-size: var(--font-size-base);
-    cursor: pointer;
-    margin: 10px auto;
-    transition: 0.2s;
-    background-color: transparent; 
-    &:hover {
-        box-shadow: rgb(232 137 137) 0px 0px 0px 2px;
-    }
-    &:active{
-        transform: scale(0.9);
-        box-shadow: rgb(210 5 5) 0px 0px 0px 2px;
 
-    }
-`
 export const Info = styled.div`
     background-color: var(--color-base-white); 
     display: flex;

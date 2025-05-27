@@ -1,8 +1,10 @@
-import PropTypes from 'prop-types'
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { AlertContent } from './AlertContent'
+import { AlertContentProps } from './types'
 
-export const AlertBox = ({ err }) => {
+export const AlertBox: React.FC<AlertContentProps> = ({ err }) => {
   const [closed, setClosed] = useState(false)
 
   useEffect(() => {
@@ -23,15 +25,7 @@ export const AlertBox = ({ err }) => {
         return setClosed(true)
       }}
     >
-      {/* <AlertContent closed={closed} err={err} /> */}
+      <AlertContent closed={closed} err={err} />
     </div>
   )
-}
-
-AlertBox.propTypes = {
-  err: PropTypes.shape({
-    color: PropTypes.string,
-    duration: PropTypes.number,
-    message: PropTypes.string
-  })
 }

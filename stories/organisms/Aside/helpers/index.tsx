@@ -20,6 +20,7 @@ interface CustomLinkAsideProps {
   count?: number
   mPath?: string
   mName: string
+  hiddenTextLink?: boolean
   size?: string
   mIcon?: number
   onClick?: () => void
@@ -34,7 +35,8 @@ interface CustomLinkAsideProps {
 export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> = ({
   mPath = '',
   mIcon = -1,
-  mName
+  mName,
+  hiddenTextLink = false
 }) => {
   const pathname = usePathname()
 
@@ -65,6 +67,7 @@ export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> 
       className={styles.linkAside}
       activeClassName={styles.active}
       name={mName}
+      hiddenTextLink={hiddenTextLink}
       mIcon={mIcon}
       currentPath={isActive}
       icon={iconMap}

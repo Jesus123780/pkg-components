@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, type FC } from 'react'
+import React, { useEffect, useRef, useState, type FC } from 'react'
 import PropTypes from 'prop-types'
 import { choices } from '../../../scripts/tokens/choices'
 import { createChart, LineStyle, CrosshairMode, type LineWidth } from 'lightweight-charts'
@@ -87,7 +87,7 @@ const dataTest: ChartData = {
 
 let width: number, height: number, gradient: CanvasGradient
 
-function getGradient (ctx: CanvasRenderingContext2D, chartArea: any) {
+function getGradient(ctx: CanvasRenderingContext2D, chartArea: any) {
   const chartWidth = chartArea.right - chartArea.left
   const chartHeight = chartArea.bottom - chartArea.top
 
@@ -467,6 +467,7 @@ interface KmhGoalChartProps {
   startAngle?: number // Ángulo desde el que comienza la línea indicadora (0 a 360 grados)
   reverseDirection?: boolean // Invertir la dirección del gráfico
   strokeDasharray?: string // Personalización de la línea (opcional)
+  ref?: React.RefObject<HTMLDivElement>
 }
 
 export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
@@ -487,7 +488,8 @@ export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
   orientation = 'horizontal', // Default to horizontal
   startAngle = 180, // Default starting at 180 degrees (top)
   reverseDirection = false,
-  strokeDasharray = '' // Default to no dash pattern
+  strokeDasharray = '', // Default to no dash pattern
+  ref
 }) => {
   const radius = 100
   const percentage = Math.min((current / goal) * 100, 100)
@@ -519,7 +521,7 @@ export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
   const transformText = rotateText ? 'rotate(270)' : undefined
 
   return (
-    <div style={{ width: size, height: size, position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative' }} ref={ref}>
       <svg
         width="100%"
         height="100%"
@@ -569,6 +571,7 @@ export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
           y={textPosition.y}
           textAnchor="middle"
           fontSize={fontSize}
+
           fill="#666"
           transform={transformText}
         >

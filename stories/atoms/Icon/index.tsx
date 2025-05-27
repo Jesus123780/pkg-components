@@ -89,7 +89,8 @@ import {
   IconDinner,
   IconSoup,
   IconUpRightArrow,
-  IconDownRightArrow
+  IconDownRightArrow,
+  IconAside
 } from '../../../assets'
 
 type IconMap = Record<string, FC<IconProps>>
@@ -185,6 +186,7 @@ export const Icons: IconMap = {
   IconNoodles,
   IconLunch,
   IconSoup,
+  IconAside,
   IconDinner,
   IconGoogleFullColor,
   IconArrowLeft,

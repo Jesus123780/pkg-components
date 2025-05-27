@@ -38,7 +38,7 @@ export const ContainerBurger = styled.div`
     align-items: center;
     flex-direction: column;
     span {
-      background-color: ${ PColor };
+      background-color: ${PColor};
       width: 30px;
       height: 2px;
       margin: 4px;

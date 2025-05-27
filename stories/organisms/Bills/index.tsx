@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import PropTypes from 'prop-types'
 import React from 'react'
-import QRCode from 'react-qr-code'
+// import QRCode from 'react-qr-code'
 import styles from './Bill.module.css'
 /**
  * Componente Ticket

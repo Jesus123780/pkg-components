@@ -1,22 +1,20 @@
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { PColor } from '../../../assets/colors'
 import {
   Column,
+  Divider,
   Icon,
   Row,
+  Button,
   Text
 } from '../../atoms'
 import { AwesomeModal } from '../../organisms'
 import { Options } from '../../organisms/HeaderOptions'
 import { Burger } from './Burger'
-import {
-  CtnItemOps,
-  HeaderC,
-  HeaderWrapperButton
-} from './styled'
 import { getGlobalStyle } from '../../../helpers'
+import { MODAL_SIZES } from '../AwesomeModal/constanst'
+import styles from './styles.module.css'
 
 export const Header = ({
   errorPush,
@@ -36,7 +34,7 @@ export const Header = ({
   setSalesOpen = (boolean: boolean) => { return boolean }
 }) => {
   return (
-    <HeaderC>
+    <div className={styles.header_container} style={style}>
       <AwesomeModal
         backdrop='static'
         borderRadius='10px'
@@ -44,33 +42,49 @@ export const Header = ({
         btnConfirm={false}
         footer={false}
         header={false}
-        height={'200px'}
+        height='min-content'
+        customHeight='min-content'
         onCancel={() => { return false }}
         onHide={() => { return false }}
         padding={'30px'}
         show={false}
-        size='20%'
+        size={MODAL_SIZES.small}
         zIndex='9999'
       >
-        <Column>
-          <Text size='md'>
-            Tu session terminara pronto
-          </Text>
+        <Column className={styles['modal-content']} alignItems='center'>
+          <Row alignItems='center' justifyContent='center'>
+            <Icon
+              icon='IconInfo'
+              size={20}
+              color={getGlobalStyle('--color-primary-red')}
+            />
+            <Text size='2xl'>
+              Tu session terminara pronto
+            </Text>
+          </Row>
+          <Divider marginTop={getGlobalStyle('--spacing-4xl')} />
+          <Row alignItems='center' justifyContent='space-between'>
+            <Button onClick={() => { }}>
+              cancelar
+            </Button>
+            <Button onClick={() => { return onClickLogout() }} primary={true}>
+              cerrar session
+            </Button>
+          </Row>
         </Column>
-        <button onClick={() => { }}>
-          cancelar
-        </button>
-        <button onClick={() => { return onClickLogout() }}>
-          cerrar session
-        </button>
+
       </AwesomeModal>
       <Row alignItems='center'>
         {isMobile && <Burger handleOpenMenu={handleOpenMenu} />}
         <Link href={'/dashboard'}>
-          <Icon icon='IconLogo' size={100} />
+          <Icon
+            icon='IconLogo'
+            size={100}
+            color={getGlobalStyle('--color-neutral-black')}
+          />
         </Link>
       </Row>
-      <CtnItemOps>
+      <div className={styles.header_options}>
         {!isMobile && <Options
           countOrders={countOrders}
           error={false}
@@ -84,22 +98,31 @@ export const Header = ({
           setIsOpenOrder={setIsOpenOrder}
         />
         }
-        <HeaderWrapperButton onClick={() => { return setSalesOpen(!salesOpen) }}>
+        <div className={styles.button_action_sale} onClick={() => { return setSalesOpen(!salesOpen) }}>
           <Icon
             color={getGlobalStyle('--color-primary-red')}
             icon='IconSales'
             size={40}
           />
           <div className='info-sales'>
-            <span>Crear una venta</span>
+            <Text size='md' font='regular'>
+              Crear una venta
+            </Text>
+            <Divider marginTop={getGlobalStyle('--spacing-xs')} />
             {loadingCount
-              ? <span>Cargando...</span>
-              : <span>Total de ventas hoy  {count}</span>
+              ? <Text font='light' size='sm' >
+                Cargando...
+              </Text>
+              : (
+                <Text font='light' color='gray-dark' size='sm'>
+                  Total de ventas hoy  {count}
+                </Text>
+              )
             }
           </div>
-        </HeaderWrapperButton>
-      </CtnItemOps>
-    </HeaderC>
+        </div>
+      </div>
+    </div>
   )
 }
 Header.propTypes = {

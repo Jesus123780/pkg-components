@@ -3,68 +3,67 @@ import React, { useState } from 'react'
 import { useGoogleLogin } from '../../../hooks/useGoogleLogin'
 import { ButtonContent } from './ButtonContent'
 
+type GoogleLoginRenderProps = {
+  onClick: () => void;
+  disabled: boolean;
+};
+
+type GoogleLoginProps = {
+  onSuccess?: (...args: any[]) => void;
+  onAutoLoadFinished?: (...args: any[]) => void;
+  onFailure?: (...args: any[]) => void;
+  onScriptLoadFailure?: (...args: any[]) => void;
+  tag?: keyof JSX.IntrinsicElements;
+  type?: string;
+  className?: string;
+  disabledStyle?: React.CSSProperties;
+  buttonText?: React.ReactNode;
+  children?: React.ReactNode;
+  render?: (props: GoogleLoginRenderProps) => JSX.Element;
+  theme?: 'light' | 'dark';
+  icon?: boolean;
+  disabled?: boolean;
+  clientId?: string;
+  autoLoad?: boolean;
+  prompt?: string;
+};
+
 export const GoogleLogin = ({
-  onSuccess = () => {},
-  onAutoLoadFinished = () => {},
-  onRequest = () => {},
-  onFailure = () => {},
-  onScriptLoadFailure = () => {},
+  onSuccess = () => { },
+  onAutoLoadFinished = () => { },
+  onFailure = () => { },
+  onScriptLoadFailure = () => { },
   tag = 'button',
   type = 'button',
   className = '',
   disabledStyle = {},
   buttonText = 'Sign in with Google',
   children = null,
-  // render = null,
+  render = undefined,
   theme = 'light',
   icon = true,
   disabled: disabledProp = false,
   clientId = '',
-  cookiePolicy = 'single_host_origin',
-  loginHint = '',
-  hostedDomain = '',
   autoLoad = false,
-  isSignedIn = false,
-  fetchBasicProfile = true,
-  redirectUri = '',
-  discoveryDocs = [],
-  uxMode = 'popup',
-  scope = 'profile email',
-  accessType = 'online',
-  responseType = '',
-  jsSrc = 'https://apis.google.com/js/api.js',
   prompt = ''
-} = {}): JSX.Element => {
+}: GoogleLoginProps = {}): JSX.Element => {
   const [hovered, setHovered] = useState(false)
   const [active, setActive] = useState(false)
 
   const { signIn, loaded } = useGoogleLogin({
     onSuccess,
     onAutoLoadFinished,
-    onRequest,
     onFailure,
     onScriptLoadFailure,
     clientId,
-    cookiePolicy,
-    loginHint,
-    hostedDomain,
     autoLoad,
-    isSignedIn,
-    fetchBasicProfile,
-    redirectUri,
-    discoveryDocs,
-    uxMode,
-    scope,
-    accessType,
-    responseType,
-    jsSrc,
     prompt
   })
   const disabled = disabledProp || !loaded
 
-  // if (render !== null) {
-  //   return render({ onClick: signIn, disabled })
-  // }
+  if (typeof render === 'function') {
+    return render({ onClick: signIn, disabled })
+  }
 
   const initialStyle = {
     backgroundColor: theme === 'dark' ? 'rgb(66, 133, 244)' : '#fff',
@@ -139,35 +138,23 @@ export const GoogleLogin = ({
 }
 
 GoogleLogin.propTypes = {
-  onSuccess: PropTypes.func.isRequired,
-  onFailure: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func,
+  onAutoLoadFinished: PropTypes.func,
+  onFailure: PropTypes.func,
   onScriptLoadFailure: PropTypes.func,
-  clientId: PropTypes.string.isRequired,
-  jsSrc: PropTypes.string,
-  onRequest: PropTypes.func,
-  buttonText: PropTypes.node,
-  scope: PropTypes.string,
-  className: PropTypes.string,
-  redirectUri: PropTypes.string,
-  cookiePolicy: PropTypes.string,
-  loginHint: PropTypes.string,
-  hostedDomain: PropTypes.string,
-  children: PropTypes.node,
-  disabledStyle: PropTypes.object,
-  fetchBasicProfile: PropTypes.bool,
-  prompt: PropTypes.string,
   tag: PropTypes.string,
-  autoLoad: PropTypes.bool,
-  disabled: PropTypes.bool,
-  discoveryDocs: PropTypes.array,
-  uxMode: PropTypes.string,
-  isSignedIn: PropTypes.bool,
-  responseType: PropTypes.string,
   type: PropTypes.string,
-  accessType: PropTypes.string,
+  className: PropTypes.string,
+  disabledStyle: PropTypes.object,
+  buttonText: PropTypes.node,
+  children: PropTypes.node,
   render: PropTypes.func,
-  theme: PropTypes.string,
-  icon: PropTypes.bool
+  theme: PropTypes.oneOf(['light', 'dark']),
+  icon: PropTypes.bool,
+  disabled: PropTypes.bool,
+  clientId: PropTypes.string.isRequired,
+  autoLoad: PropTypes.bool,
+  prompt: PropTypes.string
 }
 
 GoogleLogin.defaultProps = {
@@ -180,11 +167,10 @@ GoogleLogin.defaultProps = {
   cookiePolicy: 'single_host_origin',
   fetchBasicProfile: true,
   isSignedIn: false,
-  uxMode: 'popup',
   disabledStyle: {
     opacity: 0.6
   },
   icon: true,
   theme: 'light',
-  onRequest: () => {}
+  onRequest: () => { }
 }

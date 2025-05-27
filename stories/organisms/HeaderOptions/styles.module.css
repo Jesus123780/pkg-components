@@ -1,0 +1,66 @@
+.floatingBox {
+    position: absolute;
+    display: grid;
+    grid-gap: 0 10px;
+    transition: all 200ms ease-in-out;
+    background-color: var(--color-base-white);
+    padding: 10px;
+    z-index: 99999;
+}
+
+.show {
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.hidden {
+    visibility: hidden;
+    transform: translateY(-50px);
+}
+
+.floatingBoxTwo {
+    margin-left: 30px;
+    max-width: 250px;
+    min-width: 250px;
+    width: 250px;
+    top: 28px;
+    overflow: hidden;
+    box-shadow: -1px 2px 8px 2px #dcdcdc;
+}
+
+.buttonOption {
+    margin-left: 30px;
+    
+    position: relative;
+    cursor: pointer;
+    background-color: var(--color-base-white);
+}
+
+.space {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+}
+
+.space>span {
+    font-family: PFont-Light;
+    font-size: 14px;
+    color: var(--color-primary);
+    /* o inline via style if dynamic */
+}
+
+.notification_count {
+    background-color: var(--color-primary-red);
+    color: var(--color-text-white);
+    width: var(--spacing-xl);
+    height: var(--spacing-xl);
+    display: inline-block;
+    border-radius: 20px;
+    font-size: 13px;
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    line-height: 20px;
+    text-align: center;
+}
