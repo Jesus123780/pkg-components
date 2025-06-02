@@ -137,89 +137,86 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
                 const isSelect = selected.exPid === exPid
 
                 return (
-                  <motion.div {...animations} key={extra?.exPid || i} >
-                    <ContentLinesItems loading={isSelect}>
-                      <Row>
-                        <InputHooks
-                          name={extra?.extraName}
-                          onChange={e => {
-                            const value = e.target.value
-                            return handleLineChange(i, 'extraName', `${value}`)
-                          }}
-                          onFocus={() => { return handleFocusChange(i) }}
-                          placeholder='Nombre'
-                          reference={inputRefs?.current[i]}
-                          value={extra?.extraName}
-                        />
-                        <AmountInput
-                          allowDecimals={true}
-                          decimalSeparator=','
-                          decimalsLimit={2}
-                          error={extra.error}
-                          useAmountInput={useAmountInput}
-                          name={extra?.extraPrice}
-                          onChange={e => {
-                            return handleLineChange(i, 'extraPrice', e)
-                          }}
-                          onFocus={() => { return handleFocusChange(i) }}
-                          placeholder='Precio'
-                          defaultValue={price}
-                        />
-                      </Row>
-                      <Checkbox
-                        checked={extra?.exState}
-                        id={i}
-                        name={extra?.exState}
-                        onChange={value => { return handleLineChange(i, 'exState', value) }}
+                  <div loading={isSelect} key={extra?.exPid || i}>
+                    <Row>
+                      <InputHooks
+                        name={extra?.extraName}
+                        onChange={e => {
+                          const value = e.target.value
+                          return handleLineChange(i, 'extraName', `${value}`)
+                        }}
+                        onFocus={() => { return handleFocusChange(i) }}
+                        placeholder='Nombre'
+                        reference={inputRefs?.current[i]}
+                        value={extra?.extraName}
                       />
-                      <RippleButton
-                        bgColor={getGlobalStyle('--color-base-transparent')}
-                        disabled={disabled}
-                        margin='0px'
-                        onClick={() => { return handleRemove(i, exPid) }}
-                        type='button'
-                        widthButton='min-content'
-                      >
-                        <IconDelete color={EColor} size='25px' />
-                      </RippleButton>
-                      {forEdit
-                        ? <>
-                          <RippleButton
-                            bgColor='transparent'
-                            disabled={disabled}
-                            margin='0px'
-                            onClick={() => {
-                              if (isSelect) return handleEdit(i, exPid)
-                              return handleSelect(extra, i)
-                            }}
-                            type='button'
-                            widthButton='min-content'
-                          >
-                            {selected?.exPid === exPid
-                              ? <IconMiniCheck color={APColor} size='25px' />
-                              : <IconEdit color={EColor} size='25px' />
-                            }
-                          </RippleButton>
-                          <span style={{ marginLeft: '15px' }}>
-                            <Tag label={'guardado'} />
-                          </span>
-                        </>
-                        : <>
-                          <RippleButton
-                            bgColor='transparent'
-                            disabled={disabled}
-                            margin='0px'
-                            type='button'
-                            widthButton='min-content'
-                          >
-                            <IconEdit color={getGlobalStyle('--color-icons-gray-light')} size='25px' />
-                          </RippleButton>
-                          <Tag label='sin guardar' />
-                        </>
-                      }
-                    </ContentLinesItems>
-                  </motion.div>
-
+                      <AmountInput
+                        allowDecimals={true}
+                        decimalSeparator=','
+                        decimalsLimit={2}
+                        error={extra.error}
+                        useAmountInput={useAmountInput}
+                        name={extra?.extraPrice}
+                        onValueChange={e => {
+                          return handleLineChange(i, 'extraPrice', e)
+                        }}
+                        onFocus={() => { return handleFocusChange(i) }}
+                        placeholder='Precio'
+                        defaultValue={price}
+                      />
+                    </Row>
+                    <Checkbox
+                      checked={extra?.exState}
+                      id={i}
+                      name={extra?.exState}
+                      onChange={value => { return handleLineChange(i, 'exState', value) }}
+                    />
+                    <RippleButton
+                      bgColor={getGlobalStyle('--color-base-transparent')}
+                      disabled={disabled}
+                      margin='0px'
+                      onClick={() => { return handleRemove(i, exPid) }}
+                      type='button'
+                      widthButton='min-content'
+                    >
+                      <IconDelete color={EColor} size='25px' />
+                    </RippleButton>
+                    {forEdit
+                      ? <>
+                        <RippleButton
+                          bgColor='transparent'
+                          disabled={disabled}
+                          margin='0px'
+                          onClick={() => {
+                            if (isSelect) return handleEdit(i, exPid)
+                            return handleSelect(extra, i)
+                          }}
+                          type='button'
+                          widthButton='min-content'
+                        >
+                          {selected?.exPid === exPid
+                            ? <IconMiniCheck color={APColor} size='25px' />
+                            : <IconEdit color={EColor} size='25px' />
+                          }
+                        </RippleButton>
+                        <span style={{ marginLeft: '15px' }}>
+                          <Tag label={'guardado'} />
+                        </span>
+                      </>
+                      : <>
+                        <RippleButton
+                          bgColor='transparent'
+                          disabled={disabled}
+                          margin='0px'
+                          type='button'
+                          widthButton='min-content'
+                        >
+                          <IconEdit color={getGlobalStyle('--color-icons-gray-light')} size='25px' />
+                        </RippleButton>
+                        <Tag label='sin guardar' />
+                      </>
+                    }
+                  </div>
                 )
               })
               : null}

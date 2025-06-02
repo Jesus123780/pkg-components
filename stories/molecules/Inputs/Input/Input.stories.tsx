@@ -1,22 +1,24 @@
-import React from 'react'
-import { Meta } from '@storybook/react'
+import type React from 'react'
+import type { Meta } from '@storybook/react'
 import { Input } from './index'
 
-export default {
-  title: 'atoms/Input',
+const meta: Meta = {
+  title: 'molecules/Input',
   component: Input,
   argTypes: {
     autoComplete: { control: 'text' },
     border: { control: 'text' }
-  },
-} as Meta
+  }
+}
 
-const Template = (args: any) => <Input {...args} />
+export default meta
 
-export const Default = Template.bind({})
-
-Default.args = {
-  placeholder: 'Enter text...',
-  width: '400px',
-  labelButton: 'Button'
+export const Default = {
+  args: {
+    autoComplete: 'off',
+    border: '1px solid #ccc',
+    placeholder: 'Enter text here',
+    value: '',
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => console.log(e.target.value)
+  }
 }

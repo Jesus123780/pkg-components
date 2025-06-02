@@ -15,25 +15,16 @@ interface InputHooksProps {
   autoComplete?: string
   border?: string
   cc?: boolean
-  checked?: boolean
   autoFocus?: any
-  dataForm?: object
   disabled?: boolean
-  display?: string
   email?: any
   error?: string | boolean
-  height?: any
-  labelColor?: any
-  labelTop?: any
   letters?: any
-  margin?: string
   maxWidth?: string
-  minWidth?: string
   name?: string
   nit?: boolean
   numeric?: boolean
   onChange?: (e: any, v: any) => void
-  padding?: string
   paddingInput?: string
   pass?: any
   passConfirm?: {
@@ -41,7 +32,6 @@ interface InputHooksProps {
     validate: number | string
   }
   placeholder?: string
-  radius?: string
   range?: {
     max: number | string
     min: number | string
@@ -50,16 +40,14 @@ interface InputHooksProps {
   required?: boolean
   title?: string
   messageError?: string
-  type?: string
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'textarea'
   typeTextarea?: boolean
   value?: string
   width?: string
   info?: string
   marginBottom?: string
   max?: number
-  setDataValue?: (e: any) => void
   onFocus?: () => void
-  onInvalid?: () => void
   onBlur?: () => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
@@ -67,29 +55,19 @@ interface InputHooksProps {
 export const InputHooks: React.FC<InputHooksProps> = ({
   autoComplete = 'off',
   border = '',
-  checked = false,
   autoFocus,
-  dataForm = {},
   disabled = false,
-  display = '',
   email = false,
   error = false,
-  labelTop = '',
-  height,
-  labelColor,
   letters = false,
-  margin = '0',
   maxWidth = '',
-  minWidth = '',
   name = '',
   nit = false,
   numeric = false,
-  padding = '',
   paddingInput = '',
   pass,
   passConfirm,
   placeholder = '',
-  radius = '',
   range = null,
   reference,
   required,
@@ -107,8 +85,6 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   onFocus = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     e.preventDefault()
   },
-  onInvalid = () => { },
-  setDataValue = () => { },
   onBlur = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     e.preventDefault()
   },
@@ -130,7 +106,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
       message: 'El campo no debe estar vacío'
     },
     numeric: {
-      validate: (value) => numeric && isNaN(value),
+      validate: (value) => numeric && isNaN(Number(value)),
       message: 'El campo debe ser numérico'
     },
     range: {
@@ -204,7 +180,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
     }
     onKeyDown(e)
   }
-  const handleFocus = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     setFocused(true) // El input está en foco
     onFocus(e)
   }
@@ -225,15 +201,17 @@ export const InputHooks: React.FC<InputHooksProps> = ({
 
   return (
     <div
+      ref={reference}
       style={{
-        outline: errors === true
-          ? `2px solid ${getGlobalStyle('--color-feedback-error-dark')}`
+        boxShadow: errors === true
+          ? `${getGlobalStyle('--box-shadow-red-rose')}`
           : focused
-            ? `2px solid ${getGlobalStyle('--color-secondary-blue')}` // Borde azul cuando está en foco
+            ? `${getGlobalStyle('--box-shadow-blue')}` // Sombra azul cuando está en foco
             : border,
         maxWidth,
         padding: paddingInput,
         width,
+        border: errors === true ? '1px solid transparent' : `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
         marginBottom,
         maxHeight: typeTextarea ? '12.5rem' : 'auto',
         minHeight: typeTextarea ? '12.5rem' : 'auto'
@@ -282,29 +260,22 @@ export const InputHooks: React.FC<InputHooksProps> = ({
               title
             )}
       </label>
-      {errors === true && (
+      {(errors === true || info !== '') && (
         <Row className={styles.wrap_tooltip} alignItems='center'>
-          <Icon icon='IconInfo' size={10} color={getGlobalStyle('--color-icons-error')} />
-          <span className={styles.tooltip}>{message}</span>
-        </Row>
-      )}
-      {info !== '' && (
-        <Row
-          className={styles.wrap_tooltip}
-          alignItems='center'
-          style={errors === true ? { bottom: '-30px' } : {}}
-        >
-          <Icon icon='IconInfo' size={10} color={getGlobalStyle('--color-icons-info')} />
+          <Icon
+            icon='IconInfo'
+            size={10}
+            color={getGlobalStyle(errors === true ? '--color-icons-error' : '--color-icons-info')}
+          />
           <span
             className={styles.tooltip}
-            style={{
-              color: getGlobalStyle('--color-text-black')
-            }}
+            style={{ color: getGlobalStyle(error === true ? '--color-text-error' : '--color-text-black') }}
           >
-            {info}
+            {errors === true ? message : info}
           </span>
         </Row>
       )}
+
     </div>
   )
 }

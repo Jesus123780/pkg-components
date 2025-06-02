@@ -1,10 +1,12 @@
 'use client'
 
-import { useRouter, usePathname } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
-import { IconArrowBottom, IconArrowTop } from '../../../assets/icons'
-import { getGlobalStyle } from '../../../helpers'
+import React, {
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { Icon } from '../../atoms'
+import { getGlobalStyle } from '../../../helpers'
 import styles from './styles.module.css'
 
 interface OptionsProps {
@@ -14,8 +16,7 @@ interface OptionsProps {
   icon?: React.ReactNode
   index?: number | string | boolean
   label: string
-  size: string
-  path: string
+  size: number
 }
 
 export const Options: React.FC<OptionsProps> = ({
@@ -25,13 +26,10 @@ export const Options: React.FC<OptionsProps> = ({
   icon = 'none',
   index,
   label,
-  size,
-  path
+  size
 }) => {
   const refButton = useRef<HTMLDivElement>(null)
   const refMenu = useRef<HTMLDivElement>(null)
-  const location = useRouter()
-  const pathname = usePathname()
 
   const [menuState, setMenuState] = useState<{
     height: number
@@ -44,10 +42,10 @@ export const Options: React.FC<OptionsProps> = ({
   })
 
   useEffect(() => {
-    if (!refButton.current || !refMenu.current) return
+    if (refButton.current === null || refMenu.current === null) return
 
     const initialHeight = refButton.current.clientHeight - refMenu.current.clientHeight
-    const initialHeightMenu = refMenu.current.clientHeight
+    const initialHeightMenu = refMenu.current.scrollHeight
 
     setMenuState(prevState => ({
       ...prevState,
@@ -57,10 +55,10 @@ export const Options: React.FC<OptionsProps> = ({
   }, [])
 
   useEffect(() => {
-    const updatedHeight = active
+    const updatedHeight = active === true
       ? menuState.height + menuState.heightMenu
-      : refButton.current?.clientHeight - refMenu.current?.clientHeight
-    const updatedStatus = active ? 'open' : 'close'
+      : (refButton.current?.clientHeight ?? 0) - (refMenu.current?.clientHeight ?? 0)
+    const updatedStatus = active === true ? 'open' : 'close'
 
     setMenuState(prevState => ({
       ...prevState,
@@ -72,9 +70,9 @@ export const Options: React.FC<OptionsProps> = ({
   return (
     <div
       id={`menu-id__${index}`}
-      onClick={() => { handleClick(index) }}
+      onClick={() => { handleClick(index as number) }}
       ref={refButton}
-      className={styles.optionMenu + (active ? ` ${styles.active}` : '')}
+      className={`${styles.optionMenu} ${active === true ? styles.active : ''}`}
     >
       <div className={styles.row}>
         <div style={{ display: 'flex' }}>
@@ -97,7 +95,7 @@ export const Options: React.FC<OptionsProps> = ({
               width={20}
             />
           </div>
-          <span className={`${styles.span} ${active ? styles.active : ''}`}>
+          <span className={`${styles.span} ${active === true ? styles.active : ''}`}>
             {label}
           </span>
         </div>
@@ -107,13 +105,29 @@ export const Options: React.FC<OptionsProps> = ({
               backgroundColor: getGlobalStyle('--color-base-transparent')
             }}
             className={styles.burgerMenuContainer}
-            onClick={() => { handleClick(index) }}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleClick(index as number)
+            }}
           >
-            <Icon icon={active === true ? 'IconArrowTop' : 'IconArrowBottom' } size={15} />
+            <Icon icon={active === true ? 'IconArrowTop' : 'IconArrowBottom'} size={size ?? 15} />
           </button>
         </div>
       </div>
-      {children}
+
+      {children !== null && (
+        <div
+          ref={refMenu}
+          className={styles.menuContent}
+          style={{
+            height: active === true ? `${menuState.heightMenu}px` : '0px',
+            overflow: 'hidden',
+            transition: 'height 0.3s ease'
+          }}
+        >
+          {children}
+        </div>
+      )}
     </div>
   )
 }

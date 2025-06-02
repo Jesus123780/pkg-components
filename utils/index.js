@@ -47,14 +47,17 @@ export const numberFormat = (value, options = {
   return value
 }
 /**
- * Description
- * @param {any} phoneNumber type number or string
- * @returns {any}
+ * Valida si un número de teléfono tiene el formato (XXX) XXX-XXXX.
+ * El formato esperado es: (123) 456-7890.
+ * @param {string} phoneNumber - El número de teléfono a validar.
+ * @return {boolean} Retorna true si el número de teléfono es válido, false en caso contrario.
+ * @example true or false
  */
 export const validatePhoneNumber = (phoneNumber) => {
   const regex = /^\(\d{3}\) \d{3}-\d{4}$/
   return regex.test(phoneNumber)
 }
+
 export const isNull = dato => {
   return !!(!dato || dato === '')
 }

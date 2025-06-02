@@ -1,8 +1,8 @@
-const choices = require('./choices')
+const { choices } = require('./choices')
 
-const { 
-  color: { 
-    brand, 
+const {
+  color: {
+    brand,
     base
   },
   boxShadow,
@@ -22,14 +22,14 @@ const {
 
 const decisions = {
   color: {
-    base:{
+    base: {
       black: base.mineShaft,
       white: base.white,
       transparent: base.transparent
     },
-    loaders:{
-      background:brand.backgroundLoader,
-      foreGround:brand.foreGroundLoader
+    loaders: {
+      background: brand.backgroundLoader,
+      foreGround: brand.foreGroundLoader
     },
     primary: {
       red: brand.alizarinCrimson,
@@ -110,7 +110,10 @@ const decisions = {
     }
   },
   fontFamily: {
-    sans: fontFamily.sans
+    sans: fontFamily.sans,
+    regular: fontFamily.regular,
+    medium: fontFamily.medium,
+    bold: fontFamily.bold,
   },
   fontSize: {
     base: fontSize.base,
@@ -194,7 +197,10 @@ const decisions = {
     sm: boxShadow.sm,
     md: boxShadow.md,
     lg: boxShadow.lg,
-    xl: boxShadow.xl
+    xl: boxShadow.xl,
+    red_rose: boxShadow.redRose,
+    red: boxShadow.red,
+    blue: boxShadow.blue,
   },
   filter: {
     none: filter.none,
@@ -224,7 +230,7 @@ const decisions = {
     75: opacity['75'],
     100: opacity['100']
   },
-  width:{
+  width: {
     maxDesktop: width.maxDesktop,
     maxMobile: width.maxMobile
   },

@@ -120,6 +120,7 @@
     transform: scale(0);
     opacity: 1.2;
   }
+
   to {
     transform: scale(1);
     opacity: 0;
@@ -128,37 +129,97 @@
 
 /* Inicio de Hoja de Normalización */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300&display=swap');
+
 /* Normalizes margin, padding */
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, p, blockquote
-    { margin : 0; padding : 0; width: 100%;  text-align: start; display: none !important;  }
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+p,
+blockquote {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: start;
+  display: none !important;
+}
 
 /* Normalizes font-size for headers */
-h1,h2,h3,h4,h5,h6 { font-size : 100%; }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+}
+
 /* Removes list-style from lists */
-ol,ul { list-style : none; }
-button{
+ol,
+ul {
+  list-style: none;
+}
+
+button {
   outline: none;
   border: none;
 }
-a{
+
+a {
   text-decoration: none !important;
 }
 
 /* Normalizes font-style and font-weight to normal */
-address, caption, cite, code, dfn, em, strong, th, var
-{ font-style : normal; font-weight : normal; }
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+  font-style: normal;
+  font-weight: normal;
+}
 
 /* Removes spacing in tables */
-table { border-collapse : collapse; border-spacing : 0; width: -webkit-fill-available; }
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: -webkit-fill-available;
+}
 
 /* Removes border from fieldset and img */
-fieldset,img { border : 0; }
+fieldset,
+img {
+  border: 0;
+}
 
 /* Left-aligns text in caption and th */
-caption,th { text-align : left; }
+caption,
+th {
+  text-align: left;
+}
 
 /* Removes quotation marks from q */
-q:before, q:after { content :''; }
+q:before,
+q:after {
+  content: '';
+}
 
 /* Fin de Hoja de Normalización */
 
@@ -174,6 +235,7 @@ code {
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: PFont-Medium;
   src: url('../fonts/Poppins-Medium.ttf');
@@ -181,6 +243,7 @@ code {
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: PFont-Regular;
   src: url('../fonts/Poppins-Regular.ttf');
@@ -188,6 +251,7 @@ code {
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: PFont-Light;
   src: url('../fonts/Poppins-Light.ttf');
@@ -201,19 +265,22 @@ code {
     transform: scale(0);
     opacity: 1.2;
   }
+
   to {
     transform: scale(1);
     opacity: 0;
   }
 }
+
 .box-group {
   background-color: rgb(136, 128, 114);
   padding: 0.5rem;
 }
 
-.box-items  > .marmita-minitag {
+.box-items>.marmita-minitag {
   font-size: 11px;
 }
+
 .box-items {
   margin: 5px;
   padding: 5px;
@@ -224,11 +291,12 @@ code {
   cursor: pointer;
   width: 96%;
   border-radius: 0.5rem;
-  transition: background-color 140ms ease-in-out,border-color 75ms ease-in-out;
+  transition: background-color 140ms ease-in-out, border-color 75ms ease-in-out;
   box-shadow: 0 1px 2px 0 rgba(9, 30, 66, 0.062);
 }
+
 .ghx-summary {
-  font-family: PFont-Light,Helvetica,Arial,sans-serif;
+  font-family: PFont-Light, Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143px;
   max-height: 4.28571429em;
@@ -238,9 +306,10 @@ code {
   margin-bottom: 0.5rem;
 }
 
-.box-items:hover  {
+.box-items:hover {
   background: #ebecf0;
 }
+
 .dragging {
   background-color: #ff000026;
   opacity: 1 !important;
@@ -260,4 +329,3 @@ code {
   border-radius: 20px;
   opacity: 1;
 }
-

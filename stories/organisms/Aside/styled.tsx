@@ -36,7 +36,7 @@ export const LeftNav = styled.div<LeftNavProps>`
     display: grid;
     padding: 10px;
     grid-template-columns: 50% repeat(auto-fill, 50%);
-    position: absolute;
+    position: absolute;             
     background-color: ${BGColor};
     background-color: var(--color-base-white);
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
@@ -59,7 +59,7 @@ export const LeftNav = styled.div<LeftNavProps>`
         width: 100%;
         right: 0;
         margin: auto;
-    }
+    }   
     ${({ show }) => {
         return show
             ? css`
@@ -81,28 +81,9 @@ export const Info = styled.div`
     background-color: var(--color-base-white); 
     display: flex;
     flex-direction: column;
-    max-height: 150px; 
     overflow: hidden; 
     position: relative;
-    
-    .program_state {
-        align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        width: 90%;
-        margin: 10px auto;
-        display: flex;
-        border: 1px solid ${PLVColor};
-    }
-    .title_store {
-        color: var(--color-text-gray-light);
-        font-weight: 500;
-        font-size: 1.5rem;
-        text-align: center;
-        line-height: 1.3rem;
-        font-family: PFont-Light;
-        word-break: break-word;
-    }
+ 
     .sub_title_store {
         color: var(--color-text-gray-light);
         font-weight: 500;

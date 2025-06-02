@@ -20,7 +20,7 @@ export const choices = {
       mineShaft: '#282828',
       doveGray: '#666666',
       silver: '#C4C4C4',
-      overline: 'rgba(0, 0, 0, 0.4)', 
+      overline: 'rgba(0, 0, 0, 0.4)',
       mercury: '#E5E5E5',
       wildSand: '#F5F5F5',
       alabaster: '#F9F9F9',
@@ -70,10 +70,14 @@ export const choices = {
     '2xl': '1.5rem',
     '3xl': '2rem',
     '4xl': '3rem',
-    '5xl': '3.5rem'//64 - pendiente validar
+    '5xl': '3.5rem'// 64 - pendiente validar
   },
   fontFamily: {
-    sans: ['Open Sans']
+    sans: ['Open Sans'],
+    light: ['PFont-Light'],
+    regular: ['PFont-Regular'],
+    medium: ['PFont-Medium'],
+    bold: ['PFont-Bold']
   },
   fontSize: {
     base: '16px',
@@ -97,7 +101,7 @@ export const choices = {
     xs: '1rem',
     sm: '1.125rem',
     md: '1.25rem',
-    'md2': '1.375rem',
+    md2: '1.375rem',
     lg: '1.5rem',
     xl: '1.75rem',
     '2xl': '1.875rem'
@@ -145,7 +149,10 @@ export const choices = {
     sm: '4px 4px 18px rgba(0, 0, 0, 0.12)',
     md: '0px 16px 24px rgba(0, 0, 0, 0.14), 0px 6px 30px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.2)',
     lg: '-1px 7px 18px -2px rgba(0, 0, 0, 0.12)',
-    xl: '0px 4px 8px rgba(27, 33, 56, 0.06)'
+    xl: '0px 4px 8px rgba(27, 33, 56, 0.06)',
+    redRose: 'rgb(232, 137, 137) 0px 0px 0px 2px',
+    red: 'rgb(210, 5, 5) 0px 0px 0px 2px',
+    blue: '0 0 0 .125em rgb(52, 131, 250)'
   },
   filter: {
     none: 'none',
@@ -180,8 +187,8 @@ export const choices = {
     75: '0.75',
     100: '1'
   },
-  width:{
-    maxDesktop:'1366px',
+  width: {
+    maxDesktop: '1366px',
     maxMobile: '960px'
   },
   zIndex: {

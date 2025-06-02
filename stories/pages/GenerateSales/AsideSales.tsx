@@ -33,7 +33,6 @@ interface AsideProps {
     ValueDelivery: boolean
   }
   handleClickAction?: () => void
-  useAmountInput?: () => void
   handleCloseAside?: () => void
   handleOpenAside?: () => void
   handleChange?: (e: { target: { name: string, value: any } }) => void
@@ -63,13 +62,11 @@ export const AsideSales: React.FC<AsideProps> = ({
   },
   overline = false,
   dispatch = () => { },
-  useAmountInput = () => { },
   handleCloseAside = () => { },
   handleOpenAside = () => { },
   handleClickAction = () => { },
   handleChange = () => { }
 }) => {
-  
   return (
     <>
       {overline && (
@@ -149,7 +146,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           groupSeparator='.'
           label='Cambio'
           name='change'
-          onChange={(value) => {
+          onValueChange={(value) => {
             handleChange({
               target: {
                 name: 'change',
@@ -159,7 +156,6 @@ export const AsideSales: React.FC<AsideProps> = ({
           }}
           placeholder='$ 0.00'
           prefix='$'
-          useAmountInput={useAmountInput as any}
           value={values?.change}
         />
         <AmountInput
@@ -170,7 +166,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           groupSeparator='.'
           label='Precio del domicilio'
           name='ValueDelivery'
-          onChange={(value) => {
+          onValueChange={(value) => {
             handleChange({
               target: {
                 name: 'ValueDelivery',
@@ -180,7 +176,6 @@ export const AsideSales: React.FC<AsideProps> = ({
           }}
           placeholder='$ 0.00'
           prefix='$'
-          useAmountInput={useAmountInput as any}
           value={values?.ValueDelivery}
         />
 

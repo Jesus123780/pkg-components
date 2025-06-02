@@ -162,7 +162,7 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
     [MODAL_SIZES.small]: styles.small,
     [MODAL_SIZES.medium]: styles.medium,
     [MODAL_SIZES.large]: styles.large
-  }[size as keyof typeof MODAL_SIZES] ?? ''
+  }[size as keyof typeof MODAL_SIZES] ?? MODAL_SIZES.medium
 
   return (
     <div

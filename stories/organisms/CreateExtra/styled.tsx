@@ -22,7 +22,7 @@ export const ContentLinesItems = styled.div`
     justify-content: center;
     height: min-content;
     border-bottom: 1px solid #ccc;
-    ${props => { return props.noBorder && `border-bottom: none` }}
+    ${props => { return props.noBorder && 'border-bottom: none' }}
 
      &:before,
   &:after {

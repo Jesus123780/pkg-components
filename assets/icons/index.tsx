@@ -472,10 +472,8 @@ export const IconChart: React.FC<IconProps> = ({ style = {}, size, color, ...pro
  */
 
 export const IconCategorie: React.FC<IconProps> = ({
-  style = {},
   size,
-  color,
-  ...props
+  color = 'var(--color-icons-black)'
 }) => {
   return (
     <svg
@@ -484,8 +482,7 @@ export const IconCategorie: React.FC<IconProps> = ({
       viewBox='0 0 24 24'
       width={size ?? 800}
       xmlns='http://www.w3.org/2000/svg'
-      {...props}
-      style={{ ...style, color }}
+      style={{ color }}
     >
       <path
         d='M4 7.657c0-.818 0-1.226.152-1.594.152-.367.442-.657 1.02-1.235l.656-.656c.578-.578.868-.868 1.235-1.02C7.431 3 7.84 3 8.657 3h6.686c.818 0 1.226 0 1.594.152.367.152.656.442 1.235 1.02l.656.656c.579.578.867.868 1.02 1.235.152.368.152.776.152 1.594V17c0 1.886 0 2.828-.586 3.414C18.828 21 17.886 21 16 21H8c-1.886 0-2.828 0-3.414-.586C4 19.828 4 18.886 4 17V7.657Z'

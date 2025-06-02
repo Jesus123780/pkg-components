@@ -1,15 +1,6 @@
-@keyframes fadeInText {
-    0% {
-        opacity: 0;
-        transform: translateX(-10px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.animate-fade-in-text {
-    animation: fadeInText 1s ease-out forwards;
+.ellipsis-text {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

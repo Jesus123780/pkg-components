@@ -11,7 +11,7 @@ interface Props {
   numberformat?: boolean
 }
 
-function getSize (fontSize: string): [string, 'px' | 'em' | 'rem'] {
+function getSize(fontSize: string): [string, 'px' | 'em' | 'rem'] {
   if (fontSize === '') {
     throw new Error('Missing param: [fontSize]')
   }
@@ -58,8 +58,6 @@ export const MemoCounterAnimation: FC<Props> = ({
       }}
     >
       {numbers.map((number, i) => {
-      console.log("🚀 ~ {numbers.map ~ number:", number)
-
         const num = parseInt(number, 10)
         const prevNumString = prevNumbersRef.current?.[i] ?? '0'
         const prevNum = parseInt(prevNumString, 10)
@@ -68,39 +66,39 @@ export const MemoCounterAnimation: FC<Props> = ({
 
         return withSeparator
           ? (
-          <span
-            key={`${number}-${i}`}
-            style={{
-              fontSize: `${fontSize}${unit}`,
-              height: `${fontSize}${unit}`,
-              lineHeight: '0.9',
-              width: 'min-content',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            {number}
-          </span>
-            )
+            <span
+              key={`${number}-${i}`}
+              style={{
+                fontSize: `${fontSize}${unit}`,
+                height: `${fontSize}${unit}`,
+                lineHeight: '0.9',
+                width: 'min-content',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {number}
+            </span>
+          )
 
           : (
-          <Disk
-            initialValue={Number(prevNumbersCeros)}
-            key={
-              prevNum !== num
-                ? `${number}-${i}`
-                : `${number}-${i}-${Math.random()}`
-            }
-            delay={200 + i * 100}
-            size={fontSize}
-            unit={unit}
-            number={number}
-            prevNumber={prevNumString}
-            isIncreasing={isSomethingZero ? isTotalIncreasing : prevNum < num}
-            level={prevNum - num >= 2}
-          />
-            )
+            <Disk
+              initialValue={Number(prevNumbersCeros)}
+              key={
+                prevNum !== num
+                  ? `${number}-${i}`
+                  : `${number}-${i}-${Math.random()}`
+              }
+              delay={200 + i * 100}
+              size={fontSize}
+              unit={unit}
+              number={number}
+              prevNumber={prevNumString}
+              isIncreasing={isSomethingZero ? isTotalIncreasing : prevNum < num}
+              level={prevNum - num >= 2}
+            />
+          )
       })}
     </div>
   )

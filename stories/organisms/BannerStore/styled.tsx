@@ -204,7 +204,6 @@ export const MerchantInfo = styled.div`
   }
 `
 
-
 // IMAGE
 
 export const InputFile = styled.input`

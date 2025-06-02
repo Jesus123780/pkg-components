@@ -1,27 +1,27 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict'
-import styles from "./styles.module.css";
-
-function _interopDefault(ex: typeof React) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex.default : ex }
+import styles from './styles.module.css'
 
 // const React = require('react')
 import React from 'react'
+
+function _interopDefault(ex: typeof React) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex.default : ex }
 const React__default = _interopDefault(React)
 
-function __rest(s: { [x: string]: any } | null, e: string | string[]) {
+function __rest(s: Record<string, any> | null, e: string | string[]) {
   const t = {}
   for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) { t[p] = s[p] }
+    if (Object.prototype.hasOwnProperty.call(s, p) && !e.includes(p)) { t[p] = s[p] }
   }
   if (s != null && typeof Object.getOwnPropertySymbols === 'function') {
     for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-      if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) { t[p[i]] = s[p[i]] }
+      if (!e.includes(p[i]) && Object.prototype.propertyIsEnumerable.call(s, p[i])) { t[p[i]] = s[p[i]] }
     }
   }
   return t
 }
 
-let SourceType: { props?: any; event?: any };
+let SourceType: { props?: any, event?: any };
 (function (SourceType) {
   SourceType.event = 'event'
   SourceType.props = 'prop'
@@ -29,7 +29,7 @@ let SourceType: { props?: any; event?: any };
 
 // basic noop function
 function noop() { }
-function memoizeOnce(cb: { (prevValue: any, newValue: any): { from: { start: number; end: number }; to: { start: number; end: number } }; apply?: any }) {
+function memoizeOnce(cb: { (prevValue: any, newValue: any): { from: { start: number, end: number }, to: { start: number, end: number } }, apply?: any }) {
   let lastArgs: string | any[]
   let lastValue: any
   return function () {
@@ -79,7 +79,7 @@ function applyThousandSeparator(str: string, thousandSeparator: string, thousand
   return (str.substring(0, index) +
     str.substring(index, str.length).replace(thousandsGroupRegex, '$1' + thousandSeparator))
 }
-function usePersistentCallback(cb: (value: any, valueIsNumericString: any) => { formattedValue: any; numAsString: any }) {
+function usePersistentCallback(cb: (value: any, valueIsNumericString: any) => { formattedValue: any, numAsString: any }) {
   const callbackRef = React.useRef(cb)
   // keep the callback ref upto date
   callbackRef.current = cb
@@ -177,7 +177,7 @@ function toNumericString(num: string | number) {
 function roundToPrecision(numStr: string | string[], scale: number | undefined, fixedDecimalScale: boolean) {
   // if number is empty don't do anything return empty string
   if (['', '-'].includes(numStr)) { return numStr }
-  const shouldHaveDecimalSeparator = (numStr.indexOf('.') !== -1 || fixedDecimalScale) && scale
+  const shouldHaveDecimalSeparator = (numStr.includes('.') || fixedDecimalScale) && scale
   const ref = splitDecimal(numStr)
   const beforeDecimal = ref.beforeDecimal
   const afterDecimal = ref.afterDecimal
@@ -201,7 +201,7 @@ function roundToPrecision(numStr: string | string[], scale: number | undefined, 
   return ('' + negation + intPart + decimalSeparator + decimalPart)
 }
 /** set the caret positon in an input field **/
-function setCaretPosition(el: { value: any; createTextRange: () => any; selectionStart: number; focus: () => void; setSelectionRange: (arg0: any, arg1: any) => void } | null, caretPos: number) {
+function setCaretPosition(el: { value: any, createTextRange: () => any, selectionStart: number, focus: () => void, setSelectionRange: (arg0: any, arg1: any) => void } | null, caretPos: number) {
   el.value = el.value
   // ^ this is used to not only get 'focus', but
   // to make sure we don't have it everything -selected-
@@ -275,7 +275,7 @@ function getMaskAtIndex(mask: string | undefined, index: number) {
   }
   return mask[index] || ' '
 }
-function defaultIsCharacterSame(ref: { currentValue: any; formattedValue: any; currentValueIndex: any; formattedValueIndex: any }) {
+function defaultIsCharacterSame(ref: { currentValue: any, formattedValue: any, currentValueIndex: any, formattedValueIndex: any }) {
   const currentValue = ref.currentValue
   const formattedValue = ref.formattedValue
   const currentValueIndex = ref.currentValueIndex
@@ -290,7 +290,7 @@ function getCaretPosition(newFormattedValue: string | any[], lastFormattedValue:
    * Some example, all allowedDecimalCharacters are updated to decimalCharacters, 2nd case if user is coverting
    * number to different numeric system.
    */
-  isCharacterSame: ((arg0: { currentValue: any; lastValue: any; formattedValue: any; currentValueIndex: number; formattedValueIndex: number }) => any) | undefined) {
+  isCharacterSame: ((arg0: { currentValue: any, lastValue: any, formattedValue: any, currentValueIndex: number, formattedValueIndex: number }) => any) | undefined) {
   if (isCharacterSame === void 0) isCharacterSame = defaultIsCharacterSame
 
   /**
@@ -378,7 +378,7 @@ function caretUnknownFormatBoundary(formattedValue: string | any[]) {
   }
   return boundaryAry
 }
-function useInternalValues(value: any, defaultValue: any, valueIsNumericString: boolean, format: { (numStr: any): any; (arg0: any): any }, removeFormatting: { (inputValue: any, changeMeta: any): any; (arg0: any, arg1: undefined): any }, onValueChange: ((arg0: any, arg1: any) => void) | undefined) {
+function useInternalValues(value: any, defaultValue: any, valueIsNumericString: boolean, format: { (numStr: any): any, (arg0: any): any }, removeFormatting: { (inputValue: any, changeMeta: any): any, (arg0: any, arg1: undefined): any }, onValueChange: ((arg0: any, arg1: any) => void) | undefined) {
   if (onValueChange === void 0) onValueChange = noop
 
   const getValues = usePersistentCallback(function (value: any, valueIsNumericString: any) {
@@ -400,7 +400,7 @@ function useInternalValues(value: any, defaultValue: any, valueIsNumericString: 
   })
   const values = ref[0]
   const setValues = ref[1]
-  const _onValueChange = function (newValues: { formattedValue: any; value: any }, sourceInfo: any) {
+  const _onValueChange = function (newValues: { formattedValue: any, value: any }, sourceInfo: any) {
     if (newValues.formattedValue !== values.formattedValue) {
       setValues({
         formattedValue: newValues.formattedValue,
@@ -430,7 +430,7 @@ function defaultRemoveFormatting(value: string) {
   if (value === undefined) return ''
   return value?.replace(/[^0-9]/g, '')
 }
-function defaultFormat (value: any) {
+function defaultFormat(value: any) {
   return value
 }
 const currencyFormat = (numStr: string): number | bigint | string => {
@@ -443,17 +443,17 @@ const currencyFormat = (numStr: string): number | bigint | string => {
   }).format(isNaN(Number(numStr)) ? 0 : Number(numStr))
 }
 
-function NumberFormatBase (props: { label: string, onChangeDefault: (args: any) => void, name: any, type: any; displayType: any; customInput: any; renderText: any; getInputRef: any; format: any; removeFormatting: any; defaultValue: any; valueIsNumericString: any; onValueChange: any; isAllowed: any; onChange: any; onKeyDown: any; onMouseUp: any; onFocus: any; onBlur: any; value: any; getCaretBoundary: any; isValidInputCharacter: any; isCharacterSame: any }) {
+function NumberFormatBase(props: { label: string, onChangeDefault: (args: any) => void, name: any, type: any, displayType: any, customInput: any, renderText: any, getInputRef: any, format: any, removeFormatting: any, defaultValue: any, valueIsNumericString: any, onValueChange: any, isAllowed: any, onChange: any, onKeyDown: any, onMouseUp: any, onFocus: any, onBlur: any, value: any, getCaretBoundary: any, isValidInputCharacter: any, isCharacterSame: any }) {
   let type = props.type; if (type === void 0) type = 'text'
   let displayType = props.displayType; if (displayType === void 0) displayType = 'input'
   const customInput = props.customInput
   const renderText = props.renderText
-  let label = props.label
+  const label = props.label
   const getInputRef = props.getInputRef
   let format = props.format; if (format === void 0) format = defaultFormat
   let removeFormatting = props.removeFormatting; if (removeFormatting === void 0) removeFormatting = defaultRemoveFormatting
   const defaultValue = props.defaultValue
-  let name = props.name
+  const name = props.name
   const valueIsNumericString = props.valueIsNumericString
   const onValueChange = props.onValueChange
   const isAllowed = props.isAllowed
@@ -474,7 +474,7 @@ function NumberFormatBase (props: { label: string, onChangeDefault: (args: any) 
   const numAsString = ref_0.numAsString
   const onFormattedValueChange = ref[1]
   const lastUpdatedValue = React.useRef({ formattedValue, numAsString })
-  const _onValueChange = function (values: { formattedValue: any; value: any; floatValue?: number | undefined }, source: { event: any; source: any }) {
+  const _onValueChange = function (values: { formattedValue: any, value: any, floatValue?: number | undefined }, source: { event: any, source: any }) {
     lastUpdatedValue.current = { formattedValue: values.formattedValue, numAsString: values.value }
     onFormattedValueChange(values, source)
   }
@@ -526,7 +526,7 @@ function NumberFormatBase (props: { label: string, onChangeDefault: (args: any) 
     updatedCaretPos = getCaretPosInBoundary(newFormattedValue, updatedCaretPos, caretBoundary)
     return updatedCaretPos
   }
-  const updateValueAndCaretPosition = function (params: { formattedValue: any; numAsString: any; inputValue: any; event: any; source: any; setCaretPosition: any; input: any; caretPos?: any }) {
+  const updateValueAndCaretPosition = function (params: { formattedValue: any, numAsString: any, inputValue: any, event: any, source: any, setCaretPosition: any, input: any, caretPos?: any }) {
     let newFormattedValue = params.formattedValue; if (newFormattedValue === void 0) newFormattedValue = ''
     const input = params.input
     let setCaretPosition = params.setCaretPosition; if (setCaretPosition === void 0) setCaretPosition = true
@@ -641,7 +641,7 @@ function NumberFormatBase (props: { label: string, onChangeDefault: (args: any) 
     })
     if (changed) { onChange(e) }
   }
-  const _onKeyDown = function (e: { target: any; key: any; preventDefault: () => void; isUnitTestRun: any }) {
+  const _onKeyDown = function (e: { target: any, key: any, preventDefault: () => void, isUnitTestRun: any }) {
     const el = e.target
     const key = e.key
     const selectionStart = el.selectionStart
@@ -706,7 +706,7 @@ function NumberFormatBase (props: { label: string, onChangeDefault: (args: any) 
     }
     onMouseUp(e)
   }
-  const _onFocus = function (e: { persist: () => void; target: any }) {
+  const _onFocus = function (e: { persist: () => void, target: any }) {
     // Workaround Chrome and Safari bug https://bugs.chromium.org/p/chromium/issues/detail?id=779328
     // (onFocus event target selectionStart is always 0 before setTimeout)
     if (e.persist) { e.persist() }
@@ -765,7 +765,7 @@ function NumberFormatBase (props: { label: string, onChangeDefault: (args: any) 
   )
 }
 
-function format(numStr: string | string[], props: { decimalScale: any; fixedDecimalScale: any; prefix: any; suffix: any; allowNegative: any; thousandsGroupStyle: any }) {
+function format(numStr: string | string[], props: { decimalScale: any, fixedDecimalScale: any, prefix: any, suffix: any, allowNegative: any, thousandsGroupStyle: any }) {
   const decimalScale = props.decimalScale
   const fixedDecimalScale = props.fixedDecimalScale
   let prefix = props.prefix; if (prefix === void 0) prefix = ''
@@ -784,7 +784,7 @@ function format(numStr: string | string[], props: { decimalScale: any; fixedDeci
      * when decimalScale is not defined or non zero and the numStr has decimal in it
      * Or if decimalScale is > 0 and fixeDecimalScale is true (even if numStr has no decimal)
      */
-  const hasDecimalSeparator = (decimalScale !== 0 && numStr.indexOf('.') !== -1) || (decimalScale && fixedDecimalScale)
+  const hasDecimalSeparator = (decimalScale !== 0 && numStr.includes('.')) || (decimalScale && fixedDecimalScale)
   const ref$1 = splitDecimal(numStr, allowNegative)
   let beforeDecimal = ref$1.beforeDecimal
   let afterDecimal = ref$1.afterDecimal
@@ -804,7 +804,7 @@ function format(numStr: string | string[], props: { decimalScale: any; fixedDeci
   numStr = beforeDecimal + ((hasDecimalSeparator && decimalSeparator) || '') + afterDecimal
   return numStr
 }
-function getSeparators(props: { decimalSeparator: any; thousandSeparator: any; allowedDecimalSeparators: any }) {
+function getSeparators(props: { decimalSeparator: any, thousandSeparator: any, allowedDecimalSeparators: any }) {
   let decimalSeparator = props.decimalSeparator; if (decimalSeparator === void 0) decimalSeparator = '.'
   let thousandSeparator = props.thousandSeparator
   let allowedDecimalSeparators = props.allowedDecimalSeparators
@@ -844,7 +844,7 @@ function isNumericString(val: string, prefix: string | null | undefined, suffix:
   if (val === '') { return true }
   return (!(prefix === null || prefix === void 0 ? void 0 : prefix.match(/\d/)) && !(suffix === null || suffix === void 0 ? void 0 : suffix.match(/\d/)) && typeof val === 'string' && !isNaN(Number(val)))
 }
-function removeFormatting(value: string, changeMeta: { from: any; to: any; lastValue: any } | undefined, props: { allowNegative: any; prefix: any; suffix: any; decimalScale: any }) {
+function removeFormatting(value: string, changeMeta: { from: any, to: any, lastValue: any } | undefined, props: { allowNegative: any, prefix: any, suffix: any, decimalScale: any }) {
   let assign
 
   if (changeMeta === void 0) changeMeta = getDefaultChangeMeta(value)
@@ -968,7 +968,7 @@ function removeFormatting(value: string, changeMeta: { from: any; to: any; lastV
   }
   return value
 }
-function getCaretBoundary(formattedValue: string | any[], props: { prefix: any; suffix: any }) {
+function getCaretBoundary(formattedValue: string | any[], props: { prefix: any, suffix: any }) {
   let prefix = props.prefix; if (prefix === void 0) prefix = ''
   let suffix = props.suffix; if (suffix === void 0) suffix = ''
   const boundaryAry = Array.from({ length: formattedValue.length + 1 }).map(function () { return true })
@@ -980,7 +980,7 @@ function getCaretBoundary(formattedValue: string | any[], props: { prefix: any; 
   boundaryAry.fill(false, valLn - suffix.length + 1, valLn + 1)
   return boundaryAry
 }
-function validateAndUpdateProps(props: { prefix: any; allowNegative: any }) {
+function validateAndUpdateProps(props: { prefix: any, allowNegative: any }) {
   const ref = getSeparators(props)
   const thousandSeparator = ref.thousandSeparator
   const decimalSeparator = ref.decimalSeparator
@@ -997,7 +997,7 @@ function validateAndUpdateProps(props: { prefix: any; allowNegative: any }) {
   }
   return Object.assign(Object.assign({}, props), { allowNegative })
 }
-function useNumericFormat(props: { decimalSeparator: any; allowedDecimalSeparators: any; thousandsGroupStyle: any; suffix: any; allowNegative: any; allowLeadingZeros: any; onKeyDown: any; onBlur: any; thousandSeparator: any; decimalScale: any; fixedDecimalScale: any; prefix: any; defaultValue: any; value: any; valueIsNumericString: any; onValueChange: any }) {
+function useNumericFormat(props: { decimalSeparator: any, allowedDecimalSeparators: any, thousandsGroupStyle: any, suffix: any, allowNegative: any, allowLeadingZeros: any, onKeyDown: any, onBlur: any, thousandSeparator: any, decimalScale: any, fixedDecimalScale: any, prefix: any, defaultValue: any, value: any, valueIsNumericString: any, onValueChange: any }) {
   // validate props
   props = validateAndUpdateProps(props)
   const _decimalSeparator = props.decimalSeparator
@@ -1050,7 +1050,7 @@ function useNumericFormat(props: { decimalSeparator: any; allowedDecimalSeparato
   const numAsString = ref$1_0.numAsString
   const formattedValue = ref$1_0.formattedValue
   const _onValueChange = ref$1[1]
-  const _onKeyDown = function (e: { target: any; key: any; preventDefault: () => void }) {
+  const _onKeyDown = function (e: { target: any, key: any, preventDefault: () => void }) {
     const el = e.target
     const key = e.key
     const selectionStart = el.selectionStart
@@ -1123,7 +1123,7 @@ function useNumericFormat(props: { decimalSeparator: any; allowedDecimalSeparato
     if (inputChar === decimalSeparator) { return true }
     return charIsNumber(inputChar)
   }
-  const isCharacterSame = function (ref: { currentValue: any; lastValue: any; formattedValue: any; currentValueIndex: any; formattedValueIndex: any }) {
+  const isCharacterSame = function (ref: { currentValue: any, lastValue: any, formattedValue: any, currentValueIndex: any, formattedValueIndex: any }) {
     const currentValue = ref.currentValue
     const lastValue = ref.lastValue
     const formattedValue = ref.formattedValue
@@ -1165,7 +1165,7 @@ function NumericFormat(props: any) {
   return React__default.createElement(NumberFormatBase, Object.assign({}, numericFormatProps))
 }
 
-function format$1(numStr: string | any[], props: { format: any; allowEmptyFormatting: any; mask: any; patternChar: any }) {
+function format$1(numStr: string | any[], props: { format: any, allowEmptyFormatting: any, mask: any, patternChar: any }) {
   const format = props.format
   const allowEmptyFormatting = props.allowEmptyFormatting
   const mask = props.mask
@@ -1181,7 +1181,7 @@ function format$1(numStr: string | any[], props: { format: any; allowEmptyFormat
   }
   return formattedNumberAry.join('')
 }
-function removeFormatting$1(value: string | any[], changeMeta: { from: any; to: any; lastValue: any } | undefined, props: { format: any; patternChar: any }) {
+function removeFormatting$1(value: string | any[], changeMeta: { from: any, to: any, lastValue: any } | undefined, props: { format: any, patternChar: any }) {
   if (changeMeta === void 0) changeMeta = getDefaultChangeMeta(value)
 
   const format = props.format
@@ -1227,7 +1227,7 @@ function removeFormatting$1(value: string | any[], changeMeta: { from: any; to: 
   const lastSection = lastValue.substring(from.end)
   return ('' + (removeFormatChar(firstSection, 0)) + (extractNumbers(middleSection)) + (removeFormatChar(lastSection, from.end)))
 }
-function getCaretBoundary$1(formattedValue: string | any[], props: { format: any; mask: any; patternChar: any }) {
+function getCaretBoundary$1(formattedValue: string | any[], props: { format: any, mask: any, patternChar: any }) {
   const format = props.format
   const mask = props.mask
   let patternChar = props.patternChar; if (patternChar === void 0) patternChar = '#'
@@ -1274,7 +1274,7 @@ function isNumericString$1(val: string, format: string | null | undefined) {
   if (val === '') { return true }
   return !(format === null || format === void 0 ? void 0 : format.match(/\d/)) && typeof val === 'string' && (!!val.match(/^\d+$/) || val === '')
 }
-function usePatternFormat(props: { mask: any; allowEmptyFormatting: any; format: any; inputMode: any; onKeyDown: any; patternChar: any; value: any; defaultValue: any; valueIsNumericString: any }) {
+function usePatternFormat(props: { mask: any, allowEmptyFormatting: any, format: any, inputMode: any, onKeyDown: any, patternChar: any, value: any, defaultValue: any, valueIsNumericString: any }) {
   const mask = props.mask
   const allowEmptyFormatting = props.allowEmptyFormatting
   const formatProp = props.format
@@ -1290,7 +1290,7 @@ function usePatternFormat(props: { mask: any; allowEmptyFormatting: any; format:
   const _getCaretBoundary = function (formattedValue: any) {
     return getCaretBoundary$1(formattedValue, props)
   }
-  const _onKeyDown = function (e: { key: any; target: any }) {
+  const _onKeyDown = function (e: { key: any, target: any }) {
     const key = e.key
     const el = e.target
     const selectionStart = el.selectionStart

@@ -23,18 +23,17 @@
 }
 
 .tooltip {
+    font-family: var(--font-family-medium);
     background-color: var(--color-base-transparent);
-    color: var(--color-text-error);
-    display: block;
     font-size: var(--font-size-sm);
-    left: 15px;
-    overflow: hidden;
-    pointer-events: none;
-    pointer-events: none;
+    font-weight: var(--font-weight-medium);
     position: absolute;
-    text-overflow: ellipsis;
+    left: 15px;
     top: -2px;
-    font-weight: var(--font-weight-extrabold);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
 }
 
 .label-input {

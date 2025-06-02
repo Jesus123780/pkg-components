@@ -48,7 +48,6 @@ interface InputProps {
   onFocus?: () => void
   setDataValue?: () => void
   onBlur?: () => void
-  onInvalid?: () => void
 }
 
 interface ValidationRange {

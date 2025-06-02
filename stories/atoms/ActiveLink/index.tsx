@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import PropTypes from 'prop-types'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Icon } from '../Icon'
 import { getGlobalStyle } from '../../../helpers'
 import { Row } from '../Row'
@@ -27,13 +27,11 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
   name,
   currentPath,
   mIcon,
-  hiddenTextLink = false,
   icon = {}
 }) => {
   const color = getGlobalStyle(currentPath === true ? '--color-icons-primary' : '--color-icons-gray')
   const iconKey = mIcon !== undefined ? icon[String(mIcon)] : icon['-1']
 
-  const hidden = useMemo(() => { return hiddenTextLink }, [hiddenTextLink])
   return (
     <Link href={href} className={clsx(className, activeClassName)} style={{ color }}>
       <Row style={{ marginRight: '10px', width: 'min-content' }}>
@@ -45,11 +43,9 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
           icon={iconKey}
         />
       </Row>
-      {!hidden && (
-        <span className={styles['animate-fade-in-text']}>
-          {name}
-        </span>
-      )}
+      <span className={styles['ellipsis-text']}>
+        {name}
+      </span>
     </Link>
   )
 }

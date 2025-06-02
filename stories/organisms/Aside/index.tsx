@@ -7,10 +7,10 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import { IconLogo } from '../../../assets/icons'
 import {
   Button,
   Column,
+  Divider,
   Icon,
   Overline,
   Row,
@@ -36,6 +36,7 @@ import {
 } from 'react-beautiful-dnd'
 import styles from './styles.module.css'
 import Link from 'next/link'
+import clsx from 'clsx'
 
 interface MemoAsideProps {
   collapsed?: boolean
@@ -55,6 +56,8 @@ interface MemoAsideProps {
   setSalesOpen?: Dispatch<SetStateAction<boolean>>
   onDragEnd?: (result: any) => void
   isElectron?: boolean
+  handleColapsedMenu?: () => void
+  setIsDragDisabled?: Dispatch<SetStateAction<boolean>>
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
   isElectron = false,
@@ -77,7 +80,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   handleClick = (state: boolean) => { return state },
   handleOpenDeliveryTime = () => { },
   setSalesOpen = (state: boolean) => { return state },
-  handleColapsedMenu = (state: boolean) => { return state },
+  handleColapsedMenu = () => { return null },
   setShowComponentModal = (state: boolean) => { return state },
   onDragEnd = (result: any) => { return result }
 }) => {
@@ -108,7 +111,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   })
 
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent): void {
+    function handleKeyDown (event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
         setSalesOpen((prevState: boolean) => !(prevState))
@@ -143,20 +146,23 @@ const MemoAside: React.FC<MemoAsideProps> = ({
           zIndex={getGlobalStyle('--z-index-99999')}
         />
       }
-      {!isMobile && <Overline
-        bgColor={getGlobalStyle('--color-background-overline')}
-        onClick={() => { setShow(!show) }}
-        show={show}
-        zIndex={getGlobalStyle('--z-index-99999')}
-      />}
+      {/* {!isMobile &&
+        // <Overline
+        //   bgColor={getGlobalStyle('--color-background-overline')}
+        //   onClick={() => { setShow(!show) }}
+        //   show={show}
+        //   zIndex={getGlobalStyle('--z-index-999')}get
+        // />
+      } */}
       <div
         className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
         style={isMobile
           ? {
-            width: isColapsedMenu ? '45px' : '80%',
-            zIndex: getGlobalStyle('--z-index-99999')
-          }
-          : {}}
+              width: isColapsedMenu ? '40px' : '80%',
+              zIndex: getGlobalStyle('--z-index-99999')
+            }
+          : {}
+        }
       >
         <Column className={styles['sidebar-header-container']}>
           <div style={{
@@ -166,14 +172,14 @@ const MemoAside: React.FC<MemoAsideProps> = ({
           }}>
             <Info>
               <Row className={styles['sidebar-header']}>
-                <Column className={styles['sidebar-header-column']}>
+                <Column className={styles['sidebar-header-column']} style={(isMobile && isColapsedMenu) ? { width: 'min-content' } : {}}>
                   {null}
                 </Column>
                 <Button
                   className={styles['sidebar-header-button']}
                   styles={{
                     border: 'none',
-                    padding: getGlobalStyle('--spacing-lg')
+                    padding: getGlobalStyle('--spacing-md')
                   }}
                   onClick={() => { handleColapsedMenu() }}
                 >
@@ -186,50 +192,67 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               </Row>
               {isElectron && <NavigationButtons />}
               <Portal>
-                <LeftNav show={show && salesOpen === false}>
-                  {location?.pathname !== '/products' &&
-                    <Info>
-                      <Button border='gray' color='black' onClick={() => { handleOpenCreateProduct() }}>
-                        Nuevo producto
-                      </Button>
-                    </Info>
-                  }
-                  {location?.pathname === '/products' && <Info>
-                    <Button
-                      border='gray' color='black'
-                      onClick={() => {
-                        setShowComponentModal(4)
-                        handleClick(4)
-                      }}
-                    >
-                      Categorías
-                    </Button>
-                  </Info>}
-                  <Info>
-                    <Button
-                      border='gray'
-                      color='black'
-                      onClick={() => { return setSalesOpen(salesOpen ?? false) }}
-                    >
-                      Ventas
-                    </Button>
-                  </Info>
-                </LeftNav>
+                <div
+                  className={clsx(
+                    styles.quick_options as string,
+                    {
+                      [styles.visible]: show && salesOpen === false,
+                      [styles.hidden]: !show || salesOpen === true,
+                      [styles['quick_options--colapsed'] as string]: isColapsedMenu
+                    }
+                  )}>
+                  <Button
+                    border='gray'
+                    color='black'
+                    iconName='IconBox'
+                    iconPosition='right'
+                    onClick={() => { handleOpenCreateProduct() }}>
+                    Nuevo producto
+                  </Button>
+                  <Button
+                    border='gray'
+                    color='black'
+                    iconName='IconCategorie'
+                    iconPosition='right'
+                    onClick={() => {
+                      setShowComponentModal(4)
+                      handleClick(4)
+                    }}
+                  >
+                    Categorías
+                  </Button>
+                  <Button
+                    border='gray'
+                    color='black'
+                    iconName='IconSales'
+                    iconPosition='right'
+                    onClick={() => { return setSalesOpen(salesOpen ?? false) }}
+                  >
+                    Ventas
+                  </Button>
+                </div>
               </Portal>
               {!isColapsedMenu &&
                 typeof dataStore?.storeName === 'string' && dataStore.storeName.trim() !== '' &&
                 typeof dataStore?.idStore === 'string' && dataStore.idStore.trim() !== '' &&
-                <Link href={`/dashboard/${dataStore.storeName.replace(/ /g, '-')}/${dataStore.idStore}`}>
-                  <h1 className='title_store'>
+                <Link href={`/dashboard/${dataStore?.storeName.replace(/ /g, '-')}/${dataStore.idStore}`}>
+                  <Text
+                    as='h2'
+                    lineHeight='sm'
+                    className={styles['sidebar-header-text']}
+                    size='3xl'
+                    align='center'
+                  >
                     {storeName}
-                  </h1>
+                  </Text>
                 </Link>
               }
               {uState === '1' &&
-                <div className='program_state'>
-                  <IconLogo color='var(--color-icons-primary)' size='20px' />
-                  <h3 className='sub_title_store'>En pausa programada</h3>
-                </div>
+                <Column>
+                  <Text size='sm' align='center'>
+                    En pausa programada
+                  </Text>
+                </Column>
               }
               {!isColapsedMenu &&
                 <Button onClick={() => { setShow(!show) }} className={styles.button_global_create}>
@@ -330,7 +353,12 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               />
             </Column>
           </div>
-          <Column className={styles['sidebar-footer']} style={isColapsedMenu ? { display: 'none' } : {}}>
+          <Column
+            justifyContent='center'
+            alignItems='center'
+            className={styles['sidebar-footer']}
+            style={isColapsedMenu ? { display: 'none' } : {}}
+          >
             <Text color='gray-dark'>
               version: {version}
             </Text>

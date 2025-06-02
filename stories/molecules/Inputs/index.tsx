@@ -1,4 +1,3 @@
-export { AmountInput } from './AmountInput'
 export { InputHookProducts } from './InputHookProducts'
 export { InputOTPHook } from './InputOTPHook'
 export * from './InputCustomRange'

@@ -32,6 +32,10 @@
     border: 1px solid var(--color-neutral-gray-dark);
 }
 
+.button--border-none {
+    border: none;
+}
+
 .button--white {
     color: var(--color-text-white);
 }
