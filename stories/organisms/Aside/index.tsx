@@ -10,7 +10,6 @@ import React, {
 import {
   Button,
   Column,
-  Divider,
   Icon,
   Overline,
   Row,
@@ -23,10 +22,6 @@ import {
 } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
 import { Portal } from '../Portal'
-import {
-  Info,
-  LeftNav
-} from './styled'
 import { getGlobalStyle } from '../../../utils'
 import packageJson from '../../../package.json'
 import {
@@ -170,7 +165,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             overflowX: 'hidden',
             height: '100%'
           }}>
-            <Info>
+            <div>
               <Row className={styles['sidebar-header']}>
                 <Column className={styles['sidebar-header-column']} style={(isMobile && isColapsedMenu) ? { width: 'min-content' } : {}}>
                   {null}
@@ -259,7 +254,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   Agregar nuevo
                 </Button>
               }
-            </Info>
+            </div>
             <Column className={styles['sidebar-header-router']}>
               <DragDropContext onDragEnd={onDragEnd} >
                 <Droppable droppableId="modules" direction="vertical">

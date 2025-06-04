@@ -212,7 +212,6 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         padding: paddingInput,
         width,
         border: errors === true ? '1px solid transparent' : `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
-        marginBottom,
         maxHeight: typeTextarea ? '12.5rem' : 'auto',
         minHeight: typeTextarea ? '12.5rem' : 'auto'
       }}

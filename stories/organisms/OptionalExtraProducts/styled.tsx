@@ -54,7 +54,7 @@ export const GarnishChoicesHeader = styled.div`
     font-size: 0.875rem;
     line-height: 17px;
     display: block;
-    color: #717171;
+    color: var(--color-text-gray);
   }
   .marmita-minitag {
     -webkit-text-size-adjust: 100%;

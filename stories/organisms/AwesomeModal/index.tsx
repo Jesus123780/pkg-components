@@ -158,11 +158,11 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
     (show ?? false) && !state ? styles.fadeInSlow : ''
   ].join(' ')
 
-  const sizeClass = {
+  const sizeClass = ({
     [MODAL_SIZES.small]: styles.small,
     [MODAL_SIZES.medium]: styles.medium,
     [MODAL_SIZES.large]: styles.large
-  }[size as keyof typeof MODAL_SIZES] ?? MODAL_SIZES.medium
+  }[size as keyof typeof MODAL_SIZES]) ?? (size !== MODAL_SIZES.medium ? size : MODAL_SIZES.medium)
 
   return (
     <div

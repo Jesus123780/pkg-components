@@ -1,0 +1,42 @@
+.garnishChoicesHeader {
+    padding: 12px 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    place-content: center;
+    place-items: center;
+    background-color: var(--color-background-gray-light);
+    position: sticky;
+    top: -11px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: var(--spacing-lg);
+}
+
+.content {
+    display: flex;
+    user-select: none;
+}
+
+.title {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-line-clamp: 2;
+    width: 150px;
+}
+
+.titleDesc {
+    color: var(--color-text-gray-light);
+}
+.garnishChoices {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.button_action {
+    background-color: var(--color-background-gray-light);
+    border-radius: var(--border-radius-2xs);
+}

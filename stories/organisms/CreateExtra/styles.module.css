@@ -1,3 +1,52 @@
+.contain-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    height: min-content;
+    border-bottom: 1px solid #ccc;
+}
+
+.noBorder {
+    border-bottom: none;
+}
+
+.contain-item::before,
+.contain-item::after {
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    transform: scale(0);
+    border-radius: 0;
+    transition: transform 0.2s ease, border-radius 0.1s ease 0.1s;
+}
+
+.contain-item::before {
+    border-bottom: 1px solid #ea1d2c;
+    border-left: 1px solid #ea1d2c;
+    transform-origin: 0 100%;
+}
+
+.contain-item::after {
+    border-top: 1px solid #ea1d2c;
+    border-right: 1px solid #ea1d2c;
+    transform-origin: 100% 0;
+}
+
+.loading::before,
+.loading::after {
+    transform: scale(1);
+    border-radius: 4px;
+    color: #ea1d2c;
+}
+
+
 .contentModal {
     display: flex;
     flex-direction: column;
@@ -13,9 +62,9 @@
     padding: 16px 20px;
 }
 
-.contentLinesItems {
+.contain-item {
     display: grid;
-    grid-template-columns: minmax(50%, 10%) 20% 20%;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     align-items: center;
     gap: 5px;
     padding: 10px;
@@ -27,7 +76,7 @@
 }
 
 /* Opcional: para controlar el ancho mínimo si hay mucho contenido */
-.contentLinesItems>* {
+.contain-item>* {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: wrap;
@@ -37,8 +86,8 @@
     border-bottom: none;
 }
 
-.contentLinesItems::before,
-.contentLinesItems::after {
+.contain-item::before,
+.contain-item::after {
     pointer-events: none;
     width: 100%;
     height: 100%;
@@ -53,13 +102,13 @@
     transition: transform 0.2s ease, border-radius 0.1s ease 0.1s;
 }
 
-.contentLinesItems::before {
+.contain-item::before {
     border-bottom: 1px solid #ea1d2c;
     border-left: 1px solid #ea1d2c;
     transform-origin: 0 100%;
 }
 
-.contentLinesItems::after {
+.contain-item::after {
     border-top: 1px solid #ea1d2c;
     border-right: 1px solid #ea1d2c;
     transform-origin: 100% 0;
@@ -81,4 +130,31 @@
     padding: 20px;
     height: 80px;
     width: 100%;
+}
+
+.button-action {
+    background-color: var(--color-base-transparent);
+    border: var(--border-width-none);
+}
+
+.create-extra_container {
+    align-items: start;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.content-create-extra {
+    font-size: 16px;
+    height: 100%;
+    line-height: 1.15;
+    overflow-y: auto;
+    padding: 16px 20px;
+}
+
+@media (max-width: 600px) {
+    .contain-item {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
 }

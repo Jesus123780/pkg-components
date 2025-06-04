@@ -8,7 +8,7 @@ import {
 } from '../../../assets/icons'
 import { numberFormat } from '../../../utils'
 import { Checkbox, Overline, RippleButton, Tag, Text } from '../../atoms'
-import { InputHooks, QuantityButton } from '../../molecules'
+import { ChoicesHeader, InputHooks, QuantityButton } from '../../molecules'
 import {
   CardsComponent,
   ContainerModal,
@@ -114,9 +114,8 @@ export const ModalProduct = ({
       // handleMutate(items)
     }
   })
-  const storeUrl = `/delivery/${getStore?.city?.cName?.toLocaleLowerCase()}-${getStore?.department?.dName?.toLocaleLowerCase()}/${
-    getStore?.storeName
-  }/${getStore?.idStore}`
+  const storeUrl = `/delivery/${getStore?.city?.cName?.toLocaleLowerCase()}-${getStore?.department?.dName?.toLocaleLowerCase()}/${getStore?.storeName
+    }/${getStore?.idStore}`
   return (
     <ContainerModal showModal={show}>
       <Overline
@@ -171,7 +170,7 @@ export const ModalProduct = ({
             size='14px'
             style={{ textDecoration: 'line-through' }}
           >
-                    $ {numberFormat(ProDescuento)}
+            $ {numberFormat(ProDescuento)}
           </Text>}
           <DisRestaurant>
             <Link href={storeUrl}>
@@ -252,39 +251,45 @@ export const ModalProduct = ({
           {dataOptional?.map((itemOptional) => {
             return (
               <div key={itemOptional.opExPid}>
-                <GarnishChoicesHeader>
+                {/* <GarnishChoicesHeader>
                   <div>
                     <p className='garnish-choices__title'>
-                      {itemOptional.OptionalProName}
+                      {itemOptional.OptionalProName !== '' ? itemOptional.OptionalProName : 'Opciones'}
                     </p>
                     <p className='garnish-choices__title-desc'>
                       Escoge hasta {itemOptional.numbersOptionalOnly} opciones.
                     </p>
                   </div>
                   <IconMiniCheck color={'#009b3a'} size={'15px'} />
-                </GarnishChoicesHeader>
-                {itemOptional?.ExtProductFoodsSubOptionalAll?.map((x) => {
-                  return (
-                    <CardsComponent key={x.opSubExPid}>
-                      <div>
-                        <h3 className='title_card'>{x.OptionalSubProName}</h3>
-                      </div>
-                      <Checkbox
-                        checked={x?.check}
-                        id={`subOptional_${x?.opSubExPid}`}
-                        name='subOptional'
-                        onChange={() => {
-                          return handleAddOptional({
-                            exOptional: x.opSubExPid,
-                            codeCategory: itemOptional?.code
-                          })
-                        }}
-                        type='checkbox'
-                        value={x?.check}
-                      />
-                    </CardsComponent>
-                  )
-                })}
+                </GarnishChoicesHeader> */}
+                <ChoicesHeader
+                  title={itemOptional.OptionalProName !== '' ? itemOptional.OptionalProName : 'Opciones'}
+                  description={`Escoge hasta ${itemOptional.numbersOptionalOnly} opciones.`}
+                  label={itemOptional?.numbersOptionalOnly > 0 ? itemOptional?.numbersOptionalOnly : ''}
+                 />
+
+                  {itemOptional?.ExtProductFoodsSubOptionalAll?.map((x) => {
+                    return (
+                      <CardsComponent key={x.opSubExPid}>
+                        <div>
+                          <h3 className='title_card'>{x.OptionalSubProName}</h3>
+                        </div>
+                        <Checkbox
+                          checked={x?.check}
+                          id={`subOptional_${x?.opSubExPid}`}
+                          name='subOptional'
+                          onChange={() => {
+                            return handleAddOptional({
+                              exOptional: x.opSubExPid,
+                              codeCategory: itemOptional?.code
+                            })
+                          }}
+                          type='checkbox'
+                          value={x?.check}
+                        />
+                      </CardsComponent>
+                    )
+                  })}
               </div>
             )
           })}

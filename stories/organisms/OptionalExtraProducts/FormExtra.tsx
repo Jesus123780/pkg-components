@@ -4,9 +4,15 @@ import {
   Button,
   Checkbox,
   Divider,
-  Tag
+  Tag,
+  Text
 } from '../../atoms'
-import { AlertInfo, InputHooks, QuantityButton } from '../../molecules'
+import {
+  AlertInfo,
+  ChoicesHeader,
+  InputHooks,
+  QuantityButton
+} from '../../molecules'
 import { ContentCheckbox, GarnishChoicesHeader } from './styled'
 import { getGlobalStyle } from '../../../helpers'
 
@@ -116,14 +122,18 @@ export const FormExtra: React.FC<Props> = ({
   return (
     <div style={{ height: '100%' }}>
       <div>
-        <GarnishChoicesHeader>
+        {/* <GarnishChoicesHeader>
           <div className='content'>
             <div>
               <p className='garnish-choices__title'>{finalTitle}</p>
-              <p className='garnish-choices__title-desc'>
-                Escoge hasta {isEdit ? selectedExtra?.numberLimit : numberLimit}{' '}
+              <Text
+                as='p'
+                color='gray'
+                className='garnish-choices__title-desc'
+              >
+                Escoge hastasss {isEdit ? selectedExtra?.numberLimit : numberLimit}{' '}
                 opciones.
-              </p>
+              </Text>
             </div>
             <div className='garnish-choices'>
               {isEdit
@@ -131,7 +141,12 @@ export const FormExtra: React.FC<Props> = ({
                 : Boolean(setCheck.exState) && <Tag />}
             </div>
           </div>
-        </GarnishChoicesHeader>
+        </GarnishChoicesHeader> */}
+        <ChoicesHeader
+          description={`Escoge hasta ${isEdit ? selectedExtra?.numberLimit : numberLimit} opciones.`}
+          title={finalTitle}
+          label={isEdit ? (selectedExtra?.required === 1 ? 'Obligatorio' : '') : (setCheck.exState ? 'Obligatorio' : '')}
+        />
         <InputHooks
           name='title'
           onChange={(e) => {

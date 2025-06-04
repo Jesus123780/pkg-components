@@ -20,6 +20,7 @@ export interface ButtonProps {
   styles?: React.CSSProperties
   iconPosition?: 'left' | 'right'
   iconName?: string
+  title?: string
   className?: React.HTMLAttributes<HTMLButtonElement>['className']
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
@@ -41,6 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
   onClick = () => { },
   iconPosition = 'left',
   iconName,
+  title = '',
   ...res
 }) => {
   const buttonStyle = {
@@ -64,10 +66,12 @@ export const Button: React.FC<ButtonProps> = ({
 
         />
       </Column>
-    )
+      )
     : null
   return (
     <button
+      title={title}
+      aria-label={title}
       type={type as 'submit' | 'reset' | 'button'}
       disabled={disabled}
       className={classNames(
@@ -99,11 +103,11 @@ export const Button: React.FC<ButtonProps> = ({
           loading
             ? { opacity: 0 }
             : {
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              display: 'flex'
-            }
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                display: 'flex'
+              }
         }
       >
         {iconPosition === 'left' && renderIcon}

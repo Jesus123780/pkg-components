@@ -410,7 +410,7 @@ CurrencyInputProps
       const CustomInput = customInput
       return <CustomInput {...inputProps} />
     }
-    const label = String(inputProps.label)
+    const label = String(inputProps.label ?? '')
 
     return <div style={{
       position: 'relative'

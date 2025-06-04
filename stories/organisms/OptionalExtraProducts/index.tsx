@@ -13,7 +13,7 @@ import {
   RippleButton,
   Tag
 } from '../../atoms'
-import { InputHooks } from '../../molecules'
+import { ChoicesHeader, InputHooks } from '../../molecules'
 import {
   AwesomeModal,
   List,
@@ -137,7 +137,21 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                 }}
                 key={listID}
               >
-                <GarnishChoicesHeader
+                <ChoicesHeader
+                  title={list?.title}
+                  description={`Escoge hasta ${messageLimit}.`}
+                  label={list?.required === 1 ? 'Requerido' : ''}
+                  deleting={true}
+                  edit={true}
+                  handleDelete={() => {
+                    return handleRemoveList(index, listID)
+                  }}
+                  handleEdit={() => {
+                    setOpenModalEditExtra(!openModalEditExtra)
+                    return setSelectedExtra(list)
+                  }}
+                />
+                {/* <GarnishChoicesHeader
                   style={{
                     padding: '10px',
                     marginBottom: '20px',
@@ -178,7 +192,7 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                   >
                     <IconEdit color={EColor} size='25px' />
                   </RippleButton>
-                </GarnishChoicesHeader>
+                </GarnishChoicesHeader> */}
                 <div className='contain-check-item'>
                   <Tag
                     label={`Total de items ${list?.cards?.length} / ${numberLimit}`}

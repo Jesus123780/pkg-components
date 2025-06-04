@@ -38,7 +38,6 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
     style = {},
     family = 'PFont-Light',
     disabled = false,
-    standard = false,
     active,
     type = 'button',
     bgColor,
@@ -101,7 +100,7 @@ export const RippleButton: React.FC<RippleButtonProps> = (props) => {
     height={props.height}
     style={{
       ...style,
-      cursor: loading ? 'not-allowed' : 'pointer',
+      cursor: loading ? 'not-allowed' : 'pointer'
     }}
   >
       <span id='ripple-button-label'>{label}</span>

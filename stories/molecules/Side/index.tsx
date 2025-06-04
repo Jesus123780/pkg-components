@@ -8,11 +8,11 @@ import { Overline } from '../../atoms'
 import { getGlobalStyle } from '../../../helpers'
 
 interface LateralModalProps {
-    open: boolean
-    direction?: 'left' | 'right'
-    children: React.ReactNode
-    style?: React.CSSProperties
-    handleClose?: () => void
+  open: boolean
+  direction?: 'left' | 'right'
+  children: React.ReactNode
+  style?: React.CSSProperties
+  handleClose?: () => void
 }
 
 /**
@@ -21,19 +21,19 @@ interface LateralModalProps {
  * @param {React.ReactNode} children - Modal content.
  */
 export const LateralModal: React.FC<LateralModalProps> = ({
-    open,
-    direction = 'right',
-    children,
-    style = {},
-    handleClose = () => { }
+  open,
+  direction = 'right',
+  children,
+  style = {},
+  handleClose = () => { }
 }) => {
-    const baseClass = styles.modal
-    const isRight = direction === 'right'
+  const baseClass = styles.modal
+  const isRight = direction === 'right'
 
-    const directionClass = isRight ? styles.fromRight : styles.fromLeft
-    const openClass = open ? (isRight ? styles.openRight : styles.openLeft) : ''
+  const directionClass = isRight ? styles.fromRight : styles.fromLeft
+  const openClass = open ? (isRight ? styles.openRight : styles.openLeft) : ''
 
-    return (
+  return (
         <>
             <Portal>
                 <Overline
@@ -47,15 +47,15 @@ export const LateralModal: React.FC<LateralModalProps> = ({
                 {children}
             </div>
         </>
-    )
+  )
 }
 
 LateralModal.propTypes = {
-    open: PropTypes.bool.isRequired,
-    direction: PropTypes.oneOf(['left', 'right']),
-    children: PropTypes.node
+  open: PropTypes.bool.isRequired,
+  direction: PropTypes.oneOf(['left', 'right']),
+  children: PropTypes.node
 }
 LateralModal.defaultProps = {
-    direction: 'right',
-    children: null
+  direction: 'right',
+  children: null
 }
