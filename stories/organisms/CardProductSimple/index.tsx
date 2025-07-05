@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -75,8 +77,9 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
 
   const listCategories = formatProductData(dataExtra ?? [], dataOptional ?? [])
 
-  const priceOrFree = ProPrice > 0 ? `${numberFormat(ProPrice as number)}` : 'Gratis'
-  const delivery = `Domicilio: ${ValueDelivery > 0 ? numberFormat(ValueDelivery) : 'Gratis'}`
+  const priceOrFree = +(`${ProPrice}`.replace(/\./g, '').replace(',', '.')) > 0 ? numberFormat(ProPrice) : 'Gratis'
+
+  const delivery = `Domicilio: ${+(`${ValueDelivery}`.replace(/\./g, '').replace(',', '.')) > 0 ? numberFormat(ValueDelivery) : 'Gratis'}`
 
   const actions = [
     (del) && {
@@ -133,21 +136,17 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
             </Button>
           ))}
           <Column className={styles['dish-card__info']}>
-            {ValueDelivery > 0 && (
-              <span className={styles.description}>
-                {delivery}
-              </span>
-            )}
+            <span className={styles.description}>
+              {delivery}
+            </span>
 
             <Row justifyContent='space-between'>
               <span className={styles.price}>
                 {free ? 'Gratis' : priceOrFree}
               </span>
-              {ProDescuento > 0 && (
-                <span className={styles.price_discount}>
-                  {numberFormat(ProDescuento)}
-                </span>
-              )}
+              <span className={styles.price_discount}>
+                {numberFormat(ProDescuento)}
+              </span>
             </Row>
           </Column>
           {sum && (

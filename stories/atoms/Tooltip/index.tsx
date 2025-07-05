@@ -1,25 +1,27 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+'use client'
 
-export * from './PositionTooltip';
+import React from 'react'
+import styled, { css } from 'styled-components'
+
+export * from './PositionTooltip'
 
 interface TooltipProps {
-  text: string;
-  position: 'top' | 'bottom' | 'left' | 'right';
-  bottom?: string;
-  left?: string;
-  showArrow?: boolean;
-  hover?: boolean;
-  arrowOffset?: 'top' | 'bottom' | 'left' | 'right';
-  rotate?: string;
-  borderRadius?: string;
-  children: React.ReactNode;
+  text: string
+  position: 'top' | 'bottom' | 'left' | 'right'
+  bottom?: string
+  left?: string
+  showArrow?: boolean
+  hover?: boolean
+  arrowOffset?: 'top' | 'bottom' | 'left' | 'right'
+  rotate?: string
+  borderRadius?: string
+  children: React.ReactNode
 }
 
 const TooltipContainer = styled.div`
   position: relative;
   display: inline-block;
-`;
+`
 
 const TooltipText = styled.span<TooltipProps>`
   background-color: rgba(0, 0, 0, 0.8);
@@ -46,25 +48,25 @@ const TooltipText = styled.span<TooltipProps>`
         bottom: ${bottom || '90%'};
         left: ${left || '80%'};
         transform: rotate(${rotate || '35deg'});
-      `;
+      `
     } else if (position === 'bottom') {
       return css`
         top: 100%;
         left: 50%;
         transform: translateX(-50%);
-      `;
+      `
     } else if (position === 'left') {
       return css`
         top: 50%;
         right: 100%;
         transform: translateY(-50%);
-      `;
+      `
     } else if (position === 'right') {
       return css`
         top: 50%;
         left: 100%;
         transform: translateY(-50%);
-      `;
+      `
     }
   }};
 
@@ -100,7 +102,7 @@ const TooltipText = styled.span<TooltipProps>`
         opacity: 1;
       }
     `}
-`;
+`
 
 export const Tooltip: React.FC<TooltipProps> = ({
   text,
@@ -112,7 +114,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   arrowOffset,
   rotate,
   borderRadius,
-  children,
+  children
 }) => {
   return (
     <TooltipContainer>
@@ -130,6 +132,5 @@ export const Tooltip: React.FC<TooltipProps> = ({
         {text}
       </TooltipText>
     </TooltipContainer>
-  );
-};
-
+  )
+}

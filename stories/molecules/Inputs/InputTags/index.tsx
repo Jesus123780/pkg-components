@@ -1,3 +1,5 @@
+'use client'
+
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 import styled, { css } from 'styled-components'
@@ -13,7 +15,7 @@ export const InputTags = ({
 }) => {
   const refBox = useRef()
   const removeTags = (indexToRemove) => {
-    setTags([...tags.filter((_, index) => {return index !== indexToRemove})])
+    setTags([...tags.filter((_, index) => { return index !== indexToRemove })])
   }
 
   const addTags = (event) => {
@@ -31,20 +33,22 @@ export const InputTags = ({
     <Box
       block={disabled}
       disabled={disabled}
-      onClick={() => {return refBox.current.focus()} }
+      onClick={() => { return refBox.current.focus() } }
       width={width}
     >
       <InputTag id='tags' width={width}>
         <>
-          {tags?.map((tag, index) => {return (
+          {tags?.map((tag, index) => {
+            return (
             <Tags key={index}>
               <Span>{tag}</Span>
-              <IconContent onClick={() => {return !disabled && removeTags(index)}}> <IconCancel size='11px' /> </IconContent>
+              <IconContent onClick={() => { return !disabled && removeTags(index) }}> <IconCancel size='11px' /> </IconContent>
             </Tags>
-          )})}
+            )
+          })}
           <InputText
             disabled={disabled}
-            onKeyDown={(event) => {return (event.key === 'Enter' ? addTags(event) : null)}}
+            onKeyDown={(event) => { return (event.key === 'Enter' ? addTags(event) : null) }}
             placeholder='Press enter to add tags'
             ref={refBox}
             type='text'
@@ -81,17 +85,19 @@ const Tags = styled.div`
 `
 const Box = styled.div`
     display: block;
-    flex-direction: ${({ direction }) => {return direction || 'row'}};
+    flex-direction: ${({ direction }) => { return direction || 'row' }};
     position: relative;
-    ${({ width }) => {return width && css`width: ${width};`}}
+    ${({ width }) => { return width && css`width: ${width};` }}
     box-sizing: border-box;
     margin: 10px 5px;
     border: 1px solid #cccccc;
     border-radius: 5px;
-    ${props => {return props.block && css`
+    ${props => {
+ return props.block && css`
         background-color: ${SFVColor};
         cursor: no-drop;
-    `}}
+    `
+}}
  
 `
 const InputText = styled.input`
@@ -122,7 +128,7 @@ const InputTag = styled.div`
     flex-direction: row;
     cursor: text;
     align-items: center;
-    ${({ maxHeight }) => {return maxHeight && css`max-height: ${maxHeight};`}}
+    ${({ maxHeight }) => { return maxHeight && css`max-height: ${maxHeight};` }}
 
 
 `

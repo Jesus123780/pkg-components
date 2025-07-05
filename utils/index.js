@@ -17,12 +17,10 @@ const locale = {
 }
 
 /**
- * Formatea un valor como un número siguiendo el formato de Colombia.
- * Si el valor no es un número válido, lo devuelve tal como está.
- *
- * @param {string|number} value - El valor a formatear.
- * @param {string} [currency='COP'] - La moneda a utilizar (opcional).
- * @returns {string} El valor formateado como número o el valor original si no es numérico.
+ * Format a number or string into currency using Intl.NumberFormat
+ * @param {number|string|null|undefined} value - The value to format
+ * @param {Object} options - Formatting options
+ * @returns {string|number|null|undefined}
  */
 export const numberFormat = (value, options = {
   currency: 'COP',
@@ -31,21 +29,30 @@ export const numberFormat = (value, options = {
   style: 'currency',
   notation: 'standard'
 }) => {
-  // Verifica si el valor es nulo o indefinido, devolviendo el mismo valor.
-  if (value === null || value === undefined) {
-    return value
+  if (value === null || value === undefined) return value
+
+  const locale = {
+    COP: 'es-CO',
+    USD: 'en-US',
+    EUR: 'de-DE'
   }
 
-  // Verifica si el valor es numérico
-  if (!isNaN(value)) {
+  let numericValue = value
+
+  if (typeof value === 'string') {
+    // Reemplaza miles (.) y decimales (,) para convertirlo en número JS válido
+    numericValue = Number(value.replace(/\./g, '').replace(',', '.'))
+  }
+
+  if (!isNaN(numericValue)) {
     const settings = { ...options }
-    // Si el número es muy alto, agrega K o M
-    return new Intl.NumberFormat(locale[options.currency], settings).format(value)
+    const currencyLocale = typeof locale[options.currency] === 'string' ? locale[options.currency] : 'es-CO'
+    return new Intl.NumberFormat(currencyLocale, settings).format(numericValue)
   }
 
-  // Devuelve el valor original si no es un número.
   return value
 }
+
 /**
  * Valida si un número de teléfono tiene el formato (XXX) XXX-XXXX.
  * El formato esperado es: (123) 456-7890.
@@ -126,3 +133,19 @@ export const isEmail = email => {
 }
 
 export const passwordConfirm = (value, valueConfirm) => { return !(value === valueConfirm) }
+
+export const ROUTES = Object.freeze({
+  login: '/login',
+  index: '/',
+  home: '/home',
+  register: '/register',
+  dashboard: '/dashboard',
+  profile: '/profile',
+  categories: '/categories',
+  configuration: '/configuration',
+  orders: '/orders',
+  products: '/products',
+  notFound: '/404',
+  serverError: '/500'
+
+})

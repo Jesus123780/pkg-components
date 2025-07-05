@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useRef } from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { getGlobalStyle } from '../../../helpers'

@@ -1,6 +1,7 @@
+'use client'
+
 import PropTypes from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
-// import './Tooltip.css';  // Archivo CSS para estilos
 
 export const PositionTooltip = ({ text, position }) => {
   const [tooltipPosition, setTooltipPosition] = useState(position)
@@ -45,4 +46,3 @@ PositionTooltip.propTypes = {
   position: PropTypes.string,
   text: PropTypes.any
 }
-

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useMemo, useState } from 'react'
 import { IconRate } from '../../../assets/icons'
 import { ContentIcon } from './styled'

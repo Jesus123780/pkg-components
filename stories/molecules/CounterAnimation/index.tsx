@@ -1,3 +1,5 @@
+'use client'
+
 import React, { type FC, useRef, useEffect } from 'react'
 
 import utils from './utils'
@@ -11,7 +13,7 @@ interface Props {
   numberformat?: boolean
 }
 
-function getSize(fontSize: string): [string, 'px' | 'em' | 'rem'] {
+function getSize (fontSize: string): [string, 'px' | 'em' | 'rem'] {
   if (fontSize === '') {
     throw new Error('Missing param: [fontSize]')
   }
@@ -80,7 +82,7 @@ export const MemoCounterAnimation: FC<Props> = ({
             >
               {number}
             </span>
-          )
+            )
 
           : (
             <Disk
@@ -98,7 +100,7 @@ export const MemoCounterAnimation: FC<Props> = ({
               isIncreasing={isSomethingZero ? isTotalIncreasing : prevNum < num}
               level={prevNum - num >= 2}
             />
-          )
+            )
       })}
     </div>
   )

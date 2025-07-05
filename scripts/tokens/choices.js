@@ -2,6 +2,7 @@ export const choices = {
   color: {
     brand: {
       // Primary
+      pigmentGreen: '#00a650',
       alizarinCrimson: '#ff0000',
       guardsmanRed: '#C00000',
       tabasco: '#A21B11',
@@ -70,7 +71,7 @@ export const choices = {
     '2xl': '1.5rem',
     '3xl': '2rem',
     '4xl': '3rem',
-    '5xl': '3.5rem'// 64 - pendiente validar
+    '5xl': '3.5rem'
   },
   fontFamily: {
     sans: ['Open Sans'],

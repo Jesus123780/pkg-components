@@ -1,3 +1,5 @@
+'use client'
+
 import PropTypes from 'prop-types'
 import React, { memo, useCallback, useState } from 'react'
 import SingleInput, { Content } from './SingleInput'
@@ -26,7 +28,7 @@ export const InputOTPHookMemo = (props) => {
   // Helper to return value with the right type: 'text' or 'number'
   const getRightValue = useCallback(
     (str) => {
-      let changedValue = str
+      const changedValue = str
       if (!isNumberInput) {
         return changedValue
       }
@@ -136,7 +138,7 @@ export const InputOTPHookMemo = (props) => {
         .slice(0, length - activeInput)
         .split('')
       if (pastedData) {
-        let nextFocusIndex = 0
+        const nextFocusIndex = 0
         const updatedOTPValues = [...otpValues] // Clonamos el estado actual
 
         // Usamos un índice separado para rastrear el índice de los valores pegados
@@ -176,7 +178,7 @@ export const InputOTPHookMemo = (props) => {
             onKeyDown={handleOnKeyDown}
             onPaste={handleOnPaste}
             style={inputStyle}
-            value={otpValues && otpValues[index]}
+            value={otpValues?.[index]}
           />
         })}
     </Content>

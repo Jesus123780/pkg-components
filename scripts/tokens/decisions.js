@@ -95,7 +95,8 @@ const decisions = {
       grayLight: brand.whiteSmoke,
       white: brand.white,
       overline: brand.overline,
-      pink: brand.sweetPink
+      pink: brand.sweetPink,
+      success: brand.pigmentGreen,
     },
     icons: {
       primary: brand.alizarinCrimson,

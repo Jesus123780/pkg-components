@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import { PatternFormat } from '../PatternFormat'
 import { Icon } from '../../../atoms'

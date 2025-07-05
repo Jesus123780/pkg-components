@@ -8,6 +8,7 @@ interface ToggleSwitchProps {
   disabled?: boolean
   label?: string
   style?: React.CSSProperties
+  name?: string
   successColor: 'green' | 'red'
   onChange: (checked: boolean) => void
 }
@@ -17,6 +18,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   id = 'toggle-switch',
   disabled = false,
   label = '',
+  name = '',
   successColor = 'red',
   style = {},
   onChange = () => {}
@@ -31,6 +33,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
       <label className={styles.switch} htmlFor={id}>
         <input
           id={id}
+          name={name}
           type="checkbox"
           disabled={disabled}
           checked={checked}

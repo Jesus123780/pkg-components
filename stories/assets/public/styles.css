@@ -15,7 +15,7 @@ a#tv-attr-logo {
 }
 
 .grid-stack {
-  max-width: 1200px; /* o el ancho que quieras */
+  max-width: var(--width-max-desktop); /* o el ancho que quieras */
   margin: 0 auto; /* centrar */
 }
 

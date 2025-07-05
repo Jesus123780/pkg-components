@@ -4,7 +4,8 @@
     border: none;
     position: relative;
     padding: 20px;
-    font-family: 'PFont-Regular';
+    color: var(--color-text-black);
+    font-family: PFont-Light;
 }
 
 .button:disabled {
@@ -59,6 +60,12 @@
     animation: rotate 1s linear infinite;
 }
 
+.button--none {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--color-text-black);
+}
 @keyframes rotate {
     0% {
         transform: rotate(0deg);

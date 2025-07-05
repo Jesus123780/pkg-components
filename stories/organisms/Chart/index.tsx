@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useRef, useState, type FC } from 'react'
 import PropTypes from 'prop-types'
 import { choices } from '../../../scripts/tokens/choices'
@@ -87,7 +89,7 @@ const dataTest: ChartData = {
 
 let width: number, height: number, gradient: CanvasGradient
 
-function getGradient(ctx: CanvasRenderingContext2D, chartArea: any) {
+function getGradient (ctx: CanvasRenderingContext2D, chartArea: any) {
   const chartWidth = chartArea.right - chartArea.left
   const chartHeight = chartArea.bottom - chartArea.top
 
@@ -461,7 +463,7 @@ interface KmhGoalChartProps {
   textColor?: string // Color del texto
   textWeight?: 'normal' | 'bold' | 'bolder' // Peso del texto
   rotateText?: boolean // Rotar el texto según el gráfico
-  textPosition?: { x: string; y: string } // Personalización de la posición del texto
+  textPosition?: { x: string, y: string } // Personalización de la posición del texto
   showPercentage?: boolean // Mostrar o no el porcentaje
   orientation?: 'horizontal' | 'vertical' | 'full' // Orientación del gráfico
   startAngle?: number // Ángulo desde el que comienza la línea indicadora (0 a 360 grados)

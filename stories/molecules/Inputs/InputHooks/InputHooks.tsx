@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+'use client'
+
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import {
   isCC,
   isEmail,
@@ -8,7 +15,7 @@ import {
   validatePhoneNumber
 } from '../../../../utils'
 import { getGlobalStyle } from '../../../../helpers'
-import { Icon, Row } from '../../../atoms'
+import { Column, Icon, Row, Text } from '../../../atoms'
 import styles from './styles.module.css'
 
 interface InputHooksProps {
@@ -45,7 +52,6 @@ interface InputHooksProps {
   value?: string
   width?: string
   info?: string
-  marginBottom?: string
   max?: number
   onFocus?: () => void
   onBlur?: () => void
@@ -77,7 +83,6 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   type = 'text',
   typeTextarea = false,
   value = '',
-  marginBottom = getGlobalStyle('--spacing-5xl'),
   width = '100%',
   info = '',
   max = Infinity,
@@ -100,7 +105,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   const [focused, setFocused] = useState(false)
   const refInput = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
 
-  const validationRules: Record<string, { validate: (value: string) => boolean, message: string }> = {
+  const validationRules = React.useMemo<Record<string, { validate: (value: string) => boolean, message: string }>>(() => ({
     required: {
       validate: (value) => Boolean(required) && value.length === 0,
       message: 'El campo no debe estar vacío'
@@ -110,7 +115,10 @@ export const InputHooks: React.FC<InputHooksProps> = ({
       message: 'El campo debe ser numérico'
     },
     range: {
-      validate: (value) => range && (Number(value?.length) < Number(range?.min) || Number(value?.length) > Number(range?.max)),
+      validate: (value) =>
+        range !== null &&
+        range !== undefined &&
+        (Number(value?.length) < Number(range?.min) || Number(value?.length) > Number(range?.max)),
       message: `El rango de caracteres es de ${range?.min} a ${range?.max}`
     },
     letters: {
@@ -143,7 +151,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         Boolean(passConfirm?.validate) && value !== passConfirm?.passValue,
       message: 'Las contraseñas no coinciden.'
     }
-  }
+  }), [required, numeric, range, letters, email, pass, nit, cc, type, passConfirm])
 
   const validateInput = (value: string): { valid: boolean, message: string } => {
     for (const key in validationRules) {
@@ -153,14 +161,16 @@ export const InputHooks: React.FC<InputHooksProps> = ({
     }
     return { valid: true, message: '' }
   }
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>): void => {
-    const { value } = e.target
-    const { valid, message } = validateInput(value)
-    setError(!valid)
-    setMessage(message)
-    onChange(e, !valid)
-  }
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>): void => {
+      const { value } = e.target
+      const { valid, message } = validateInput(value)
+      setError(!valid)
+      setMessage(message)
+      onChange(e, !valid)
+    },
+    [onChange]
+  )
 
   const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLInputElement>): void => {
     const { value } = e.target
@@ -206,7 +216,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         boxShadow: errors === true
           ? `${getGlobalStyle('--box-shadow-red-rose')}`
           : focused
-            ? `${getGlobalStyle('--box-shadow-blue')}` // Sombra azul cuando está en foco
+            ? `${getGlobalStyle('--box-shadow-xs')}`
             : border,
         maxWidth,
         padding: paddingInput,
@@ -231,6 +241,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         placeholder={placeholder}
         autoComplete={autoComplete}
         value={value}
+        aria-invalid={errors === true}
         onKeyDown={handleKeyDown as any}
         className={styles.input}
         type={type}
@@ -250,13 +261,22 @@ export const InputHooks: React.FC<InputHooksProps> = ({
           ? (
             <>
               {title.replace('*', '')}
+              <span style={{
+                fontSize: getGlobalStyle('--font-size-xs'),
+                marginLeft: getGlobalStyle('--spacing-xs'),
+                color: getGlobalStyle('--color-neutral-gray-silver')
+              }}>
+                (Obligatorio)
+              </span>
               <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>
                 *
               </span>
             </>
             )
           : (
-              title
+            <>
+              {title}
+            </>
             )}
       </label>
       {(errors === true || info !== '') && (
@@ -274,7 +294,18 @@ export const InputHooks: React.FC<InputHooksProps> = ({
           </span>
         </Row>
       )}
-
+      {typeof range?.max !== 'undefined' && range?.max !== null && typeof value === 'string' && typeTextarea && (
+        <Column className={styles.range_counter_container} alignItems='flex-end'>
+          <Text className={styles.range_counter_text} color='gray'>
+            <span style={{
+              marginRight: getGlobalStyle('--spacing-sm'),
+              color: value.length > Number(range.max) ? getGlobalStyle('--color-text-error') : undefined
+            }}>
+              {value.length}
+            </span>/ {range.max}
+          </Text>
+        </Column>
+      )}
     </div>
   )
 }

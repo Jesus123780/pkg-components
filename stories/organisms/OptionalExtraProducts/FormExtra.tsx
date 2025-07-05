@@ -1,11 +1,8 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import {
   Button,
   Checkbox,
-  Divider,
-  Tag,
-  Text
+  Divider
 } from '../../atoms'
 import {
   AlertInfo,
@@ -13,7 +10,7 @@ import {
   InputHooks,
   QuantityButton
 } from '../../molecules'
-import { ContentCheckbox, GarnishChoicesHeader } from './styled'
+import { ContentCheckbox } from './styled'
 import { getGlobalStyle } from '../../../helpers'
 
 interface SelectedExtra {
@@ -31,13 +28,12 @@ interface Props {
   numberLimit?: string
   selectedExtra?: SelectedExtra
   setCheck?: SetCheck
-  showTooltip?: string
   title?: string
   handleAddList?: (args: { title: string, numberLimit: string }) => void
   setSelectedExtra?: (args: SelectedExtra) => void
   handleCheck?: (event: React.ChangeEvent<HTMLInputElement>) => void
   handleShowTooltip?: (string: string) => void
-  setNumberLimit?: (number: string) => void
+  setNumberLimit?: React.Dispatch<React.SetStateAction<number>>
   setShowTooltip?: (boolean: boolean) => void
   setTitle?: (text: string) => void
   sendNotification?: (args: { description: string, title: string, backgroundColor: string }) => void
@@ -50,7 +46,6 @@ interface Props {
  * @param {string} [props.numberLimit=''] - Limit for the number of entries.
  * @param {Object} [props.selectedExtra={ numberLimit: 0, required: 0, title: '' }] - Currently selected extra.
  * @param {function} [props.setCheck=()=>{}] - Function to set checkbox state.
- * @param {string} [props.showTooltip=''] - Tooltip to display.
  * @param {string} [props.title=''] - Title of the form.
  * @param {function} [props.handleAddList=(args)=>args] - Function to handle adding to the list.
  * @param {function} [props.setSelectedExtra=(args)=>args] - Function to set selected extra.
@@ -73,7 +68,6 @@ export const FormExtra: React.FC<Props> = ({
   setCheck = {
     exState: false
   },
-  showTooltip = '',
   title = '',
   handleAddList = (args) => {
     return args
@@ -84,14 +78,8 @@ export const FormExtra: React.FC<Props> = ({
   handleCheck = (event) => {
     return event
   },
-  handleShowTooltip = (string) => {
-    return string
-  },
   setNumberLimit = (number) => {
     return number
-  },
-  setShowTooltip = (boolean) => {
-    return boolean
   },
   setTitle = (text) => {
     return text
@@ -122,26 +110,6 @@ export const FormExtra: React.FC<Props> = ({
   return (
     <div style={{ height: '100%' }}>
       <div>
-        {/* <GarnishChoicesHeader>
-          <div className='content'>
-            <div>
-              <p className='garnish-choices__title'>{finalTitle}</p>
-              <Text
-                as='p'
-                color='gray'
-                className='garnish-choices__title-desc'
-              >
-                Escoge hastasss {isEdit ? selectedExtra?.numberLimit : numberLimit}{' '}
-                opciones.
-              </Text>
-            </div>
-            <div className='garnish-choices'>
-              {isEdit
-                ? Boolean(selectedExtra?.required) && <Tag />
-                : Boolean(setCheck.exState) && <Tag />}
-            </div>
-          </div>
-        </GarnishChoicesHeader> */}
         <ChoicesHeader
           description={`Escoge hasta ${isEdit ? selectedExtra?.numberLimit : numberLimit} opciones.`}
           title={finalTitle}
@@ -227,7 +195,7 @@ export const FormExtra: React.FC<Props> = ({
               <Divider marginTop={getGlobalStyle('--spacing-xl')} />
               <Button
                 disabled={emptyTitle}
-                padding='10px 20px'
+                padding={getGlobalStyle('--spacing-xl')}
                 primary
                 width='100%'
                 borderRadius='0.25rem'
@@ -249,30 +217,11 @@ export const FormExtra: React.FC<Props> = ({
                 Añadir
               </Button>
               <Divider marginTop={getGlobalStyle('--spacing-2xl')} />
-              <AlertInfo message='Agrega sub productos como adicionales, salsas... etc.' type='warning' />
+              <AlertInfo message='Crea una lista de productos opcionales, como adicionales, toppings o salsas, que tus clientes podrán seleccionar.' type='warning' />
             </>
           )}
         </div>
       </div>
     </div>
   )
-}
-
-FormExtra.propTypes = {
-  handleAddList: PropTypes.func,
-  handleCheck: PropTypes.func,
-  handleShowTooltip: PropTypes.func,
-  isEdit: PropTypes.bool,
-  numberLimit: PropTypes.string,
-  selectedExtra: PropTypes.object,
-  sendNotification: PropTypes.func,
-  setCheck: PropTypes.shape({
-    exState: PropTypes.bool
-  }),
-  setNumberLimit: PropTypes.func,
-  setSelectedExtra: PropTypes.func,
-  setShowTooltip: PropTypes.func,
-  setTitle: PropTypes.func,
-  showTooltip: PropTypes.string,
-  title: PropTypes.string
 }

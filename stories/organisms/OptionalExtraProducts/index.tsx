@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import {
-  EColor,
   NorthTexasGreen
 } from '../../../assets/colors'
 import {
-  IconDelete,
-  IconEdit,
   IconMiniCheck
 } from '../../../assets/icons'
 import {
@@ -20,13 +17,13 @@ import {
   ResisesColumns
 } from '../../organisms'
 import { FormExtra } from './FormExtra'
-import { BodyDnd, GarnishChoicesHeader } from './styled'
+import { BodyDnd } from './styled'
+import { getGlobalStyle } from '../../../helpers'
 
 interface IOptionalExtraProducts {
   title: string
   dataListIds: string[]
   data: any
-  isCustomSubOpExPid: any
   loadingEditSubOptional: any
   selectedItem: any
   selectedExtra: any
@@ -53,7 +50,6 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
   data = {
     lists: []
   },
-  isCustomSubOpExPid,
   loadingCreateSubDessert = false,
   loadingEditSubOptional,
   selectedItem = {
@@ -102,16 +98,6 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
 }) => {
   // STATES
   const [numberLimit, setNumberLimit] = useState<number>(1)
-  const [showTooltip, setShowTooltip] = useState<boolean>(false)
-
-  /**
- * Toggles the visibility of a tooltip.
- * @param {boolean} index - The boolean value indicating tooltip visibility.
- * @returns {React.Dispatch<React.SetStateAction<boolean>>} - The state setter function.
- */
-  const handleShowTooltip = (index: boolean): void => {
-    return setShowTooltip((prevIndex: boolean) => (prevIndex === index ? false : index))
-  }
 
   return (
     <BodyDnd>
@@ -151,48 +137,6 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                     return setSelectedExtra(list)
                   }}
                 />
-                {/* <GarnishChoicesHeader
-                  style={{
-                    padding: '10px',
-                    marginBottom: '20px',
-                    display: 'flex',
-                    zIndex: 999,
-                    alignItems: 'center'
-                  }}
-                >
-                  <div>
-                    <p className='garnish-choices__title'>
-                      {list?.title}
-                    </p>
-                    <p className='garnish-choices__title-desc'>
-                      Escoge hasta {messageLimit}.
-                    </p>
-                    {Boolean(list?.required === 1) && <Tag />}
-                  </div>
-                  <RippleButton
-                    bgColor='transparent'
-                    margin='0px'
-                    onClick={() => {
-                      return handleRemoveList(index, listID)
-                    }}
-                    type='button'
-                    widthButton='min-content'
-                  >
-                    <IconDelete color={EColor} size='25px' />
-                  </RippleButton>
-                  <RippleButton
-                    bgColor='transparent'
-                    margin='0px'
-                    onClick={() => {
-                      setOpenModalEditExtra(!openModalEditExtra)
-                      return setSelectedExtra(list)
-                    }}
-                    type='button'
-                    widthButton='min-content'
-                  >
-                    <IconEdit color={EColor} size='25px' />
-                  </RippleButton>
-                </GarnishChoicesHeader> */}
                 <div className='contain-check-item'>
                   <Tag
                     label={`Total de items ${list?.cards?.length} / ${numberLimit}`}
@@ -213,7 +157,6 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                 />
                 <InputHooks
                   autoFocus={true}
-                  margin='5px 0'
                   name='list_value'
                   onChange={(value) => {
                     return handleChangeItems({
@@ -241,12 +184,11 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                     }
                     return null
                   }}
-                  onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  onKeyPress={(e: React.KeyboardEvent<HTMLButtonElement>) => {
                     if (e.key === 'Enter' && !incompleteList) {
                       handleAdd({ listId: listID })
                     }
                   }}
-                  widthButton='100%'
                 >
                   Agregar
                 </RippleButton>
@@ -257,13 +199,10 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
         <FormExtra
           handleAddList={handleAddList}
           handleCheck={handleCheck}
-          handleShowTooltip={handleShowTooltip}
           numberLimit={String(numberLimit)}
           setCheck={setCheck}
           setNumberLimit={setNumberLimit}
-          setShowTooltip={setShowTooltip}
           setTitle={setTitle}
-          showTooltip={String(showTooltip)}
           title={title}
         />
       </ResisesColumns>
@@ -285,20 +224,16 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
         question={false}
         show={openModalEditExtra}
         size='600px'
-        sizeIconClose='30px'
-        zIndex='9999'
+        zIndex={getGlobalStyle('--z-index-9999')}
       >
         <FormExtra
           handleAddList={handleAddList}
-          handleShowTooltip={handleShowTooltip}
           isEdit={true}
           numberLimit={String(numberLimit)}
           selectedExtra={selectedExtra}
           setCheck={setCheck}
           setSelectedExtra={setSelectedExtra}
-          setShowTooltip={setShowTooltip}
           setTitle={setTitle}
-          showTooltip={String(showTooltip)}
           title={title}
         />
         <RippleButton
@@ -308,12 +243,11 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
             })
           }}
           style={{
-            margin: '15px auto',
+            margin: 'var(--spacing-xs) auto',
             justifyContent: 'center',
             alignItems: 'center',
             display: 'flex'
           }}
-          widthButton='80%'
         >
           Guardar
         </RippleButton>

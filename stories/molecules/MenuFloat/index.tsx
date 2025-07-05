@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
@@ -39,14 +41,16 @@ export const FloatMenu = () => {
   return (
     <div style={{ position: 'relative' }}>
       <h2>
-        {clickTs ? (
+        {clickTs
+          ? (
           <div>
             <p>x-pos: {mouseLocation.xPos}</p>
             <p>y-pos: {mouseLocation.yPos}</p>
           </div>
-        ) : (
+            )
+          : (
           <p>Click anywhere to start</p>
-        )}
+            )}
       </h2>
       <div>{!!clickTs && <ChildWrapper style={{ left: `${mouseLocation.xPos}%`, top: `${mouseLocation.yPos}%` }}>Hola</ChildWrapper>}</div>
     </div>

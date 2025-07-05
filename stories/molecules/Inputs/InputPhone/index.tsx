@@ -1,6 +1,7 @@
+'use client'
+
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { IconColombia } from '../../../../assets/icons'
 import { countries } from './helpers'
 import './styles.css'
 import { Icon } from '../../../atoms'

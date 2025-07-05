@@ -201,6 +201,11 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
             onClick={CleanLines}
             padding='17px'
             type='button'
+            primary={false}
+            styles={{
+              borderRadius: getGlobalStyle('--border-radius-none'),
+              height: '100%'
+            }}
           >
             Eliminar
           </Button>
@@ -216,6 +221,12 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
             validationOne={true}
           />
           <Button
+            padding={getGlobalStyle('--spacing-xl')}
+            styles={{
+              borderRadius: getGlobalStyle('--border-radius-none'),
+              height: '100%'
+            }}
+            primary={true}
             loading={loading}
             onClick={(e) => {
               e.preventDefault()

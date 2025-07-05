@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import styles from './styles.module.css'
 
@@ -9,7 +11,7 @@ interface OverlineProps {
   style?: React.CSSProperties
 }
 
-export const Overline: React.FC<OverlineProps> = ({ 
+export const Overline: React.FC<OverlineProps> = ({
   zIndex,
   bgColor,
   show,

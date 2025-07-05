@@ -1,32 +1,34 @@
+'use client'
+
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useGoogleLogin } from '../../../hooks/useGoogleLogin'
 import { ButtonContent } from './ButtonContent'
 
-type GoogleLoginRenderProps = {
-  onClick: () => void;
-  disabled: boolean;
-};
+interface GoogleLoginRenderProps {
+  onClick: () => void
+  disabled: boolean
+}
 
-type GoogleLoginProps = {
-  onSuccess?: (...args: any[]) => void;
-  onAutoLoadFinished?: (...args: any[]) => void;
-  onFailure?: (...args: any[]) => void;
-  onScriptLoadFailure?: (...args: any[]) => void;
-  tag?: keyof JSX.IntrinsicElements;
-  type?: string;
-  className?: string;
-  disabledStyle?: React.CSSProperties;
-  buttonText?: React.ReactNode;
-  children?: React.ReactNode;
-  render?: (props: GoogleLoginRenderProps) => JSX.Element;
-  theme?: 'light' | 'dark';
-  icon?: boolean;
-  disabled?: boolean;
-  clientId?: string;
-  autoLoad?: boolean;
-  prompt?: string;
-};
+interface GoogleLoginProps {
+  onSuccess?: (...args: any[]) => void
+  onAutoLoadFinished?: (...args: any[]) => void
+  onFailure?: (...args: any[]) => void
+  onScriptLoadFailure?: (...args: any[]) => void
+  tag?: keyof JSX.IntrinsicElements
+  type?: string
+  className?: string
+  disabledStyle?: React.CSSProperties
+  buttonText?: React.ReactNode
+  children?: React.ReactNode
+  render?: (props: GoogleLoginRenderProps) => JSX.Element
+  theme?: 'light' | 'dark'
+  icon?: boolean
+  disabled?: boolean
+  clientId?: string
+  autoLoad?: boolean
+  prompt?: string
+}
 
 export const GoogleLogin = ({
   onSuccess = () => { },

@@ -1,10 +1,12 @@
-import React, { useState, ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { PColor } from '../../../assets/colors';
+'use client'
+
+import React, { useState, type ReactNode } from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
+import { PColor } from '../../../assets/colors'
 
 interface TabPanelProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const TabPanel: React.FC<TabPanelProps> = ({ children }) => {
@@ -12,32 +14,32 @@ const TabPanel: React.FC<TabPanelProps> = ({ children }) => {
     <TabContent role='tabpanel' tabIndex={0}>
       {children}
     </TabContent>
-  );
-};
+  )
+}
 
 TabPanel.propTypes = {
   children: PropTypes.node.isRequired
-};
+}
 
 interface TabsProps {
-  children: ReactNode;
-  tabBreak: string;
-  width: string | any;
+  children: ReactNode
+  tabBreak: string
+  width: string | any
 }
 
 export const Tabs: React.FC<TabsProps> = ({ children, tabBreak, width }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0)
 
   const selectTab = (tabIndex: number) => {
-    setSelectedTab(tabIndex);
-  };
+    setSelectedTab(tabIndex)
+  }
 
   return (
     <TabsWrapper>
       <TabList breakPoint={tabBreak} columnWidth={width} role='tablist'>
         {React.Children.map(children, (child, index) => {
           if (React.isValidElement(child)) {
-            const { label } = child.props;
+            const { label } = child.props
             return (
               <TabButton
                 aria-selected={selectedTab === index ? 'true' : 'false'}
@@ -47,27 +49,26 @@ export const Tabs: React.FC<TabsProps> = ({ children, tabBreak, width }) => {
               >
                 {label}
               </TabButton>
-            );
+            )
           }
-          return null;
+          return null
         })}
       </TabList>
-  
+
       <Content>
         {React.Children.map(children, (comp, index) => {
-          return selectedTab === index ? comp : null;
+          return selectedTab === index ? comp : null
         })}
       </Content>
     </TabsWrapper>
-  );
-  
-};
+  )
+}
 
 const TabsWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-`;
+`
 
 const TabButton = styled.button<{ selected: boolean }>`
   height: 50px;
@@ -87,7 +88,7 @@ const TabButton = styled.button<{ selected: boolean }>`
   &:active {
     border-bottom: 4px solid ${(props) => (props.selected ? PColor : '#c0bebe')};
   }
-`;
+`
 
 const TabList = styled.div<{ columnWidth: string | any, breakPoint: string }>`
   display: flex;
@@ -97,7 +98,7 @@ const TabList = styled.div<{ columnWidth: string | any, breakPoint: string }>`
   grid-template-columns: ${({ columnWidth }) =>
     columnWidth
       ? columnWidth.map((x: string) => {
-          return `${x} `;
+          return `${x} `
         })
       : '1fr'};
   height: auto;
@@ -111,15 +112,15 @@ const TabList = styled.div<{ columnWidth: string | any, breakPoint: string }>`
       width: 100%;
     }
   }
-`;
+`
 
 const Content = styled.div`
   flex: 1;
   width: 100%;
   padding-top: 16px;
-`;
+`
 
 const TabContent = styled.div`
   flex: 1;
   width: 100%;
-`;
+`

@@ -1,3 +1,5 @@
+'use client'
+
 import PropTypes from 'prop-types'
 import React, {
   useCallback,
@@ -62,8 +64,7 @@ export const DraggableComponent = ({
     if (moveX) {
       if (maxX && maxX > valueX) {
         valueX = maxX
-      }
-      else if (minX && minX < valueX) {
+      } else if (minX && minX < valueX) {
         valueX = minX
       }
       elemRef.current.style.left = `${valueX}px`
@@ -71,8 +72,7 @@ export const DraggableComponent = ({
     if (moveY) {
       if (maxY && maxY > valueY) {
         valueY = maxY
-      }
-      else if (minY && minY < valueY) {
+      } else if (minY && minY < valueY) {
         valueY = minY
       }
       elemRef.current.style.top = `${valueY}px`
@@ -103,4 +103,3 @@ DraggableComponent.propTypes = {
   moveX: PropTypes.bool,
   moveY: PropTypes.bool
 }
-  

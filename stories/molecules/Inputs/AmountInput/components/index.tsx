@@ -1,3 +1,5 @@
+'use client'
+
 import React, {
   type FC,
   useState,
@@ -217,47 +219,6 @@ CurrencyInputProps
      * Format value by padding/trimming decimals if required by
      */
     const handleOnBlur = (event: React.FocusEvent<HTMLInputElement>): void => {
-      const {
-        target: { value }
-      } = event
-
-      const valueOnly = cleanValue({ value, ...cleanValueOptions })
-
-      if (valueOnly === '-' || valueOnly === decimalSeparator || !valueOnly) {
-        setStateValue('')
-        onBlur && onBlur(event)
-        return
-      }
-
-      const fixedDecimals = fixedDecimalValue(valueOnly, decimalSeparator, fixedDecimalLength)
-
-      const newValue = padTrimValue(
-        fixedDecimals,
-        decimalSeparator,
-        decimalScale !== undefined ? decimalScale : fixedDecimalLength
-      )
-
-      const stringValueWithoutSeparator = decimalSeparator
-        ? newValue.replace(decimalSeparator, '.')
-        : newValue
-
-      const numberValue = parseFloat(stringValueWithoutSeparator)
-
-      const formattedValue = formatValue({
-        ...formatValueOptions,
-        value: newValue
-      })
-
-      if (onValueChange && formatValueOnBlur) {
-        onValueChange(newValue, name, {
-          float: numberValue,
-          formatted: formattedValue,
-          value: newValue
-        })
-      }
-
-      setStateValue(formattedValue)
-
       onBlur && onBlur(event)
     }
 
@@ -421,13 +382,22 @@ CurrencyInputProps
             ? (
               <>
                 {label.replace('*', '')}
+                <span style={{
+                  fontSize: getGlobalStyle('--font-size-xs'),
+                  marginLeft: getGlobalStyle('--spacing-xs'),
+                  color: getGlobalStyle('--color-neutral-gray-silver')
+                }}>
+                  (Obligatorio)
+                </span>
                 <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>
                   *
                 </span>
               </>
               )
             : (
-                label
+              <>
+                {label}
+              </>
               )}
         </label>
       }

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState, useRef, type FC } from 'react'
 import { type AreaStyleOptions, createChart, type DeepPartial, type IChartApi, type ISeriesApi, LineType, type SeriesOptionsCommon, type Time } from 'lightweight-charts'
 import { theme, newChartConfig } from './chartConfig'

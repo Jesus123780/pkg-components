@@ -1,8 +1,10 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
+'use client'
+
+import React from 'react'
+import styled, { keyframes } from 'styled-components'
 
 interface AnimationsNumberProps {
-    text?: string;
+  text?: string
 }
 
 const Animation = keyframes`
@@ -10,7 +12,7 @@ const Animation = keyframes`
     25% { opacity: 1; transform: translateY(0) skewY(0deg) skewX(0deg) rotateZ(0deg); filter: blur(0px); }
     75% { opacity: 1; transform: translateY(0) skewY(0deg) skewX(0deg) rotateZ(0deg); filter: blur(0px); }
     100% { opacity: 0; transform: translateY(-100px) skewY(10deg) skewX(10deg) rotateZ(360deg); filter: blur(10px); }
-`;
+`
 
 const Wrapper = styled.span`
     span {
@@ -39,16 +41,16 @@ const Wrapper = styled.span`
     span:nth-child(9) { animation-delay: 1s; }
     span:nth-child(10) { animation-delay: 1.1s; }
     span:nth-child(11) { animation-delay: 1.2s; }
-`;
+`
 
 export const AnimationsNumber: React.FC<AnimationsNumberProps> = ({ text = '0.00' }) => {
-    const reactArray = text.split('');
-    
-    return (
+  const reactArray = text.split('')
+
+  return (
         <Wrapper>
             {reactArray?.map((item, index) => (
                 <span key={item}>{item}</span>
             ))}
         </Wrapper>
-    );
-};
+  )
+}

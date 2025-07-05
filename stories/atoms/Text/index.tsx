@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { CustomText } from './styled'
 import { classNames } from '../../../helpers'
@@ -13,6 +15,7 @@ export type TextSize =
   | '2xs'
   | '2xl'
   | '3xl'
+  | '4xl'
   | '5xl'
   | '6xl'
   | '9xl'

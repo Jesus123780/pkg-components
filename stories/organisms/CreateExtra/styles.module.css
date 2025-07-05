@@ -75,9 +75,7 @@
     justify-content: space-between;
 }
 
-/* Opcional: para controlar el ancho mínimo si hay mucho contenido */
-.contain-item>* {
-    overflow: hidden;
+.contain-item > * {
     text-overflow: ellipsis;
     white-space: wrap;
 }

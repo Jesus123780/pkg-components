@@ -22,7 +22,7 @@ import {
 } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
 import { Portal } from '../Portal'
-import { getGlobalStyle } from '../../../utils'
+import { getGlobalStyle, ROUTES } from '../../../utils'
 import packageJson from '../../../package.json'
 import {
   DragDropContext,
@@ -58,7 +58,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   isElectron = false,
   isMobile = false,
   location = {
-    pathname: '/'
+    pathname: ROUTES.index
   },
   version = '0.0.0',
   logicalVersion = '0.0.0',

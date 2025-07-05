@@ -1,0 +1,148 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+}
+
+.button {
+  position: relative;
+  border: none;
+  cursor: pointer;
+  background: var(--color-background-success);
+  border-radius: 5px;
+  overflow: hidden;
+  padding: var(--spacing-md) var(--spacing-lg);
+  width: 150px;
+  height: 40px;
+  transition:
+    border-radius 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease,
+    padding 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.button.loading {
+  padding: 0;
+  animation: roundify 0.3s ease-in 4.8s forwards;
+}
+
+/* Oculta texto durante el loading */
+.button.loading .content {
+    animation: fadeout-content 0.2s ease-in 4.8s forwards;
+}
+
+.text {
+    flex-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.button.finished {
+  width: 150px;
+  height: 40px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: 5px;
+  opacity: 1;
+  transition:
+    border-radius 0.5s ease,
+    width 0.5s ease,
+    height 0.5s ease,
+    padding 0.5s ease,
+    opacity 0.5s ease;
+}
+
+.button.finished .content {
+  animation: fadein-content 0.5s ease-in forwards;
+}
+
+@keyframes fadein-content {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes fadeout-content {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+}
+
+.button.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: var(--color-loaders-background);
+  z-index: 1;
+  opacity: 0.2;
+  animation: progress-bar-animation 4s cubic-bezier(0, 0.56, 0.76, 0.96) forwards;
+}
+
+.button.loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  background: var(--color-background-success);
+  z-index: 2;
+  pointer-events: none;
+  animation: expand-shadow 0.8s ease-out 4s forwards;
+}
+
+@keyframes roundify {
+  from {
+    border-radius: 5px;
+    width: 100%;
+  }
+  to {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@keyframes expand-shadow {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(200);
+  }
+}
+
+@keyframes progress-bar-animation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button.loading::after {
+    animation: none;
+    width: 100%;
+  }
+}

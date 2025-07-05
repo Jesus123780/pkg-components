@@ -84,7 +84,7 @@
         "image scroll"
         "image action";
     height: 45vw;
-    max-width: 1200px;
+    max-width: var(--width-max-desktop);
     max-height: 580px;
     min-height: auto;
     border-radius: 4px;
@@ -94,7 +94,7 @@
 
 @media only screen and (min-width: 960px) and (min-width: 1160px) {
     .content_modal {
-        min-width: 1200px;
+        min-width: var(--width-max-desktop);
         grid-template-columns: 1fr 1fr;
     }
 }

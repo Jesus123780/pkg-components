@@ -17,13 +17,13 @@ export const AlertInfo: React.FC<AlertInfoProps> = ({ type, message }) => {
   }
 
   const colors: { [key in AlertInfoProps['type']]: string } = {
-    warning: '#FFC107',
+    warning: getGlobalStyle('--color-campaigns-yellow'),
     error: getGlobalStyle('--color-primary-red'),
-    info: '#0D6EFD'
+    info: getGlobalStyle('--color-secondary-blue')
   }
 
-  const borderStyle = borders[type] || `${sizeBorder} transparent`
-  const color = colors[type] || getGlobalStyle('--color-icons-gray')
+  const borderStyle = borders[type] !== '' ? borders[type] : `${sizeBorder} transparent`
+  const color = colors[type] !== '' ? colors[type] : getGlobalStyle('--color-icons-gray')
 
   return (
     <div className={`${styles.alert} ${styles[type]}`} style={{ border: `${borderStyle} ${color}` }}>

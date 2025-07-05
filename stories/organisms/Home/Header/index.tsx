@@ -3,6 +3,7 @@ import React from 'react'
 import { IconLogo, PColor } from '../../../../assets'
 import { ButtonHeader } from '../ButtonHeader'
 import styles from './styles.module.css'
+import { ROUTES } from '../../../../utils'
 
 interface HeaderProps {
   handleLogin?: () => void
@@ -30,18 +31,13 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         <ul className={styles.nav}>
           <li className={styles.navItem}>
-            <Link href='/login'>
+            <Link href={ROUTES.login}>
               Vender
             </Link>
           </li>
           <li className={styles.navItem}>
-            <Link href='/register'>
+            <Link href={ROUTES.register}>
               Primeros pasos
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href='/contact'>
-              Comprar
             </Link>
           </li>
           <li className={styles.navItem}>

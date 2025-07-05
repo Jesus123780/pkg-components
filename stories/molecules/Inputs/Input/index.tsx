@@ -1,3 +1,5 @@
+'use client'
+
 import { InputV, LabelInput } from './styled'
 import {
   isEmail,

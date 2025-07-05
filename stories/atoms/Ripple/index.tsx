@@ -19,7 +19,6 @@ export interface RippleButtonProps {
   standard?: boolean
   active?: any
   type?: 'button' | 'submit' | 'reset'
-  widthButton?: string
   bgColor?: string
   color?: string
   margin?: string

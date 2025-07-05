@@ -1,8 +1,8 @@
 .paragraph {
-    font-size: var(--font-size-base);
-    color: var(--color-icons-black);
-    letter-spacing: var(--letter-spacing-wider);
-    font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-base);
+  color: var(--color-icons-black);
+  letter-spacing: var(--letter-spacing-wider);
+  font-weight: var(--font-weight-normal);
 }
 
 .color-default {
@@ -54,13 +54,13 @@
 }
 
 .size-sm {
-    font-size: var(--font-size-sm);
+  font-size: var(--font-size-sm);
 }
 
 .size-md {
-    font-size: var(--font-size-md);
+  font-size: var(--font-size-md);
 }
 
 .size-lg {
-    font-size: var(--font-size-lg);
+  font-size: var(--font-size-lg);
 }

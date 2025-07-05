@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
-import loadScript from './loadScript';
-import removeScript from './removeScript';
+'use client'
+
+import { useEffect, useState } from 'react'
+import loadScript from './loadScript'
+import removeScript from './removeScript'
 
 /**
  * Custom hook for Google login using Google Identity Services (GIS)
@@ -14,12 +16,12 @@ export const useGoogleLogin = ({
   prompt = 'select_account',
   autoLoad = false
 }) => {
-  const [loaded, setLoaded] = useState(false);
-  const [tokenClient, setTokenClient] = useState(null);
+  const [loaded, setLoaded] = useState(false)
+  const [tokenClient, setTokenClient] = useState(null)
 
   useEffect(() => {
-    let unmounted = false;
-    const scriptId = 'google-identity';
+    let unmounted = false
+    const scriptId = 'google-identity'
 
     loadScript(
       document,
@@ -27,20 +29,20 @@ export const useGoogleLogin = ({
       scriptId,
       'https://accounts.google.com/gsi/client',
       () => {
-        if (unmounted) return;
+        if (unmounted) return
 
         const client = window.google.accounts.oauth2.initTokenClient({
           client_id: clientId,
           scope: 'profile email openid',
           prompt,
           callback: (response) => {
-            if (response && response.access_token) {
+            if (response?.access_token) {
               fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                 headers: {
                   Authorization: `Bearer ${response.access_token}`
                 }
               })
-                .then(res => res.json())
+                .then(async res => await res.json())
                 .then(profile => {
                   const fullResponse = {
                     tokenId: response.id_token,
@@ -54,51 +56,51 @@ export const useGoogleLogin = ({
                       imageUrl: profile.picture,
                       ...profile
                     }
-                  };
-                  onSuccess(fullResponse);
+                  }
+                  onSuccess(fullResponse)
                 })
                 .catch(err => {
-                  onFailure(err);
-                });
+                  onFailure(err)
+                })
             } else {
-              onFailure(new Error('No access token received'));
+              onFailure(new Error('No access token received'))
             }
           }
-        });
+        })
 
-        setTokenClient(client);
-        setLoaded(true);
-        onAutoLoadFinished(false);
+        setTokenClient(client)
+        setLoaded(true)
+        onAutoLoadFinished(false)
       },
       (err) => {
-        onScriptLoadFailure(err);
-        onFailure(err);
+        onScriptLoadFailure(err)
+        onFailure(err)
       }
-    );
+    )
 
     return () => {
-      unmounted = true;
-      removeScript(document, scriptId);
-    };
-  }, []);
+      unmounted = true
+      removeScript(document, scriptId)
+    }
+  }, [])
 
   useEffect(() => {
     if (autoLoad && loaded) {
-      signIn();
+      signIn()
     }
-  }, [loaded, autoLoad]);
+  }, [loaded, autoLoad])
 
   const signIn = (e) => {
-    if (e?.preventDefault) e.preventDefault();
+    if (e?.preventDefault) e.preventDefault()
     if (tokenClient) {
-      tokenClient.requestAccessToken();
+      tokenClient.requestAccessToken()
     } else {
-      onFailure(new Error('Google Token Client not initialized'));
+      onFailure(new Error('Google Token Client not initialized'))
     }
-  };
+  }
 
   return {
     signIn,
     loaded
-  };
-};
+  }
+}

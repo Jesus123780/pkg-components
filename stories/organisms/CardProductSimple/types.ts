@@ -13,7 +13,7 @@ export interface CardProductSimpleProps {
   pId?: any
   pName?: string
   ProDescription?: any
-  ProDescuento?: number
+  ProDescuento?: number | string
   ProImage?: string
   ProPrice?: any
   ProQuantity?: any

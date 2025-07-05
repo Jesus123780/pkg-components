@@ -1,16 +1,17 @@
+'use client'
+
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { PColor } from '../../../assets/colors'
 import { IconSearch } from '../../../assets/icons'
 import styled from 'styled-components'
-import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'
 
 const SearchInput = styled.input`
   width: 100%;
   font-size: 16px;
   border: none;
-  padding: ${({ padding = '10px 8px' }) => {return padding}};
+  padding: ${({ padding = '10px 8px' }) => { return padding }};
   &:focus {
     outline: none;
   }
@@ -29,7 +30,7 @@ export const SearchBar = ({
   border,
   margin = '0',
   handleChange = () => {
-    return
+
   },
   handleSubmit = (_event: React.FormEvent<HTMLFormElement>) => {
     return null
@@ -48,7 +49,7 @@ export const SearchBar = ({
   }
 
   return (
-    <form onSubmit={customHandleSubmit} style={{ padding: padding, margin: margin, width }}>
+    <form onSubmit={customHandleSubmit} style={{ padding, margin, width }}>
       <div className={styles['search-bar__container']} style={{ border, padding }}>
         <SearchIcon>
           <IconSearch color={PColor} size='25px' />

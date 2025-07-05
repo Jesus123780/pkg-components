@@ -1,7 +1,6 @@
 .header_step {
     border-bottom: 0.5px solid var(--color-neutral-gray);
     display: flex;
-    margin-bottom: 30px;
     padding: 5px;
     position: relative;
 }

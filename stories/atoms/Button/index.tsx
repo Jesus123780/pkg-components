@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { getGlobalStyle } from '../../../helpers'
 import classNames from 'classnames'
@@ -20,6 +22,7 @@ export interface ButtonProps {
   styles?: React.CSSProperties
   iconPosition?: 'left' | 'right'
   iconName?: string
+  iconSize?: number
   title?: string
   className?: React.HTMLAttributes<HTMLButtonElement>['className']
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -36,6 +39,7 @@ export const Button: React.FC<ButtonProps> = ({
   color,
   primary = false,
   loading = false,
+  iconSize,
   styles = {},
   className = '', // Default vacío
   type = '',
@@ -58,10 +62,16 @@ export const Button: React.FC<ButtonProps> = ({
 
   const renderIcon = typeof iconName === 'string' && iconName.trim() !== '' && !loading
     ? (
-      <Column justifyContent='center' alignItems='center' style={{ width: 'min-content', margin: iconPosition === 'left' ? '0 8px 0 0' : '0 0 0 8px' }}>
+      <Column
+        justifyContent='center'
+        alignItems='center'
+        style={{
+          width: 'min-content',
+          margin: iconPosition === 'left' ? '0 8px 0 0' : '0 0 0 8px'
+        }}>
         <Icon
           icon={iconName}
-          size={18}
+          size={iconSize ?? 18}
           color={primary ? '#fff' : getGlobalStyle('--color-primary-red')}
 
         />
@@ -75,9 +85,9 @@ export const Button: React.FC<ButtonProps> = ({
       type={type as 'submit' | 'reset' | 'button'}
       disabled={disabled}
       className={classNames(
-        style.button,
+        style.button as string,
         {
-          [style[`button--${type}`]]: border !== undefined,
+          [style[`button--${border}`]]: border !== undefined,
           [style[`button--${color}`]]: border !== undefined,
           [style['button--primary']]: primary,
           [style[`button--border-${border}`]]: border !== undefined,

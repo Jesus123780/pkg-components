@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from 'react'
 import { QRCodeSVG } from 'qrcode.react' // <- nuevo import correcto
 import { getGlobalStyle } from '../../../utils'

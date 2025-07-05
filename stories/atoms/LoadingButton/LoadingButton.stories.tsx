@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { LoadingButton } from './index';
+import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
+import { LoadingButton } from './index'
 
 const meta: Meta = {
   title: 'atoms/LoadingButton',
-  component: LoadingButton,
-};
+  component: LoadingButton
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof LoadingButton>;
+type Story = StoryObj<typeof LoadingButton>
 
 export const Default: Story = {
-    args: {
-      color: 'transparent'
-    },
-  };
+  args: {
+    color: 'transparent'
+  }
+}

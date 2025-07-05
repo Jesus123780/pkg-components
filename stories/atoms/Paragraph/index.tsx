@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { classNames } from '../../../helpers'
 import style from './Paragraph.module.css'
@@ -12,7 +14,7 @@ type ParagraphProps = React.HTMLAttributes<HTMLDivElement> & {
   styles?: React.CSSProperties
 }
 
-export const Paragraph = ({
+export const Paragraph: React.FC<ParagraphProps> = ({
   children,
   props,
   className = '',
@@ -20,7 +22,7 @@ export const Paragraph = ({
   color = 'default',
   size = 'md',
   styles
-}: ParagraphProps) => {
+}) => {
   return (
     <p style={styles} className={classNames('paragraph', {
       [`${className}`]: className,

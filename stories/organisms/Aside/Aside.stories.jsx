@@ -1,6 +1,7 @@
 import { userEvent, within } from '@storybook/testing-library'
 import React from 'react'
 import { Aside } from './index'
+import { ROUTES } from '../../../utils'
 
 export default {
   title: 'organisms/Aside',
@@ -22,7 +23,7 @@ export default {
   args: {
     backgroundColor: '#f5f5f5',
     isMobile: false,
-    location: { pathname: '/dashboard' },
+    location: { pathname: ROUTES.dashboard },
     setShowComponentModal: () => {},
     countPedido: 0,
     handleClick: () => {},
