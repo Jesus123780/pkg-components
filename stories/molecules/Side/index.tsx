@@ -34,19 +34,19 @@ export const LateralModal: React.FC<LateralModalProps> = ({
   const openClass = open ? (isRight ? styles.openRight : styles.openLeft) : ''
 
   return (
-        <>
-            <Portal>
-                <Overline
-                    show={open}
-                    bgColor={getGlobalStyle('--color-background-overline')}
-                    zIndex={getGlobalStyle('--z-index-9999')}
-                    onClick={handleClose}
-                />
-            </Portal>
-            <div className={`${baseClass} ${directionClass} ${openClass}`} style={style}>
-                {children}
-            </div>
-        </>
+    <>
+      <Portal>
+        <Overline
+          show={open}
+          bgColor={getGlobalStyle('--color-background-overline')}
+          zIndex={getGlobalStyle('--z-index-high')}
+          onClick={handleClose}
+        />
+      </Portal>
+      <div className={`${baseClass} ${directionClass} ${openClass}`} style={style}>
+        {children}
+      </div>
+    </>
   )
 }
 

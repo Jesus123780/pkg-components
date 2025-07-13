@@ -45,7 +45,7 @@ CurrencyInputProps
       onValueChange,
       fixedDecimalLength,
       placeholder,
-      decimalScale,
+      decimalScale = 2,
       prefix,
       suffix,
       intlConfig,
@@ -62,7 +62,7 @@ CurrencyInputProps
       onKeyDown,
       onKeyUp,
       transformRawValue,
-      formatValueOnBlur = true,
+      formatValueOnBlur = false,
       ...props
     }: CurrencyInputProps,
     ref
@@ -218,7 +218,49 @@ CurrencyInputProps
      *
      * Format value by padding/trimming decimals if required by
      */
+    // HEREEE BLUR EVENT
     const handleOnBlur = (event: React.FocusEvent<HTMLInputElement>): void => {
+      const {
+        target: { value }
+      } = event
+
+      const valueOnly = cleanValue({ value, ...cleanValueOptions })
+
+      if (valueOnly === '-' || valueOnly === decimalSeparator || !valueOnly) {
+        setStateValue('')
+        onBlur && onBlur(event)
+        return
+      }
+
+      const fixedDecimals = fixedDecimalValue(valueOnly, decimalSeparator, fixedDecimalLength)
+
+      const newValue = padTrimValue(
+        fixedDecimals,
+        decimalSeparator,
+        decimalScale !== undefined ? decimalScale : fixedDecimalLength
+      )
+
+      const stringValueWithoutSeparator = decimalSeparator
+        ? newValue.replace(decimalSeparator, '.')
+        : newValue
+
+      const numberValue = parseFloat(stringValueWithoutSeparator)
+
+      const formattedValue = formatValue({
+        ...formatValueOptions,
+        value: newValue
+      })
+
+      if (onValueChange && formatValueOnBlur) {
+        onValueChange(newValue, name, {
+          float: numberValue,
+          formatted: formattedValue,
+          value: newValue
+        })
+      }
+
+      setStateValue(formattedValue)
+
       onBlur && onBlur(event)
     }
 

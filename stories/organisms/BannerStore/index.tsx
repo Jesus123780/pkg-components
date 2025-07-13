@@ -139,7 +139,7 @@ export const BannerStore: React.FC<IBannerStore> = ({
         </span>
         <div className={styles['merchant-banner__status-description']} data-test-id="merchant-banner-status-description">
           <Text as='h2' className={styles['merchant-banner__status-title']} color='white'>
-            {isEmtySchedules ? `Restaurante ${store?.storeName !== '' ? store?.storeName : ''}` : `Restaurante ${open}`}
+            {isEmtySchedules ? `${store?.cateStore?.cName ?? ''} - ${store?.storeName !== '' ? store?.storeName : ''}` : `${store?.cateStore?.cName ?? ''} - ${open}`}
           </Text>
         </div>
       </div>

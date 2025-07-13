@@ -31,7 +31,7 @@ interface InputHooksProps {
   name?: string
   nit?: boolean
   numeric?: boolean
-  onChange?: (e: any, v: any) => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, v: string | number) => void
   paddingInput?: string
   pass?: any
   passConfirm?: {
@@ -53,8 +53,8 @@ interface InputHooksProps {
   width?: string
   info?: string
   max?: number
-  onFocus?: () => void
-  onBlur?: () => void
+  onFocus?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
+  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
@@ -222,8 +222,8 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         padding: paddingInput,
         width,
         border: errors === true ? '1px solid transparent' : `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
-        maxHeight: typeTextarea ? '12.5rem' : 'auto',
-        minHeight: typeTextarea ? '12.5rem' : 'auto'
+        maxHeight: typeTextarea ? '10rem' : 'auto',
+        minHeight: typeTextarea ? '10rem' : 'auto'
       }}
       className={styles.wrap_input}
     >
@@ -246,15 +246,29 @@ export const InputHooks: React.FC<InputHooksProps> = ({
         className={styles.input}
         type={type}
         style={{
-          maxHeight: typeTextarea ? '11.5rem' : 'auto',
-          minHeight: typeTextarea ? '11.5rem' : 'auto'
+          maxHeight: typeTextarea ? '10rem' : 'auto',
+          minHeight: typeTextarea ? '10rem' : 'auto'
         }}
       />
-      <label
+      <button
+        type="button"
         className={styles['label-input']}
+        tabIndex={0}
         onClick={() => refInput.current?.focus()}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            refInput.current?.focus()
+          }
+        }}
         style={{
-          top: typeof value === 'string' && value.trim() !== '' ? '-8px' : '20px'
+          top: typeof value === 'string' && value.trim() !== '' ? '-8px' : '20px',
+          border: 'none',
+          padding: 0,
+          margin: 0,
+          width: 'auto',
+          textAlign: 'left',
+          cursor: 'pointer'
         }}
       >
         {title?.includes('*')
@@ -278,7 +292,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
               {title}
             </>
             )}
-      </label>
+      </button>
       {(errors === true || info !== '') && (
         <Row className={styles.wrap_tooltip} alignItems='center'>
           <Icon

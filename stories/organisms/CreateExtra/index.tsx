@@ -14,8 +14,9 @@ import {
   InputHooks,
   QuantityButton
 } from '../../molecules'
-import styles from './styles.module.css'
 import clsx from 'clsx'
+import styles from './styles.module.css'
+
 interface ICreateExtra {
   LineItems?: {
     Lines: any[]
@@ -94,102 +95,103 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
               const isSelect = selected.exPid === exPid
               const isLoading = selected.loading || loading
               return (
-                <div
+                <div key={extra?.exPid || i}
                   className={clsx(
                     styles['contain-item'] as string,
                     isLoading && (styles.loading as string)
                   )}
-                  key={extra?.exPid || i}
                 >
-                  <InputHooks
-                    name={extra?.extraName}
-                    onChange={e => {
-                      const value = e.target.value
-                      return handleLineChange(i, 'extraName', `${value}`)
-                    }}
-                    required={true}
-                    title='Nombre'
-                    onFocus={() => { return handleFocusChange(i) }}
-                    max={180}
-                    reference={inputRefs?.current[i]}
-                    value={extra?.extraName}
-                  />
-                  <AmountInput
-                    allowDecimals={true}
-                    decimalSeparator=','
-                    decimalsLimit={2}
-                    groupSeparator='.'
-                    label='Precio'
-                    name={extra?.extraPrice ?? 'extraPrice'}
-                    onValueChange={(value) => {
-                      return handleLineChange(i, 'extraPrice', value)
-                    }}
-                    onFocus={() => { return handleFocusChange(i) }}
-                    placeholder='Precio'
-                    defaultValue={price}
-                  />
-                  <Row justifyContent='space-between' alignItems='center' className={styles['contain-item-actions']}>
-                    <Column alignItems='center'
-                      style={{
-                        width: 'min-content'
+                  <div className={styles['contain-item-content']}>
+                    <InputHooks
+                      name={extra?.extraName}
+                      onChange={e => {
+                        const value = e.target.value
+                        return handleLineChange(i, 'extraName', `${value}`)
                       }}
-                    >
-                      <Checkbox
-                        checked={extra?.exState}
-                        id={i}
-                        label='Obligatorio'
-                        name={extra?.exState}
-                        onChange={value => { return handleLineChange(i, 'exState', value) }}
-                      />
-                    </Column>
-                    <Button
-                      disabled={disabled}
-                      onClick={() => { return handleRemove(i, exPid) }}
-                      type='button'
-                      className={styles['button-action']}
-                    >
-                      <Icon
-                        color={getGlobalStyle('--color-icons-primary')}
-                        icon='IconDelete'
-                        size={25}
-                      />
-                    </Button>
-                    {forEdit
-                      ? <>
-                        <Button
-                          disabled={disabled}
-                          onClick={() => {
-                            if (isSelect) return handleEdit(i, exPid)
-                            return handleSelect(extra, i)
-                          }}
-                          type='button'
-                          className={styles['button-action']}
-                        >
-                          <Icon
-                            color={getGlobalStyle(selected?.exPid === exPid ? '--color-icons-primary' : '--color-icons-gray-light')}
-                            icon={selected?.exPid === exPid ? 'IconMiniCheck' : 'IconEdit'}
-                          />
-                        </Button>
-                        <span style={{ marginLeft: '15px' }}>
-                          <Tag label='Guardado' backgroundColor='green' />
-                        </span>
-                      </>
-                      : <>
-                        <Button
-                          disabled={disabled}
-                          type='button'
-                          className={styles['button-action']}
-                        >
-                          <Icon
-                            icon='IconEdit'
-                            color={getGlobalStyle('--color-icons-gray-light')}
-                            size={25}
-                          />
-                        </Button>
-                        <Tag label='Sin guardar' />
-                      </>
-                    }
-                  </Row>
+                      required={true}
+                      title='Nombre'
+                      onFocus={() => { return handleFocusChange(i) }}
+                      max={180}
+                      reference={inputRefs?.current[i]}
+                      value={extra?.extraName}
+                    />
+                    <AmountInput
+                      allowDecimals={true}
+                      decimalSeparator=','
+                      decimalsLimit={2}
+                      groupSeparator='.'
+                      label='Precio'
+                      name={extra?.extraPrice ?? 'extraPrice'}
+                      onValueChange={(value) => {
+                        return handleLineChange(i, 'extraPrice', value)
+                      }}
+                      onFocus={() => { return handleFocusChange(i) }}
+                      placeholder='Precio'
+                      defaultValue={price}
+                    />
+                    <Row justifyContent='space-between' alignItems='center' className={styles['contain-item-actions']}>
+                      <Column alignItems='center'
+                        style={{
+                          width: 'min-content'
+                        }}
+                      >
+                        <Checkbox
+                          checked={extra?.exState}
+                          id={i}
+                          label='Obligatorio'
+                          name={extra?.exState}
+                          onChange={value => { return handleLineChange(i, 'exState', value) }}
+                        />
+                      </Column>
+                      <Button
+                        disabled={disabled}
+                        onClick={() => { return handleRemove(i, exPid) }}
+                        type='button'
+                        className={styles['button-action']}
+                      >
+                        <Icon
+                          color={getGlobalStyle('--color-icons-primary')}
+                          icon='IconDelete'
+                          size={25}
+                        />
+                      </Button>
+                      {forEdit
+                        ? <>
+                          <Button
+                            disabled={disabled}
+                            onClick={() => {
+                              if (isSelect) return handleEdit(i, exPid)
+                              return handleSelect(extra, i)
+                            }}
+                            type='button'
+                            className={styles['button-action']}
+                          >
+                            <Icon
+                              color={getGlobalStyle(selected?.exPid === exPid ? '--color-icons-primary' : '--color-icons-gray-light')}
+                              icon={selected?.exPid === exPid ? 'IconMiniCheck' : 'IconEdit'}
+                            />
+                          </Button>
+                          <span style={{ marginLeft: '15px' }}>
+                            <Tag label='Guardado' backgroundColor='green' />
+                          </span>
+                        </>
+                        : <>
+                          <Button
+                            disabled={disabled}
+                            type='button'
+                            className={styles['button-action']}
+                          >
+                            <Icon
+                              icon='IconEdit'
+                              color={getGlobalStyle('--color-icons-gray-light')}
+                              size={25}
+                            />
+                          </Button>
+                          <Tag label='Sin guardar' />
+                        </>
+                      }
+                    </Row>
+                  </div>
                 </div>
               )
             })

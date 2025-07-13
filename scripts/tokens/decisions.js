@@ -95,6 +95,7 @@ const decisions = {
       grayLight: brand.whiteSmoke,
       white: brand.white,
       overline: brand.overline,
+      selection: brand.selection,
       pink: brand.sweetPink,
       success: brand.pigmentGreen,
     },
@@ -249,7 +250,8 @@ const decisions = {
     999: zIndex['999'],
     9999: zIndex['9999'],
     99999: zIndex['99999'],
-    ['high']: zIndex['high']
+    ['high']: zIndex['high'],
+    modal: zIndex.modal
   }
 }
 module.exports = decisions

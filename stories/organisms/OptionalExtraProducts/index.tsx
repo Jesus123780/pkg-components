@@ -171,7 +171,7 @@ export const OptionalExtraProducts: React.FC<IOptionalExtraProducts> = ({
                       handleAdd({ listId: listID })
                     }
                   }}
-                  title='Añade un item'
+                  title='Agrega un subproducto'
                   value={list?.value}
                 />
                 <RippleButton

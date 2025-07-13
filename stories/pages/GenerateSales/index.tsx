@@ -158,7 +158,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       onHide={() => {
         setShow(false)
       }}
-      zIndex={getGlobalStyle('--z-index-99999')}
+      zIndex={getGlobalStyle('--z-index-high')}
     >
       <div className={styles.container}>
         <div className={styles.header}>

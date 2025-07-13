@@ -46,11 +46,9 @@
     overflow: hidden;
     background-color: var(--color-base-white);
     color: var(--color-neutral-gray-dark);
-    font-family: PFont-Light;
+    font-family: PFont-Light, sans-serif;
     font-size: var(--font-size-lg);
     left: 15px;
-    pointer-events: none;
-    padding: 0 5px;
 }
 
 .label-input .date-type {

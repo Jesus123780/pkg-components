@@ -22,6 +22,7 @@ export const choices = {
       doveGray: '#666666',
       silver: '#C4C4C4',
       overline: 'rgba(0, 0, 0, 0.4)',
+      selection: 'rgba(0, 0, 0, 0.1)',
       mercury: '#E5E5E5',
       wildSand: '#F5F5F5',
       alabaster: '#F9F9F9',
@@ -206,6 +207,7 @@ export const choices = {
     999: '999',
     9999: '9999',
     99999: '99999',
-    high: '999999999'
+    high: '999999999',
+    modal: '99999999999'
   }
 }

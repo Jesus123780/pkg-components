@@ -1,3 +1,7 @@
+::selection {
+  background: var(--color-background-selection);
+}
+
 a#tv-attr-logo {
   display: none;
 }
