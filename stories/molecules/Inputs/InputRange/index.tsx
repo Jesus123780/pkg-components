@@ -28,19 +28,23 @@ export const Range = ({
     onChange(event)
   }
   const [percentage, setPercentValue] = useState(0)
+  console.log(percentage)
   useEffect(() => {
     setPercentValue((value / max) * 88)
   }, [max, value])
   return (
     <ContainerRange>
-      {0 === 1 && <Progress>
+      {<Progress>
         <Svg>
-          <Circle dashValue={percentage} />
+          <Circle dashValue={currentValue} />
         </Svg>
-      </Progress>}
+      </Progress>
+      }
       <div className='range__ballon' style={{ left: widthInput * percent + offset || 0 }}>
         <span className='range__ballon__label'>{label} {' '}</span>
-        <span className='range__ballon__value'>{`$  ${currentValue}`}</span>
+        <span className='range__ballon__value'>
+          {`${currentValue}`}
+        </span>
       </div>
       <Input
         max={max}

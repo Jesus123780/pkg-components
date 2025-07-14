@@ -66,6 +66,12 @@ export const NewSelect: React.FC<NewSelectProps> = ({
   useEffect(() => { setNewOption(options) }, [options])
 
   useEffect(() => {
+    if ((value === '' || value === undefined || value === null) && valueInput !== '') {
+      setValueInput('')
+    }
+  }, [value])
+
+  useEffect(() => {
     if (showOptions) {
       document.addEventListener('pointerdown', handleClickOutside)
     } else {

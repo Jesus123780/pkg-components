@@ -1,6 +1,19 @@
 {
-    "cSpell.words": [
-        "Imei",
-        "IMEI"
-    ]
+  "cSpell.language": "en,es",
+  "cSpell.enabled": true,
+  "cSpell.allowCompoundWords": true,
+  "cSpell.dictionaries": ["en", "es"],
+  "cSpell.dictionaryDefinitions": [
+    {
+      "name": "es",
+      "path": "cspell-dict-es-es/spanish.dict",
+      "description": "Spanish Dictionary"
+    }
+  ],
+  "cSpell.words": [
+    // tus excepciones personales aquí, si necesitas
+    "Nextjs",
+    "MongoDB",
+    "Papu"
+  ]
 }

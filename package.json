@@ -37,6 +37,7 @@
     "react-chartjs-2": "^2.11.2",
     "react-date-range": "^2.0.1",
     "react-datetime-picker": "^6.0.1",
+    "react-easy-crop": "5.5.0",
     "react-grid-layout": "1.5.1",
     "recharts": "2.12.7",
     "storybook-addon-next-router": "^4.0.2",

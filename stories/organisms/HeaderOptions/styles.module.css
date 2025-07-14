@@ -44,23 +44,25 @@
 }
 
 .space>span {
-    font-family: PFont-Light;
+    font-family: PFont-Light, sans-serif;
     font-size: 14px;
     color: var(--color-primary);
-    /* o inline via style if dynamic */
 }
 
 .notification_count {
+        justify-content: center;
+    align-items: center;
     background-color: var(--color-primary-red);
-    color: var(--color-text-white);
-    width: var(--spacing-xl);
-    height: var(--spacing-xl);
-    display: inline-block;
     border-radius: 20px;
+    color: var(--color-text-white);
+    display: flex;
+    display: inline-block;
     font-size: 13px;
+    height: var(--spacing-xl);
+    line-height: 20px;
     position: absolute;
     right: -5px;
-    top: -10px;
-    line-height: 20px;
     text-align: center;
+    top: -10px;
+    width: var(--spacing-xl);
 }

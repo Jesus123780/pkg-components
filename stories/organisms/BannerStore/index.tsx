@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types'
 import {
   ActionName,
-  InputFile,
-  MerchantInfo,
-  MerchantInfoTitle,
-  Section
+  InputFile
 } from './styled'
 
 import Image from 'next/image'
@@ -12,9 +9,8 @@ import React from 'react'
 import { getGlobalStyle } from '../../../utils'
 import { Skeleton } from '../../molecules/Skeleton'
 import { Text } from '../../atoms/Text'
-import { Icon } from '../../atoms'
+import { Button, Column, Icon, Tag } from '../../atoms'
 import styles from './styles.module.css'
-
 interface IBannerStore {
   altLogo?: string
   bnImageFileName?: any
@@ -23,12 +19,14 @@ interface IBannerStore {
   handleInputChangeLogo?: () => void
   handleUpdateBanner?: () => void
   isEdit?: boolean
+  isTablet: boolean
   isEmtySchedules?: boolean
   isLoading?: boolean
   isMobile?: boolean
   onTargetClick?: (event: React.MouseEvent) => void
   onTargetClickLogo?: (event: React.MouseEvent) => void
   HandleDeleteBanner?: () => void
+  handleDeleteLogo: () => void
   handleClose?: () => void
   open?: any
   openNow?: boolean
@@ -48,42 +46,47 @@ interface IBannerStore {
     scheduleStatus: number | undefined | null
     scheduleStatusAll: number | undefined | null
     storeId: number | undefined | null
+    banner: string | undefined | null
     storeStatus: number | undefined | null
   }
 }
 export const BannerStore: React.FC<IBannerStore> = ({
   altLogo = '',
-  bnImageFileName,
   fileInputRef,
   fileInputRefLogo,
   isEdit = false,
   isEmtySchedules = true,
   isLoading = false,
   isMobile = false,
+  isTablet = false,
   open,
   openNow = true,
-  path = '/images/DEFAULTBANNER.png',
   src = '/images/DEFAULTBANNER.png',
   srcLogo = '/images/DEFAULTBANNER.png',
   store = {
     Image: '/images/DEFAULTBANNER.png',
-    storeName: ''
+    storeName: '',
+    banner: '/images/DEFAULTBANNER.png',
+    cateStore: {
+      cName: ''
+    }
   },
   handleInputChangeLogo = () => { },
   onTargetClickLogo = (event) => { return event },
   handleClose = () => { },
   handleUpdateBanner = () => { },
   HandleDeleteBanner = () => { },
+  handleDeleteLogo = () => { },
   onTargetClick = () => { }
 }) => {
   const actions = [
     {
-      onClick: () => { return path !== '' && (Boolean(bnImageFileName)) && HandleDeleteBanner() },
+      onClick: () => { return HandleDeleteBanner() },
       icon: 'IconDelete',
-      actionName: 'Eliminar',
+      actionName: 'Eliminar banner',
       color: getGlobalStyle('--color-icons-primary'),
       size: 20,
-      top: undefined,
+      top: isTablet ? 85 : undefined,
       delay: undefined
     },
     {
@@ -92,20 +95,24 @@ export const BannerStore: React.FC<IBannerStore> = ({
       actionName: 'Editar',
       color: getGlobalStyle('--color-icons-primary'),
       size: 20,
-      top: '60px',
+      top: isTablet ? 10 : 60,
       delay: '.1s'
     },
     {
       onClick: onTargetClick,
-      icon: 'IconPromo',
+      icon: 'IconFileUpload',
       actionName: 'Subir',
       color: getGlobalStyle('--color-icons-primary'),
       size: 20,
-      top: '100px',
+      top: isTablet ? 50 : 100,
       delay: '.2s'
     }
   ]
 
+  const storeName = store?.storeName !== '' ? store?.storeName : ''
+  const bannerTitle = isEmtySchedules
+    ? `${store?.cateStore?.cName ?? ''} - ${storeName}`
+    : `${store?.cateStore?.cName ?? ''} - ${open}`
   return (
     <div className={styles.seccion}>
       {isEdit &&
@@ -131,18 +138,28 @@ export const BannerStore: React.FC<IBannerStore> = ({
       {isLoading
         ? <Skeleton height={isMobile ? 118 : 250} />
         : <div
-        className={`${styles['merchant-banner__status']} ${isEmtySchedules || openNow ? styles.open : styles.closed}`}
-        style={{ backgroundImage: `url(${path ?? src ?? '/images/DEFAULTBANNER.png'})` }}
-      >
-        <span className={styles['merchant-banner__icon-container']}>
-          <Icon icon='IconStore' color={getGlobalStyle('--color-icons-white')} size={40} />
-        </span>
-        <div className={styles['merchant-banner__status-description']} data-test-id="merchant-banner-status-description">
-          <Text as='h2' className={styles['merchant-banner__status-title']} color='white'>
-            {isEmtySchedules ? `${store?.cateStore?.cName ?? ''} - ${store?.storeName !== '' ? store?.storeName : ''}` : `${store?.cateStore?.cName ?? ''} - ${open}`}
-          </Text>
+          className={`${styles['merchant-banner__status']} ${isEmtySchedules || openNow ? styles.open : styles.closed}`}
+          style={{
+            backgroundImage: `url(${src})`
+          }}
+        >
+          <span className={styles['merchant-banner__icon-container']}>
+            <Icon
+              icon='IconStore'
+              color={getGlobalStyle('--color-icons-white')}
+              size={40}
+            />
+          </span>
+          <div className={styles['merchant-banner__status-description']} data-test-id="merchant-banner-status-description">
+            <Text
+              as='h2'
+              className={styles['merchant-banner__status-title']}
+              color='white'
+            >
+              {bannerTitle}
+            </Text>
+          </div>
         </div>
-      </div>
       }
       {isEdit &&
         <div className={styles['merchant-banner__actions']}>
@@ -150,54 +167,93 @@ export const BannerStore: React.FC<IBannerStore> = ({
             const { top, delay } = action
             return (
               <button
-              className={`${styles.buttonCard}`}
-              style={{ top, transitionDelay: delay }}
-              key={index}
-              onClick={action.onClick}
-            >
-                <Icon icon={action.icon} color={action.color} size={action.size} />
-                <ActionName>{action.actionName}</ActionName>
+                className={`${styles.buttonCard}`}
+                style={{ top, transitionDelay: delay }}
+                key={index}
+                onClick={action.onClick}
+              >
+                <Icon
+                  icon={action.icon}
+                  color={action.color}
+                  size={action.size}
+                />
+                <Text className={styles.label_action} color='primary' >
+                  {action.actionName}
+                </Text>
               </button>
             )
           })}
         </div>
       }
-      <MerchantInfo >
-        {store?.Image !== ''
-          ? <span className={styles.wrapper_logo}>
-            <Image
-              alt={altLogo}
-              height={70}
-              objectFit='contain'
-              onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
-              src={store?.Image ?? '/images/DEFAULTBANNER.png'}
-              width={70}
-            />
-          </span>
-          : <span className={styles.wrapper_logo}>
-          <Image
-            alt={altLogo ?? 'logo'}
-            blurDataURL='/images/DEFAULTBANNER.png'
-            height={70}
-            objectFit='contain'
-            onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
-            placeholder='blur'
-            src={srcLogo ?? '/images/DEFAULTBANNER.png'}
-            width={70}
-            />
+      <div className={styles.banner_merchant_info_container} >
+        <Column
+          style={{ width: 'min-content' }}
+          alignItems='center'
+          justifyContent='center'
+        >
+          {store?.Image !== ''
+            ? <span className={styles.wrapper_logo}>
+              <Image
+                alt={altLogo}
+                height={70}
+                placeholder='blur'
+                objectFit='contain'
+                blurDataURL='/images/DEFAULTBANNER.png'
+                onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
+                src={store?.Image != null ? `/api/images/${store.Image}` : '/images/DEFAULTBANNER.png'}
+                width={70}
+                className={styles.wrapper_logo_image}
+              />
             </span>
-        }
+            : <span className={styles.wrapper_logo}>
+              <Image
+                alt={altLogo ?? 'logo'}
+                blurDataURL='/images/DEFAULTBANNER.png'
+                height={70}
+                objectFit='contain'
+                onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
+                placeholder='blur'
+                src={srcLogo ?? '/images/DEFAULTBANNER.png'}
+                width={70}
+                className={styles.wrapper_logo_image}
+              />
+            </span>
+          }
+          <Column
+            alignItems='center'
+            justifyContent='center'
+          >
+            <Button
+              padding='0'
+              border='none'
+              onClick={() => {
+                handleDeleteLogo()
+              }}
+            >
+              <Tag label='ELIMINAR LOGO'
+                style={{
+                  color: getGlobalStyle('--color-campaigns-red'),
+                  backgroundColor: getGlobalStyle('--color-primary-pink-light')
+                }}
+              />
+            </Button>
+          </Column>
+        </Column>
         <div className='basico_info' style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <MerchantInfoTitle >
+          <Text className={styles['merchant-banner__title_merchant']} as='h2'>
             {store?.storeName}
-          </MerchantInfoTitle>
+          </Text>
           <div className='wrapper_details__button' style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button className='details__button' onClick={handleClose} >
+            <Button
+              border='none'
+              className={styles.details__button}
+              onClick={handleClose}
+            >
               ver más
-            </button>
+            </Button>
           </div>
         </div>
-      </MerchantInfo>
+      </div>
     </div>
   )
 }

@@ -24,7 +24,7 @@ export const Tag: React.FC<TagProps> = ({
   backgroundColor,
   align,
   lineHeight,
-  style
+  style = {}
 }) => {
   const combinedClasses = Array.isArray(className)
     ? className.filter(Boolean).join(' ')
