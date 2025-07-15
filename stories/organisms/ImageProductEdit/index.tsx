@@ -9,8 +9,10 @@ import { AwesomeModal } from '../AwesomeModal'
 export interface IImageProductEdit {
   inputRef: React.RefObject<HTMLInputElement>
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
-  preview: string | null
+  preview: string
   open: boolean
+  loading: boolean
+  formattedList: string
   imageSrc: string | null
   crop: { x: number, y: number }
   zoom: number
@@ -20,7 +22,9 @@ export interface IImageProductEdit {
   setRotation: React.Dispatch<React.SetStateAction<number>>
   onCropComplete: (croppedArea: any, croppedPixels: any) => void
   showCroppedImage: () => Promise<void>
+  handleDrop: (event: React.DragEvent<HTMLDivElement>) => Promise<void>
   handleClose: () => void
+  handleRemoveImage: () => void
   error: string
 }
 
@@ -32,22 +36,30 @@ export const ImageProductEdit: React.FC<IImageProductEdit> = ({
   imageSrc,
   crop,
   zoom,
+  error,
   rotation,
+  formattedList,
+  loading,
   setCrop,
   setZoom,
   setRotation,
+  handleDrop,
   onCropComplete,
   showCroppedImage,
   handleClose,
-  error
+  handleRemoveImage
 }) => {
   return (
-    <div style={{ width: '30%' }}>
+    <div>
       <ImageUploader
         inputRef={inputRef}
+        loading={loading}
         onFileChange={onFileChange}
+        handleRemoveImage={handleRemoveImage}
         preview={preview}
+        formattedList={formattedList}
         error={error}
+        handleDrop={handleDrop}
       />
       <AwesomeModal
         borderRadius={getGlobalStyle('--border-radius-xs')}
@@ -62,7 +74,7 @@ export const ImageProductEdit: React.FC<IImageProductEdit> = ({
         question={false}
         show={open}
         size={MODAL_SIZES.medium}
-        title='Añade Complementos'
+        title='Edita la imagen del producto'
       >
 
         <div style={{ position: 'relative', width: '100%', height: '40vh' }}>

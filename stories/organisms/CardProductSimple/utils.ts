@@ -1,26 +1,3 @@
-export const accepts = '.jpg, .png, .jpeg, .gif, .bmp, .tiff, .webp'
-
-export const handleAnimation = (
-  direction: 'up' | 'down',
-  setStartAnimateUp: React.Dispatch<React.SetStateAction<string>>,
-  setAnimateType: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  setStartAnimateUp('')
-  setAnimateType('')
-
-  const delay = direction === 'up' ? 250 : 150
-  const animationType = direction === 'up' ? 'move-up' : 'move-down'
-  const startAnimation = direction === 'up' ? 'start-animate-up' : 'start-animate-down'
-
-  setTimeout(() => {
-    setStartAnimateUp(startAnimation)
-    setTimeout(() => {
-      setAnimateType(animationType)
-      setStartAnimateUp('')
-    }, delay)
-  }, 0)
-}
-
 /**
  * Formats extra and optional data into a single formatted string.
  * @param {Array} dataExtra - Array of extra products, each with an `extraPrice` and `extraName`.

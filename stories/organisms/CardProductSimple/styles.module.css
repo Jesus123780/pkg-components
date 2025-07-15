@@ -6,9 +6,9 @@
     display: grid;
     grid-gap: 10px;
     grid-template:
-    "image" 157px
-    "info-price" 1fr
-    "info" 1fr;
+        "image" 157px
+        "info-price" 1fr
+        "info" 1fr;
     height: 400px;
     overflow: hidden;
     padding: 0;
@@ -40,6 +40,8 @@
     position: relative;
     border-radius: 4px 4px 0 0;
     overflow: hidden;
+    max-width: 300px;
+    min-height: auto;
 }
 
 .dish-card__info {
@@ -66,9 +68,8 @@
 }
 
 .dish-card__description,
-.description, 
-.overline_categories_list
-{
+.description,
+.overline_categories_list {
     color: var(--color-text-gray-light);
     cursor: pointer;
     display: -webkit-box;
@@ -82,9 +83,19 @@
 }
 
 .dish-card__description {
+    cursor: pointer;
+    display: -webkit-box;
+    font-family: SulSans, Helvetica, sans-serif;
+    margin: 0 0 10px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-rendering: optimizeLegibility;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     font-size: 1.165rem;
-    font-weight: 400;
-    line-height: 1.5rem;
+    line-height: 1.25rem;
+    word-break: break-word;
+    color: var(--color-neutral-black);
 }
 
 .description {
@@ -160,7 +171,7 @@
     height: 50px;
     margin: 0 auto;
     overflow: hidden;
-    pointer-events: none; 
+    pointer-events: none;
     position: absolute;
     right: 0;
     transition: 0.2s ease;
@@ -168,6 +179,4 @@
     z-index: var(--z-index--1);
 }
 
-.overline_categories_list {
-
-}
+.overline_categories_list {}

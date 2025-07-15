@@ -1,8 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Button,
   Column,
@@ -14,8 +13,6 @@ import {
 import { getGlobalStyle, numberFormat } from './../../../utils/index'
 import type { IButton, CardProductSimpleProps } from './types'
 import {
-  accepts,
-  handleAnimation,
   formatProductData
 } from './utils'
 import { QuantityButtonFloat } from '../../molecules/QuantityButtonFloat'
@@ -26,6 +23,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   edit = false,
   fileInputRef = null,
   free = false,
+  accept = [],
   index = 0,
   decrement = true,
   increment = true,
@@ -40,7 +38,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   sum = false,
   tag = { tag: '' },
   ValueDelivery = 0,
-  ProImage = '/images/placeholder-image.webp',
+  ProImage = '/images/dish-image-placeholder.png',
   dataExtra = [] as Array<{ extraPrice: number, extraName: string }>,
   dataOptional = [] as Array<{ ExtProductFoodsSubOptionalAll: Array<{ OptionalSubProName: string }> }>,
   dispatch = (_p0: { type: string, payload: { value: string, name: string, index: number, id: any } }) => { },
@@ -50,34 +48,24 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   handleIncrement = () => { },
   onClick = () => { },
   onFileInputChange = () => { },
-  onTargetClick = () => { }
+  onTargetClick = () => { },
+  handleEdit = () => { }
 }) => {
-  // HOOKS
-  const router = useRouter()
-  const [startAnimateUp, setStartAnimateUp] = useState('')
-  const [animateType, setAnimateType] = useState('')
-
   // HANDLERS
-  const handleEdit = (): void => {
-    void router.push(`products/create?pId=${pId}`)
-  }
   const handleDown = (event?: React.MouseEvent<HTMLButtonElement>): void => {
     if (event != null) handleDecrement(event)
-    handleAnimation('down', setStartAnimateUp, setAnimateType)
   }
 
   const handleUp = (event?: React.MouseEvent<HTMLButtonElement>): void => {
     if (event != null) handleIncrement(event)
-    handleAnimation('up', setStartAnimateUp, setAnimateType)
   }
 
-  const urlImage = ProImage
   // Determina si mostrar las categorías
   const showCategories = dataExtra.length > 0 || dataOptional.length > 0
 
   const listCategories = formatProductData(dataExtra ?? [], dataOptional ?? [])
 
-  const priceOrFree = +(`${ProPrice}`.replace(/\./g, '').replace(',', '.')) > 0 ? numberFormat(ProPrice) : 'Gratis'
+  const priceOrFree = numberFormat(ProPrice as number)
 
   const delivery = `Domicilio: ${+(`${ValueDelivery}`.replace(/\./g, '').replace(',', '.')) > 0 ? numberFormat(ValueDelivery) : 'Gratis'}`
 
@@ -97,14 +85,18 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   return (
     <>
       <input
-        accept={accepts}
+        accept={accept?.join(',')}
         id='iFile'
         onChange={onFileInputChange}
         ref={fileInputRef}
         style={{ display: 'none' }}
         type='file'
       />
-      <div style={{ position: 'relative' }} className={styles.card_container_list_categories}>
+      <div style={{
+        position: 'relative',
+        width: '300px'
+      }}
+        className={styles.card_container_list_categories}>
         {handleFree != null && (
           <button
             className={styles.overlineFree}
@@ -180,7 +172,11 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
           )}
           <Row style={{ padding: '0 1.25rem', marginTop: getGlobalStyle('--spacing-xl') }}>
             <Column>
-              <Text as='h3' className={styles['dish-card__description']}>
+              <Text
+                as='h3'
+                className={styles['dish-card__description']}
+                weight='medium'
+              >
                 {pName}
               </Text>
               <Text className={styles.description}>
@@ -191,26 +187,36 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
           <div
             className={styles['dish-card__container-image']}
             onClick={() => {
+              fileInputRef?.current?.click()
               return onTargetClick()
             }}
           >
             <Image
               alt={pName !== '' ? pName : ''}
-              blurDataURL={urlImage}
+              blurDataURL='/images/dish-image-placeholder.png'
               className='store_image'
-              height={200}
-              objectFit='cover'
-              width={450}
-              src={urlImage}
+              height={275}
+              objectFit='contain'
+              width={300}
+              src={ProImage}
               unoptimized
+              style={{
+                objectFit: 'contain',
+                width: '100%',
+                height: '100%'
+              }}
             />
           </div>
-          {Boolean(tag?.tag) &&
-            (
-              <div className='tag'>
-                <Tag label={tag?.tag} />
-              </div>
-            )}
+          <Column style={{
+            paddingLeft: getGlobalStyle('--spacing-xl')
+          }}>
+            {Boolean(tag?.tag) &&
+              (
+                <div className='tag'>
+                  <Tag label={tag?.tag} />
+                </div>
+              )}
+          </Column>
         </div>
         {showCategories && (
           <button

@@ -47,7 +47,6 @@ export const cleanValue = ({
       ? transformedValue.replace(prefixWithValue, '').concat(preValue)
       : transformedValue.replace(prefix, '')
     : transformedValue
-  console.log('withoutPrefix', withoutPrefix)
   const withoutSeparators = removeSeparators(withoutPrefix, groupSeparator)
   const withoutInvalidChars = removeInvalidChars(withoutSeparators, [
     groupSeparator,

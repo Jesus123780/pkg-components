@@ -32,7 +32,7 @@ CurrencyInputProps
   (
     {
       allowDecimals = true,
-      allowNegativeValue = false,
+      allowNegativeValue = true,
       id,
       name,
       className,
@@ -44,8 +44,8 @@ CurrencyInputProps
       value: userValue,
       onValueChange,
       fixedDecimalLength,
-      placeholder,
-      decimalScale = 2,
+      placeholder = '$0,00',
+      decimalScale,
       prefix,
       suffix,
       intlConfig,
@@ -214,11 +214,10 @@ CurrencyInputProps
     }
 
     /**
-     * Handle blur event
-     *
-     * Format value by padding/trimming decimals if required by
-     */
-    // HEREEE BLUR EVENT
+         * Handle blur event
+         *
+         * Format value by padding/trimming decimals if required by
+         */
     const handleOnBlur = (event: React.FocusEvent<HTMLInputElement>): void => {
       const {
         target: { value }
@@ -353,7 +352,7 @@ CurrencyInputProps
     useEffect(() => {
       // prevent cursor jumping if editing value
       if (
-        dirty &&
+        dirty ||
         stateValue !== '-' &&
         inputRef.current &&
         document.activeElement === inputRef.current

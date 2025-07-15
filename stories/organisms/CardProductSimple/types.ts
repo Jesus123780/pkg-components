@@ -20,6 +20,7 @@ export interface CardProductSimpleProps {
   sum?: boolean
   tag?: { tag: string }
   ValueDelivery?: number
+  accept: string[]
   dispatch?: () => void
   handleDecrement?: (event: React.MouseEvent<HTMLButtonElement>) => void
   handleDelete?: () => void
@@ -28,6 +29,7 @@ export interface CardProductSimpleProps {
   onClick?: () => void
   onFileInputChange?: () => void
   onTargetClick?: () => void
+  handleEdit?: () => void
 }
 
 export interface IButton {
