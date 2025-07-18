@@ -1,67 +1,113 @@
 'use client'
 
-import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
-import {
-  Circle,
-  ContainerRange,
-  Input,
-  Progress,
-  Svg
-} from './styled'
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent
+} from 'react'
+import styles from './styles.module.css'
+import { Text } from '../../../atoms'
+import { getGlobalStyle } from '../../../../helpers'
 
-export const Range = ({
+/**
+ * Props for the Range component.
+ */
+interface RangeProps {
+  label?: string
+  max?: number
+  min?: number
+  showProgress?: boolean
+  ticks?: boolean
+  value?: number
+  width?: string | number
+  step?: number
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+}
+
+/**
+ * Custom range slider with optional circular progress and label.
+ * @param {RangeProps} props - Props for the Range component.
+ * @returns {JSX.Element}
+ */
+export const Range: React.FC<RangeProps> = ({
   min = 0,
   max = 100,
   value = 0,
-  label,
-  onChange,
-  width
+  showProgress = false,
+  ticks = false,
+  label = '',
+  onChange = () => { },
+  width = '100%',
+  ...props
 }) => {
-  const [currentValue, setCurrentValue] = useState(value)
-  const inputWidth = 600
-  const widthInput = inputWidth - 15
-  const percent = (currentValue - min) / (max - min)
-  const offset = -3
-  const onChangeInput = (event) => {
-    setCurrentValue(event.target.value)
-    onChange(event)
-  }
-  const [percentage, setPercentValue] = useState(0)
-  console.log(percentage)
+  const [currentValue, setCurrentValue] = useState<number>(value)
+
   useEffect(() => {
-    setPercentValue((value / max) * 88)
-  }, [max, value])
+    setCurrentValue(value)
+  }, [value])
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const newValue = Number(e.target.value)
+    setCurrentValue(newValue)
+    onChange?.(e)
+  }
+
+  const step = props.step ?? 1
+  const stepCount = Math.floor((max - min) / step)
+
+  const dashValue = useMemo(() => (currentValue / max) * 88, [currentValue, max])
+  const percentage = useMemo(() => ((currentValue - min) / (max - min)) * 100, [
+    currentValue,
+    min,
+    max
+  ])
+
+  const inputStyle = useMemo(() => ({
+    backgroundImage: `linear-gradient(to right, ${getGlobalStyle('--color-primary-red')}, ${getGlobalStyle('--color-primary-red2')})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: `${percentage}% 100%`,
+    backgroundColor: '#e6e6e6',
+    borderRadius: '999px'
+  }), [percentage])
+
   return (
-    <ContainerRange>
-      {<Progress>
-        <Svg>
-          <Circle dashValue={currentValue} />
-        </Svg>
-      </Progress>
-      }
-      <div className='range__ballon' style={{ left: widthInput * percent + offset || 0 }}>
-        <span className='range__ballon__label'>{label} {' '}</span>
-        <span className='range__ballon__value'>
-          {`${currentValue}`}
-        </span>
-      </div>
-      <Input
-        max={max}
-        min={min}
-        onChange={evt => { return onChange ? onChangeInput(evt) : setCurrentValue(evt.target.value) }}
+    <div className={styles.container}>
+      {showProgress && (
+        <div className={styles.progress}>
+          <svg className={styles.svg} viewBox='0 0 30 30'>
+            <circle
+              r='14'
+              cx='15'
+              cy='15'
+              strokeWidth='2'
+              fill='none'
+              transform='rotate(-95 15 15)'
+              strokeDasharray={`${dashValue}px 88px`}
+            />
+          </svg>
+          <div className={styles.circleBorder} />
+        </div>
+      )}
+      <Text size='xl'>
+        {label}</Text>
+      <input
         type='range'
+        className={styles.input}
+        min={min}
+        max={max}
+        step={step}
         value={currentValue}
-        width={width}
+        onChange={handleChange}
+        style={{ ...inputStyle, width }}
       />
-    </ContainerRange>
+      {ticks &&
+        <div className={styles.ticks}>
+          {Array.from({ length: stepCount + 1 }).map((_, index) => (
+            <span key={index} className={styles.tick} />
+          ))}
+        </div>
+      }
+    </div>
   )
-}
-Range.propTypes = {
-  label: PropTypes.string,
-  max: PropTypes.number,
-  min: PropTypes.number,
-  onChange: PropTypes.func,
-  value: PropTypes.number,
-  width: PropTypes.any
 }

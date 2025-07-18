@@ -14,6 +14,7 @@ import {
   Text
 } from '../../atoms'
 import { getGlobalStyle } from '../../../helpers'
+import { type NotificationProps } from '../../../types/global'
 import styles from './styles.module.css'
 
 interface InputFilesProps {
@@ -32,12 +33,6 @@ interface PreviewImage {
   temPath: string
   name: string
   ext: string
-}
-
-interface NotificationProps {
-  description: string
-  title: string
-  backgroundColor: string
 }
 
 /**

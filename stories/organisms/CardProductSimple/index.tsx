@@ -198,7 +198,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
               height={275}
               objectFit='contain'
               width={300}
-              src={ProImage}
+              src={ProImage ?? '/images/dish-image-placeholder.png'}
               unoptimized
               style={{
                 objectFit: 'contain',

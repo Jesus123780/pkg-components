@@ -5,6 +5,7 @@ import { MODAL_SIZES } from '../AwesomeModal/constanst'
 import { ImageUploader } from './components/ImageUploader'
 import Cropper from 'react-easy-crop'
 import { AwesomeModal } from '../AwesomeModal'
+import { Row } from '../../atoms'
 
 export interface IImageProductEdit {
   inputRef: React.RefObject<HTMLInputElement>
@@ -83,25 +84,30 @@ export const ImageProductEdit: React.FC<IImageProductEdit> = ({
             crop={crop}
             rotation={rotation}
             zoom={zoom}
-            aspect={4 / 3}
+            aspect={10 / 9}
             onCropChange={setCrop}
             onRotationChange={setRotation}
             onCropComplete={onCropComplete}
             onZoomChange={setZoom}
           />
         </div>
-        {/* <Range min={1} max={100} value={zoom} onChange={setZoom} /> */}
-        <div>
-          <label>Rotación:</label>
-          <input
-            type='range'
+        <Row>
+          <Range
+            label='Rotacion'
             min={-180}
             max={180}
-            step={1}
             value={rotation}
             onChange={(e) => setRotation(Number(e.target.value))}
+            />
+          <Range
+            label='Zoom'
+            ticks={true}
+            min={1}
+            max={10}
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
           />
-        </div>
+        </Row>
       </AwesomeModal>
     </div>
   )

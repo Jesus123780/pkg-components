@@ -1,0 +1,107 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  width: 100%;
+  margin: 0 1rem;
+}
+
+.progress {
+  align-items: center;
+  background: var(--color-base-white);
+  border-radius: 50%;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  position: relative;
+  width: 30px;
+}
+
+.circleBorder::before {
+  border-radius: 50%;
+  content: '';
+  height: 26px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+}
+
+.svg {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  z-index: var(--z-index-40);
+}
+
+.input {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 5px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Webkit */
+.input::-webkit-slider-runnable-track {
+  background: transparent;
+  border-radius: var(--border-width-lg);
+  height: 10px;
+}
+
+.input::-webkit-slider-thumb {
+  appearance: none;
+  background-color: var(--color-base-white);
+  border-radius: 50%;
+  border: 2px solid var(--color-neutral-gray-silver);
+  box-shadow: 0 0 4px var(--box-shadow-2xs);
+  height: 20px;
+  margin-top: -5px;
+  transition: background-color 150ms ease;
+  width: 20px;
+}
+
+.input:hover::-webkit-slider-thumb,
+.input:focus::-webkit-slider-thumb {
+  background-color: var(--color-neutral-gray-light);
+}
+
+/* Firefox */
+.input::-moz-range-track {
+  height: 10px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.input::-moz-range-thumb {
+  background-color: var(--color-base-white);
+  border-radius: 50%;
+  border: 2px solid var(--color-background-gray);
+  height: 20px;
+  transition: background-color 150ms ease;
+  width: 20px;
+}
+
+.input:hover::-moz-range-thumb {
+  background-color: var(--color-neutral-gray-silver);
+}
+
+.ticks {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  top: -15px;
+  width: 100%;
+  z-index: var(--z-index--1);
+}
+
+.tick {
+  background-color: var(--color-neutral-gray-silver);
+  border-radius: 1px;
+  height: 10px;
+  width: 2px;
+}

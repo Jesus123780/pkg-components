@@ -57,7 +57,6 @@ export const ImageUploader: React.FC<IImageUploaderProps> = ({
             <Text as='p' className={styles.description}>
                 Aparece en el listado y en los detalles del producto.
             </Text>
-
             <div
                 role='button'
                 tabIndex={0}
