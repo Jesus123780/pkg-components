@@ -32,6 +32,10 @@ import {
 import styles from './styles.module.css'
 import Link from 'next/link'
 import clsx from 'clsx'
+type DashboardPath =
+  | `/dashboard/${string}/${string}` // para /dashboard/[business]/[id]
+  | `/dashboard/${string}` // para /dashboard/[business]
+  | '/dashboard'
 
 interface MemoAsideProps {
   collapsed?: boolean
@@ -41,7 +45,6 @@ interface MemoAsideProps {
   handleOpenDeliveryTime?: any
   isMobile?: boolean
   loading?: boolean
-  location?: any
   salesOpen?: boolean
   setCollapsed?: any
   setShowComponentModal?: any
@@ -52,14 +55,13 @@ interface MemoAsideProps {
   onDragEnd?: (result: any) => void
   isElectron?: boolean
   handleColapsedMenu?: () => void
+  pathname: DashboardPath
   setIsDragDisabled?: Dispatch<SetStateAction<boolean>>
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
   isElectron = false,
   isMobile = false,
-  location = {
-    pathname: ROUTES.index
-  },
+  pathname,
   version = '0.0.0',
   logicalVersion = '0.0.0',
   setCollapsed,
@@ -131,6 +133,12 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     action[path]?.()
   }
   const [isDragDisabled, setIsDragDisabled] = useState(false)
+
+  const isDashboardRoute = (pathname: DashboardPath): boolean => {
+    return pathname.startsWith('/dashboard')
+  }
+  const hidden = isDashboardRoute(pathname)
+
   return (
     <>
       {isMobile &&
@@ -196,26 +204,30 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       [styles['quick_options--colapsed'] as string]: isColapsedMenu
                     }
                   )}>
-                  <Button
-                    border='gray'
-                    color='black'
-                    iconName='IconBox'
-                    iconPosition='right'
-                    onClick={() => { handleOpenCreateProduct() }}>
-                    Nuevo producto
-                  </Button>
-                  <Button
-                    border='gray'
-                    color='black'
-                    iconName='IconCategorie'
-                    iconPosition='right'
-                    onClick={() => {
-                      setShowComponentModal(4)
-                      handleClick(4)
-                    }}
-                  >
-                    Categorías
-                  </Button>
+                  {!hidden &&
+                    <Button
+                      border='gray'
+                      color='black'
+                      iconName='IconBox'
+                      iconPosition='right'
+                      onClick={() => { handleOpenCreateProduct() }}>
+                      Nuevo producto
+                    </Button>
+                  }
+                  {!hidden &&
+                    <Button
+                      border='gray'
+                      color='black'
+                      iconName='IconCategorie'
+                      iconPosition='right'
+                      onClick={() => {
+                        setShowComponentModal(4)
+                        handleClick(4)
+                      }}
+                    >
+                      Categorías
+                    </Button>
+                  }
                   <Button
                     border='gray'
                     color='black'

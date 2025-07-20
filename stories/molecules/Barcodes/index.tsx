@@ -4,13 +4,13 @@ import { getGlobalStyle } from '../../../helpers'
 
 interface BarCodesProps {
   value: string
-  format?: 'EAN13' | 'CODE128'
+  format?: 'EAN13'
 }
 
-export const BarCodes: React.FC<BarCodesProps> = ({ value = '', format = 'CODE128' }) => {
-  const empty = value === null || value === ''
+export const BarCodes: React.FC<BarCodesProps> = ({ value = '', format = 'EAN13' }) => {
+  const empty = !value
   const { inputRef } = useBarcode({
-    value: empty ? 'VACÍO' : value,
+    value: empty ? '0000000000000' : value,
     options: {
       background: getGlobalStyle('--color-background-gray-light'),
       format,
@@ -19,22 +19,9 @@ export const BarCodes: React.FC<BarCodesProps> = ({ value = '', format = 'CODE12
   })
 
   return (
-    <div
-      style={{
-        width: '100%',
-        overflowX: 'auto',
-        overflowY: 'hidden',
-        padding: '0.5rem'
-      }}
-    >
+    <div style={{ width: '100%', overflowX: 'auto', padding: '0.5rem' }}>
       <div style={{ width: 'max-content' }}>
-        <svg
-          ref={inputRef}
-          style={{
-            display: 'block',
-            height: 'auto'
-          }}
-        />
+        <svg ref={inputRef} style={{ display: 'block', height: 'auto' }} />
       </div>
     </div>
   )

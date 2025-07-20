@@ -74,7 +74,6 @@ interface GenerateSalesProps {
   dispatch?: React.Dispatch<any>
   fetchMoreProducts?: () => void
   handlePageChange?: (pageNumber: number | string) => void
-  useAmountInput?: () => void
   handleDecrement?: (product: ProductFood) => void
   handleIncrement?: (product: ProductFood) => void
   handleFreeProducts?: (product: ProductFood) => void
@@ -127,7 +126,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     clientNumber: ''
   },
   dispatch = () => { },
-  useAmountInput = () => { },
   handleFreeProducts = () => { },
   onClick = (product: MiniCardProductProps) => {
     return product
@@ -417,7 +415,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         errors={errors}
         dispatch={dispatch}
         storeTables={storeTables as any}
-        useAmountInput={useAmountInput}
         overline={true}
         payMethodPState={data?.payMethodPState}
         handleOpenAside={handleOpenAside}

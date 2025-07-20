@@ -135,7 +135,6 @@ export const isEmail = email => {
 export const passwordConfirm = (value, valueConfirm) => { return !(value === valueConfirm) }
 
 export const ROUTES = Object.freeze({
-  login: '/login',
   index: '/',
   home: '/home',
   register: '/register',
@@ -146,6 +145,12 @@ export const ROUTES = Object.freeze({
   orders: '/orders',
   products: '/products',
   notFound: '/404',
-  serverError: '/500'
+  serverError: '/500',
+  // NO LAYOUT
+  'verify-email': '/verify-email',
+  'forgot-password': '/forgot-password',
+  'reset-password': '/reset-password',
+  merchant: '/merchant',
+  login: '/login'
 
 })

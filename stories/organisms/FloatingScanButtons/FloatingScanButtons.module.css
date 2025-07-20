@@ -1,0 +1,22 @@
+.container {
+  bottom: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: fixed;
+  right: 1.5rem;
+  width: min-content;
+}
+
+.fab {
+    background-color: var(--color-base-white);
+    box-shadow: var(--box-shadow-sm);
+    height: 70px;
+    transition: .4s ease;
+    width: 70px;
+}
+
+.fab:hover {
+  background-color: var(--color-neutral-gray-white);
+  transform: scale(1.05);
+}

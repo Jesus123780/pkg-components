@@ -29,6 +29,7 @@
     "qr.js": "^0.0.0",
     "qrcode": "^1.5.3",
     "qrcode.react": "^4.2.0",
+    "quagga": "0.12.1",
     "react-beautiful-dnd": "13.1.1",
     "react-chartjs-2": "^2.11.2",
     "react-date-range": "^2.0.1",

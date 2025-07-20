@@ -3,7 +3,7 @@ import { IconInfo } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'
 
-interface AlertInfoProps {
+export interface AlertInfoProps {
   type: 'warning' | 'error' | 'info'
   message: string
 }

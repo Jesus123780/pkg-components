@@ -16,6 +16,7 @@ import {
 } from '../../molecules'
 import clsx from 'clsx'
 import styles from './styles.module.css'
+import { MODAL_SIZES } from '../AwesomeModal/constanst'
 
 interface ICreateExtra {
   LineItems?: {
@@ -81,7 +82,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
       padding={0}
       question={false}
       show={modal}
-      size='70vw'
+      size={MODAL_SIZES.medium}
       title='Añade Complementos'
       zIndex={getGlobalStyle('--z-index-99999')}
     >
