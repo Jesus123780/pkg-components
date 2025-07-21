@@ -3,7 +3,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-interface AnimationsNumberProps {
+export interface AnimationsNumberProps {
   text?: string
 }
 
@@ -48,7 +48,7 @@ export const AnimationsNumber: React.FC<AnimationsNumberProps> = ({ text = '0.00
 
   return (
         <Wrapper>
-            {reactArray?.map((item, index) => (
+            {reactArray?.map((item) => (
                 <span key={item}>{item}</span>
             ))}
         </Wrapper>

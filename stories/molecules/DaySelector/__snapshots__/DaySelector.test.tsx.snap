@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`DaySelector renders correctly 1`] = `
+<div>
+  <div
+    class="sc-bdfCDU bfuMbi"
+  >
+    Monday
+  </div>
+  <div
+    class="sc-bdfCDU jFHnvP"
+  >
+    Tuesday
+  </div>
+</div>
+`;

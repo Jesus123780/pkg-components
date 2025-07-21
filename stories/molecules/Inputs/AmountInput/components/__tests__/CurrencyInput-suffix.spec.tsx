@@ -2,9 +2,9 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CurrencyInput from '../CurrencyInput';
+import { AmountInput } from '../index';
 
-describe('<CurrencyInput/> suffix', () => {
+describe('<AmountInput/> suffix', () => {
   const onValueChangeSpy = jest.fn();
 
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('<CurrencyInput/> suffix', () => {
   });
 
   it('should handle custom suffix', () => {
-    render(<CurrencyInput onValueChange={onValueChangeSpy} suffix=" €" defaultValue="1234" />);
+    render(<AmountInput onValueChange={onValueChangeSpy} suffix=" €" defaultValue="1234" />);
 
     expect(screen.getByRole('textbox')).toHaveValue('1,234 €');
 
@@ -27,7 +27,7 @@ describe('<CurrencyInput/> suffix', () => {
 
   it('should handle custom prefix and suffix', () => {
     render(
-      <CurrencyInput onValueChange={onValueChangeSpy} prefix="$" suffix=" %" defaultValue="1234" />
+      <AmountInput onValueChange={onValueChangeSpy} prefix="$" suffix=" %" defaultValue="1234" />
     );
 
     expect(screen.getByRole('textbox')).toHaveValue('$1,234 %');

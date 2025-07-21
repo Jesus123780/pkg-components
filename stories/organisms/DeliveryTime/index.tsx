@@ -10,6 +10,7 @@ import { AwesomeModal } from '../../organisms/AwesomeModal'
 import { TimeInput } from './Input'
 import { getGlobalStyle } from '../../../utils'
 import styles from './DeliveryTime.module.css'
+import { MODAL_SIZES } from '../AwesomeModal/constanst'
 
 interface DeliveryTimeProps {
   isOpen?: boolean
@@ -51,7 +52,7 @@ export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
         }}
         padding='30px'
         show={isOpen}
-        size='20%'
+        size={MODAL_SIZES.small}
         title='Tiempo de entrega'
         zIndex={getGlobalStyle('--z-index-99999')}
       >

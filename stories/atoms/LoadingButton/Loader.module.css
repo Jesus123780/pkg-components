@@ -1,22 +1,49 @@
-.loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    color: transparent !important;
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
 }
-  
-  .spinner {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 3px solid var(--color-primary-red);
-    border-top: 3px solid;
-    animation: spin 1s linear infinite;
+
+.dot {
+  border: 2px solid transparent;
+  border-top: 2px solid #4b4b4b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.dot1 {
+  width: 8px;
+  height: 8px;
+}
+
+.dot2 {
+  width: 10px;
+  height: 10px;
+}
+
+.dot3 {
+  width: 12px;
+  height: 12px;
+}
+
+.dot4 {
+  width: 14px;
+  height: 14px;
+}
+
+.dot5 {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+
+  100% {
+    transform: rotate(360deg);
   }
-  
+}

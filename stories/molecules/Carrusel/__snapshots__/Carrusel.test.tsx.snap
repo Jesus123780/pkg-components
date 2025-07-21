@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Carrusel3D renders correctly 1`] = `
+<div>
+  <div
+    class="carousel"
+  />
+  <div>
+    <div>
+      <button>
+        Click
+      </button>
+    </div>
+    <div>
+      <button>
+        Click
+      </button>
+    </div>
+  </div>
+</div>
+`;

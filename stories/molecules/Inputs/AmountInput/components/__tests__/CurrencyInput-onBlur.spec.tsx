@@ -1,13 +1,12 @@
-import React from 'react';
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AmountInput } from '../index'
 
-import CurrencyInput from '../CurrencyInput';
 
 const name = 'inputName';
 
-describe('<CurrencyInput/> onBlur', () => {
+describe('<AmountInput/> onBlur', () => {
   const onBlurSpy = jest.fn();
   const onValueChangeSpy = jest.fn();
 
@@ -17,7 +16,7 @@ describe('<CurrencyInput/> onBlur', () => {
 
   it('should call onBlur and onValueChange', () => {
     render(
-      <CurrencyInput
+      <AmountInput
         name={name}
         prefix="$"
         onBlur={onBlurSpy}
@@ -42,7 +41,7 @@ describe('<CurrencyInput/> onBlur', () => {
 
   it('should call onBlur, but not onValueChange', () => {
     render(
-      <CurrencyInput
+      <AmountInput
         name={name}
         prefix="$"
         onBlur={onBlurSpy}
@@ -62,7 +61,7 @@ describe('<CurrencyInput/> onBlur', () => {
   });
 
   it('should call onBlur for 0', () => {
-    render(<CurrencyInput name={name} prefix="$" onBlur={onBlurSpy} />);
+    render(<AmountInput name={name} prefix="$" onBlur={onBlurSpy} />);
 
     userEvent.type(screen.getByRole('textbox'), '0');
     fireEvent.focusOut(screen.getByRole('textbox'));
@@ -73,7 +72,7 @@ describe('<CurrencyInput/> onBlur', () => {
   });
 
   it('should call onBlur for empty value', () => {
-    render(<CurrencyInput name={name} prefix="$" onBlur={onBlurSpy} />);
+    render(<AmountInput name={name} prefix="$" onBlur={onBlurSpy} />);
 
     fireEvent.focusOut(screen.getByRole('textbox'));
 
@@ -83,7 +82,7 @@ describe('<CurrencyInput/> onBlur', () => {
   });
 
   it('should call onBlur for "-" char', () => {
-    render(<CurrencyInput name={name} prefix="$" onBlur={onBlurSpy} />);
+    render(<AmountInput name={name} prefix="$" onBlur={onBlurSpy} />);
 
     userEvent.type(screen.getByRole('textbox'), '-');
     fireEvent.focusOut(screen.getByRole('textbox'));

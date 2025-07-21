@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`AnimationsNumber should match snapshot with custom text 1`] = `
+<span
+  class="sc-bdfCDU fnXUat"
+>
+  <span>
+    9
+  </span>
+  <span>
+    9
+  </span>
+  <span>
+    .
+  </span>
+  <span>
+    9
+  </span>
+  <span>
+    9
+  </span>
+</span>
+`;

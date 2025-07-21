@@ -1,20 +1,43 @@
-import React from 'react'
-import { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Image } from './index'
 
-export default {
+const meta: Meta<typeof Image> = {
   title: 'atoms/Image',
   component: Image,
+  tags: ['autodocs'],
   argTypes: {
-    width: { control: 'text' },
-    height: { control: 'text' },
-  },
-} as Meta;
+    src: {
+      control: 'text',
+      defaultValue: 'https://picsum.photos/150'
+    },
+    alt: {
+      control: 'text',
+      defaultValue: 'Placeholder image'
+    },
+    width: {
+      control: 'text',
+      defaultValue: '150'
+    },
+    height: {
+      control: 'text',
+      defaultValue: '150'
+    },
+    className: {
+      control: 'text',
+      defaultValue: ''
+    }
+  }
+}
 
-const Template: any = (args: any) => <Image {...args} />;
+export default meta
+type Story = StoryObj<typeof Image>
 
-export const Default = Template.bind({});
-Default.args = {
-  src: 'https://via.placeholder.com/150',
-  alt: 'Placeholder Image',
-};
+export const Primary: Story = {
+  args: {
+    src: 'https://picsum.photos/150',
+    alt: 'Sample Image',
+    width: '150',
+    height: '150',
+    className: ''
+  }
+}

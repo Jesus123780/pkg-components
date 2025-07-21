@@ -1,13 +1,13 @@
-import React, { createRef } from 'react';
+import { createRef } from 'react';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import CurrencyInput from '../CurrencyInput';
+import { AmountInput } from '../index';
 
-describe('<CurrencyInput/> ref', () => {
+describe('<AmountInput/> ref', () => {
   it('should be able to add HTML ref to component', () => {
     const ref = createRef<HTMLInputElement>();
 
-    render(<CurrencyInput value="123456789" ref={ref} />);
+    render(<AmountInput value="123456789" ref={ref} />);
 
     expect(screen.getByRole('textbox')).toBe(ref.current);
   });

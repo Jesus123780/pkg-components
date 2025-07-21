@@ -6,7 +6,8 @@ export default {
   component: EmptyData
 }
 
-
-export const Default = () => {return (
+export const Default = () => {
+  return (
   <EmptyData />
-)}
+  )
+}

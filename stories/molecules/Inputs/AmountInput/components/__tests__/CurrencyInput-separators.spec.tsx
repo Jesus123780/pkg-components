@@ -1,12 +1,11 @@
-import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CurrencyInput from '../CurrencyInput';
+import { AmountInput } from '../index';
 
 const name = 'inputName';
 
-describe('<CurrencyInput/> separators', () => {
+describe('<AmountInput/> separators', () => {
   const onValueChangeSpy = jest.fn();
 
   beforeEach(() => {
@@ -15,7 +14,7 @@ describe('<CurrencyInput/> separators', () => {
 
   it('should not include separator if turned off', () => {
     render(
-      <CurrencyInput
+      <AmountInput
         name={name}
         prefix="£"
         disableGroupSeparators={true}
@@ -39,7 +38,7 @@ describe('<CurrencyInput/> separators', () => {
 
   it('should handle decimal and group separators passed in', () => {
     render(
-      <CurrencyInput
+      <AmountInput
         name={name}
         prefix="£"
         decimalSeparator=","
@@ -83,13 +82,13 @@ describe('<CurrencyInput/> separators', () => {
 
     it('should throw error if decimalSeparator and groupSeparator are the same', () => {
       expect(() =>
-        render(<CurrencyInput name={name} prefix="£" decimalSeparator="," groupSeparator="," />)
+        render(<AmountInput name={name} prefix="£" decimalSeparator="," groupSeparator="," />)
       ).toThrow('decimalSeparator cannot be the same as groupSeparator');
       expect(console.error).toHaveBeenCalled();
     });
 
     it('should throw error if decimalSeparator and default groupSeparator are the same', () => {
-      expect(() => render(<CurrencyInput name={name} prefix="£" decimalSeparator="," />)).toThrow(
+      expect(() => render(<AmountInput name={name} prefix="£" decimalSeparator="," />)).toThrow(
         'decimalSeparator cannot be the same as groupSeparator'
       );
       expect(console.error).toHaveBeenCalled();
@@ -98,7 +97,7 @@ describe('<CurrencyInput/> separators', () => {
     it('should NOT throw error if decimalSeparator and default groupSeparator are the same but disableGroupSeparators is true', () => {
       expect(() =>
         render(
-          <CurrencyInput
+          <AmountInput
             name={name}
             prefix="£"
             decimalSeparator=","
@@ -110,7 +109,7 @@ describe('<CurrencyInput/> separators', () => {
     });
 
     it('should throw error if groupSeparator and default decimalSeparator are the same', () => {
-      expect(() => render(<CurrencyInput name={name} prefix="£" groupSeparator="." />)).toThrow(
+      expect(() => render(<AmountInput name={name} prefix="£" groupSeparator="." />)).toThrow(
         'decimalSeparator cannot be the same as groupSeparator'
       );
       expect(console.error).toHaveBeenCalled();
@@ -118,7 +117,7 @@ describe('<CurrencyInput/> separators', () => {
 
     it('should throw error if decimalSeparator is a number', () => {
       expect(() =>
-        render(<CurrencyInput name={name} prefix="£" decimalSeparator={'1'} groupSeparator="," />)
+        render(<AmountInput name={name} prefix="£" decimalSeparator={'1'} groupSeparator="," />)
       ).toThrow('decimalSeparator cannot be a number');
       expect(console.error).toHaveBeenCalled();
     });
@@ -126,7 +125,7 @@ describe('<CurrencyInput/> separators', () => {
     it('should throw error if groupSeparator is a number', () => {
       expect(() =>
         render(
-          <CurrencyInput
+          <AmountInput
             name={name}
             prefix="£"
             decimalSeparator="."

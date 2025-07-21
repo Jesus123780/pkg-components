@@ -1,4 +1,5 @@
 'use client'
+import './styles.css'
 
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */

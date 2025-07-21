@@ -22,7 +22,7 @@ import {
 } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
 import { Portal } from '../Portal'
-import { getGlobalStyle, ROUTES } from '../../../utils'
+import { getGlobalStyle } from '../../../utils'
 import packageJson from '../../../package.json'
 import {
   DragDropContext,
@@ -32,6 +32,7 @@ import {
 import styles from './styles.module.css'
 import Link from 'next/link'
 import clsx from 'clsx'
+
 type DashboardPath =
   | `/dashboard/${string}/${string}` // para /dashboard/[business]/[id]
   | `/dashboard/${string}` // para /dashboard/[business]
@@ -55,7 +56,7 @@ interface MemoAsideProps {
   onDragEnd?: (result: any) => void
   isElectron?: boolean
   handleColapsedMenu?: () => void
-  pathname: DashboardPath
+  pathname: DashboardPath | string
   setIsDragDisabled?: Dispatch<SetStateAction<boolean>>
 }
 const MemoAside: React.FC<MemoAsideProps> = ({
@@ -82,6 +83,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   onDragEnd = (result: any) => { return result }
 }) => {
   const [show, setShow] = useState(false)
+  const [isDragDisabled, setIsDragDisabled] = useState(false)
   const [active, setActive] = useState<boolean | number>(false)
   interface DataStore {
     storeName: string
@@ -128,13 +130,13 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   }
   const handleClickAction = (path: string): void => {
     const action: Record<string, () => void> = {
-      '?time=true': handleOpenDeliveryTime
+      '?time=true': handleOpenDeliveryTime,
+      '?goals=true': handleOpenDeliveryTime
     }
     action[path]?.()
   }
-  const [isDragDisabled, setIsDragDisabled] = useState(false)
 
-  const isDashboardRoute = (pathname: DashboardPath): boolean => {
+  const isDashboardRoute = (pathname: DashboardPath | string): boolean => {
     return pathname.startsWith('/dashboard')
   }
   const hidden = isDashboardRoute(pathname)
@@ -279,26 +281,31 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       {modulesArray?.map((module, index) => {
                         const subModules = module?.subModules ?? []
                         const existSubModules = Boolean(subModules.length > 0)
-                        const onAction = module?.mPath?.startsWith('?')
-
+                        const action = module?.mPath?.startsWith('?')
+                        const mPath = action === true ? '' : module?.mPath as string
+                        const isActive = `/${mPath}` === pathname
+                        console.log({ module: module.mPath })
                         return (
                           <Draggable isDragDisabled={!isDragDisabled} key={module.mId} draggableId={module.mId} index={index}>
-                            {(provided) => (
+                            {(provided: { innerRef: React.LegacyRef<HTMLDivElement> | undefined, draggableProps: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>, dragHandleProps: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement> }) => (
                               <div
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 className={styles.containerOption}
+                                style={{
+                                  borderLeft: `2px solid ${getGlobalStyle(isActive ? '--color-primary-red' : '--color-base-transparent')}`
+                                }}
                               >
-                                {!existSubModules &&
+
+                                {(!existSubModules) &&
                                   <CustomLinkAside
-                                    count={0}
                                     onClick={() => {
                                       handleClickAction(module.mPath as string)
                                     }}
-                                    hiddenTextLink={isColapsedMenu}
-                                    size={existSubModules ? '.8rem' : '.9rem'}
-                                    mPath={onAction === true ? '' : module?.mPath as string}
+                                    mPath={mPath}
+                                    isActive={isActive}
+                                    action={action}
                                     mIcon={module?.mIcon}
                                     mName={module?.mName}
                                   />
@@ -310,7 +317,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                     padding: '10px',
                                     display: 'block',
                                     fontWeight: '600',
-                                    color: '#bebdbe'
+                                    color: getGlobalStyle('--color-neutral-gray-dark')
                                   }}>
                                     {module.mName}
                                   </span>
@@ -322,7 +329,6 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                       handleClick={() => { handleMenu(index) }}
                                       index={active}
                                       icon='IconTicket'
-                                      size='.9rem'
                                       label={module.mName}
                                       path={`/${module.mPath}`}
                                     >
@@ -330,7 +336,6 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                         return (
                                           <div key={item.smId} style={{ marginLeft: '20px', width: '90%', marginTop: '10px' }} >
                                             <CustomLinkAside
-                                              size='.8rem'
                                               mPath={item?.smPath}
                                               mIcon={-1}
                                               mName={item?.smName}

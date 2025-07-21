@@ -12,7 +12,7 @@ const Loading: React.FC<LoadingProps> = ({
   bgColor = '#7777774e'
 }) => {
   return (
-    <Container bgColor={bgColor}>
+    <Container bgColor={bgColor} role="loading">
       <span className='loader'></span>
     </Container>
   )

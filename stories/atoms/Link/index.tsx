@@ -3,16 +3,15 @@
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import React from 'react'
+
 interface CustomLinkProps {
   children: React.ReactNode
   href?: string
-  otherProps?: any
 }
 
 export const CustomLink: React.FC<CustomLinkProps> = ({
   children,
-  href = '/',
-  otherProps
+  href = '/'
 }) => {
   return (
     <Link href={href}>
@@ -23,6 +22,5 @@ export const CustomLink: React.FC<CustomLinkProps> = ({
 
 CustomLink.propTypes = {
   children: PropTypes.any,
-  href: PropTypes.string,
-  otherProps: PropTypes.any
+  href: PropTypes.string
 }

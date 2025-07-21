@@ -2,7 +2,6 @@
 
 import React from 'react'
 import type { PropsWithChildren } from 'react'
-import { usePathname } from 'next/navigation'
 import { ActiveLink } from '../../../atoms'
 import styles from './CustomLinkAside.module.css'
 
@@ -12,16 +11,13 @@ import styles from './CustomLinkAside.module.css'
  * @property {string} mName - Display name of the link.
  * @property {string} [mPath] - Path the link navigates to.
  * @property {number} [mIcon] - Icon identifier.
- * @property {number} [count] - Optional count badge.
- * @property {string} [size] - Optional size modifier.
  * @property {() => void} [onClick] - Optional click handler.
  */
 interface CustomLinkAsideProps {
-  count?: number
   mPath?: string
   mName: string
-  hiddenTextLink?: boolean
-  size?: string
+  isActive?: boolean
+  action?: boolean
   mIcon?: number
   onClick?: () => void
 }
@@ -36,10 +32,10 @@ export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> 
   mPath = '',
   mIcon = -1,
   mName,
-  hiddenTextLink = false
+  action = false,
+  onClick,
+  isActive = false
 }) => {
-  const pathname = usePathname()
-
   const iconMap: Record<number, string> = {
     [-1]: 'IconBoxes',
     1: 'home',
@@ -59,16 +55,15 @@ export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> 
     15: 'IconInventory'
   }
 
-  const isActive = `/${mPath}` === pathname
-
   return (
     <ActiveLink
       href={`/${mPath}`}
       className={styles.linkAside}
       activeClassName={styles.active}
       name={mName}
-      hiddenTextLink={hiddenTextLink}
       mIcon={mIcon}
+      action={action}
+      onClick={onClick}
       currentPath={isActive}
       icon={iconMap}
     />

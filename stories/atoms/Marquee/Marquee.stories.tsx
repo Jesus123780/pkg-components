@@ -1,27 +1,24 @@
-import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Marquee } from './index'
 
-export default {
+const meta: Meta<typeof Marquee> = {
   title: 'atoms/Marquee',
   component: Marquee,
-  argTypes: {
-  },
-  args: {
-    play: true,
-    direction: 'left',
-    delay: 0,
-    gradient: true,
-    gradientColor: [255, 255, 255],
-    gradientWidth: 200
-  }
+  tags: ['autodocs']
 }
 
-const Template = (args: any) => {return (
-  <Marquee {...args}>
-    {/* Add your content here */}
+export default meta
+type Story = StoryObj<typeof Marquee>
+
+export const Default: Story = {
+  args: {
+    children: <>
     <div>This is some scrolling content.</div>
     <div>It can be anything you want.</div>
-  </Marquee>
-)}
-
-export const Default = Template.bind({})
+    </>,
+    speed: 100,
+    loop: true,
+    onCycleComplete: false,
+    pauseOnHover: true
+  }
+}

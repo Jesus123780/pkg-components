@@ -1,35 +1,88 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ActiveLink } from './index';
-import { useRouter } from 'next/navigation';
+import { render, fireEvent } from '@testing-library/react'
+import { ActiveLink } from './index'
+import '@testing-library/jest-dom'
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
+jest.mock('../../../helpers', () => ({
+  getGlobalStyle: (varName: string) => {
+    if (varName === '--color-icons-primary') return 'blue'
+    if (varName === '--color-icons-gray') return 'gray'
+    return ''
+  }
+}))
+
+jest.mock('../Icon', () => ({
+  Icon: ({ icon }: { icon: string }) => <div data-testid="icon">{icon}</div>
+}))
+
+jest.mock('../Row', () => ({
+  Row: ({ children }: { children: React.ReactNode }) => <div data-testid="row">{children}</div>
+}))
 
 describe('ActiveLink', () => {
-  // Mock useRouter to provide the necessary router context
-  useRouter.mockImplementation(() => ({
-    asPath: '/some-path',
-  }));
+  const defaultProps = {
+    activeClassName: 'active-class',
+    href: '/home',
+    name: 'Home'
+  }
 
-  it('renders with the correct class when active', () => {
-    render(
-      <ActiveLink href="/some-path" activeClassName="active">
-        <a className="custom-class">Link</a>
-      </ActiveLink>
-    );
+  it('renders correctly with default props', () => {
+    const { getByText } = render(<ActiveLink {...defaultProps} />)
+    expect(getByText('Home')).toBeInTheDocument()
+  })
 
-    screen.getByText('Link');
-  });
 
-  it('renders without the active class when not active', () => {
-    render(
-      <ActiveLink href="/another-path" activeClassName="active">
-        <a className="custom-class">Link</a>
-      </ActiveLink>
-    );
+  it('renders with icon when mIcon is provided', () => {
+    const { getByTestId } = render(
+      <ActiveLink
+        {...defaultProps}
+        icon={{ '2': 'mock-icon' }}
+        mIcon={2}
+      />
+    )
+    expect(getByTestId('icon')).toHaveTextContent('mock-icon')
+  })
 
-    const link = screen.getByText('Link')
-  });
-});
+  it('uses default icon if mIcon key does not exist', () => {
+    const { getByTestId } = render(
+      <ActiveLink
+        {...defaultProps}
+        icon={{ '-1': 'default-icon' }}
+        mIcon={99}
+      />
+    )
+    expect(getByTestId('icon')).toHaveTextContent('default-icon')
+  })
+
+  it('calls onClick and prevents default when action is true', () => {
+    const handleClick = jest.fn()
+    const preventDefault = jest.fn()
+
+    const { getByRole } = render(
+      <ActiveLink
+        {...defaultProps}
+        onClick={handleClick}
+        action={true}
+      />
+    )
+
+    fireEvent.click(getByRole('link'), { preventDefault })
+    expect(handleClick).toHaveBeenCalled()
+  })
+
+  it('does not preventDefault when action is false', () => {
+    const handleClick = jest.fn()
+    const preventDefault = jest.fn()
+
+    const { getByRole } = render(
+      <ActiveLink
+        {...defaultProps}
+        onClick={handleClick}
+        action={false}
+      />
+    )
+
+    fireEvent.click(getByRole('link'), { preventDefault })
+    expect(preventDefault).not.toHaveBeenCalled()
+    expect(handleClick).not.toHaveBeenCalled() // solo se llama si action === true
+  })
+})

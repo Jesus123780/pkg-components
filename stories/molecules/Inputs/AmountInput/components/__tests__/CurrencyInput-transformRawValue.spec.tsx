@@ -1,10 +1,9 @@
-import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CurrencyInput from '../CurrencyInput';
+import { AmountInput } from '../index';
 
-describe('<CurrencyInput/> transformRawValue', () => {
+describe('<AmountInput/> transformRawValue', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -13,7 +12,7 @@ describe('<CurrencyInput/> transformRawValue', () => {
     const onValueChangeSpy = jest.fn();
 
     render(
-      <CurrencyInput
+      <AmountInput
         prefix="$"
         transformRawValue={(rawValue) => rawValue.replace(/,$/, '.')}
         onValueChange={onValueChangeSpy}

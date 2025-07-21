@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Icon, Icons } from './index'
-import React from 'react'
 import { getGlobalStyle } from '../../../helpers'
 
 const meta: Meta<typeof Icon> = {

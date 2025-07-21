@@ -1,15 +1,18 @@
-import React from 'react';
-import { Meta, Story } from '@storybook/react';
-import { AnimationsNumber } from './index';
+import { type Meta, type StoryObj } from '@storybook/react'
+import { AnimationsNumber, type AnimationsNumberProps } from './index' // Ajusta la ruta según sea necesario
 
-export default {
+const meta: Meta<AnimationsNumberProps> = {
   title: 'atoms/AnimationsNumber',
   component: AnimationsNumber,
-} as Meta;
+  argTypes: {
+  }
+}
 
-const Template: Story = (args) => <AnimationsNumber {...args} />;
+export default meta
 
-export const Example = Template.bind({});
-Example.args = {
-  text: '0.00',
-};
+// Creación de las historias utilizando StoryObj
+export const Primary: StoryObj<AnimationsNumberProps> = {
+  args: {
+    text: '3000'
+  }
+}

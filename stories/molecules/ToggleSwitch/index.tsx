@@ -1,3 +1,4 @@
+// ToggleSwitch.tsx
 import React from 'react'
 import styles from './styles.module.css'
 import { getGlobalStyle } from '../../../helpers'
@@ -21,7 +22,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   name = '',
   successColor = 'red',
   style = {},
-  onChange = () => {}
+  onChange = () => { }
 }) => {
   const diccionary = {
     green: getGlobalStyle('--color-text-success'),
@@ -29,7 +30,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   } as const
 
   return (
-    <div className={styles.container} style={style}>
+    <div className={styles.container} style={style} data-testid="toggle-switch-container">
       <label className={styles.switch} htmlFor={id}>
         <input
           id={id}
@@ -39,13 +40,18 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
           checked={checked}
           onChange={() => onChange(!checked)}
           className={styles.input}
+          data-testid="toggle-switch-input"
         />
-        <span className={styles.slider} style={{
-          backgroundColor: checked ? diccionary[successColor as 'green' | 'red'] : getGlobalStyle('--color-text-inactive')
-        }} />
+        <span
+          className={styles.slider}
+          style={{
+            backgroundColor: checked ? diccionary[successColor] : getGlobalStyle('--color-text-inactive')
+          }}
+          data-testid="toggle-switch-slider"
+        />
       </label>
       {label !== '' && (
-        <label htmlFor={id} className={styles.label}>
+        <label htmlFor={id} className={styles.label} data-testid="toggle-switch-label">
           {label}
         </label>
       )}

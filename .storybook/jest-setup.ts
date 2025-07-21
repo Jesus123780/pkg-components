@@ -1,7 +1,5 @@
-// .storybook/jest-setup.js
+// .storybook/jest-setup.ts
 
-// Ejemplo: Configuración adicional para Jest
-import '@testing-library/jest-dom/extend-expect';
-import 'jest-canvas-mock'; // Jest canvas mock
-import 'jest-extended'; // Jest extension library for additional matchers
-// Resto de tu configuración para Jest
+import 'jest-canvas-mock'; // Soporte para APIs del canvas (ej. Chart.js)
+import 'jest-extended';    // Matchers extra como toBeEmpty, toIncludeAllMembers, etc.
+import '@testing-library/jest-dom'; // Matchers de Testing Library (ej. toBeInTheDocument)

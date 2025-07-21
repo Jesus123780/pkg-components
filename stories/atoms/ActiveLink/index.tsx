@@ -16,24 +16,47 @@ export interface ActiveLinkProps {
   name?: string
   mIcon?: number
   currentPath?: boolean
-  hiddenTextLink?: boolean
   icon?: Record<string, string>
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
+  action?: boolean
 }
 
+/**
+ * ActiveLink - Renders a navigational link with an optional icon.
+ * If action is provided, it overrides the default navigation and triggers the action instead.
+ *
+ * @component
+ * @param {ActiveLinkProps} props
+ * @returns {JSX.Element}
+ */
 export const ActiveLink: React.FC<ActiveLinkProps> = ({
   activeClassName,
   className,
   href,
   name,
-  currentPath,
-  mIcon,
+  currentPath = false,
+  mIcon = -1,
+  onClick,
+  action,
   icon = {}
 }) => {
-  const color = getGlobalStyle(currentPath === true ? '--color-icons-primary' : '--color-icons-gray')
-  const iconKey = mIcon !== undefined ? icon[String(mIcon)] : icon['-1']
+  const color = getGlobalStyle(currentPath ? '--color-icons-primary' : '--color-icons-gray')
+  const iconKey = icon[String(mIcon)] ?? icon['-1']
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    if (action === true) {
+      e.preventDefault()
+      return onClick?.(e)
+    }
+  }
 
   return (
-    <Link href={href} className={clsx(className, activeClassName)} style={{ color }}>
+    <Link
+      href={href}
+      className={clsx(className, activeClassName)}
+      onClick={handleClick}
+      style={{ color }}
+    >
       <Row style={{ marginRight: '10px', width: 'min-content' }}>
         <Icon
           size={20}
@@ -54,7 +77,6 @@ ActiveLink.defaultProps = {
   className: '',
   mIcon: -1,
   currentPath: false,
-  hiddenTextLink: false,
   icon: {}
 }
 
