@@ -194,11 +194,6 @@ ${({ modal }) => {
           font-family: PFont-Light;
           color: ${BColor};
         }
-        &::-webkit-scrollbar {
-                width: 3px;
-                background-color: #dcdcdc;
-                border-radius: 5px;
-            }
       }
       .modal_map_footer {
         display: flex;

@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react'
 import type { ProductFood } from '../../pages/GenerateSales/types'
 
 export interface TypeModalDetailOrder {

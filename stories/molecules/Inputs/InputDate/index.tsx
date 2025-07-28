@@ -13,19 +13,17 @@ import { getGlobalStyle } from '../../../../helpers'
 import styles from './styles.module.css'
 
 interface InputDateProps {
-  classNames?: string
   date: Date
-  defaultValue?: string
   id?: string
   keySelection?: string
   label?: string
   maxDate?: Date
   minDate?: Date
-  name?: string
   placeholder?: string
   style?: React.CSSProperties
   value?: Date
   withRange?: boolean
+  disabled?: boolean
   showClearButton?: boolean
   onChange: (date: Date) => void
   onCleanValue?: () => void
@@ -44,6 +42,7 @@ export const InputDate: React.FC<InputDateProps> = ({
   minDate,
   maxDate,
   withRange = false,
+  disabled = false,
   onChange = () => { },
   onCleanValue = () => { }
 }) => {
@@ -111,27 +110,31 @@ export const InputDate: React.FC<InputDateProps> = ({
           <span className={styles.text_date}>
             {formattedDate}
           </span>
-          {showClearButton && <button style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: 0,
-            margin: 0
-          }} onClick={(e) => {
-            e.stopPropagation()
-            onCleanValue()
-          }}>
-            <Icon
-              color={getGlobalStyle('--color-icons-black')}
-              icon='IconCancel'
-            />
-          </button>}
-          <>
-            <Icon
-              color={getGlobalStyle(date !== null ? '--color-icons-primary' : '--color-icons-black')}
-              icon='IconCalendar'
-            />
-          </>
+          {showClearButton &&
+            <button
+              disabled={disabled}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                margin: 0
+              }}
+              onClick={(e) => {
+                e.stopPropagation()
+                onCleanValue()
+              }}
+            >
+              <Icon
+                color={getGlobalStyle('--color-icons-black')}
+                icon='IconCancel'
+              />
+            </button>
+          }
+          <Icon
+            color={getGlobalStyle(date !== null ? '--color-icons-primary' : '--color-icons-black')}
+            icon='IconCalendar'
+          />
         </div>
 
       </div>

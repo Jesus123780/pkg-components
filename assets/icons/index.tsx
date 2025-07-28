@@ -1695,7 +1695,7 @@ IconFolder.propTypes = {
   style: PropTypes.object
 }
 
-export const IconPlus: React.FC<IconProps> = ({ style = {}, size = 24, color }: IconProps) => {
+export const IconPlus: React.FC<IconProps> = ({ size = 24, color }: IconProps) => {
   return (
     <svg
       height={size ?? 24}
@@ -1705,7 +1705,7 @@ export const IconPlus: React.FC<IconProps> = ({ style = {}, size = 24, color }: 
     >
       <path
         d='M13 11h4.993c.556 0 1.007.444 1.007 1 0 .552-.45 1-1.007 1H13v4.993C13 18.55 12.556 19 12 19c-.552 0-1-.45-1-1.007V13H6.007A1.001 1.001 0 0 1 5 12c0-.552.45-1 1.007-1H11V6.007C11 5.45 11.444 5 12 5c.552 0 1 .45 1 1.007V11z'
-        fill={getGlobalStyle('--color-icons-primary')}
+        fill={color ?? getGlobalStyle('--color-icons-primary')}
         fillRule='evenodd'
       ></path>
     </svg>

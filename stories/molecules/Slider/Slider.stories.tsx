@@ -1,13 +1,13 @@
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { Carousel } from './index';
+import React from 'react'
+import { type Meta, type StoryObj } from '@storybook/react'
+import { Carousel } from './index'
 
 export default {
   title: 'molecules/Carousel',
-  component: Carousel,
-} as Meta<typeof Carousel>;
+  component: Carousel
+} as Meta<typeof Carousel>
 
-type Story = StoryObj<typeof Carousel>;
+type Story = StoryObj<typeof Carousel>
 
 export const MainCarousel: Story = (args: any) => (
   <Carousel {...args}>
@@ -15,9 +15,9 @@ export const MainCarousel: Story = (args: any) => (
     <div style={{ height: '200px' }}>Slide 2</div>
     <div style={{ height: '200px' }}>Slide 3</div>
   </Carousel>
-);
+)
 
-MainCarousel.args = {};
+MainCarousel.args = {}
 
 export const WithNavigation: Story = (args: any) => (
   <Carousel {...args} navigation>
@@ -25,9 +25,9 @@ export const WithNavigation: Story = (args: any) => (
     <div style={{ height: '200px' }}>Slide 2</div>
     <div style={{ height: '200px' }}>Slide 3</div>
   </Carousel>
-);
+)
 
-WithNavigation.args = {};
+WithNavigation.args = {}
 
 export const WithPagination: Story = (args: any) => (
   <Carousel {...args} pagination>
@@ -35,9 +35,9 @@ export const WithPagination: Story = (args: any) => (
     <div style={{ height: '200px' }}>Slide 2</div>
     <div style={{ height: '200px' }}>Slide 3</div>
   </Carousel>
-);
+)
 
-WithPagination.args = {};
+WithPagination.args = {}
 
 export const WithScrollbar: Story = (args: any) => (
   <Carousel {...args} scrollbar>
@@ -45,6 +45,6 @@ export const WithScrollbar: Story = (args: any) => (
     <div style={{ height: '200px' }}>Slide 2</div>
     <div style={{ height: '200px' }}>Slide 3</div>
   </Carousel>
-);
+)
 
-WithScrollbar.args = {};
+WithScrollbar.args = {}

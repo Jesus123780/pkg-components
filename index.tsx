@@ -3,16 +3,19 @@
 // main styles
 import './stories/assets/public/styles.css'
 import './stories/assets/public/global.css'
-// swiper styles 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-
+// swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
 
 // calendar
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'react-date-range/dist/styles.css' // main style file
+import 'react-date-range/dist/theme/default.css'
+
+// gridstack styles
+import 'gridstack/dist/gridstack.css'
+import 'gridstack/dist/gridstack.min.css' // theme css file
 
 // UI components
 export * from './stories/atoms'
@@ -29,16 +32,8 @@ export * from './hooks'
 export * from 'framer-motion'
 export * from '@dnd-kit/core'
 
-
-
-
 // colors choices
 export * from './scripts/tokens/choices'
-export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-
-
-// gridstack styles
-import 'gridstack/dist/gridstack.css'
-import "gridstack/dist/gridstack.min.css";
+export { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 export type { GridStackOptions, GridStackWidget } from 'gridstack'
 export { GridStack } from 'gridstack'

@@ -3,8 +3,8 @@ import { Icon } from '../../atoms'
 import { getGlobalStyle } from '../../../helpers'
 import styles from './styles.module.css'
 
-interface Option {
-  icon: string
+export interface Option {
+  icon?: string
   optionName: string
   action?: () => void
 }

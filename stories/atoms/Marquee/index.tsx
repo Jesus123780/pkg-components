@@ -21,8 +21,6 @@ function ___$insertStyle(css: string): void {
   return css
 }
 
-// Object.defineProperty(exports, '__esModule', { value: true });
-
 function _interopDefaultLegacy(e) {
   return e && typeof e === 'object' && 'default' in e ? e : { default: e }
 }

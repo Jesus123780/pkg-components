@@ -9,8 +9,8 @@ import {
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import { TimeInput } from './Input'
 import { getGlobalStyle } from '../../../utils'
-import styles from './DeliveryTime.module.css'
 import { MODAL_SIZES } from '../AwesomeModal/constanst'
+import styles from './DeliveryTime.module.css'
 
 interface DeliveryTimeProps {
   isOpen?: boolean
@@ -62,7 +62,9 @@ export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
               Le dice al cliente cuanto tiempo tardara en llegar su pedido, y
               así el cliente podrá decidir si desea o no realizar la compra.
             </Text>
-            <Text className={styles.label}>Tiempo de entrega</Text>
+            <Text className={styles.label}>
+              Tiempo de entrega
+            </Text>
             <Row className={styles.container_input}>
               <TimeInput onChange={handleDeliveryTimeChange} value={deliveryTime} />
             </Row>

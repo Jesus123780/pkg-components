@@ -136,7 +136,7 @@
     "test": "jest --config jest.config.ts",
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
   },
-  "version": "2.0.85",
+  "version": "2.0.86",
   "repository": {
     "type": "git",
     "url": "https://github.com/Jesus123780/pkg-components.git"

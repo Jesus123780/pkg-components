@@ -29,9 +29,9 @@ import {
   Droppable,
   Draggable
 } from 'react-beautiful-dnd'
-import styles from './styles.module.css'
 import Link from 'next/link'
 import clsx from 'clsx'
+import styles from './styles.module.css'
 
 type DashboardPath =
   | `/dashboard/${string}/${string}` // para /dashboard/[business]/[id]
@@ -40,7 +40,7 @@ type DashboardPath =
 
 interface MemoAsideProps {
   collapsed?: boolean
-  isColapsedMenu?: boolean
+  isCollapsedMenu?: boolean
   dataStore?: any
   handleClick?: any
   handleOpenDeliveryTime?: any
@@ -55,7 +55,7 @@ interface MemoAsideProps {
   setSalesOpen?: Dispatch<SetStateAction<boolean>>
   onDragEnd?: (result: any) => void
   isElectron?: boolean
-  handleColapsedMenu?: () => void
+  handleCollapsedMenu?: () => void
   pathname: DashboardPath | string
   setIsDragDisabled?: Dispatch<SetStateAction<boolean>>
 }
@@ -68,7 +68,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   setCollapsed,
   salesOpen,
   collapsed = false,
-  isColapsedMenu = false,
+  isCollapsedMenu = false,
   dataStore = {
     storeName: '',
     idStore: '',
@@ -78,7 +78,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   handleClick = (state: boolean) => { return state },
   handleOpenDeliveryTime = () => { },
   setSalesOpen = (state: boolean) => { return state },
-  handleColapsedMenu = () => { return null },
+  handleCollapsedMenu = () => { return null },
   setShowComponentModal = (state: boolean) => { return state },
   onDragEnd = (result: any) => { return result }
 }) => {
@@ -163,7 +163,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
         className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
         style={isMobile
           ? {
-              width: isColapsedMenu ? '40px' : '80%',
+              width: isCollapsedMenu ? '40px' : '80%',
               zIndex: getGlobalStyle('--z-index-99999')
             }
           : {}
@@ -177,7 +177,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
           }}>
             <div>
               <Row className={styles['sidebar-header']}>
-                <Column className={styles['sidebar-header-column']} style={(isMobile && isColapsedMenu) ? { width: 'min-content' } : {}}>
+                <Column className={styles['sidebar-header-column']} style={(isMobile && isCollapsedMenu) ? { width: 'min-content' } : {}}>
                   {null}
                 </Column>
                 <Button
@@ -186,7 +186,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                     border: 'none',
                     padding: getGlobalStyle('--spacing-md')
                   }}
-                  onClick={() => { handleColapsedMenu() }}
+                  onClick={() => { handleCollapsedMenu() }}
                 >
                   <Icon
                     color={getGlobalStyle('--color-icons-gray')}
@@ -203,7 +203,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                     {
                       [styles.visible]: show && salesOpen === false,
                       [styles.hidden]: !show || salesOpen === true,
-                      [styles['quick_options--colapsed'] as string]: isColapsedMenu
+                      [styles['quick_options--colapsed'] as string]: isCollapsedMenu
                     }
                   )}>
                   {!hidden &&
@@ -241,7 +241,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   </Button>
                 </div>
               </Portal>
-              {!isColapsedMenu &&
+              {!isCollapsedMenu &&
                 typeof dataStore?.storeName === 'string' && dataStore.storeName.trim() !== '' &&
                 typeof dataStore?.idStore === 'string' && dataStore.idStore.trim() !== '' &&
                 <Link href={`/dashboard/${dataStore?.storeName.replace(/ /g, '-')}/${dataStore.idStore}`}>
@@ -263,7 +263,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   </Text>
                 </Column>
               }
-              {!isColapsedMenu &&
+              {!isCollapsedMenu &&
                 <Button onClick={() => { setShow(!show) }} className={styles.button_global_create}>
                   Agregar nuevo
                 </Button>
@@ -284,7 +284,6 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                         const action = module?.mPath?.startsWith('?')
                         const mPath = action === true ? '' : module?.mPath as string
                         const isActive = `/${mPath}` === pathname
-                        console.log({ module: module.mPath })
                         return (
                           <Draggable isDragDisabled={!isDragDisabled} key={module.mId} draggableId={module.mId} index={index}>
                             {(provided: { innerRef: React.LegacyRef<HTMLDivElement> | undefined, draggableProps: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>, dragHandleProps: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement> }) => (
@@ -310,7 +309,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                     mName={module?.mName}
                                   />
                                 }
-                                {(existSubModules && !isColapsedMenu) &&
+                                {(existSubModules && !isCollapsedMenu) &&
                                   <span style={{
                                     cursor: 'pointer',
                                     fontSize: '.8rem',
@@ -323,7 +322,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                   </span>
                                 }
                                 <div>
-                                  {(existSubModules && !isColapsedMenu) &&
+                                  {(existSubModules && !isCollapsedMenu) &&
                                     <Options
                                       active={index === active}
                                       handleClick={() => { handleMenu(index) }}
@@ -359,7 +358,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               <ToggleSwitch
                 checked={isDragDisabled}
                 id='edit_modules'
-                label={isColapsedMenu ? '' : 'Editar módulos'}
+                label={isCollapsedMenu ? '' : 'Editar módulos'}
                 onChange={() => setIsDragDisabled(!isDragDisabled)}
                 successColor='green'
               />
@@ -369,7 +368,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             justifyContent='center'
             alignItems='center'
             className={styles['sidebar-footer']}
-            style={isColapsedMenu ? { display: 'none' } : {}}
+            style={isCollapsedMenu ? { display: 'none' } : {}}
           >
             <Text color='gray-dark'>
               version: {version}

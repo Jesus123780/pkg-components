@@ -45,3 +45,8 @@
 .input:disabled {
   cursor: no-drop;
 }
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+}

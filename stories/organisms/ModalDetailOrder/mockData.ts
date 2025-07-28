@@ -2,7 +2,7 @@ import type { TypeModalDetailOrder } from './type'
 
 export const mockDataOrder: TypeModalDetailOrder = {
   dataModal: {
-    __typename: 'StorePedidos',
+    __typename: 'StoreOrders',
     pdpId: null,
     idStore: '013e5387-34a1-6a78-303d-5098f17bf640',
     pCodeRef: 'Tm9o8UKd3J',
@@ -16,7 +16,7 @@ export const mockDataOrder: TypeModalDetailOrder = {
     pDatMod: '2024-02-29T15:56:51.310Z',
     getAllPedidoStore: [
       {
-        __typename: 'StorePedidos',
+        __typename: 'StoreOrders',
         pdpId: '72ecacdf-c99b-5d4d-6714-19997b6132f3',
         pId: null,
         idStore: '013e5387-34a1-6a78-303d-5098f17bf640',
@@ -55,7 +55,7 @@ export const mockDataOrder: TypeModalDetailOrder = {
         }
       },
       {
-        __typename: 'StorePedidos',
+        __typename: 'StoreOrders',
         pdpId: '685b80a7-11c6-41aa-ce1e-06aace36528f',
         pId: null,
         idStore: '013e5387-34a1-6a78-303d-5098f17bf640',
@@ -95,7 +95,7 @@ export const mockDataOrder: TypeModalDetailOrder = {
         }
       },
       {
-        __typename: 'StorePedidos',
+        __typename: 'StoreOrders',
         pdpId: 'b555e577-6e9f-2522-6d8c-5eadba67347b',
         pId: null,
         idStore: '013e5387-34a1-6a78-303d-5098f17bf640',
@@ -133,7 +133,7 @@ export const mockDataOrder: TypeModalDetailOrder = {
         }
       },
       {
-        __typename: 'StorePedidos',
+        __typename: 'StoreOrders',
         pdpId: 'd4430d29-a1df-c835-e704-2bde83777da1',
         pId: null,
         idStore: '013e5387-34a1-6a78-303d-5098f17bf640',

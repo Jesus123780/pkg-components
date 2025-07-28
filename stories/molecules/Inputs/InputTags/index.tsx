@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './styles.module.css'
 import {
   Button,
   Column,
   Divider,
   Icon,
+  Row,
   Text
 } from '../../../atoms'
 import { getGlobalStyle } from '../../../../helpers'
@@ -34,88 +35,107 @@ export const InputTags: React.FC<InputTagsProps> = ({
   width,
   setTags,
   registerTags,
-  sendNotification = () => {},
+  sendNotification = () => { },
   ...props
 }) => {
   const refBox = useRef<HTMLInputElement>(null)
+  const [inputValue, setInputValue] = useState('')
 
   const removeTags = (indexToRemove: number): boolean => {
     setTags(tags.filter((_, index) => index !== indexToRemove))
     return true
   }
 
-  const addTags = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+  const tryAddTag = (value: string): void => {
+    const trimmed = value.trim()
+    if (trimmed === '') return
+
+    const tagExists = tags.includes(trimmed)
+
+    if (!repeatTag && tagExists) {
+      return sendNotification({
+        description: `  El Tag "${trimmed}" ya existe.`,
+        title: 'Error',
+        backgroundColor: 'warning'
+      })
+    }
+
+    const newTags = [...tags, trimmed]
+    setTags(newTags)
+    if (typeof props?.selectedTags === 'function') {
+      props.selectedTags(newTags)
+    }
+
+    setInputValue('')
+    if (refBox.current) {
+      refBox.current.value = ''
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
       event.preventDefault()
-      event.stopPropagation()
-      const input = event.target as HTMLInputElement
-      const value = input.value.trim()
-
-      if (value === '') return
-
-      const tagExists = tags.includes(value)
-
-      if (!repeatTag && tagExists) {
-        return sendNotification({
-          description: `  El Tag "${value}" ya existe.`,
-          title: 'Error',
-          backgroundColor: 'warning'
-        })
+      tryAddTag(inputValue)
+      if (typeof registerTags === 'function' && update) {
+        registerTags()
       }
-
-      const newTags = [...tags, value]
-      setTags(newTags)
-      if (typeof props?.selectedTags === 'function') {
-        props.selectedTags(newTags)
-      }
-      input.value = ''
     }
   }
 
   if (!Array.isArray(tags)) return <></>
-
+  const emptyValue = inputValue.trim().length === 0
   return (
     <>
-      <Column
-        className={`${styles.box} ${disabled ? styles.boxDisabled : ''}`}
-        onClick={() => refBox.current?.focus()}
-        style={{ width }}
-      >
-        <div className={styles.tagsContainer}>
-          {tags.map((tag, index) => (
-            <div key={index} className={styles.tags}>
-              <Text size='md'>{tag}</Text>
-              <Column
-                style={{ cursor: 'pointer' }}
-                onClick={() => !disabled && removeTags(index)}
-              >
-                <Icon icon='IconCancel' size={15} />
-              </Column>
-            </div>
-          ))}
-          <input
-            ref={refBox}
-            className={styles.input}
-            disabled={disabled}
-            type='text'
-            placeholder='Press enter to add tags'
-            onKeyDown={addTags}
-          />
-        </div>
-      </Column>
-      <Divider marginTop={getGlobalStyle('--spacing-sm')} />
-      {update &&
-        <Button
-          borderRadius={getGlobalStyle('--border-radius-xs')}
-          primary={true}
-          disabled={tags?.length === 0}
-          width='100%'
-          loading={loading}
-          onClick={registerTags}
+      <Row style={{ width }} className={disabled ? styles.boxDisabled : ''}>
+        <div
+          role='button'
+          className={styles.box}
+          onClick={() => refBox.current?.focus()}
         >
-          Guardar
-        </Button>
-      }
+          <div className={styles.tagsContainer}>
+            {tags.map((tag, index) => (
+              <div key={index} className={styles.tags}>
+                <Text size='md'>{tag}</Text>
+                <Column
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => !disabled && removeTags(index)}
+                >
+                  <Icon icon='IconCancel' size={15} />
+                </Column>
+              </div>
+            ))}
+
+            <input
+              ref={refBox}
+              className={styles.input}
+              disabled={disabled}
+              type='text'
+              placeholder='Presione enter o haga clic en +'
+              onKeyDown={handleKeyDown}
+              onChange={(e) => setInputValue(e.target.value)}
+              value={inputValue}
+            />
+          </div>
+        </div>
+      </Row>
+      <Button
+        disabled={disabled || emptyValue}
+        onClick={() => {
+          tryAddTag(inputValue)
+          if (typeof registerTags === 'function' && update) {
+            registerTags()
+          }
+        }}
+        borderRadius={getGlobalStyle('--border-radius-xs')}
+        padding={getGlobalStyle('--spacing-xs')}
+        primary={true}
+      >
+        <Icon
+          icon='IconPlus'
+          color={getGlobalStyle(emptyValue ? '--color-icons-primary' : '--color-text-white')}
+        />
+      </Button>
+      <Divider marginTop={getGlobalStyle('--spacing-sm')} />
     </>
   )
 }
