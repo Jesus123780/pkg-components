@@ -1,42 +1,43 @@
 .container {
-    background-color: var(--color-base-white);
-    border-radius: 0.25rem;
-    box-shadow: var(--box-shadow-lg);
-    color: var(--color-neutral-gray-dark);
-    display: flex;
-    flex-direction: column;
-    min-width: 10rem;
-    padding: 0.5rem 0;
-    position: fixed;
-    width: min-content;
-    z-index: 99;
+  background-color: var(--color-base-white);
+  border-radius: 0.25rem;
+  box-shadow: var(--box-shadow-lg);
+  color: var(--color-neutral-gray-dark);
+  display: flex;
+  flex-direction: column;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  position: fixed;
+  width: min-content;
+  z-index: 9999;
+  animation: fadeInScale 0.12s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .dropdownItem {
-    align-items: center;
-    background-color: var(--color-base-transparent);
-    border: 0;
-    color: var(--color-neutral-black);
-    cursor: pointer;
-    display: block;
-    display: flex;
-    font-size: 0.8125rem;
-    font-weight: 400;
-    padding: 0.35rem 1.5rem;
-    text-align: inherit;
-    white-space: nowrap;
-    width: 100%;
+  align-items: center;
+  display: flex;
+  padding: 0.35rem 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-neutral-black);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-left: 3px solid transparent;
+  width: 100%;
 }
 
 .dropdownItem:hover {
-    background-color: var(--color-background-gray);
-    color: var(--color-text-black);
-    text-decoration: none;
-}
-
-.contextTitle {
-    font-size: var(--font-size-base);
-    font-weight: 500;
-    padding: 6px;
-    text-align: left;
+  background-color: var(--color-background-gray);
+  color: var(--color-text-black);
+  border-left: 3px solid var(--color-text-primary);
 }

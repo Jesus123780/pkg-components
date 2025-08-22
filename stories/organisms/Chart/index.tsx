@@ -523,7 +523,7 @@ export const KmhGoalChart: React.FC<KmhGoalChartProps> = ({
   const transformText = rotateText ? 'rotate(270)' : undefined
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }} ref={ref}>
+    <div style={{ width: 'fit-content', height: '100%', position: 'relative' }} ref={ref}>
       <svg
         width="100%"
         height="100%"

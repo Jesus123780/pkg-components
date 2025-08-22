@@ -15,7 +15,13 @@ import 'react-date-range/dist/theme/default.css'
 
 // gridstack styles
 import 'gridstack/dist/gridstack.css'
-import 'gridstack/dist/gridstack.min.css' // theme css file
+import 'gridstack/dist/gridstack.min.css'
+
+// styles grid layout
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
+
+export * from 'react-grid-layout'
 
 // UI components
 export * from './stories/atoms'
