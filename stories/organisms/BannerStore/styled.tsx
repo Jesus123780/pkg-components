@@ -211,7 +211,7 @@ export const InputFile = styled.input`
 `
 
 export const ContentSearch = styled.div`
-  max-width: 1366px;
+  max-width: var(--width-max-desktop);
   margin: 5px auto;
   font-size: 1.5rem;
   line-height: 1em;
@@ -264,7 +264,7 @@ export const Title = styled.h1`
 export const ContainerCarrusel = styled.div`
   display: grid;
   grid-gap: 28px;
-  max-width: 1366px;
+  max-width: var(--width-max-desktop);
   margin: 30px auto 20px;
   @media only screen and (min-width: 960px) {
     grid-template-columns: repeat(2, 1fr);

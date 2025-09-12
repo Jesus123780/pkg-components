@@ -15,7 +15,7 @@ const pulse = keyframes`
 
 export const CardOrder = styled.div`
   width: 100%;
-  max-width: 1366px;
+  max-width: var(--width-max-desktop);
   margin: 20px auto 0 auto;
   display: grid;
   gap: 5px;
@@ -117,12 +117,13 @@ export const FeedItem = styled.div`
     height: 0;
   }
   ${(props) => {
-    if (props.rejected)
-      return css`
+    if (props.rejected) {
+ return css`
         border: 1px solid ${SFVColor};
         animation: ${pulse} 2s infinite;
         background-color: ${SFVColor};
       `
+}
     return (
       props.pulse &&
       css`

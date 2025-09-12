@@ -116,8 +116,8 @@ export interface DataStore {
 export interface Pais {
   __typename: string
   cCalCod: string
-  cDatCre: string
-  cDatMod: string
+  createdAt: string
+  updatedAt: string
   cId: string
   cName: string
   cState: number
@@ -129,8 +129,8 @@ export interface City {
   dId: string
   cName: string
   cState: number
-  cDatCre: string
-  cDatMod: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Department {
@@ -159,8 +159,8 @@ export interface CateStore {
   catStore: string
   cName: string
   cState: any
-  cDatCre: any
-  cDatMod: any
+  createdAt: any
+  updatedAt: any
   csDescription: any
 }
 

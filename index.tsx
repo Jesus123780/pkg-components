@@ -3,6 +3,7 @@
 // main styles
 import './stories/assets/public/styles.css'
 import './stories/assets/public/global.css'
+
 // swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -40,6 +41,7 @@ export * from '@dnd-kit/core'
 
 // colors choices
 export * from './scripts/tokens/choices'
-export { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
+export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+export type { DropResult } from 'react-beautiful-dnd'
 export type { GridStackOptions, GridStackWidget } from 'gridstack'
 export { GridStack } from 'gridstack'
