@@ -1,8 +1,5 @@
 import PropTypes from 'prop-types'
-import {
-  ActionName,
-  InputFile
-} from './styled'
+import { InputFile } from './styled'
 
 import Image from 'next/image'
 import React from 'react'

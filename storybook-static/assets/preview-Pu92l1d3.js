@@ -1,1 +1,0 @@
-import{R as o}from"./router-context-1OOWBe6R.js";import"./_interop_require_default-DgqNHo5w.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";const i={nextRouter:{Provider:o.Provider},parameters:{actions:{argTypesRegex:"^on[A-Z].*"},controls:{matchers:{color:/(background|color)$/i,date:/Date$/i}}}};export{i as default};

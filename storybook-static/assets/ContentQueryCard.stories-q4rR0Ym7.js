@@ -1,3 +1,0 @@
-import{C as a}from"./index-CmpceiV9.js";import"./jsx-runtime-DI8_P1Ft.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./index-B3IC6ylx.js";import"./index-BINBIgVg.js";import"./index-RGaBZlDs.js";const d={component:a,title:"molecules/ContentQueryCard",argTypes:{day:{control:"text"},delivery:{control:"number"},restaurant:{control:"number"},totalSales:{control:"number"}},args:{day:"hoy",delivery:0,restaurant:0,totalSales:0}},r={args:{}};var t,e,o;r.parameters={...r.parameters,docs:{...(t=r.parameters)==null?void 0:t.docs,source:{originalSource:`{
-  args: {}
-}`,...(o=(e=r.parameters)==null?void 0:e.docs)==null?void 0:o.source}}};const u=["Primary"];export{r as Primary,u as __namedExportsOrder,d as default};

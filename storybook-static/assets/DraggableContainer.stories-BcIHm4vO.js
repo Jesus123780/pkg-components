@@ -1,3 +1,0 @@
-import{j as s}from"./jsx-runtime-DI8_P1Ft.js";import{D as t}from"./index-DkuGyRe_.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./index-B3IC6ylx.js";const d={title:"organisms/DraggableContainer",component:t,argTypes:{backgroundColor:{control:"color"}}},i=n=>s(t,{...n}),r=i.bind({});r.args={maxWidth:"315px",isOpen:!0,hiddenX:!1,errorModal:!1};var a,e,o;r.parameters={...r.parameters,docs:{...(a=r.parameters)==null?void 0:a.docs,source:{originalSource:`args => {
-  return <DraggableContainer {...args} />;
-}`,...(o=(e=r.parameters)==null?void 0:e.docs)==null?void 0:o.source}}};const b=["TemplateDraggableContainer"];export{r as TemplateDraggableContainer,b as __namedExportsOrder,d as default};

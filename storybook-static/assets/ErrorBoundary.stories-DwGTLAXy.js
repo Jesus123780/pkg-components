@@ -1,3 +1,0 @@
-import{j as n}from"./jsx-runtime-DI8_P1Ft.js";import{E as s}from"./index-C0xy3xo5.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./index-B3IC6ylx.js";const l={title:"organisms/ErrorBoundary",component:s,argTypes:{backgroundColor:{control:"color"}}},m=t=>n(s,{...t}),r=m.bind({});r.args={};var o,a,e;r.parameters={...r.parameters,docs:{...(o=r.parameters)==null?void 0:o.docs,source:{originalSource:`args => {
-  return <ErrorBoundary {...args} />;
-}`,...(e=(a=r.parameters)==null?void 0:a.docs)==null?void 0:e.source}}};const E=["TemplateErrorBoundary"];export{r as TemplateErrorBoundary,E as __namedExportsOrder,l as default};

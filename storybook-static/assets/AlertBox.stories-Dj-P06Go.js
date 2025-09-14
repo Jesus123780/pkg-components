@@ -1,3 +1,0 @@
-import{j as a}from"./jsx-runtime-DI8_P1Ft.js";import{A as s}from"./index-CoQ8oC9_.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./index-B3IC6ylx.js";import"./styled-components.browser.esm-CLTG7J5x.js";import"./tslib.es6-BF5GDGeg.js";import"./index-BINBIgVg.js";const f={title:"molecules/AlertBox",component:s},m={color:"red",duration:5e3,message:"This is an error message"},r=()=>a(s,{err:m});var e,o,t;r.parameters={...r.parameters,docs:{...(e=r.parameters)==null?void 0:e.docs,source:{originalSource:`() => {
-  return <AlertBox err={error} />;
-}`,...(t=(o=r.parameters)==null?void 0:o.docs)==null?void 0:t.source}}};const A=["Default"];export{r as Default,A as __namedExportsOrder,f as default};

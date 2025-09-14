@@ -1,5 +1,0 @@
-import{j as s}from"./jsx-runtime-DI8_P1Ft.js";import{D as t}from"./index-DgJ0QmxL.js";import"./index-DPzuYzxM.js";import"./_commonjsHelpers-C4iS2aBk.js";import"./index-B3IC6ylx.js";import"./styled-components.browser.esm-CLTG7J5x.js";import"./tslib.es6-BF5GDGeg.js";import"./index-BINBIgVg.js";const S={title:"molecules/DaySelector",component:t},n=[{day:1,name:"Monday"},{day:2,name:"Tuesday"},{day:3,name:"Wednesday"},{day:4,name:"Thursday"},{day:5,name:"Friday"},{day:6,name:"Saturday"},{day:7,name:"Sunday"}],e=()=>s(t,{days:n,handleDaySelection:d=>console.log("Selected day:",d),selectedDays:[1]});var a,r,o;e.parameters={...e.parameters,docs:{...(a=e.parameters)==null?void 0:a.docs,source:{originalSource:`() => {
-  return <DaySelector days={days} handleDaySelection={day => {
-    return console.log('Selected day:', day);
-  }} selectedDays={[1]} />;
-}`,...(o=(r=e.parameters)==null?void 0:r.docs)==null?void 0:o.source}}};const f=["Default"];export{e as Default,f as __namedExportsOrder,S as default};

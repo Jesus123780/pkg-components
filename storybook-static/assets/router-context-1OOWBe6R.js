@@ -1,1 +1,0 @@
-import{_ as t}from"./_interop_require_default-DgqNHo5w.js";import{r}from"./index-DPzuYzxM.js";var e={};Object.defineProperty(e,"__esModule",{value:!0});var o=e.RouterContext=void 0,a=t.default,u=a(r);const n=u.default.createContext(null);o=e.RouterContext=n;export{o as R,e as r};
