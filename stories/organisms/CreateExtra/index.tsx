@@ -20,7 +20,13 @@ import { MODAL_SIZES } from '../AwesomeModal/constanst'
 
 interface ICreateExtra {
   LineItems?: {
-    Lines: any[]
+    Lines: Array<{
+      exPid?: string | number | null
+      extraName?: string
+      extraPrice?: number | string
+      forEdit?: boolean
+      exState?: boolean
+    }>
   }
   loading?: boolean
   modal?: boolean
@@ -67,7 +73,9 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
     scrollIntoView: (args: any) => { return args },
     current: null
   })
-
+  const disabledButtonSave = loading ||
+    !LineItems?.Lines?.some((item) => item?.exPid === undefined || item?.exPid === null) ||
+    LineItems?.Lines?.length === 0
   return (
     <AwesomeModal
       borderRadius={getGlobalStyle('--border-radius-xs')}
@@ -82,7 +90,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
       padding={0}
       question={false}
       show={modal}
-      size={MODAL_SIZES.medium}
+      size={MODAL_SIZES.large}
       title='Añade Complementos'
       zIndex={getGlobalStyle('--z-index-99999')}
     >
@@ -110,8 +118,12 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
                         return handleLineChange(i, 'extraName', `${value}`)
                       }}
                       required={true}
+                      disabled={forEdit && !isSelect}
                       title='Nombre'
-                      onFocus={() => { return handleFocusChange(i) }}
+                      onFocus={() => {
+                        if (selected?.exPid === exPid) return null
+                        return handleFocusChange(i)
+                      }}
                       max={180}
                       reference={inputRefs?.current[i]}
                       value={extra?.extraName}
@@ -122,11 +134,15 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
                       decimalsLimit={2}
                       groupSeparator='.'
                       label='Precio'
+                      disabled={forEdit && !isSelect}
                       name={extra?.extraPrice ?? 'extraPrice'}
                       onValueChange={(value) => {
                         return handleLineChange(i, 'extraPrice', value)
                       }}
-                      onFocus={() => { return handleFocusChange(i) }}
+                      onFocus={() => {
+                        if (selected?.exPid === exPid) return null
+                        return handleFocusChange(i)
+                      }}
                       placeholder='Precio'
                       defaultValue={price}
                     />
@@ -229,6 +245,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
               borderRadius: getGlobalStyle('--border-radius-none'),
               height: '100%'
             }}
+            disabled={disabledButtonSave}
             primary={true}
             loading={loading}
             onClick={(e) => {

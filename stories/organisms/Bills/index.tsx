@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import PropTypes from 'prop-types'
 import React from 'react'
-// import QRCode from 'react-qr-code'
 import styles from './Bill.module.css'
 /**
  * Componente Ticket
@@ -109,7 +108,7 @@ export const Bill = ({
                     <div className={styles.columns}>
                       <span className={styles.columnItem} style={{ padding: '0 0 5px 0' }}>{extra.extraName}</span>
                       <span className={styles.columnItem} style={{ padding: '0 0 5px 0' }} >{extra.quantity}</span>
-                      <span className={styles.columnItem} style={{ padding: '0 0 5px 0' }} >${numberFormat(extra.newExtraPrice)}</span>
+                      <span className={styles.columnItem} style={{ padding: '0 0 5px 0' }} >{numberFormat(extra.newExtraPrice)}</span>
                     </div>
                   </li>
                   )
@@ -122,8 +121,8 @@ export const Bill = ({
       <div style={{ borderBottom: '1px dashed black', marginBottom: '50px' }}>
         <p>Valor Inicial Fact: {total || 0}</p>
         <p>IVA: ${iva || 0}</p>
-        <p>DESCUENTO: ${numberFormat(discount?.discount) || 0}</p>
-        <p>CAMBIO: ${numberFormat(restaurant?.change) || 0}</p>
+        <p>DESCUENTO: {numberFormat(discount?.discount) || 0}</p>
+        <p>CAMBIO: {numberFormat(restaurant?.change) || 0}</p>
         <p style={{ fontWeight: '900' }}>Total Factura: {total || 0}</p>
         <p className={styles.message}>Gracias por su compra</p>
       </div>

@@ -58,12 +58,12 @@ export const BannerStore: React.FC<IBannerStore> = ({
   isTablet = false,
   open,
   openNow = true,
-  src = '/images/DEFAULTBANNER.png',
-  srcLogo = '/images/DEFAULTBANNER.png',
+  src = process.env.DEFAULTBANNER,
+  srcLogo = process.env.DEFAULTLOGO,
   store = {
-    Image: '/images/DEFAULTBANNER.png',
+    Image: process.env.DEFAULTLOGO,
     storeName: '',
-    banner: '/images/DEFAULTBANNER.png',
+    banner: process.env.DEFAULTBANNER,
     cateStore: {
       cName: ''
     }
@@ -188,34 +188,17 @@ export const BannerStore: React.FC<IBannerStore> = ({
           alignItems='center'
           justifyContent='center'
         >
-          {store?.Image !== ''
-            ? <span className={styles.wrapper_logo}>
-              <Image
-                alt={altLogo}
-                height={70}
-                placeholder='blur'
-                objectFit='contain'
-                blurDataURL='/images/DEFAULTBANNER.png'
-                onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
-                src={store?.Image != null ? `/api/images/${store.Image}` : '/images/DEFAULTBANNER.png'}
-                width={70}
-                className={styles.wrapper_logo_image}
-              />
-            </span>
-            : <span className={styles.wrapper_logo}>
-              <Image
-                alt={altLogo ?? 'logo'}
-                blurDataURL='/images/DEFAULTBANNER.png'
-                height={70}
-                objectFit='contain'
-                onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
-                placeholder='blur'
-                src={srcLogo ?? '/images/DEFAULTBANNER.png'}
-                width={70}
-                className={styles.wrapper_logo_image}
-              />
-            </span>
-          }
+          <span className={styles.wrapper_logo}>
+            <Image
+              alt={altLogo ?? ''}
+              className={styles.wrapper_logo_image}
+              height={70}
+              objectFit='contain'
+              onClick={(e) => { return isEdit ? onTargetClickLogo(e) : {} }}
+              src={`${srcLogo}`}
+              width={70}
+            />
+          </span>
           <Column
             alignItems='center'
             justifyContent='center'

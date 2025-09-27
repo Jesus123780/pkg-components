@@ -28,7 +28,7 @@ export const CircleDay: CircleDayProps = styled.div`
   background-color: var(--color-neutral-gray-light);
   width: 50px;
   min-height: 50px;
-  margin-right: 25px;
+  margin: 0 10px;
   text-align: center;
   display: grid;
   place-content: center;

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import {
@@ -424,8 +423,4 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       />
     </AwesomeModal>
   )
-}
-
-GenerateSales.propTypes = {
-  show: PropTypes.bool.isRequired
 }
