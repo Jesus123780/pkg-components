@@ -1,0 +1,76 @@
+.swipeWrapper {
+  position: relative;
+  width: max-content;
+  height: min-content;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.hiddenActions {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  height: min-content;
+  justify-content: space-around;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: var(--z-index-0);
+}
+
+.frontContent {
+  background-color: var(--color-base-transparent);
+  cursor: grab;
+  position: relative;
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+  z-index: var(--z-index-5);
+}
+
+.frontContent:active {
+  cursor: grabbing;
+}
+
+/* 🌟 Animación de “vibración” al entrar en zona roja */
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  75% {
+    transform: translateX(-2px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.25s ease;
+}
+
+
+/* 🔥 Animación de desaparición */
+.removing {
+  opacity: var(--opacity-50);
+  transform: scale(0.95) translateX(-30%);
+  transition: all 0.4s ease-in-out !important;
+}
+.deleted {
+  height: 0;
+  margin: 0;
+  opacity: var(--opacity-0);
+  overflow: hidden;
+  padding: 0;
+  transform: scale(0.8) translateX(-50%);
+  transition: all 0.3s ease-in-out;
+}

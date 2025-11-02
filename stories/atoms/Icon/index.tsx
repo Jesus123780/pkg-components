@@ -13,6 +13,7 @@ import {
 } from '../../assets/public/Icons'
 import {
   Google,
+  IconCopy,
   IconArrowRight,
   IconCategorie,
   IconExcel,
@@ -98,7 +99,7 @@ import {
 type IconMap = Record<string, FC<IconProps>>
 
 interface IconPropsComponent {
-  icon: string
+  icon: IconMap | string
   color?: string
   size?: number
   height?: string | number
@@ -136,6 +137,7 @@ export const Icons: IconMap = {
   IconTicket,
   Google,
   IconLogout,
+  IconCopy,
   IconDost,
   IconMessageMain,
   IconCircleNumber,

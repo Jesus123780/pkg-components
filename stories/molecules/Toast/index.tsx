@@ -5,6 +5,9 @@ import React, { useEffect, useState } from 'react'
 import { BGColor, PColor } from '../../../assets/colors'
 import { IconClose } from './../../../assets/icons/index'
 import styles from './styles.module.css'
+import { SwipeableCard } from '../SwipeableCard'
+import { Icon } from '../../atoms'
+import { getGlobalStyle } from '../../../utils'
 
 export interface ToastItem {
   position: any
@@ -34,17 +37,17 @@ export const Toast: React.FC<ToastProps> = (props) => {
     setList([...toastList])
   }, [toastList])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (autoDelete && (toastList.length > 0) && (list.length > 0)) {
-        deleteToast(toastList[0].id)
-      }
-    }, autoDeleteTime)
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (autoDelete && (toastList.length > 0) && (list.length > 0)) {
+  //       deleteToast(toastList[0].id)
+  //     }
+  //   }, autoDeleteTime)
 
-    return () => {
-      clearInterval(interval)
-    }
-  }, [toastList, autoDelete, autoDeleteTime, list])
+  //   return () => {
+  //     clearInterval(interval)
+  //   }
+  // }, [toastList, autoDelete, autoDeleteTime, list])
 
   const deleteToast = (id: number) => {
     const listItemIndex = list.findIndex((e) => { return e.id === id })
@@ -52,17 +55,6 @@ export const Toast: React.FC<ToastProps> = (props) => {
     list.splice(listItemIndex, 1)
     toastList.splice(toastListItem, 1)
     setList([...list])
-  }
-  const [divPosition, setDivPosition] = useState(0)
-
-  const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
-    setDivPosition(event.clientX)
-  }
-
-  const handleDragEnd = (event: React.DragEvent<HTMLDivElement>, id: number) => {
-    if (window.innerWidth - event.clientX > window.innerWidth / 2) {
-      deleteToast(id)
-    }
   }
 
   const backgroundColor = {
@@ -84,28 +76,57 @@ export const Toast: React.FC<ToastProps> = (props) => {
     <div className={styles[`notification-container ${position}`]}>
       {list.map((toast, i) => {
         return (
-        <div
-          className={`${styles.notification} ${styles.toast} ${styles[toast.position ?? position]}`}
-          draggable
-          key={i}
-          onDrag={handleDrag}
-          onDragEnd={(e) => { return handleDragEnd(e, toast.id) }}
-          style={{
-            position: 'relative',
-            left: `${divPosition}px`,
-            zIndex: 1000 + i,
-            transition: 'transform 0.4s ease-in-out, opacity 0.4s ease-in-out, z-index 0.4s ease-in-out',
-            backgroundColor: getBackgroundColor(toast.backgroundColor)
-          }}
-        >
-          <button className={styles['notification-button']} onClick={() => { return deleteToast(toast.id) }}>
-            <IconClose color={BGColor} size={30} />
-          </button>
-          <div>
-            <p className={styles['notification-title']}>{toast.title}</p>
-            <p className={styles['notification-message']}>{toast.description}</p>
-          </div>
-        </div>
+          <SwipeableCard
+            key={i}
+            swipeWidth={100}
+            autoClose={false}
+            onDelete={() => deleteToast(toast.id)}
+            rightActions={
+              <div
+                style={{
+                  height: 75,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <button
+                  onClick={() => deleteToast(toast.id)}
+                  style={{
+                    all: 'unset',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Icon icon='IconDelete' color={getGlobalStyle('--color-icons-white')} size={20} />
+                </button>
+              </div>
+            }
+
+          >
+            <div
+              className={`${styles.notification} ${styles.toast} ${styles[toast.position ?? position]}`}
+              style={{
+                position: 'relative',
+                zIndex: 1000 + i,
+                backgroundColor: getBackgroundColor(toast.backgroundColor),
+              }}
+            >
+              <button
+                className={styles['notification-button']}
+                onClick={() => deleteToast(toast.id)}
+              >
+                <IconClose color={BGColor} size={30} />
+              </button>
+              <div>
+                <p className={styles['notification-title']}>{toast.title}</p>
+                <p className={styles['notification-message']}>{toast.description}</p>
+              </div>
+            </div>
+          </SwipeableCard>
+
         )
       })}
     </div>

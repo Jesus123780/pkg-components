@@ -1,5 +1,5 @@
-import React from 'react'
 import { QuantityButton } from './index'
+import { QuantityButtonProps } from './types'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -12,7 +12,7 @@ export default {
 }
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => {
+const Template = (args: QuantityButtonProps) => {
   return <QuantityButton {...args} />
 }
 

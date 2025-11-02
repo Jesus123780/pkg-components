@@ -1,4 +1,3 @@
-import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
@@ -224,7 +223,7 @@ export const ModalProduct = ({
                   <div>
                     <h3 className='title_card'>{extra.extraName}</h3>
                     <h3
-                      className={`price ${!contentPrice ?? 'price'}`}
+                     className={`price ${!contentPrice ? 'price' : ''}`.trim()}
                     >
                       {' '}
                       {!contentPrice
