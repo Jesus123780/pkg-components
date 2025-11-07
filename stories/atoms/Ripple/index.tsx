@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, type ReactNode, type CSSProperties } from 'react'
+import { useRef, type ReactNode, type CSSProperties } from 'react'
 import styled from 'styled-components'
 import { IconLoading } from '../../../assets'
 import { getGlobalStyle } from '../../../utils'

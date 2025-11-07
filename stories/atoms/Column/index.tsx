@@ -47,7 +47,6 @@ export const Column = ({
     justifyContent !== undefined ? styles[`justify-content-${justifyContent}` as keyof typeof styles] : undefined,
     className
   )
-
   return (
     <Component
       className={columnClasses}

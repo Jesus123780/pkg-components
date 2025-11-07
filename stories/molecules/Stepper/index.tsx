@@ -1,57 +1,65 @@
-import React from 'react'
-import { getGlobalStyle } from '../../../helpers'
-import styles from './styles.module.css'
+import { useState } from 'react'
+import stylesInitial from './styles.module.css'
+import stylesSimple from './simpleStyles.module.css'
 
 interface StepperProps {
+  mode?: 'initial' | 'simple'
   active: number
-  steps: string[]
+  steps: string[] | JSX.Element[]
   style?: React.CSSProperties
   onClick: (step: number) => void
 }
 
 export const Stepper: React.FC<StepperProps> = ({
+  mode = 'initial',
   active,
-  steps = [],
+  steps = [''],
   style,
-  onClick = (step: number) => () => {
-    return step
-  }
+  onClick
 }) => {
-  const titleHeaders = steps?.length > 0 ? steps : ['Con cédula', 'Con NIT', 'Otro']
-  const tabWidth = 100 / titleHeaders?.length
+  const styles = {
+    initial: stylesInitial,
+    simple: stylesSimple
+  }[mode]
+
+  const stepCount = steps.length
+
+  // <-- nuevo estado para hover
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null)
+
+  // calcula left en base al hover (si hay) o al active
+  const currentIndex = hoverIndex ?? active
 
   return (
-    <div className={styles.container} style={style} >
-      {titleHeaders.map((title, index) => {
-        const isActive = index === active
-        return (
-          <div
-            className={styles.tabs}
-            key={title}
-            role='button'
-            onClick={() => onClick(index)}
+    <div
+      className={styles.container}
+      style={{ ...style, '--step-count': String(stepCount) } as React.CSSProperties}
+    >
+      {steps.map((title, index) => (
+        <div
+          key={typeof title === 'string' ? title : index}
+          className={`${styles.tabs} ${index === active ? 'active' : ''}`}
+          role="button"
+          onClick={() => onClick(index)}
+          onMouseEnter={() => setHoverIndex(index)}    /* <-- */
+          onMouseLeave={() => setHoverIndex(null)}     /* <-- */
+        >
+          <span
+            className={`${styles.text} ${currentIndex === index ? styles.activeText : ''}`}
+            style={{ userSelect: 'none' }}
           >
-            <span
-              className={styles.text}
-              style={{
-                userSelect: 'none',
-                color: isActive
-                  ? getGlobalStyle('--color-neutral-white')
-                  : getGlobalStyle('--color-text-black')
-              }}
-            >
-              {title}
-            </span>
-          </div>
-        )
-      })}
+            {title}
+          </span>
+        </div>
+      ))}
+
       <span
         className={styles.slider}
         style={{
-          left: active === titleHeaders.length - 1 ? `${active * tabWidth - 0.3}%` : `${active * tabWidth + 0.5}%`,
-          width: `${tabWidth}%`
+          left: `calc(${currentIndex} * ((100% - 8px) / ${stepCount}) + 4px)`,
+          width: `calc((100% - 8px) / ${stepCount})`
         }}
-      ></span>
+      />
     </div>
   )
 }

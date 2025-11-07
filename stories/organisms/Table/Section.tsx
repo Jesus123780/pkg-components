@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import styles from './section.module.css'
 
 interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {

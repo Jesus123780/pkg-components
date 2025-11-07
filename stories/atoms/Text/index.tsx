@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { CustomText } from './styled'
 import { classNames } from '../../../helpers'
 import style from './text.module.css'

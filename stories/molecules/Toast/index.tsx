@@ -37,17 +37,17 @@ export const Toast: React.FC<ToastProps> = (props) => {
     setList([...toastList])
   }, [toastList])
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (autoDelete && (toastList.length > 0) && (list.length > 0)) {
-  //       deleteToast(toastList[0].id)
-  //     }
-  //   }, autoDeleteTime)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (autoDelete && (toastList.length > 0) && (list.length > 0)) {
+        deleteToast(toastList[0].id)
+      }
+    }, autoDeleteTime)
 
-  //   return () => {
-  //     clearInterval(interval)
-  //   }
-  // }, [toastList, autoDelete, autoDeleteTime, list])
+    return () => {
+      clearInterval(interval)
+    }
+  }, [toastList, autoDelete, autoDeleteTime, list])
 
   const deleteToast = (id: number) => {
     const listItemIndex = list.findIndex((e) => { return e.id === id })
@@ -79,7 +79,9 @@ export const Toast: React.FC<ToastProps> = (props) => {
           <SwipeableCard
             key={i}
             swipeWidth={100}
-            autoClose={false}
+            autoClose={true}
+            
+            gradientAnimation={true}
             onDelete={() => deleteToast(toast.id)}
             rightActions={
               <div

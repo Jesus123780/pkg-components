@@ -1,7 +1,7 @@
 'use client'
 
 import PropTypes from 'prop-types'
-import React, {
+import {
   useCallback,
   useEffect,
   useState
@@ -185,7 +185,11 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
         >
           {header && (
             <div className={styles.modal_header}>
-              <Text className={styles.modal_title} >
+              <Text
+                as='h2'
+                className={styles.modal_title}
+                styles={{ paddingLeft: padding }}
+              >
                 {title}
               </Text>
               <button

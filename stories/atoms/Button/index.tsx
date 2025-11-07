@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { getGlobalStyle } from '../../../helpers'
 import classNames from 'classnames'
 import { Icon } from '../Icon'

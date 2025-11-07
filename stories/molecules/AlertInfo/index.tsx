@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconInfo } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'

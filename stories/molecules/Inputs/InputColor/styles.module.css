@@ -1,0 +1,100 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: max-content;
+  font-family: sans-serif;
+  position: relative;
+}
+
+.preview {
+  border-radius: 8px;
+  border: 1px solid var(--color-neutral-gray-dark);
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+}
+
+.panel {
+  background-color: var(--color-base-white);
+  border-radius: 10px;
+  box-shadow: var(--box-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  left: 0;
+  padding: 12px;
+  position: absolute;
+  width: 220px;
+  z-index: var(--z-index-999);
+}
+
+.svBox {
+  background-color: var(--color-primary-red);
+  background-image:
+    linear-gradient(to right, var(--color-base-white), transparent),
+    linear-gradient(to top, var(--color-base-black), transparent);
+  border-radius: 6px;
+  cursor: crosshair;
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+
+}
+
+.svCursor {
+  border-radius: 50%;
+  border: 2px solid var(--color-base-white);
+  box-shadow: var(--box-shadow-sm);
+  height: 12px;
+  pointer-events: none;
+  position: absolute;
+  width: 12px;
+}
+
+.hueBar {
+  background: linear-gradient(to right, var(--color-primary-red), var(--color-campaigns-yellow), lime, cyan, blue, magenta, red);
+  border-radius: 6px;
+  cursor: pointer;
+  height: 14px;
+  position: relative;
+  width: 200px;
+}
+
+.hueCursor {
+  background-color: var(--color-base-white);
+  border-radius: 4px;
+  border: 1px solid var(--color-neutral-gray);
+  height: 22px;
+  position: absolute;
+  top: -4px;
+  transform: translateX(-50%);
+  width: 10px;
+}
+
+.hexRow {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.hexInput {
+  background: var(--color-base-light);
+  border-radius: 6px;
+  border: 1px solid var(--color-neutral-gray);
+  font-size: 14px;
+  padding: 6px 10px;
+  width: 100px;
+}
+
+.copyBtn {
+  align-items: center;
+  background-color: var(--color-icons-gray-light);
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 6px 12px;
+}

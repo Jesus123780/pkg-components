@@ -1,8 +1,9 @@
 'use client'
 
-import React, {
+import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from 'react'
@@ -105,7 +106,7 @@ export const InputHooks: React.FC<InputHooksProps> = ({
   const [focused, setFocused] = useState(false)
   const refInput = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
 
-  const validationRules = React.useMemo<Record<string, { validate: (value: string) => boolean, message: string }>>(() => ({
+  const validationRules = useMemo<Record<string, { validate: (value: string) => boolean, message: string }>>(() => ({
     required: {
       validate: (value) => Boolean(required) && value.length === 0,
       message: 'El campo no debe estar vacío'

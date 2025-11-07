@@ -13,7 +13,7 @@
   --color-primary-red-qty-button: linear-gradient(180deg, #DA291C 0%, #C00000 44.44%);
   --color-primary-red-bg: #FFF4F4;
   --color-primary-disabled: #c4c4c4;
-  --color-primary-pink-light: #FFC2C2;
+  --color-primary-pink-light: lch(83.83% 23.4 21.25);
   --color-primary-red-darker: #5C0F0A;
 
   --color-secondary-blue: #00819F;

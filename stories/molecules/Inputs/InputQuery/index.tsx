@@ -1,4 +1,3 @@
-import React from 'react'
 import { PColor } from '../../../../assets/colors'
 import { IconSearch } from '../../../../assets/icons'
 import clsx, { type ClassValue } from 'clsx'

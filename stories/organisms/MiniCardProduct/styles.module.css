@@ -1,14 +1,14 @@
 .productCardWrapper {
-    width: 122px;
+    background-color: var(--color-base-white);
     border-radius: 8px;
-    height: 250px;
     box-shadow: var(--box-shadow-sm);
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    height: 250px;
     position: relative;
     transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
+    width: 122px;
 }
 
 .product-card-content {
