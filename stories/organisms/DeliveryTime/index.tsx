@@ -37,7 +37,6 @@ export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
   return (
     <div>
       <AwesomeModal
-        borderRadius='10px'
         btnCancel={false}
         btnConfirm={false}
         customHeight='auto'
@@ -50,7 +49,7 @@ export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
         onHide={() => {
           return setDeliveryTimeOpen()
         }}
-        padding='30px'
+        padding={30}
         show={isOpen}
         size={MODAL_SIZES.small}
         title='Tiempo de entrega'
@@ -104,6 +103,5 @@ DeliveryTime.propTypes = {
   handleDeliveryTimeChange: PropTypes.func,
   isOpen: PropTypes.bool,
   loading: PropTypes.bool,
-  loadingDeliveryTime: PropTypes.bool,
   setDeliveryTimeOpen: PropTypes.func
 }

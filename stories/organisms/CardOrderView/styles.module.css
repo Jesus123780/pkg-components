@@ -37,9 +37,9 @@
   background: transparent;
   border: none;
   display: flex;
-  align-items: flex-end;
   gap: 8px;
   padding: 8px 10px;
+  align-items: center;
   font-size: 0.9rem;
   justify-content: flex-end;
   color: #333;
@@ -61,7 +61,7 @@
 .card {
   position: relative;
   background-color: var(--color-base-white);
-  border-radius: 16px;
+  border-radius: 5px;
   box-shadow: var(--box-shadow-xs);
   cursor: pointer;
   display: flex;

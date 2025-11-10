@@ -53,7 +53,7 @@ export const CardOptionsPanel: React.FC<CardOptionsPanelProps> = ({
           </Text>
           <Icon
             icon={action.icon}
-            size={18}
+            size={20}
             color={action.color || (action.danger
               ? getGlobalStyle('--color-danger')
               : getGlobalStyle('--color-icons-black'))}

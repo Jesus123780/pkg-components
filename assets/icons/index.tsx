@@ -344,7 +344,6 @@ export const IconHome: React.FC<IconProps> = ({ style = {}, size, color, ...prop
       viewBox='0 0 24 24'
       width={size ?? 800}
       xmlns='http://www.w3.org/2000/svg'
-      {...props}
       style={{ ...style, color }}
     >
       <path
@@ -637,8 +636,7 @@ IconArrowRight.propTypes = {
 export const IconTicket: React.FC<IconProps> = ({
   style = {},
   size,
-  color,
-  ...props
+  color
 }: IconProps) => {
   return (
     <svg
@@ -651,7 +649,6 @@ export const IconTicket: React.FC<IconProps> = ({
         ...style,
         color
       }}
-      {...props}
     >
       <path fill={color ?? 'var(--color-icons-black)'} d='m10.5 19.3-2.6-1.6-2.4 1.4h-.1c-.3 0-.6-.1-.9-.2-.3-.1-.5-.3-.7-.5-.2-.2-.4-.5-.5-.8s-.2-.6-.2-.9V2.6c0-.3.1-.6.2-.9.1-.3.3-.5.5-.8.2-.1.4-.3.7-.4s.6-.2.9-.2h10.3c.3 0 .6.1.9.2s.5.3.7.5.4.5.5.8.2.6.2.9v14.1c0 .3-.1.6-.2.9s-.3.5-.5.8c-.2.2-.4.4-.7.5-.3.1-.6.2-.9.2h-.2l-2.4-1.4-2.6 1.5zm2.9-2.9 3 1.8h.1c.1 0 .2-.1.3-.2.1-.1.1-.2.2-.3 0-.1.1-.2.1-.3V2.5c0-.1 0-.2-.1-.3 0-.1-.1-.2-.2-.3-.1-.1-.2-.1-.3-.2-.1 0-.2-.1-.3-.1H4.9c-.1 0-.2 0-.3.1-.1 0-.2.1-.3.2-.1.1-.1.2-.2.3 0 .1-.1.2-.1.3v14.9c0 .1 0 .2.1.3 0 .1.1.2.2.3.1.1.2.1.3.2h.1l3-1.8 2.8 1.7 2.9-1.7z' />
       <path fill={color ?? 'var(--color-icons-black)'} d='M9.6 6.1H6.3c-.5 0-.8-.3-.8-.6s.4-.6.8-.6h3.3c.5 0 .8.3.8.6s-.4.6-.8.6zm4.1 3.3H6.3c-.5 0-.8-.3-.8-.6s.4-.6.8-.6h7.5c.5 0 .8.3.8.6s-.4.6-.9.6z' />
@@ -1038,12 +1035,12 @@ export const IconSearch: React.FC<IconProps | any> = ({
       width={size}
       xmlns='http://www.w3.org/2000/svg'
     >
-      <circle cx='6.91' cy='6.91' fill='none' r='6.41' stroke={color} />
+      <circle cx='6.91' cy='6.91' fill='none' r='6.41' stroke={color ?? getGlobalStyle('--color-icons-black')} />
       <rect
         fill='none'
         height='0.54'
         rx='0.22'
-        stroke={color}
+        stroke={color ?? getGlobalStyle('--color-icons-black')}
         strokeMiterlimit='10'
         transform='translate(45.89 33.02) rotate(42.94)'
         width='5.71'

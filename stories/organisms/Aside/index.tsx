@@ -18,6 +18,7 @@ import {
 import {
   NavigationButtons,
   Options,
+  Pulse,
   ToggleSwitch
 } from '../../molecules'
 import { CustomLinkAside } from '../Aside/helpers'
@@ -47,6 +48,7 @@ interface MemoAsideProps {
   isMobile?: boolean
   loading?: boolean
   salesOpen?: boolean
+  connected: boolean
   setCollapsed?: any
   setShowComponentModal?: any
   version: string
@@ -67,6 +69,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   logicalVersion = '0.0.0',
   setCollapsed,
   salesOpen,
+  connected = false,
   collapsed = false,
   isCollapsedMenu = false,
   dataStore = {
@@ -110,7 +113,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   })
 
   useEffect(() => {
-    function handleKeyDown (event: KeyboardEvent): void {
+    function handleKeyDown(event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
         setSalesOpen((prevState: boolean) => !(prevState))
@@ -163,9 +166,9 @@ const MemoAside: React.FC<MemoAsideProps> = ({
         className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
         style={isMobile
           ? {
-              width: isCollapsedMenu ? '40px' : '80%',
-              zIndex: getGlobalStyle('--z-index-99999')
-            }
+            width: isCollapsedMenu ? '40px' : '80%',
+            zIndex: getGlobalStyle('--z-index-99999')
+          }
           : {}
         }
       >
@@ -364,6 +367,9 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               />
             </Column>
           </div>
+          <Pulse
+            active={connected}
+          />
           <Column
             justifyContent='center'
             alignItems='center'

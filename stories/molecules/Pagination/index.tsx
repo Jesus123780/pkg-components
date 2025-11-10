@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styles from './Pagination.module.css'
 import { Button, Icon } from '../../atoms'
 import { getGlobalStyle } from '../../../helpers'
