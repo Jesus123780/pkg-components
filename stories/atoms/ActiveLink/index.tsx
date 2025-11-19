@@ -14,9 +14,8 @@ export interface ActiveLinkProps {
   className?: string
   href: string
   name?: string
-  mIcon?: number
+  mIcon: string
   currentPath?: boolean
-  icon?: Record<string, string>
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
   action?: boolean
 }
@@ -35,13 +34,11 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
   href,
   name,
   currentPath = false,
-  mIcon = -1,
+  mIcon = '',
   onClick,
-  action,
-  icon = {}
+  action
 }) => {
   const color = getGlobalStyle(currentPath ? '--color-icons-primary' : '--color-icons-gray')
-  const iconKey = icon[String(mIcon)] ?? icon['-1']
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
     if (action === true) {
@@ -63,7 +60,7 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
           width={20}
           height={20}
           color={color}
-          icon={iconKey}
+          icon={mIcon}
         />
       </Row>
       <span className={styles['ellipsis-text']}>

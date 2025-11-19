@@ -18,7 +18,7 @@ interface CustomLinkAsideProps {
   mName: string
   isActive?: boolean
   action?: boolean
-  mIcon?: number
+  mIcon?: string
   onClick?: () => void
 }
 
@@ -30,31 +30,12 @@ interface CustomLinkAsideProps {
  */
 export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> = ({
   mPath = '',
-  mIcon = -1,
+  mIcon = '',
   mName,
   action = false,
   onClick,
   isActive = false
 }) => {
-  const iconMap: Record<number, string> = {
-    [-1]: 'IconBoxes',
-    1: 'home',
-    2: 'IconTicket',
-    3: 'IconStore',
-    4: 'time',
-    5: 'time',
-    6: 'IconTicket',
-    7: 'IconChart',
-    8: 'IconUser',
-    9: 'IconBox',
-    10: 'IconTicket',
-    11: 'IconTicket',
-    12: 'IconTicket',
-    13: 'IconTicket',
-    14: 'IconConfig',
-    15: 'IconInventory'
-  }
-
   return (
     <ActiveLink
       href={`/${mPath}`}
@@ -65,7 +46,6 @@ export const CustomLinkAside: React.FC<PropsWithChildren<CustomLinkAsideProps>> 
       action={action}
       onClick={onClick}
       currentPath={isActive}
-      icon={iconMap}
     />
   )
 }

@@ -337,5 +337,5 @@ export const data: Data = {
   priceRange: 0,
   counter: 8,
   totalAmount: 35000,
-  payMethodPState: 0
+  payId: ''
 }

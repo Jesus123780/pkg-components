@@ -5,7 +5,8 @@ import {
   AsideInfoStore,
   PaymentMethods,
   NewSelect,
-  type Methods
+  type Methods,
+  OrderDiscount
 } from '../../molecules'
 import {
   Divider,
@@ -18,7 +19,7 @@ interface AsideProps {
   openAside?: boolean
   overline?: boolean
   loadingClients?: boolean
-  payMethodPState?: number
+  payId?: string
   storeTables?: any[]
   paymentMethods?: Methods[]
   dataClientes?: any[]
@@ -32,6 +33,7 @@ interface AsideProps {
     change: boolean
     ValueDelivery: boolean
   }
+  discount?: number
   handleClickAction?: () => void
   handleCloseAside?: () => void
   handleOpenAside?: () => void
@@ -42,7 +44,7 @@ interface AsideProps {
 export const AsideSales: React.FC<AsideProps> = ({
   openAside = false,
   loadingClients = false,
-  payMethodPState = 0,
+  payId = '',
   paymentMethods = [],
   storeTables = {
     storeTables: []
@@ -61,12 +63,16 @@ export const AsideSales: React.FC<AsideProps> = ({
     ValueDelivery: false
   },
   overline = false,
+  discount = 0,
   dispatch = () => { },
   handleCloseAside = () => { },
   handleOpenAside = () => { },
   handleClickAction = () => { },
   handleChange = () => { }
 }) => {
+  const handleDiscount = (percent: number): void => {
+    dispatch({ type: 'APPLY_DISCOUNT', payload: percent });
+  };
   return (
     <>
       {overline && (
@@ -135,7 +141,7 @@ export const AsideSales: React.FC<AsideProps> = ({
         <PaymentMethods
           dispatch={dispatch}
           methods={paymentMethods}
-          payMethodPState={payMethodPState}
+          payId={payId}
         />
         <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
         <AmountInput
@@ -178,7 +184,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           prefix='$'
           value={values?.ValueDelivery}
         />
-
+        <OrderDiscount onChange={handleDiscount} initialValue={discount} />
         <RippleButton
           style={{
             position: 'absolute',

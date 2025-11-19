@@ -98,7 +98,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     getOneTags: {
       nameTag: ''
     },
-    payMethodPState: 0
+    payId: ''
   },
   values = {
     cliId: '',
@@ -132,6 +132,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   },
   handlePageChange = () => { },
   handleChange = () => { },
+  handleChangeDiscount = () => { },
   setShow = () => { },
   handleDecrement = () => { },
   handleIncrement = () => { },
@@ -259,7 +260,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           client={client}
           handleOpenAside={handleOpenAside}
           totalProductPrice={totalProductPrice}
-          payMethodPState={paymentMethods[data?.payMethodPState - 1]?.name ?? paymentMethods[0]?.name}
+          payId={paymentMethods[data?.payId - 1]?.name ?? paymentMethods[0]?.name}
         />
         <div
           className={styles.content__scrolling}
@@ -441,7 +442,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         </div>
         <div className={styles.content__action}>
           <Row style={{ width: '50%', display: 'flex', alignItems: 'center' }}>
-            {/* <div className={styles.content__counter}>
+            <div className={styles.content__counter}>
               <span className={styles.counter}>
                 {data?.counter > 99 ? '+99' : data?.counter ?? 0}
               </span>
@@ -452,7 +453,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                 width={20}
                 color={getGlobalStyle('--color-icons-primary')}
               />
-            </div> */}
+            </div>
             <Text
               align='center'
               size='2xl'
@@ -487,9 +488,10 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         handleChange={handleChange as any}
         errors={errors}
         dispatch={dispatch}
+        discount={0}
         storeTables={storeTables as any}
         overline={true}
-        payMethodPState={data?.payMethodPState}
+        payId={data?.payId}
         handleOpenAside={handleOpenAside}
         dataClientes={dataClientes}
         loadingClients={loadingClients}

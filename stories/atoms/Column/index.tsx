@@ -3,6 +3,7 @@
 
 import clsx from 'clsx'
 import styles from './styles.module.css'
+import { JSX } from 'react'
 
 /**
  * Props for the Column component
@@ -24,6 +25,17 @@ interface ColumnProps {
   as?: React.ElementType
   /** Optional click handler */
   onClick?: () => void
+  /** Gap between children */
+  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  /** Additional props */
+}
+
+const GAP_SIZES: Record<NonNullable<ColumnProps['gap']>, string> = {
+  xs: '4px',   // Extra pequeño
+  sm: '8px',   // Pequeño
+  md: '12px',  // Mediano
+  lg: '16px',  // Grande
+  xl: '24px',  // Extra grande
 }
 
 /**
@@ -39,6 +51,7 @@ export const Column = ({
   style,
   onClick,
   as: Component = 'div',
+  gap,
   ...props
 }: ColumnProps): JSX.Element => {
   const columnClasses = clsx(
@@ -47,10 +60,11 @@ export const Column = ({
     justifyContent !== undefined ? styles[`justify-content-${justifyContent}` as keyof typeof styles] : undefined,
     className
   )
+  const gapValue = gap ? GAP_SIZES[gap] : undefined
   return (
     <Component
       className={columnClasses}
-      style={style}
+      style={{ ...style, gap: gapValue }}
       onClick={onClick}
       {...props}
     >

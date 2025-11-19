@@ -45,7 +45,9 @@ export const CardOptionsPanel: React.FC<CardOptionsPanelProps> = ({
       {actions.map((action, index) => (
         <button
           key={index}
-          onClick={action.onClick}
+          onClick={()=> {
+            action.onClick?.()
+          }}
           className={`${styles.optionItem} ${action.danger ? styles.danger : ''}`}
         >
           <Text as='span' size='xs'>

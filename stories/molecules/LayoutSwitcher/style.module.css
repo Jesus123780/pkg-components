@@ -1,0 +1,88 @@
+.toolbar {
+  position: relative;
+  display: inline-flex;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 16px;
+  border: 1px solid var(--color-neutral-gray-silver);
+  /* usa inline-flex para que width se ajuste al contenido sin overflow */
+  padding: 6px;
+  border-radius: 10px;
+  overflow: visible; /* slider se mantiene dentro por cálculo preciso */
+  background: var(--color-base-white);
+  align-items: center;
+}
+
+/* Slider indicator: animación con left & width */
+.slider {
+  position: absolute;
+  top: 4px;
+  height: calc(100% - 8px);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.03));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+  z-index: 0;
+  transition:
+    left 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 220ms ease,
+    box-shadow 220ms ease;
+  will-change: left, width;
+}
+
+/* Buttons */
+.toolbar button {
+  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: color 160ms ease, transform 160ms ease;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+  min-width: 84px;
+  font-size: 14px;
+  color: var(--color-text-button, #333);
+  z-index: 1; /* encima del slider */
+}
+
+.toolbar button:focus-visible {
+  outline: 2px solid var(--color-focus, #2b7cff);
+  outline-offset: 2px;
+}
+
+/* active button text emphasis */
+.activeButton {
+  color: var(--color-accent-text, #0b1116);
+  font-weight: 600;
+}
+
+/* small screens: reduce padding */
+@media (max-width: 420px) {
+  .toolbar button {
+    padding: 6px 8px;
+    min-width: 64px;
+    font-size: 13px;
+  }
+}
+
+/* dark mode support */
+@media (prefers-color-scheme: dark) {
+  .toolbar {
+    border-color: #333;
+    background: #111214;
+  }
+  .slider {
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+  .toolbar button {
+    color: #ddd;
+  }
+  .activeButton {
+    color: #fff;
+  }
+}

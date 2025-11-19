@@ -1,31 +1,15 @@
 import type { ProductFood } from '../../pages/GenerateSales/types'
 
+export enum EOrderQueryParams {
+    PENDING = 'PENDING',
+    COMPLETED = 'COMPLETED',
+    ALL = 'ALL',
+    CODE = 'CODE',
+}
+
 export interface TypeModalDetailOrder {
-  dataModal: DataModal
-  dataStore: DataStore
-  disabledPrint: boolean
-  edit?: boolean
-  isClient: boolean
-  loading: boolean
-  LoadingStatusOrder: boolean
-  openAction: boolean
-  pDatCre: PDatCre
-  saleError?: boolean
-  saleGroup?: boolean
-  saleKey: any[]
-  stateSale: number
-  totalProductsPrice: number
-  handleChangeState: () => void
-  handleModalItem: (pId: string, ShoppingCardId: string) => void
-  handleModalProductSale: () => void
-  handleOpenActions: () => void
-  handlePrint: () => void
-  handleSale: () => void
-  handleSaleGroup: () => void
-  handleSaleKey: () => void
-  onClose: () => void
-  onPress: () => void
-  setModalItem: (boolean: boolean) => void
+  open: boolean
+  onHide: () => void
 }
 
 export interface DataModal {
@@ -35,7 +19,7 @@ export interface DataModal {
   getAllPedidoStore: GetAllPedidoStore[]
   idStore: string
   locationUser: any
-  payMethodPState: number
+  payId: string
   pCodeRef: string
   pDatCre: string
   pDatMod: string
@@ -49,7 +33,7 @@ export interface GetAllPedidoStore {
   __typename: string
   getAllShoppingCard: GetAllShoppingCard
   idStore: string
-  payMethodPState: number
+  payId: string
   pCodeRef: string
   pDatCre: string
   pDatMod: string
@@ -95,7 +79,7 @@ export interface DataStore {
   neighborhoodStore: string
   NitStore: string
   pais: Pais
-  payMethodPState?: string
+  payId?: string
   scheduleOpenAll: boolean
   secVia: any
   siteWeb: string

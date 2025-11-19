@@ -9,7 +9,7 @@ import {
 } from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 import { CardOptionsPanel } from './helpers/CardOptionsPanel'
-
+// https://co.mileroticos.com/escorts/blanquita-como-la-leche-que-te-voy-a-sacar-ven-ya-amor/26198340/
 export const CardOrderView: React.FC<any> = (props) => {
   const {
     title,
@@ -95,20 +95,31 @@ export const CardOrderView: React.FC<any> = (props) => {
               ))}
             </Row>
 
-            <Row
-              className={styles.stats}
-              style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}
-            >
-              {comments}
-              <Icon
-                color={getGlobalStyle('--color-icons-black')}
-                icon='IconComment'
-                size={20}
-              />
-            </Row>
-          </div>
 
-          <span className={styles.date}>{date}</span>
+          </div>
+          <Column>
+            <Row justifyContent='space-between'>
+              <Icon
+                icon='IconCalendar'
+                size={20}
+                color={getGlobalStyle('--color-icons-black')}
+              />
+              <span className={styles.date}>
+                {date}
+              </span>
+              <Row
+                className={styles.stats}
+                style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}
+              >
+                {comments}
+                <Icon
+                  color={getGlobalStyle('--color-icons-black')}
+                  icon='IconComment'
+                  size={20}
+                />
+              </Row>
+            </Row>
+          </Column>
         </Column>
       </div>
 

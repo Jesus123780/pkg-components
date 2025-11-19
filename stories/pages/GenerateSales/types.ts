@@ -75,7 +75,7 @@ export interface Data {
   priceRange: number
   counter: number
   totalAmount: number
-  payMethodPState: number
+  payId: string
   dataOptional?: ExtProductFoodOptional[]
   dataExtra?: ExtProductFood[]
 }

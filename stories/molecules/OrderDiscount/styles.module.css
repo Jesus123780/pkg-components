@@ -1,0 +1,69 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e3e3e3;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.optionBtn {
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.optionBtn:hover {
+  border-color: #000;
+}
+
+.active {
+  background: #000;
+  color: #fff;
+  border-color: transparent;
+}
+
+.customWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.customLabel {
+  font-size: 14px;
+  color: #444;
+}
+
+.customInput {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+}
+
+.customInput:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.summary {
+  margin-top: 6px;
+  font-size: 14px;
+}

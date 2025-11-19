@@ -16,7 +16,7 @@ interface HeaderInfoProps {
     clientNumber: string
   }
   totalProductPrice: string | number
-  payMethodPState: string
+  payId: string
   handleOpenAside: () => void
 }
 
@@ -28,7 +28,7 @@ export const HeaderInfo: React.FC<HeaderInfoProps> = ({
     clientNumber: ''
   },
   totalProductPrice = 0,
-  payMethodPState = '',
+  payId = '',
   handleOpenAside = () => { }
 }) => {
   return (
@@ -70,7 +70,7 @@ export const HeaderInfo: React.FC<HeaderInfoProps> = ({
               {totalProductPrice}
             </Text>
             <Text size='sm'>
-              {payMethodPState}
+              {payId}
             </Text>
           </Column>
         </button>

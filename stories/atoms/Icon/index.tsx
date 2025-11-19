@@ -75,6 +75,8 @@ import {
   IconGoogleFullColor,
   IconArrowLeft,
   IconQuestion,
+  IconStar,
+  IconGoal,
   IconVisaSimple,
   IconMasterCardSimple,
   IconDollar,
@@ -93,7 +95,14 @@ import {
   IconSoup,
   IconUpRightArrow,
   IconDownRightArrow,
-  IconAside
+  IconAside,
+  IconPlusUser,
+  IconHistory,
+  IconListBullet,
+  IconGrid,
+  IconTag,
+  IconSimpleCalendar,
+  IconPrint
 } from '../../../assets'
 
 type IconMap = Record<string, FC<IconProps>>
@@ -183,7 +192,9 @@ export const Icons: IconMap = {
   IconUpTrend,
   IconInventory,
   IconLocationMap2,
+  IconPlusUser,
   IconClose,
+  IconStar,
   IconSandwich,
   IconPotate,
   IconBread,
@@ -196,7 +207,14 @@ export const Icons: IconMap = {
   IconArrowLeft,
   IconUpRightArrow,
   IconDownRightArrow,
-  IconQuestion
+  IconQuestion,
+  IconHistory,
+  IconListBullet,
+  IconGrid,
+  IconTag,
+  IconPrint,
+  IconGoal,
+  IconSimpleCalendar
 }
 
 const GetIcon = (key: string): FC<IconProps> | null => {

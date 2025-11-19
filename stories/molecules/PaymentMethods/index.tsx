@@ -7,19 +7,19 @@ import {
 import styles from './styles.module.css'
 
 export interface Methods {
-  id: number
+  id: string
   name: string
   icon: string
 }
 
 interface PaymentMethodsProps {
   methods: Methods[]
-  payMethodPState?: number
+  payId?: string
   dispatch: React.Dispatch<any>
 }
 export const PaymentMethods: React.FC<PaymentMethodsProps> = ({ 
   methods,
-  payMethodPState = 0,
+  payId = '',
   dispatch
 }) => {
   return (
@@ -30,7 +30,7 @@ export const PaymentMethods: React.FC<PaymentMethodsProps> = ({
             <Column key={method.id}>
           <Column
             className={`${styles.method} ${
-              payMethodPState === method.id ? styles.selected : ''
+              payId === method.id ? styles.selected : ''
             }`}
 
             onClick={() => {

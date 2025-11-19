@@ -187,14 +187,14 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   className={styles['sidebar-header-button']}
                   styles={{
                     border: 'none',
-                    padding: getGlobalStyle('--spacing-md')
+                    padding: '5px 3px'
                   }}
                   onClick={() => { handleCollapsedMenu() }}
                 >
                   <Icon
                     color={getGlobalStyle('--color-icons-gray')}
                     icon='IconAside'
-                    size={20}
+                    size={21}
                   />
                 </Button>
               </Row>
@@ -327,19 +327,19 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                 <div>
                                   {(existSubModules && !isCollapsedMenu) &&
                                     <Options
+                                      size={10}
                                       active={index === active}
                                       handleClick={() => { handleMenu(index) }}
                                       index={active}
                                       icon='IconTicket'
                                       label={module.mName}
-                                      path={`/${module.mPath}`}
                                     >
                                       {subModules?.map((item: any) => {
                                         return (
                                           <div key={item.smId} style={{ marginLeft: '20px', width: '90%', marginTop: '10px' }} >
                                             <CustomLinkAside
                                               mPath={item?.smPath}
-                                              mIcon={-1}
+                                              mIcon={item.smIcon}
                                               mName={item?.smName}
                                             />
                                           </div>
