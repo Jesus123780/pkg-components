@@ -10,7 +10,9 @@ interface SwipeableCardProps {
   autoClose?: boolean
   sticky?: boolean
   shake?: boolean
+  delay?: number
   gradientAnimation?: boolean
+  style?: React.CSSProperties
   onDelete?: () => void
   onSwipeUp?: () => void
 }
@@ -24,8 +26,10 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
   autoClose = false,
   sticky = false,
   shake = false,
-  onDelete = () => {},
-  onSwipeUp = () => {},
+  style = {},
+  delay = 0,
+  onDelete = () => { },
+  onSwipeUp = () => { },
 }) => {
   const [offsetX, setOffsetX] = useState(0)
   const [offsetY, setOffsetY] = useState(0)
@@ -175,6 +179,17 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
     ? 'transform 0.4s cubic-bezier(0.25, 1.3, 0.5, 1)'
     : 'transform 0.3s ease'
 
+  const [showActions, setShowActions] = useState(delay === 0)
+  useEffect(() => {
+    if (delay === 0) return setShowActions(true)
+
+    const timer = setTimeout(() => {
+      setShowActions(true)
+    }, delay)
+
+    return () => clearTimeout(timer)
+  }, [delay])
+
   return (
     <div
       className={`${styles.swipeWrapper} ${(shake && isShake) ? styles.shake : ''}`}
@@ -197,10 +212,12 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
           width: sticky
             ? `${Math.max(swipeWidth, Math.abs(offsetX))}px`
             : swipeWidth,
+          ...style
         }}
       >
-        {rightActions}
+        {showActions ? rightActions : null}
       </div>
+
 
       <div
         className={styles.frontContent}

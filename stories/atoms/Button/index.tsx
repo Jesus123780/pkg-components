@@ -5,27 +5,7 @@ import classNames from 'classnames'
 import { Icon } from '../Icon'
 import style from './button.module.css'
 import { Column } from '../Column'
-
-export interface ButtonProps {
-  width?: string
-  borderRadius?: string
-  loading?: boolean
-  fontSize?: string
-  padding?: string
-  type?: string | 'secundary' | 'primary'
-  border?: 'gray' | 'primary' | 'none'
-  color?: 'default' | 'white' | 'black'
-  primary?: boolean
-  disabled?: boolean
-  children?: React.ReactNode
-  styles?: React.CSSProperties
-  iconPosition?: 'left' | 'right'
-  iconName?: string
-  iconSize?: number
-  title?: string
-  className?: React.HTMLAttributes<HTMLButtonElement>['className']
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-}
+import { ButtonProps } from 'typesdefs'
 
 export const Button: React.FC<ButtonProps> = ({
   children,

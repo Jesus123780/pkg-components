@@ -256,7 +256,8 @@ const decisions = {
     9999: zIndex['9999'],
     99999: zIndex['99999'],
     ['high']: zIndex['high'],
-    modal: zIndex.modal
+    modal: zIndex.modal,
+    toast: zIndex.toast
   }
 }
 module.exports = decisions

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { JSX, useEffect } from 'react'
 import { QRCodeSVG } from 'qrcode.react' // <- nuevo import correcto
 import { getGlobalStyle } from '../../../utils'
 import { Column } from '../Column'
@@ -10,12 +10,14 @@ interface QRCodeProps {
   value: string
   innerImg?: string
   size?: number
+  withImage?: boolean
 }
 
 export const ImageQRCode: React.FC<QRCodeProps> = ({
   value = '',
   size = 100,
-  innerImg = '/images/3dstore.png'
+  innerImg = '/images/3dstore.png',
+  withImage = false
 }): JSX.Element => {
   if (value?.trim() === '') return <></>
   const containerRef = React.useRef<HTMLDivElement>(null)
@@ -57,19 +59,19 @@ export const ImageQRCode: React.FC<QRCodeProps> = ({
         level="Q" // Nivel de corrección
         bgColor={getGlobalStyle('--color-base-white')}
         fgColor={getGlobalStyle('--color-base-black')}
-        imageSettings={{
-          src: innerImg, // Ruta del logo (puede ser URL o local public/)
-          x: undefined, // auto-center
-          y: undefined, // auto-center
-          height: 60, // ajusta según tamaño
-          width: 60,
-          excavate: true // crea un fondo blanco detrás de la imagen para legibilidad
-        }}
+        imageSettings={withImage
+          ? {
+            src: innerImg, // Ruta del logo (puede ser URL o local public/)
+            x: undefined, // auto-center
+            y: undefined, // auto-center
+            height: 60, // ajusta según tamaño
+            width: 60,
+            excavate: true // crea un fondo blanco detrás de la imagen para legibilidad
+          }
+          : undefined
+        }
       />
     </Column>
   )
 }
-
-ImageQRCode.defaultProps = {
-  size: 100
-}
+ImageQRCode.displayName = 'ImageQRCode'

@@ -102,7 +102,13 @@ import {
   IconGrid,
   IconTag,
   IconSimpleCalendar,
-  IconPrint
+  IconPrint,
+  IconPhone,
+  IconFingerPrint,
+  IconEmail,
+  IconSuccess,
+  IconWarning,
+  IconError
 } from '../../../assets'
 
 type IconMap = Record<string, FC<IconProps>>
@@ -214,7 +220,13 @@ export const Icons: IconMap = {
   IconTag,
   IconPrint,
   IconGoal,
-  IconSimpleCalendar
+  IconSimpleCalendar,
+  IconPhone,
+  IconFingerPrint,
+  IconEmail,
+  IconSuccess,
+  IconWarning,
+  IconError
 }
 
 const GetIcon = (key: string): FC<IconProps> | null => {

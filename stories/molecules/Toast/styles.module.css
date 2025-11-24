@@ -1,43 +1,66 @@
+/* styles.module.css */
+
+/* --- existing styles (kept and respected) --- */
 .notification-container {
   font-size: 14px;
   position: fixed;
   z-index: 9999;
   display: flex;
   flex-direction: column;
+  pointer-events: none; /* let children opt-in */
 }
 
+/* precise positions for each corner */
 .top-right {
   top: 12px;
   right: 12px;
-  transition: transform 0.6s ease-in-out;
-  animation: toast-in-right 0.7s;
+  left: auto;
+  width: auto;
+  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
 }
 
 .bottom-right {
-  bottom: 12px;
-  right: -12px;
-  width: min-content;
-  left: 0;
-  transition: transform 0.6s ease-in-out;
-  animation: toast-in-right 0.7s;
+  bottom: -50px;
+  right: 12px;
+  left: auto;
+  width: auto;
+  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
 }
 
 .top-left {
   top: 12px;
   left: 12px;
-  transition: transform 0.6s ease-in;
-  animation: toast-in-left 0.7s;
+  right: auto;
+  width: auto;
+  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
 }
 
 .bottom-left {
-  bottom: 12px;
+  bottom: -50px;
   left: 12px;
-  transition: transform 0.6s ease-in;
-  animation: toast-in-left 0.7s;
+  right: auto;
+  width: auto;
+  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
 }
 
+/* keep entrance animations but smoother and consistent */
+@keyframes toast-in-right {
+  from { transform: translateX(24px) translateZ(0); opacity: 0; }
+  to { transform: translateX(0) translateZ(0); opacity: 1; }
+}
+@keyframes toast-in-left {
+  from { transform: translateX(-24px) translateZ(0); opacity: 0; }
+  to { transform: translateX(0) translateZ(0); opacity: 1; }
+}
+
+/* apply animations selectively via classes (keeps previous behavior) */
+.top-right { animation: toast-in-right 0.45s; }
+.bottom-right { animation: toast-in-right 0.45s; }
+.top-left { animation: toast-in-left 0.45s; }
+.bottom-left { animation: toast-in-left 0.45s; }
+
 .notification {
-  transition: 0.3s ease;
+  transition: 0.25s ease;
   position: relative;
   pointer-events: auto;
   overflow: hidden;
@@ -48,6 +71,7 @@
   box-shadow: 0 0 10px #999;
   background-position: 15px;
   background-repeat: no-repeat;
+  will-change: transform, opacity;
 }
 
 .notification:hover {
@@ -57,15 +81,9 @@
 }
 
 .notification-title {
-  font-weight: 700;
-  font-size: 16px;
-  text-align: left;
-  margin-top: 0;
-  margin-bottom: 6px;
   width: 300px;
   height: 18px;
   color: var(--color-base-white);
-
 }
 
 .notification-message {
@@ -74,7 +92,7 @@
   height: 18px;
   margin-left: -1px;
   text-overflow: ellipsis;
-  white-space: wrap;
+  white-space: nowrap;
   color: var(--color-base-white);
   font-size: var(--font-size-base);
 }
@@ -94,6 +112,7 @@
   width: 370px;
   color: var(--color-base-black);
   padding: 10px;
+  margin: 10px;
 }
 
 .notification-button {
@@ -115,22 +134,88 @@
   border: 0;
 }
 
-@keyframes toast-in-right {
-  from {
-    transform: translateX(100%);
-  }
+/* --- new stacking / card presentation styles --- */
 
-  to {
-    transform: translateX(0);
-  }
+.toast-stack-container {
+  pointer-events: none;
 }
 
-@keyframes toast-in-left {
-  from {
-    transform: translateX(-100%);
-  }
+/* stack wrapper: keeps consistent width and allows absolute stacking */
+.toast-stack {
+  position: relative;
+  width: 370px; /* match .toast width */
+  height: calc(75px + (5 * 20px));
+  pointer-events: none;
+  margin: 10px;
+}
 
-  to {
-    transform: translateX(0);
+/* For different corner alignments */
+.stack-top.stack-right .toast-stack { align-items: flex-start; }
+.stack-top.stack-left .toast-stack { align-items: flex-start; }
+.stack-bottom.stack-right .toast-stack { align-items: flex-end; }
+.stack-bottom.stack-left .toast-stack { align-items: flex-end; }
+
+/* Each toast-card sits absolutely and is transformed for stack effect */
+.toast-card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: auto;
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+/* subtle counter for hidden items */
+.toast-stack-counter {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: auto;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.45);
+  color: var(--color-base-white);
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  transform: translateY(6px);
+}
+
+/* ensure SwipeableCard content fills card area and looks consistent */
+.toast-card .notification {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Accessibility: keep focus outlines visible for keyboard users */
+.notification-button:focus,
+.toast-card button:focus {
+  outline: 2px solid rgba(255,255,255,0.9);
+  outline-offset: 2px;
+}
+
+/* Reduce unexpected lateral movement: keep transform-origin centered to avoid left/right shifts */
+.notification {
+  transform-origin: center top;
+}
+
+/* On small screens ensure stack fits */
+@media (max-width: 420px) {
+  .toast-stack {
+    width: calc(100vw - 24px);
+  }
+  .toast {
+    width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
   }
 }

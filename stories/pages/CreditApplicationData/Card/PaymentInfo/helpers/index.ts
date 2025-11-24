@@ -1,4 +1,4 @@
-import { TextLineHeight, TextSize, TextWeight } from '../../../../../atoms'
+import { TextLineHeight, TextWeight, TextSize } from 'typesdefs'
 
 interface TextProps {
   content: string;
