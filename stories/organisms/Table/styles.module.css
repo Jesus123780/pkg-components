@@ -1,35 +1,178 @@
-
-.section {
-    align-items: center;
-    display: grid;
-    height: 56px;
-    margin: 0 auto;
-    gap: var(--spacing-xl);
-}
-
+/* suavizado normal (cuando no se está redimensionando) */
 .section__content {
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-    margin: 10px 0;
-    font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 14px;
+  height: 56px;
+  position: relative;
+  user-select: none;
+  box-sizing: border-box;
 }
 
-.section__content--label__hidden input {
-    height: 0;
-    opacity: 0;
+/* clase aplicada al contenedor durante resize: suspende transiciones para evitar "jump" visual */
+.resizing .section__content {
+  transition: none !important;
 }
 
-.arrow_label {
-    display: flex;
-    flex-direction: column;
-    user-select: none;
-    justify-content: space-between;
-    position: relative;
+/* resizer más visible, mejor target hitbox y feedback */
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  height: calc(100% - 12px);
+  width: 14px; /* hit area más grande */
+  transform: translateX(50%);
+  cursor: col-resize;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* indicador visual pequeño (opcional) */
+.resizer::after {
+  content: '';
+  width: 2px;
+  min-width: 2px;
+  max-width: 2px;
+  height: 60%;
+  background-color: var(--color-neutral-gray-dark);
+  border-radius: 2px;
+}
+
+/* hover para mejorar affordance */
+.section__content:hover .resizer::after {
+  background: rgba(0,0,0,0.24);
+}
+
+/* focus estado header */
+.headerFocus {
+  outline: 2px solid var(--focus-color, #2b6df6);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--focus-weak, rgba(43,109,246,0.12));
+}
+
+/* tabla wrapper (opcional) */
+.tableWrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* estilo para la celda enfocada (navegación por teclado) */
+.cellFocusVisible {
+  /* fallback to the variable if no RGB var is available */
+  /* use an RGB var with explicit alpha to increase opacity (90%) */
+  background-color: rgba(var(--color-primary-pink-light-rgb, 01,12,10), 0.1);
+}
+
+/* --- Contenedores externos (si usas styles.tableOuter / styles.tableInner) --- */
+.tableOuter {
+  overflow: hidden;
+  width: 100%;
+}
+
+.tableInner {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+/* --- Header / cell container --- */
+.section__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 14px;
+  height: 56px;
+  position: relative;
+  user-select: none;
+  box-sizing: border-box;
+
+  /* CLAVE: permitir que el flex-item se reduzca (sin esto no se recorta) */
+  min-width: 0;
+  overflow: hidden; /* recorta cualquier contenido que sobresalga */
+}
+
+/* Forzar que los hijos puedan encogerse y sean clippeables */
+.section__content > * {
+  min-width: 0;        /* permite que los hijos se reduzcan dentro del contenedor */
+  max-width: 100%;     /* no salirse del ancho del contenedor padre */
+  box-sizing: border-box;
+}
+
+/* Título con truncado (ellipsis) */
 .title {
-    color: var(--color-neutral-gray-dark);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
+  display: block;
+  flex: 1 1 0;                 /* ocupa el espacio disponible pero puede encoger */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;                /* important: permite el shrink correcto */
+}
+
+/* Label de flechas (sort) no debe crecer ni empujar */
+.arrow_label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  flex: 0 0 auto;              /* no permitimos que crezca para empujar el title */
+  margin-left: 8px;
+}
+
+/* Si tienes iconos/botones a la derecha: no dejar que empujen */
+.section__content .actions,
+.tableCell .actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+/* --- Celdas del body --- */
+.tableCell {
+  padding: 8px 12px;
+  height: 100%;
+  min-height: 40px;
+
+  /* CLAVE: recortar contenido si no cabe */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Si dentro de la celda hay elementos que necesitan truncar */
+.tableCell > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Resizer / affordance --- */
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  height: calc(100% - 12px);
+  width: 14px;
+  transform: translateX(50%);
+  cursor: col-resize;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+/* quitar transiciones mientras se redimensiona (clase .resizing la añade/remueve tu JS) */
+.resizing .section__content {
+  transition: none !important;
 }

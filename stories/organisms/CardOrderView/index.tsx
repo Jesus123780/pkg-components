@@ -9,7 +9,7 @@ import {
 } from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 import { CardOptionsPanel } from './helpers/CardOptionsPanel'
-// https://co.mileroticos.com/escorts/blanquita-como-la-leche-que-te-voy-a-sacar-ven-ya-amor/26198340/
+
 export const CardOrderView: React.FC<any> = (props) => {
   const {
     title,

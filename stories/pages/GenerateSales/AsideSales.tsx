@@ -2,11 +2,11 @@ import React from 'react'
 import {
   AlertInfo,
   AmountInput,
-  AsideInfoStore,
   PaymentMethods,
   NewSelect,
   type Methods,
-  OrderDiscount
+  OrderDiscount,
+  LateralModal
 } from '../../molecules'
 import {
   Divider,
@@ -85,19 +85,23 @@ export const AsideSales: React.FC<AsideProps> = ({
             handleCloseAside()
           }}
           style={React.useMemo(() => ({
-            backdropFilter: 'blur(1px)',
             padding: getGlobalStyle('--spacing-lg')
           }), [])}
         />
       )}
-      <AsideInfoStore
-        zIndex={getGlobalStyle('--z-index-high')}
-        show={openAside}
+      <LateralModal
+        open={openAside}
         handleClose={() => {
           handleOpenAside()
           handleCloseAside()
         }}
-        style={{ height: '100vh', padding: getGlobalStyle('--spacing-xs') }}
+        style={{ 
+          padding: getGlobalStyle('--spacing-xs'),
+          zIndex: getGlobalStyle('--z-index-modal'),
+          height: '100%',
+          top: 0,
+          right: 0
+        }}
       >
         <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
         <AlertInfo message='Selecciona a un cliente para la venta' type='warning' />
@@ -198,7 +202,7 @@ export const AsideSales: React.FC<AsideProps> = ({
         >
           Aceptar
         </RippleButton>
-      </AsideInfoStore>
+      </LateralModal>
     </>
   )
 }

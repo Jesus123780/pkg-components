@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  border-radius: 9999px;
+}
+
+.label {
+  font-weight: 500;
+}
+
+.invalid {
+  color: #ef4444;
+  font-size: 12px;
+}

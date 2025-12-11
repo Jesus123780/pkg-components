@@ -1,36 +1,48 @@
-import { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import styles from './section.module.css'
 
 interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  columnWidth: Array<{ width: string }>
+  columnWidth: Array<{ width?: string }>
   bgRow?: number
   padding?: string
   odd?: boolean
   children: React.ReactNode
 }
+
+/**
+ * Section (row) that uses the `columnWidth` widths provided by Table.
+ * It renders a CSS grid with the same template columns the header uses,
+ * ensuring header/body stay in sync (important for resize).
+ */
 export const Section = forwardRef<HTMLDivElement, SectionProps>(({
   children,
   columnWidth,
-  bgRow,
-  padding,
+  padding = '0',
   odd,
   ...res
 }, ref) => {
-  const columnStyles = {
-    gridTemplateColumns: columnWidth.length > 0 ? columnWidth.map(x => x.width).join(' ') : '1fr',
-    padding
-  }
+  const template = useMemo(() => {
+    // we prefer explicit px widths where available to keep perfect sync with header
+    return (columnWidth && columnWidth.length > 0)
+      ? columnWidth.map(col => col.width ?? '1fr').join(' ')
+      : '1fr'
+  }, [columnWidth])
 
-  const combinedStyles = {
-    ...columnStyles,
+  const combinedStyles: React.CSSProperties = {
+    gridTemplateColumns: template,
+    padding,
+    display: 'grid',
+    alignItems: 'center',
+    width: '100%',
+    boxSizing: 'border-box',
     ...res.style
   }
 
-  const bgClass = bgRow != null ? `sectionBg${bgRow}` : ''
+  const bgClass = (res as any).bgRow != null ? `sectionBg${(res as any).bgRow}` : ''
 
   return (
     <div
-      className={`${styles.section} ${styles.sectionHover} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles[bgClass]}`}
+      className={`${styles.section} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles.sectionHover} ${(styles as any)[bgClass] ?? ''}`}
       ref={ref}
       {...res}
       style={combinedStyles}
@@ -41,3 +53,5 @@ export const Section = forwardRef<HTMLDivElement, SectionProps>(({
 })
 
 Section.displayName = 'Section'
+
+export default Section

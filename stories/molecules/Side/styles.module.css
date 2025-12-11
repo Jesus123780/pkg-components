@@ -1,29 +1,92 @@
+/* base modal */
 .modal {
-    background-color: var(--color-base-white);
-    box-shadow: var(--box-shadow-sm);
-    position: fixed;
-    top: auto;
-    transition: transform 300ms ease-in-out height 300ms ease-in-out;
-    width: 400px;
-    z-index: var(--z-index-9999);
+  position: fixed;
+  top: 80px;
+  width: 500px;
+  background-color: var(--color-base-white);
+  z-index: var(--z-index-9999);
+  /* fallback transition - JS will override duration inline */
+  transition: transform 400ms cubic-bezier(.22,.9,.2,1);
+  will-change: transform;
+  /* ensure the panel doesn't catch overlay clicks by mistake */
+  outline: none;
 }
 
-.fromRight {
-    right: 0;
-    transform: translateX(100%);
+/* Direction modifiers */
+.modal--right {
+  right: 10px;
+  left: auto;
 }
 
-.fromLeft {
-    left: 0;
-    transform: translateX(-100%);
+.modal--left {
+  left: 220px;
+  right: auto;
 }
 
-.openRight {
-    right: 0;
-    transform: translateX(0);
+.modal--top {
+  left: 50%;
+  transform: translateX(-50%); /* center horizontally */
+  top: 0;
+  width: calc(500px * 1.1);
 }
 
-.openLeft {
-    left: 0;
-    transform: translateX(210px);
+.modal--bottom {
+  left: 50%;
+  transform: translateX(-50%); /* center horizontally */
+  bottom: 0;
+  top: auto;
+  width: calc(500px * 1.1);
+}
+
+/* Stage classes: entering -> initial offscreen, entered -> final, exiting -> offscreen */
+/* Right */
+.modal--right.modal--entering {
+  transform: translateX(100%); /* start offscreen right */
+}
+
+.modal--right.modal--entered {
+  transform: translateX(0); /* final visible position */
+}
+
+.modal--right.modal--exiting {
+  transform: translateX(100%); /* animate back to right */
+}
+
+/* Left */
+.modal--left.modal--entering {
+  transform: translateX(-150%); /* start offscreen left */
+}
+
+.modal--left.modal--entered {
+  transform: translateX(0);
+}
+
+.modal--left.modal--exiting {
+  transform: translateX(-150%);
+}
+
+/* Top (slide from top) */
+.modal--top.modal--entering {
+  transform: translate(-50%, -110%);
+}
+
+.modal--top.modal--entered {
+  transform: translate(-50%, 0);
+}
+
+.modal--top.modal--exiting {
+  transform: translate(-50%, -110%);
+}
+
+/* Bottom (slide from bottom) */
+.modal--bottom.modal--entering {
+  transform: translate(-50%, 110%);
+}
+
+.modal--bottom.modal--entered {
+  transform: translate(-50%, 0);
+}
+
+.modal--bottom.modal--exiting {
+  transform: translate(-50%, 110%);
 }

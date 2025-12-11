@@ -120,9 +120,10 @@ export const Pagination: React.FC<PaginationProps> = ({
           min='1'
           max={items.length}
         />
-        {(pageNumber.length > 0) && <Button primary onClick={handleGoToPage} className={styles.goButton} aria-label='Go to page'>
-          Ir
-        </Button>
+        {(pageNumber.length > 0) &&
+          <Button primary onClick={handleGoToPage} className={styles.goButton} aria-label='Go to page'>
+            Ir
+          </Button>
         }
       </div>}
     </div>

@@ -17,7 +17,7 @@ import type { Data, ProductFood } from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
-import { CategoriesProducts } from '../../organisms'
+import { CategoriesProducts, VirtualizedList } from '../../organisms'
 import type { MiniCardProductProps } from '../../organisms/MiniCardProduct/type'
 import type { Root } from '../../organisms/CategorieProducts/types'
 import { HeaderInfo } from './HeaderInfo'
@@ -174,11 +174,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             color={getGlobalStyle(findChecked ? '--color-icons-primary' : '--color-icons-gray')}
           />
         </div>
-        <div
-          className={styles.content__products}
-          style={{ display: productsFood?.length > 0 ? 'grid' : 'block' }}
-        >
-          <button
+        {/* <button
             className={styles.content__categorie__aside}
             onClick={() => {
               handleOpenAside()
@@ -195,57 +191,62 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                 width='100%'
               />
             )
-            : null}
-          {!isLoading && Boolean(productsFood.length > 0)
-            ? (
-              productsFood?.map((product) => {
-                const tag = {
-                  tag: product?.getOneTags?.nameTag
-                }
-                const isExistInSale = Boolean(product?.existsInSale)
-                const manageStock = Boolean(product?.manageStock)
-                return (
-                  <MiniCardProduct
-                    {...product}
-                    openQuantity={isExistInSale}
-                    withQuantity={true}
-                    style={manageStock ? { quantity_container: { top: 35 } } : {}}
-                    ProDescription={product.ProDescription}
-                    ProDescuento={product.ProDescuento}
-                    ProImage={product.ProImage}
-                    ProPrice={numberFormat(product.ProPrice)}
-                    ProQuantity={product.ProQuantity}
-                    ValueDelivery={product.ValueDelivery}
-                    comment={false}
-                    edit={false}
-                    key={product.pId}
-                    onClick={() => {
-                      dispatch({
-                        type: 'ADD_TO_CART',
-                        payload: product
-                      })
-                    }}
-                    handleDecrement={() => {
-                      handleDecrement(product)
-                    }}
-                    handleIncrement={() => {
-                      dispatch({
-                        type: 'ADD_TO_CART',
-                        payload: product
-                      })
-                    }}
-                    pName={product.pName}
-                    tag={product?.getOneTags?.nameTag !== null && tag}
-                    withStock={true}
-                    showInfo={true}
-                  />
-                )
-              })
+            : null} */}
+        {/* Virtualized grid inside Viewport - copy/paste replacement */}
+        <VirtualizedList
+          items={productsFood}
+          viewHeight='auto'
+          grid={true}
+          columns={8}
+          columnGap={15}
+          itemHeight={300}
+          observeResize={true}
+          className={styles.content__products}
+          render={(product) => {
+            const tag = {
+              tag: product?.getOneTags?.nameTag
+            }
+            const isExistInSale = Boolean(product?.existsInSale)
+            const manageStock = Boolean(product?.manageStock)
+
+            return (
+              <MiniCardProduct
+                {...product}
+                openQuantity={isExistInSale}
+                withQuantity={true}
+                style={manageStock ? { quantity_container: { top: 35 } } : {}}
+                ProDescription={product.ProDescription}
+                ProDescuento={product.ProDescuento}
+                ProImage={product.ProImage}
+                ProPrice={numberFormat(product.ProPrice)}
+                ProQuantity={product.ProQuantity}
+                ValueDelivery={product.ValueDelivery}
+                comment={false}
+                edit={false}
+                key={product.pId}
+                onClick={() => {
+                  dispatch({
+                    type: 'ADD_TO_CART',
+                    payload: product
+                  })
+                }}
+                handleDecrement={() => {
+                  // handleDecrement(product)
+                }}
+                handleIncrement={() => {
+                  dispatch({
+                    type: 'ADD_TO_CART',
+                    payload: product
+                  })
+                }}
+                pName={product.pName}
+                tag={product?.getOneTags?.nameTag !== null && tag}
+                withStock={true}
+                showInfo={true}
+              />
             )
-            : (
-              <EmptyData height={200} width={200} />
-            )}
-        </div>
+          }}
+        />
         <Pagination
           currentPage={pagination.currentPage}
           handleNextPage={() => { return handlePageChange(pagination.currentPage + 1) }}
@@ -285,7 +286,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                     onDelete={() => {
                       dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
                     }}
-                    onSwipeUp={() => { 
+                    onSwipeUp={() => {
                       onClick(product)
                     }}
                     rightActions={
@@ -334,14 +335,14 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                         </button>
 
                         {/* sub productos  */}
-                          <button
+                        <button
                           onClick={(e) => {
                             e.stopPropagation() // evita que se propague al card
                             onClick(product)
                           }}
-                          >
-                            <Icon size={20} icon='IconBox' />
-                          </button>
+                        >
+                          <Icon size={20} icon='IconBox' />
+                        </button>
                       </Column>
                     }
                   >

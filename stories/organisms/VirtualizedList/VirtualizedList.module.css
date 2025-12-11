@@ -1,0 +1,42 @@
+/* VirtualizedList.module.css */
+
+.viewport {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--color-base-transparent);
+  -webkit-overflow-scrolling: touch;
+}
+
+.virtualizedRoot {
+  position: relative;
+  width: 100%;
+}
+
+.virtualizedInner {
+  position: relative;
+  width: 100%;
+  /* height se sigue calculando inline desde el componente (totalHeightRef.current) */
+}
+
+.virtualizedPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Aquí convertimos cada "page" en una grid real */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  column-gap: 15px;
+  row-gap: 60px;
+  justify-content: center;
+  align-items: start;
+  padding-left: 20px; /* coincide con tu estilo previo */
+  box-sizing: border-box;
+  will-change: transform;
+}
+
+.emptyFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
