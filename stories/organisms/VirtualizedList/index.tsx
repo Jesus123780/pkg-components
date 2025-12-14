@@ -1,16 +1,17 @@
-import React, { useRef, useState, useMemo, useCallback, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  useEffect
+} from "react";
 
 /**
- * VirtualizedList - High performance windowed list for React + TypeScript
- * Features:
- * - Fixed-height and variable-height support
- * - rAF-throttled scroll handling
- * - Optional ResizeObserver to correct dynamic item heights
- * - Overscan buffer to avoid flicker
- * - Minimal DOM nodes (only visible range rendered)
- * - Robust prop validation and defensive defaults
+ * VirtualizedList - Grid + List virtualization with smooth non-overlapping transitions.
+ * - Grid mode uses fixed itemHeight (required) and calculates itemWidth responsively.
+ * - Includes safety logic to avoid overlap on small screens and friendly layout collapse.
  *
- * JSDoc is in English as requested.
+ * JSDoc in English.
  */
 
 /**
@@ -18,58 +19,37 @@ import React, { useRef, useState, useMemo, useCallback, useEffect } from "react"
  * @template T
  */
 export interface VirtualizedListProps<T> {
-  /** enable grid layout (multi-column) */
   grid?: boolean;
-  /** number of columns for grid */
   columns?: number;
-  /** horizontal gap for grid */
+  minColumnWidth?: number;
   columnGap?: number;
-  /** container visible height in pixels */
-  viewHeight: number | 'auto';
-  /** data items */
+  viewHeight?: number | "auto";
   items: T[];
-  /** render function for each item */
   render: (item: T, index: number) => React.ReactNode;
-  /** fixed item height in px OR a function that returns height for an item */
   itemHeight: number | ((item: T, index: number) => number);
-  /** gap between items in px (default 0) */
   itemGap?: number;
-  /** number of extra items rendered above/below viewport (default 5) */
   overscan?: number;
-  /** wrapper element (default div) */
   as?: keyof JSX.IntrinsicElements;
-  /** optionally supply a stable key extractor */
   itemKey?: (item: T, index: number) => React.Key;
-  /** className for the outer scroll container */
   className?: string;
-  /** style for the outer scroll container */
   style?: React.CSSProperties;
-  /** enable ResizeObserver to adapt to dynamic heights (costly). Default false */
   observeResize?: boolean;
 }
 
-/**
- * Build prefix-sum array for heights. O(n).
- * @param heights number[]
- */
+/** Build prefix-sum array for heights. O(n). */
 const buildPrefix = (heights: number[]) => {
   const prefix: number[] = new Array(heights.length + 1);
   prefix[0] = 0;
   for (let i = 0; i < heights.length; i++) {
-    // accumulate, careful numeric addition (digit-by-digit not necessary here)
     prefix[i + 1] = prefix[i] + heights[i];
   }
-  return prefix; // prefix[i] = sum heights[0..i-1]
+  return prefix;
 };
 
-/**
- * Binary search on prefix sums to find index whose prefix <= value < nextPrefix
- * @param prefix number[]
- * @param value number
- */
+/** Binary search on prefix sums */
 const findIndexByScroll = (prefix: number[], value: number) => {
   let low = 0;
-  let high = prefix.length - 1; // prefix has length n+1
+  let high = prefix.length - 1;
   while (low < high) {
     const mid = (low + high) >> 1;
     if (prefix[mid] <= value) low = mid + 1;
@@ -84,20 +64,28 @@ const findIndexByScroll = (prefix: number[], value: number) => {
  */
 export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
   const {
-    viewHeight = 'auto',
+    viewHeight = "auto",
     items,
     render,
     itemHeight,
     itemGap = 0,
-    overscan = 5,
+    overscan = 2,
     as = "div",
     itemKey,
     className,
     style,
-    observeResize = false
+    observeResize = true,
+    grid = false,
+    columns: fixedColumns,
+    minColumnWidth = 120,
+    columnGap = 15
   } = props;
 
-  // Defensive validation
+  // animation config
+  const ANIM_DURATION_MS = 220;
+  const ANIM_EASING = "cubic-bezier(.2,.8,.2,1)";
+
+  // Defensive checks
   if (!Array.isArray(items)) {
     // eslint-disable-next-line no-console
     console.error("VirtualizedList: 'items' must be an array");
@@ -111,34 +99,74 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
   const Container = as as any;
   const outerRef = useRef<HTMLDivElement | null>(null);
   const [scrollTop, setScrollTop] = useState(0);
+  const ticking = useRef(false);
 
-  // If fixed height provided, we can avoid per-item computations
+  // container dims
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState<number>(() =>
+    typeof viewHeight === "number" ? viewHeight : 300
+  );
+
+  // fixed height detection
   const isFixed = typeof itemHeight === "number";
 
-  // heights array for variable heights, for fixed we use constant
+  // warn fallback if grid + variable heights
+  if (grid && !isFixed) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "VirtualizedList: grid mode requires fixed numeric itemHeight for correct virtualization. Falling back to list mode."
+    );
+  }
+
+  // variable heights (list)
   const heights = useMemo(() => {
     if (isFixed) return undefined;
-    // compute heights using provided function, but do not measure DOM here
-    return items.map((it, idx) => Math.max(0, (itemHeight as (i: T, n: number) => number)(it, idx)));
-    // Note: if true DOM heights differ, ResizeObserver will correct them when enabled
+    return items.map((it, idx) =>
+      Math.max(0, (itemHeight as (i: T, n: number) => number)(it, idx))
+    );
   }, [isFixed, itemHeight, items]);
 
-  // prefix sums and total height
   const prefix = useMemo(() => {
     if (isFixed) return undefined;
     const withGaps = heights!.map((h) => h + itemGap);
     return buildPrefix(withGaps);
   }, [isFixed, heights, itemGap]);
 
-  const totalHeight = useMemo(() => {
-    if (isFixed) return items.length * ((itemHeight as number) + itemGap) - itemGap;
+  // measure container size & observe (debounced-ish via rAF inside RO)
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
 
-    if (!prefix) return 0;
-    return prefix[prefix.length - 1] - itemGap; // subtract last gap
-  }, [isFixed, items.length, itemGap, itemHeight, prefix]);
+    let scheduled = false;
+    const measure = () => {
+      if (scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(() => {
+        scheduled = false;
+        const w = Math.max(0, Math.floor(el.clientWidth));
+        const h =
+          viewHeight === "auto" ? Math.max(0, Math.floor(el.clientHeight)) : (viewHeight as number);
+        setContainerWidth(w);
+        setContainerHeight(h);
+      });
+    };
 
-  // rAF-throttled scroll handler
-  const ticking = useRef(false);
+    measure();
+
+    if (!observeResize) return;
+
+    const RO =
+      (window as any).ResizeObserver && new (window as any).ResizeObserver(measure);
+
+    if (RO) RO.observe(el);
+    window.addEventListener("orientationchange", measure);
+    return () => {
+      if (RO) RO.disconnect();
+      window.removeEventListener("orientationchange", measure);
+    };
+  }, [observeResize, viewHeight]);
+
+  // rAF scroll handler
   useEffect(() => {
     const el = outerRef.current;
     if (!el) return;
@@ -152,208 +180,212 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
       }
     };
     el.addEventListener("scroll", onScroll, { passive: true });
+    setScrollTop(el.scrollTop);
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
-  // compute visible window indices
-  const { startIndex, endIndex, topOffset } = useMemo(() => {
-    if (items.length === 0) return { startIndex: 0, endIndex: -1, topOffset: 0 };
+  /**
+   * GRID & LIST layout calculations
+   *
+   * Enhancements for UX & anti-overlap:
+   * - Ensure itemWidth >= minColumnWidth by decreasing columns if necessary
+   * - Add `stackSafety` vertical spacing (small fraction of itemHeight) to avoid warp overlap during transitions
+   * - Collapse to single column on very small screens (mobile-first UX)
+   */
+  const {
+    columns,
+    itemWidth,
+    rowHeight,
+    totalHeight,
+    startIndex,
+    endIndex,
+    topOffset
+  } = useMemo(() => {
+    if (!grid || !isFixed) {
+      if (items.length === 0) return { columns: 1, itemWidth: 0, rowHeight: 0, totalHeight: 0, startIndex: 0, endIndex: -1, topOffset: 0 };
 
-    if (isFixed) {
-      const h = itemHeight as number;
-      const stride = h + itemGap;
-      const rawStart = Math.floor(scrollTop / stride);
-      const start = Math.max(0, rawStart - overscan);
-      const visibleCount = Math.ceil(viewHeight === 'auto' ? 0 : viewHeight / stride) + overscan * 2;
-      const end = Math.min(items.length - 1, start + visibleCount - 1);
-      const offset = start * stride;
-      return { startIndex: start, endIndex: end, topOffset: offset };
+      if (isFixed) {
+        const h = itemHeight as number;
+        // Add a small safety gap to avoid visual overlap during layout changes
+        const stackSafety = Math.min(12, Math.max(2, Math.floor(h * 0.04)));
+        const stride = h + itemGap + stackSafety;
+        const effectiveViewHeight = viewHeight === "auto" ? containerHeight : (viewHeight as number);
+        const rawStart = Math.floor(scrollTop / stride);
+        const start = Math.max(0, rawStart - overscan);
+        const visibleCount = Math.ceil(effectiveViewHeight / stride) + overscan * 2;
+        const end = Math.min(items.length - 1, start + visibleCount - 1);
+        const offset = start * stride;
+        const totalH = items.length * stride - itemGap - stackSafety;
+        return { columns: 1, itemWidth: containerWidth, rowHeight: stride, totalHeight: totalH, startIndex: start, endIndex: end, topOffset: offset };
+      }
+
+      // variable heights list
+      const effectiveViewHeight = viewHeight === "auto" ? containerHeight : (viewHeight as number);
+      const start = Math.max(0, findIndexByScroll(prefix!, scrollTop) - overscan);
+      const end = Math.min(items.length - 1, findIndexByScroll(prefix!, scrollTop + effectiveViewHeight) + overscan);
+      const offset = prefix![start];
+      const totalH = prefix![prefix!.length - 1] - itemGap;
+      return { columns: 1, itemWidth: containerWidth, rowHeight: 0, totalHeight: totalH, startIndex: start, endIndex: end, topOffset: offset };
     }
 
-    // variable heights: use prefix sums + binary search
-    const stridePrefix = prefix!; // prefix of heights+gaps
-    const start = Math.max(0, findIndexByScroll(stridePrefix, scrollTop) - overscan);
-    // compute end by finding index at scrollTop + viewHeight
-    const end = Math.min(items.length - 1, findIndexByScroll(stridePrefix, scrollTop + (viewHeight === 'auto' ? 0 : viewHeight)) + overscan);
-    const offset = stridePrefix[start];
-    return { startIndex: start, endIndex: end, topOffset: offset };
-  }, [scrollTop, items.length, isFixed, itemHeight, itemGap, viewHeight, overscan, prefix]);
+    // GRID mode (fixed itemHeight)
+    const cw = Math.max(1, containerWidth);
 
-  // Rendered slice
+    // Mobile-first UX thresholds (tweak if needed)
+    const MOBILE_BREAKPOINT = 480; // collapse to 1 column under this width
+    const SMALL_TABLET = 720; // prefer smaller number columns
+
+    // start with either fixedColumns or estimate by minColumnWidth
+    const initialColCount = fixedColumns && fixedColumns > 0
+      ? Math.max(1, Math.floor(fixedColumns))
+      : Math.max(1, Math.floor((cw + columnGap) / (minColumnWidth + columnGap)));
+
+    // enforce breakpoint-based caps for better UX
+    let colCount = initialColCount;
+    if (cw <= MOBILE_BREAKPOINT) colCount = 1;
+    else if (cw <= SMALL_TABLET) colCount = Math.min(colCount, 2);
+
+    // reduce columns until item width >= minColumnWidth (prevents tiny cards and overlap)
+    let colCountClamped = Math.max(1, colCount);
+    let totalGaps = columnGap * (colCountClamped - 1);
+    let rawItemWidth = Math.floor((cw - totalGaps) / colCountClamped);
+    let itemW = Math.max(1, rawItemWidth);
+
+    while (colCountClamped > 1 && itemW < minColumnWidth) {
+      colCountClamped = colCountClamped - 1;
+      totalGaps = columnGap * (colCountClamped - 1);
+      rawItemWidth = Math.floor((cw - totalGaps) / colCountClamped);
+      itemW = Math.max(1, rawItemWidth);
+    }
+
+    // final safety: if still < minColumnWidth (extremely narrow), collapse to 1 column
+    if (itemW < minColumnWidth) {
+      colCountClamped = 1;
+      totalGaps = 0;
+      rawItemWidth = cw;
+      itemW = Math.max(1, rawItemWidth);
+    }
+
+    // small horizontal safety padding to reduce perceived collision (few px)
+    const horizontalSafety = Math.min(8, Math.floor(itemW * 0.02));
+    const effectiveItemWidth = Math.max(1, itemW - horizontalSafety);
+
+    // vertical stride (row height) with stackSafety to avoid overlap during transitions
+    const stackSafety = Math.min(12, Math.max(2, Math.floor((itemHeight as number) * 0.04)));
+    const rowH = (itemHeight as number) + itemGap + stackSafety;
+
+    const totalRows = Math.max(1, Math.ceil(items.length / colCountClamped));
+    const totalH = totalRows * rowH - itemGap - stackSafety;
+
+    const effectiveViewHeight = viewHeight === "auto" ? containerHeight : (viewHeight as number);
+    const rawStartRow = Math.floor(scrollTop / rowH);
+    const startRow = Math.max(0, rawStartRow - overscan);
+    const visibleRows = Math.ceil(effectiveViewHeight / rowH) + overscan * 2;
+    const endRow = Math.min(totalRows - 1, startRow + visibleRows - 1);
+
+    const startIdx = startRow * colCountClamped;
+    const endIdx = Math.min(items.length - 1, (endRow + 1) * colCountClamped - 1);
+    const offsetTop = startRow * rowH;
+
+    return {
+      columns: colCountClamped,
+      itemWidth: effectiveItemWidth,
+      rowHeight: rowH,
+      totalHeight: totalH,
+      startIndex: startIdx,
+      endIndex: endIdx,
+      topOffset: offsetTop
+    };
+  }, [
+    grid,
+    isFixed,
+    itemHeight,
+    itemGap,
+    items.length,
+    scrollTop,
+    overscan,
+    viewHeight,
+    containerHeight,
+    containerWidth,
+    fixedColumns,
+    minColumnWidth,
+    columnGap,
+    prefix
+  ]);
+
+  // slice to render
   const slice = useMemo(() => {
     if (startIndex > endIndex) return [];
     return items.slice(startIndex, endIndex + 1);
   }, [items, startIndex, endIndex]);
 
-  // Refs for ResizeObserver
+  // refs map (keeps references for potential future measurements)
   const itemRefs = useRef<Map<number, HTMLElement | null>>(new Map());
 
-  // ResizeObserver to correct heights if observeResize true and variable heights
-  useEffect(() => {
-    if (!observeResize || isFixed) return;
-    const RO = typeof window !== "undefined" && (window as any).ResizeObserver ? new (window as any).ResizeObserver((entries: any[]) => {
-      // Only trigger a state update (by touching scrollTop) when sizes actually changed
-      let changed = false;
-      for (const entry of entries) {
-        const el = entry.target as HTMLElement;
-        // find index from map
-        for (const [idx, ref] of itemRefs.current.entries()) {
-          if (ref === el) {
-            const measured = Math.max(0, el.getBoundingClientRect().height);
-            // update cached heights array (we do this by replacing items array reference via a small state trick)
-            // For simplicity we will trigger a small state update to recompute prefix sums above
-            // store measured height on element dataset
-            const prev = parseFloat(el.dataset["virtualHeight"] || "0");
-            if (Math.abs(prev - measured) > 0.5) {
-              el.dataset["virtualHeight"] = String(measured);
-              changed = true;
-            }
-            break;
-          }
-        }
-      }
-      if (changed) {
-        // force recompute by toggling scrollTop; harmless and cheap
-        setScrollTop((s) => s + 0.0001);
-      }
-    }) : null;
-
-    // observe currently rendered refs
-    itemRefs.current.forEach((el) => el && RO && RO.observe(el));
-    return () => RO && RO.disconnect();
-  }, [observeResize, isFixed, startIndex, endIndex]);
-
-  // Helper to get top for an index
-  const getTopForIndex = useCallback(
+  /**
+   * Position each item using translate3d. Using transform (instead of top/left)
+   * prevents visual overlap because changes animate smoothly on GPU.
+   *
+   * For list mode: translateY only (x = 0).
+   * For grid mode: compute (left, top) based on columns & rowHeight.
+   *
+   * Note: the wrapper width is `itemWidth` (grid) and the child (MiniCardProduct)
+   * should use `width: 100%` (CSS) and `min-width: 0` to avoid overflow causing overlap.
+   */
+  const getItemStyle = useCallback(
     (index: number) => {
-      if (isFixed) return index * ((itemHeight as number) + itemGap);
-      // try to read measured heights from DOM dataset if available (only for observed items)
-      // fallback to heights[] computed initially
-      let top = 0;
-      if (prefix) top = prefix[index];
-      return top;
+      // animation values
+      const transition = `transform ${ANIM_DURATION_MS}ms ${ANIM_EASING}, opacity ${ANIM_DURATION_MS / 2}ms ease`;
+
+      if (!grid || !isFixed) {
+        const top = isFixed ? index * ((itemHeight as number) + itemGap) : (prefix ? prefix[index] : 0);
+        return {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          transform: `translate3d(0px, ${top}px, 0)`,
+          width: "100%",
+          boxSizing: "border-box",
+          transition,
+          willChange: "transform, opacity",
+          pointerEvents: "auto"
+        } as React.CSSProperties;
+      }
+      // grid mode
+      const col = index % columns;
+      const row = Math.floor(index / columns);
+      const top = row * rowHeight;
+      const left = col * (itemWidth + columnGap);
+      return {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        transform: `translate3d(${left}px, ${top}px, 0)`,
+        width: `${itemWidth}px`,
+        boxSizing: "border-box",
+        transition,
+        willChange: "transform, opacity",
+        pointerEvents: "auto"
+      } as React.CSSProperties;
     },
-    [isFixed, itemGap, itemHeight, prefix]
+    [grid, isFixed, itemHeight, itemGap, prefix, columns, rowHeight, itemWidth, columnGap]
   );
 
-  // container inner style
+  // inner style (keeps measured totalHeight so native scrollbar works)
   const innerStyle: React.CSSProperties = {
     position: "relative",
     height: `${totalHeight}px`,
     width: "100%"
   };
 
-  // item wrapper style generator
-  const getItemStyle = (index: number) => {
-    const top = getTopForIndex(index);
-    return {
-      position: "absolute",
-      top: `${top}px`,
-      width: "min-content",
-      boxSizing: "border-box"
-    } as React.CSSProperties;
-  };
-
-  // If grid mode, we render items in column layout using same virtualization core
-   // If grid mode → virtualize by rows instead of absolute items
-  const isGrid = Boolean(props.grid);
-  const columns = props.columns ?? 1;
-  const colGap = props.columnGap ?? 0;
-
-  if (isGrid) {
-    // ─────────────────────────────────────────────
-    // GRID MODE: virtualize rows
-    // ─────────────────────────────────────────────
-
-    const itemsPerRow = columns;
-    const totalRows = Math.ceil(items.length / itemsPerRow);
-
-    const fixedRowHeight =
-      typeof itemHeight === "number" ? itemHeight : 200;
-
-    const rowStride = fixedRowHeight + itemGap;
-
-    const rawStartRow = Math.floor(scrollTop / rowStride);
-    const startRow = Math.max(0, rawStartRow - overscan);
-
-    const visibleRows =
-      Math.ceil(
-        viewHeight === "auto" ? 0 : viewHeight / rowStride
-      ) + overscan * 2;
-
-    const endRow = Math.min(totalRows - 1, startRow + visibleRows);
-
-    // Build rows to render
-    const rows = [];
-    for (let r = startRow; r <= endRow; r++) {
-      const startIdx = r * itemsPerRow;
-      const rowItems = items.slice(startIdx, startIdx + itemsPerRow);
-      rows.push({ r, rowItems });
-    }
-
-    return (
-      <div
-        ref={outerRef}
-        style={{
-          overflowY: "auto",
-          height:
-            viewHeight === "auto"
-              ? "auto"
-              : `${viewHeight}px`,
-          WebkitOverflowScrolling: "touch",
-          ...style
-        }}
-        className={className}
-      >
-        <div
-          style={{
-            position: "relative",
-            height: totalRows * rowStride,
-            width: "100%"
-          }}
-        >
-          {rows.map(({ r, rowItems }) => (
-            <div
-              key={r}
-              style={{
-                position: "absolute",
-                top: r * rowStride,
-                left: 0,
-                width: "100%",
-                display: "grid",
-                gridTemplateColumns: `repeat(${columns}, 1fr)`,
-                gap: colGap
-              }}
-            >
-              {rowItems.map((item, idx) => {
-                const index = r * itemsPerRow + idx;
-                const key = itemKey ? itemKey(item, index) : index;
-                return (
-                  <div key={key}>
-                    {render(item, index)}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // ─────────────────────────────────────────────
-  // LIST MODE (tu código original intacto)
-  // ─────────────────────────────────────────────
   return (
-    <div
+    <Container
       ref={outerRef}
       style={{
         overflowY: "auto",
-        height:
-          viewHeight === "auto"
-            ? "auto"
-            : `${viewHeight}px`,
+        height: viewHeight === "auto" ? undefined : `${viewHeight}px`,
         WebkitOverflowScrolling: "touch",
+        position: "relative",
         ...style
       }}
       className={className}
@@ -377,6 +409,6 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 };

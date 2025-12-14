@@ -2035,14 +2035,13 @@ IconQuestion.propTypes = {
   size: PropTypes.any
 }
 
-export const IconFilter: React.FC<IconProps> = ({ size, color, ...props }) => (
+export const IconFilter: React.FC<IconProps> = ({ size, color }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width={size ?? 800}
     height={size ?? 800}
     fill='none'
     viewBox='0 0 24 24'
-    {...props}
   >
     <path
       fill={color ?? getGlobalStyle('--color-icons-black')}

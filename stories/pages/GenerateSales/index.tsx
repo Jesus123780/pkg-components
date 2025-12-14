@@ -23,6 +23,7 @@ import type { Root } from '../../organisms/CategorieProducts/types'
 import { HeaderInfo } from './HeaderInfo'
 import styles from './styles.module.css'
 import { SwipeableCard } from '../../molecules/SwipeableCard'
+import { ProductsSales } from './components/products-sales'
 
 interface IpropsSliderCategory {
   data: Root[]
@@ -167,47 +168,27 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         </div>
         <div className={styles.filter}>
           <Icon
-            height={20}
-            width={20}
             icon='IconFilter'
             size={20}
             color={getGlobalStyle(findChecked ? '--color-icons-primary' : '--color-icons-gray')}
           />
         </div>
-        {/* <button
-            className={styles.content__categorie__aside}
-            onClick={() => {
-              handleOpenAside()
-            }}
-          >
-            <span />
-          </button>
-          {isLoading
-            ? (
-              <Skeleton
-                height={200}
-                numberObject={20}
-                margin='0 0 20px 0'
-                width='100%'
-              />
-            )
-            : null} */}
-        {/* Virtualized grid inside Viewport - copy/paste replacement */}
         <VirtualizedList
           items={productsFood}
-          viewHeight='auto'
+          viewHeight="auto"
           grid={true}
-          columns={8}
-          columnGap={15}
-          itemHeight={300}
-          observeResize={true}
+          columns={15}  // Si no quieres calcular columnas automáticamente, mantén esto.
+          minColumnWidth={120} // Esto asegura un ancho mínimo para las tarjetas.
+          columnGap={15}  // Espacio entre columnas
+          itemHeight={300}  // Fijo o dinámico si se requiere.
+          observeResize={true}  // Autoajuste del grid con ResizeObserver
           className={styles.content__products}
           render={(product) => {
             const tag = {
               tag: product?.getOneTags?.nameTag
-            }
-            const isExistInSale = Boolean(product?.existsInSale)
-            const manageStock = Boolean(product?.manageStock)
+            };
+            const isExistInSale = Boolean(product?.existsInSale);
+            const manageStock = Boolean(product?.manageStock);
 
             return (
               <MiniCardProduct
@@ -228,7 +209,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   dispatch({
                     type: 'ADD_TO_CART',
                     payload: product
-                  })
+                  });
                 }}
                 handleDecrement={() => {
                   // handleDecrement(product)
@@ -237,16 +218,17 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   dispatch({
                     type: 'ADD_TO_CART',
                     payload: product
-                  })
+                  });
                 }}
                 pName={product.pName}
                 tag={product?.getOneTags?.nameTag !== null && tag}
                 withStock={true}
                 showInfo={true}
               />
-            )
+            );
           }}
         />
+
         <Pagination
           currentPage={pagination.currentPage}
           handleNextPage={() => { return handlePageChange(pagination.currentPage + 1) }}
@@ -267,169 +249,16 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           className={styles.content__scrolling}
           style={{ display: data?.PRODUCT?.length > 0 ? 'grid' : 'block' }}
         >
-          {!isLoading && data.PRODUCT.length > 0
-            ? (
-              data.PRODUCT.map((product, index) => {
-                const tag = {
-                  tag: product?.getOneTags?.nameTag ?? ''
-                }
-                const ProQuantity = product?.ProQuantity ?? 0
-
-                return (
-                  <SwipeableCard
-                    key={product.pId}
-                    swipeWidth={30}
-                    autoClose={true}
-                    sticky={false}
-                    shake={true}
-                    gradientAnimation={false}
-                    onDelete={() => {
-                      dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
-                    }}
-                    onSwipeUp={() => {
-                      onClick(product)
-                    }}
-                    rightActions={
-                      <Column
-                        style={{
-                          height: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation() // evita que se propague al card
-                            dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
-                          }}
-                          style={{
-                            all: 'unset',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: 30,
-                            height: 30
-                          }}
-                        >
-                          <Icon icon='IconDelete' color={getGlobalStyle('--color-icons-primary')} size={16} />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation() // evita que se propague al card
-                            handleComment(product)
-                          }}
-                          style={{
-                            all: 'unset',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: 30,
-                            height: 30,
-                            backgroundColor: getGlobalStyle('--color-neutral-gray-dark'),
-                          }}
-                        >
-                          <Icon icon='IconComment' color={getGlobalStyle('--color-icons-white')} size={16} />
-                        </button>
-
-                        {/* sub productos  */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation() // evita que se propague al card
-                            onClick(product)
-                          }}
-                        >
-                          <Icon size={20} icon='IconBox' />
-                        </button>
-                      </Column>
-                    }
-                  >
-                    <MiniCardProduct
-                      {...product}
-                      editing={product.editing}
-                      editable={true}
-                      canDelete={true}
-                      handleDelete={() => {
-                        dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
-                      }}
-                      handleChangeQuantity={(event) => {
-                        const { value } = event.target
-                        return dispatch({
-                          type: 'ON_CHANGE',
-                          payload: {
-                            id: product.pId,
-                            index,
-                            value
-                          }
-                        })
-                      }}
-                      ProDescription={product.ProDescription}
-                      ProDescuento={product.ProDescuento}
-                      ProImage={product.ProImage}
-                      ProPrice={numberFormat(product.ProPrice)}
-                      ProQuantity={ProQuantity}
-                      handleToggleEditingStatus={() => {
-                        dispatch({
-                          type: 'TOGGLE_EDITING_PRODUCT',
-                          payload: product
-                        })
-                      }}
-                      handleCancelUpdateQuantity={() => {
-                        dispatch({
-                          type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
-                          payload: product
-                        })
-                      }}
-                      handleSuccessUpdateQuantity={() => {
-                        dispatch({
-                          type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
-                          payload: product
-                        })
-                      }}
-                      ValueDelivery={product.ValueDelivery}
-                      withQuantity={true}
-                      hoverFree={true}
-                      handleComment={() => {
-                        handleComment(product)
-                      }}
-                      showDot={true}
-                      openQuantity={Boolean(ProQuantity)}
-                      handleDecrement={() => {
-                        handleDecrement(product)
-                      }}
-                      handleIncrement={() => {
-                        dispatch({
-                          type: 'ADD_TO_CART',
-                          payload: product
-                        })
-                      }}
-                      handleFreeProducts={() => {
-                        handleFreeProducts(product)
-                      }}
-                      handleGetSubItems={() => {
-                        onClick(product)
-                      }}
-                      edit={false}
-                      onClick={() => {
-                        dispatch({
-                          type: 'ADD_TO_CART',
-                          payload: product
-                        })
-                      }}
-                      pName={product.pName}
-                      render={<Icon size={20} icon='IconSales' />}
-                      tag={product?.getOneTags?.nameTag !== null && tag}
-                    />
-                  </SwipeableCard>
-                )
-              })
-            )
-            : (
-              <EmptyData height={200} width={200} />
-            )
-          }
+          <ProductsSales
+            onClick={onClick}
+            isLoading={isLoading}
+            data={data}
+            dispatch={dispatch}
+            handleComment={handleComment}
+            handleDecrement={handleDecrement}
+            handleFreeProducts={handleFreeProducts}
+            numberFormat={numberFormat}
+          />
 
           <button
             style={{ right: '0.3125rem', left: 'unset' }}
