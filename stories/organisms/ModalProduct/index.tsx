@@ -200,7 +200,7 @@ export const ModalProduct = ({
             onChange={(e) => {
               return setComments(e.target.value)
             }}
-            typeTextarea
+            as='textarea'
             value={comments}
           />
           {!!dataExtra?.length && (

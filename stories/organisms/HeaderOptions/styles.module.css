@@ -1,68 +1,67 @@
-.floatingBox {
-    position: absolute;
-    display: grid;
-    grid-gap: 0 10px;
-    transition: all 200ms ease-in-out;
-    background-color: var(--color-base-white);
-    padding: 10px;
-    z-index: 99999;
-}
-
-.show {
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.hidden {
-    visibility: hidden;
-    transform: translateY(-50px);
-}
-
-.floatingBoxTwo {
-    margin-left: 30px;
-    max-width: 250px;
-    min-width: 250px;
-    width: 250px;
-    top: 28px;
-    overflow: hidden;
-    box-shadow: -1px 2px 8px 2px #dcdcdc;
+.container {
+  position: relative;
+  display: flex;
+  width: max-content;
 }
 
 .buttonOption {
-    margin-left: 30px;
-    
-    position: relative;
-    cursor: pointer;
-    background-color: var(--color-base-white);
+  margin-left: 30px;
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+  border: none;
 }
 
-.space {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin: 0;
+.notificationCount {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  width: var(--spacing-xl);
+  height: var(--spacing-xl);
+  border-radius: 20px;
+  background-color: var(--color-primary-red);
+  color: var(--color-text-white);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.space>span {
-    font-family: PFont-Light, sans-serif;
-    font-size: 14px;
-    color: var(--color-primary);
+.floatingBox {
+  position: absolute;
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  background-color: var(--color-base-white);
+  transition: all 200ms ease-in-out;
+  z-index: 99999;
 }
 
-.notification_count {
-        justify-content: center;
-    align-items: center;
-    background-color: var(--color-primary-red);
-    border-radius: 20px;
-    color: var(--color-text-white);
-    display: flex;
-    display: inline-block;
-    font-size: 13px;
-    height: var(--spacing-xl);
-    line-height: 20px;
-    position: absolute;
-    right: -5px;
-    text-align: center;
-    top: -10px;
-    width: var(--spacing-xl);
+.show {
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.hidden {
+  visibility: hidden;
+  transform: translateY(-50px);
+}
+
+.floatingBoxTwo {
+  margin-left: 30px;
+  top: 28px;
+  width: 250px;
+  box-shadow: -1px 2px 8px 2px #dcdcdc;
+  overflow: hidden;
+}
+
+.option {
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+}
+
+.option:hover {
+  background-color: #ffffff1a;
 }

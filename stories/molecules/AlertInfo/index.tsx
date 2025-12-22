@@ -1,5 +1,6 @@
 import { IconInfo } from '../../../assets/icons'
 import { getGlobalStyle } from '../../../utils'
+import { Text } from '../../atoms'
 import styles from './styles.module.css'
 
 export interface AlertInfoProps {
@@ -32,7 +33,9 @@ export const AlertInfo: React.FC<AlertInfoProps> = ({ type, message }) => {
           <IconInfo color={color} size={25} />
         </div>
       </div>
-      <div className={styles.message}>{message}</div>
+      <Text className={styles.message} color='default'>
+        {message}
+      </Text>
     </div>
   )
 }

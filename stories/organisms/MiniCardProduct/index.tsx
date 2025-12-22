@@ -54,16 +54,6 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         filter: stock === 0 ? 'grayscale(1)' : 'none'
       }}
       className={styles.product}>
-      {/* {showInfo &&
-      <div className={styles.productCard_info_slider}>
-        <Row justifyContent='space-between' alignItems='center'>
-          <Text size='sm'>
-            Informacion
-          </Text>
-          <Icon icon='IconInfo' size={15} />
-        </Row>
-      </div>
-      } */}
       <div
         style={{
           position: 'relative',
@@ -77,7 +67,11 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             color='default'
             size='sm'
           >
-            <span style={{ marginLeft: getGlobalStyle('--spacing-xs') }}>
+            <span style={{
+              marginLeft: getGlobalStyle('--spacing-xs'),
+              color: getGlobalStyle('--color-neutral-black')
+            }}
+            >
               {stock <= 0 ? 'Agotado' : `${stock} Disponibles`}
             </span>
           </Text>
@@ -126,9 +120,10 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
                   className={styles['product-card-image']}
                   alt={`${pName ?? ''}-product`}
                   src={`/api/images/${urlImage}`}
+                  data-test-id='product-card-image-img'
                 />
               </div>
-              <div className={styles['product-card-image__overlay']}></div>
+              <div className={styles['product-card-image__overlay']} />
             </div>
             <div
               className={styles['product-card__price']}
@@ -136,25 +131,43 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             >
               {ProPrice}
             </div>
-            <span className={styles['product-card__title']} title={pName}>
+            <span
+              className={styles['product-card__title']}
+              title={pName}
+              data-test-id='product-card-name'
+            >
               {pName}
             </span>
-            <span className={styles['product-card__description']} title={ProDescription}>
+            <span
+              className={styles['product-card__description']}
+              title={ProDescription}
+              data-test-id='product-card-description'
+            >
               {ProDescription}
             </span>
           </div>
           {Boolean(canDelete && editable) &&
             (
               <>
-                <div className={styles.product_slide_action_bottom} onClick={(event) => {
-                  event.stopPropagation()
-                  handleDelete()
-                }}>
+                <div
+                  className={styles.product_slide_action_bottom}
+                  data-test-id='mini-card-product-delete'
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    handleDelete()
+                  }}
+                >
                   <button>
                     <Icon icon='IconDelete' size={15} />
                   </button>
                 </div>
-                <div className={styles.suggestion} onClick={handleComment}>
+                <div
+                  data-test-id='mini-card-product-comment'
+                  className={styles.suggestion}
+                  onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+                    event.stopPropagation()
+                    handleComment()
+                  }}>
                   <Tag label={comment !== '' ? 'EDITAR' : 'COMENTAR'} backgroundColor='green' />
                 </div>
               </>
@@ -165,7 +178,14 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
           </Row>
           <>
             {showDot && (
-              <div className={styles.container_free} onClick={handleGetSubItems}>
+              <div
+                data-test-id='mini-card-product-sub-items'
+                className={styles.container_free}
+                onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+                  event.stopPropagation()
+                  handleGetSubItems()
+                }}
+              >
                 <button className={styles.dots_sub_items}>
                   <Icon
                     icon='IconBox'

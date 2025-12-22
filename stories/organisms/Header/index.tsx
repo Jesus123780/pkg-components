@@ -31,7 +31,9 @@ export const Header = ({
   setIsOpenOrder = (boolean: boolean) => { return boolean },
   handleOpenMenu = () => { return null },
   onClickAskUserPermission = () => { return null },
-  setSalesOpen = (boolean: boolean) => { return boolean }
+  setSalesOpen = (boolean: boolean) => { return boolean },
+  toggleTheme,
+  theme
 }) => {
   return (
     <div className={styles.header_container} style={style}>
@@ -92,6 +94,8 @@ export const Header = ({
           loading={false}
           loadingPush={loadingPush}
           location={location}
+          theme={theme}
+          toggleTheme={toggleTheme}
           onClickAskUserPermission={onClickAskUserPermission}
           onClickLogout={onClickLogout}
           pushNotificationSupported={pushNotificationSupported}

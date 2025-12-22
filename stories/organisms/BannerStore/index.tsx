@@ -221,7 +221,7 @@ export const BannerStore: React.FC<IBannerStore> = ({
         </Column>
         <div className='basico_info' style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Text className={styles['merchant-banner__title_merchant']} as='h2'>
-            {store?.storeName}
+            {String(store?.storeName)}
           </Text>
           <div className='wrapper_details__button' style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button

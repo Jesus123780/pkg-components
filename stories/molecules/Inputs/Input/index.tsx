@@ -43,7 +43,7 @@ interface InputProps {
   required?: boolean
   title?: string
   type?: string
-  typeTextarea?: boolean
+  as?: 'textarea' | 'input'
   value?: string | number | readonly string[] // Ajustado para admitir tipos adicionales según el código proporcionado
   width?: string
   labelButton?: string
@@ -93,7 +93,7 @@ export const Input: FC<InputProps> = ({
   required,
   title = '',
   type = 'text',
-  typeTextarea = false,
+  as = 'input',
   value = '',
   width = '100%',
   onFocus = () => {

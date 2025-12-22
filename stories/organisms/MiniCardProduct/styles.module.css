@@ -121,6 +121,7 @@
     right: 5px;
     top: 60px;
     z-index: var(--z-index-50);
+    width: min-content;
 }
 
 .dots_sub_items {

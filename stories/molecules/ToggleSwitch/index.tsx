@@ -1,37 +1,47 @@
-// ToggleSwitch.tsx
 'use client'
 
+import React from 'react'
 import styles from './styles.module.css'
 import { getGlobalStyle } from '../../../helpers'
+import { Icon } from '../../atoms'
 
 interface ToggleSwitchProps {
   checked: boolean
   id?: string
   disabled?: boolean
   label?: string
-  style?: React.CSSProperties
   name?: string
-  successColor: 'green' | 'red'
+  style?: React.CSSProperties
+  successColor?: 'green' | 'red' | 'white'
+  iconLeft?: string
+  iconRight?: string
   onChange: (checked: boolean) => void
 }
 
+/**
+ * ToggleSwitch
+ * Animated toggle switch with optional icons and smooth transitions
+ */
 export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   checked,
   id = 'toggle-switch',
   disabled = false,
   label = '',
   name = '',
+  style,
   successColor = 'red',
-  style = {},
-  onChange = () => { }
+  iconLeft,
+  iconRight,
+  onChange
 }) => {
-  const diccionary = {
+  const colors = {
     green: getGlobalStyle('--color-text-success'),
-    red: getGlobalStyle('--color-background-primary')
+    red: getGlobalStyle('--color-background-primary'),
+    white: getGlobalStyle('--color-icons-white')
   } as const
 
   return (
-    <div className={styles.container} style={style} data-testid="toggle-switch-container">
+    <div className={styles.container} style={style}>
       <label className={styles.switch} htmlFor={id}>
         <input
           id={id}
@@ -40,19 +50,34 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
           disabled={disabled}
           checked={checked}
           onChange={() => onChange(!checked)}
-          className={styles.input}
-          data-testid="toggle-switch-input"
         />
+
         <span
-          className={styles.slider}
+          className={styles.track}
           style={{
-            backgroundColor: checked ? diccionary[successColor] : getGlobalStyle('--color-text-inactive')
+            backgroundColor: checked
+              ? colors[successColor]
+              : getGlobalStyle('--color-text-inactive')
           }}
-          data-testid="toggle-switch-slider"
-        />
+        >
+          {iconLeft && (
+            <span className={`${styles.icon} ${styles.left}`}>
+              <Icon icon={iconLeft} size={19} />
+            </span>
+          )}
+
+          {iconRight && (
+            <span className={`${styles.icon} ${styles.right}`}>
+              <Icon icon={iconRight} size={19} />
+            </span>
+          )}
+
+          <span className={styles.thumb} />
+        </span>
       </label>
-      {label !== '' && (
-        <label htmlFor={id} className={styles.label} data-testid="toggle-switch-label">
+
+      {label && (
+        <label htmlFor={id} className={styles.label}>
           {label}
         </label>
       )}

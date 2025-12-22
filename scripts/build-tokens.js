@@ -1,5 +1,4 @@
 const fs = require('fs')
-const { decisions } = require('./tokens')
 const toKebabCase = (string) => { return string.replace(/([A-Z])([A-Z])/g, '$1-$2').replace(/([a-z])([A-Z])/g, '$1-$2').replace(/[\s_]+/g, '-').toLowerCase() }
 const cleanLines = (string = '') => { return string.trim().replace(/^\n\n/gm, '\n') }
 
@@ -23,14 +22,16 @@ function transformTokens(parentKey, object) {
   }, '')
 }
 
-function buildTokens() {
-  const transformedDecisions = transformTokens(null, decisions)
-  const customProperties = `${transformedDecisions}`
+function buildTokens({ theme = 'light', selector = ':root' }) {
+  const transformedDecisions = transformTokens(null, theme === 'dark' ? require('./tokens/dark-decisions') : require('./tokens/decisions'))
+  const data = `${selector} {\n${cleanLines(transformedDecisions)}\n}`
 
-  const data = `:root {\n  ${cleanLines(customProperties)}\n}\n`
-
-  fs.writeFile('./stories/assets/public/global.css', data, 'utf8', (error) => {
-    if (error) throw error
-  })
+  fs.writeFileSync(
+    `./stories/assets/public/global.${theme}.css`,
+    data,
+    'utf8'
+  )
 }
-buildTokens()
+
+buildTokens({ theme: 'light', selector: ':root' })
+buildTokens({ theme: 'dark', selector: ':root[data-theme="dark"]' })

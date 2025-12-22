@@ -56,6 +56,10 @@ export const choices = {
       blueTag: '#006c85',
       orangeTag: '#e07c00'
     },
+    gradient: {
+      shimmer: 'linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0) 81%)',
+      skeleton: '-48px 78px 0 -48px #ededed, -51px 102px 0 -51px #ededed'
+    },
     base: {
       mineShaft: '#282828',
       white: '#FFFFFF',
@@ -215,5 +219,92 @@ export const choices = {
     high: '999999999',
     modal: '99999999999',
     toast: '99999999999999'
+  }
+}
+
+/**
+ * darkChoices
+ * Dark theme overrides for the `choices` design tokens.
+ * Keeps all original tokens and replaces/adjusts colors to fit a dark UI.
+ * @type {import('./path-to-choices').choices} // adjust path/type as needed
+ */
+export const darkChoices = {
+  ...choices,
+  color: {
+    ...choices.color,
+    base: {
+      ...choices.color.base,
+      // surfaces: use deep/dark surfaces instead of bright whites
+      white: '#12151c',     // main surface / background
+      black: '#FFFFFF'      // text / foreground in dark theme (inverse naming kept for compatibility)
+    },
+    brand: {
+      ...choices.color.brand,
+      // Primary family — tuned for dark backgrounds (slightly brighter/higher contrast)
+      pigmentGreen: '#00c06a',
+      alizarinCrimson: '#ff5252',
+      guardsmanRed: '#b71c1c',
+      tabasco: '#7a0f0c',
+      chablis: '#232425',
+      turquoise: '#2aa19a',
+      pinkLight: '#5a2b2b',
+      darkerRed: '#3a0705',
+      redGradient: 'linear-gradient(180deg, #D9382A 0%, #9B0E0E 96.15%)',
+      redGradientButton: 'linear-gradient(180deg, #D9382A 0%, #9B0E0E 44.44%)',
+      // Secondary
+      deepCerulean: '#3e99ff',
+      blueLagoon: '#4fb0c0',
+      blueStone: '#274b50',
+      foam: '#081216',
+      // Neutral (lightened for readable contrast on dark backgrounds)
+      mineShaft: '#d6d6d6',
+      doveGray: '#cfcfcf',
+      silver: '#8f8f8f',
+      overline: 'rgba(255, 255, 255, 0.08)',
+      selection: 'rgba(255, 255, 255, 0.06)',
+      mercury: '#2b2b2b',
+      wildSand: '#0f0f0f',
+      alabaster: '#070707',
+      white: '#0b0e0f',
+      // Campaigns
+      heavyMetal: '#0f1111',
+      schoolBusYellow: '#d4a900',
+      // Feedback
+      japaneseLaurel: '#57c17a',
+      red: '#ff6b6b',
+      fuelYellow: '#d79a2a',
+      meteor: '#a56809',
+      // Text-specific tokens preserved but lightened
+      lust: '#ff6b6b',
+      easternBlue: '#8fb8ff',
+      steel: '#cfcfcf',
+      paleSlate: '#9ea6ab',
+      bokaraGray: '#eeeeee',
+      indiaGreen: '#6ec26f',
+      kuCrimson: '#ff7373',
+      // Backgrounds adapted to dark surfaces
+      lilyWhite: '#071e1f',
+      whiteSmoke: '#0e0e0e',
+      sweetPink: '#4a2b28',
+      // Icons & extras
+      kellyGreen: '#1fb43a',
+      backgroundLoader: '#0f1313',
+      foreGroundLoader: '#191919',
+      blueTag: '#2f9aa0',
+      orangeTag: '#b86100'
+    },
+    // Clear text token group for dark theme (primary/secondary/inverse/disabled)
+    text: {
+      primary: '#FFFFFF',
+      secondary: '#C4C4C4',
+      disabled: 'rgba(255, 255, 255, 0.36)',
+      inverse: '#0b0f10'
+    },
+    gradient: {
+      ...choices.color.gradient,
+      shimmer:
+        'linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0) 81%)',
+      skeleton: '-48px 78px 0 -48px #2a2f33, -51px 102px 0 -51px #2a2f33'
+    },
   }
 }

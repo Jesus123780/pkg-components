@@ -1,5 +1,5 @@
 :root {
-  --color-base-black: #282828;
+--color-base-black: #282828;
   --color-base-white: #FFFFFF;
   --color-base-transparent: transparent;
 
@@ -42,6 +42,9 @@
   --color-feedback-error-dark: #EE0000;
   --color-feedback-warning-light: #F0A92E;
   --color-feedback-warning-dark: #CC870F;
+
+  --color-gradients-shimmer: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0) 81%);
+  --color-gradients-skeleton: -48px 78px 0 -48px #ededed, -51px 102px 0 -51px #ededed;
 
   --color-text-primary: #da291c;
   --color-text-secondary: #0062ff;

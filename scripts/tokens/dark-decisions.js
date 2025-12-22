@@ -1,4 +1,4 @@
-const { choices } = require('./choices')
+const { darkChoices: choices } = require('./choices')
 
 const {
   color: {

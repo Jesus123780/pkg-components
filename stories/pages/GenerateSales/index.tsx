@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import {
   Button,
@@ -11,7 +11,9 @@ import {
   EmptyData,
   type Methods,
   Pagination,
-  Skeleton
+  SearchBar,
+  Skeleton,
+  Stepper
 } from '../../molecules'
 import type { Data, ProductFood } from './types'
 import { MiniCardProduct } from '../../organisms/MiniCardProduct'
@@ -24,6 +26,10 @@ import { HeaderInfo } from './HeaderInfo'
 import styles from './styles.module.css'
 import { SwipeableCard } from '../../molecules/SwipeableCard'
 import { ProductsSales } from './components/products-sales'
+import InputHooks from '../../molecules/Inputs/InputHooks/InputHooks'
+import Sorter, { SortOption } from '../../molecules/Sorter'
+import { MODAL_SIZES } from '../../molecules/Modal/helpers'
+import { Query, Sort } from './components/querys'
 
 interface IpropsSliderCategory {
   data: Root[]
@@ -71,14 +77,15 @@ interface GenerateSalesProps {
   paymentMethods?: Methods[]
   dataClientes?: any[]
   handleClickAction?: () => void
+  handleAddProduct?: (product: ProductFood) => void
   handleChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
   dispatch?: React.Dispatch<any>
   fetchMoreProducts?: () => void
   handlePageChange?: (pageNumber: number | string) => void
   handleDecrement?: (product: ProductFood) => void
-  handleIncrement?: (product: ProductFood) => void
   handleFreeProducts?: (product: ProductFood) => void
   handleSave?: () => void
+  handleChangeFilter: (value: string, event?: React.ChangeEvent<HTMLSelectElement>) => void
   handleOpenAside?: () => void
   handleComment?: (product: ProductFood) => void
   onClick?: () => void
@@ -133,45 +140,88 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   },
   handlePageChange = () => { },
   handleChange = () => { },
-  handleChangeDiscount = () => { },
   setShow = () => { },
   handleDecrement = () => { },
-  handleIncrement = () => { },
   handleSave = () => { },
   handleComment = () => { },
   handleOpenAside = () => { },
+  handleChangeFilter = () => { },
   numberFormat = (number) => {
     return number
+  },
+  handleAddProduct = (product: ProductFood) => {
+    return product
   }
 }) => {
   const findChecked = propsSliderCategory.data?.some((item) =>
     Boolean(item?.checked)
   )
+  const fields = [
+    { key: 'name', label: 'Nombre', defaultDirection: 'asc' },
+    { key: 'created_at', label: 'Fecha de creación', defaultDirection: 'desc' },
+    { key: 'price', label: 'Precio', defaultDirection: 'asc' }
+  ] as SortOption[]
+  
+  const [sort, setSort] = useState<Sort>({ field: 'name', direction: 'asc' })
+ const [showFilter, setShowFilter] = useState<boolean>(false)
   return (
     <AwesomeModal
       title='Crea una venta'
       show={show}
-      size='large'
+      size={MODAL_SIZES.large}
       header
       footer={false}
+      height='100vh'
       borderRadius='0'
       onHide={() => {
         setShow(false)
       }}
       zIndex={getGlobalStyle('--z-index-high')}
     >
+      <AwesomeModal
+        title='Realiza filtrado avanzado'
+        show={showFilter}
+        size={MODAL_SIZES.small}
+        header
+        footer={false}
+        customHeight='60vh'
+        height='min-content'
+        borderRadius={getGlobalStyle('--border-radius-xs')}
+        onHide={() => {
+          setShowFilter(false)
+        }}
+        zIndex={getGlobalStyle('--z-index-high')}
+      >
+        <Query
+          fields={fields}
+          sort={sort}
+          setSort={setSort}
+        />
+      </AwesomeModal>
       <div className={styles.container}>
         <div className={styles.header}>
-          <Column>
-            <CategoriesProducts {...propsSliderCategory} />
-          </Column>
+          <CategoriesProducts {...propsSliderCategory} />
         </div>
-        <div className={styles.filter}>
-          <Icon
-            icon='IconFilter'
-            size={20}
-            color={getGlobalStyle(findChecked ? '--color-icons-primary' : '--color-icons-gray')}
+        <div className={styles['header-query']}>
+          <SearchBar
+            handleChange={(value, event) => {
+              return handleChangeFilter(value, event)
+            }}
+            padding='0px 20px'
+            placeholder='Buscar producto por nombre o código'
           />
+          <div className={styles.header__actions_filter} onClick={() => setShowFilter(true)}>
+            <Row alignItems='center'>
+              <Text color='primary'>
+                Filtros
+              </Text>
+              <Icon
+                size={60}
+                icon='IconLinesFilter'
+                color={getGlobalStyle('--color-icons-primary')}
+              />
+            </Row>
+          </div>
         </div>
         <VirtualizedList
           items={productsFood}
@@ -183,6 +233,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           itemHeight={300}  // Fijo o dinámico si se requiere.
           observeResize={true}  // Autoajuste del grid con ResizeObserver
           className={styles.content__products}
+          emptyComponent={<EmptyData />}
           render={(product) => {
             const tag = {
               tag: product?.getOneTags?.nameTag
@@ -212,13 +263,10 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   });
                 }}
                 handleDecrement={() => {
-                  // handleDecrement(product)
+                  handleDecrement(product)
                 }}
                 handleIncrement={() => {
-                  dispatch({
-                    type: 'ADD_TO_CART',
-                    payload: product
-                  });
+                  handleAddProduct(product)
                 }}
                 pName={product.pName}
                 tag={product?.getOneTags?.nameTag !== null && tag}
@@ -258,6 +306,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             handleDecrement={handleDecrement}
             handleFreeProducts={handleFreeProducts}
             numberFormat={numberFormat}
+            handleAddProduct={handleAddProduct}
           />
 
           <button
@@ -303,7 +352,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
               Eliminar
             </Button>
             <Button
-              disabled={Boolean(data.PRODUCT.length === 0)}
+              disabled={Boolean(data?.PRODUCT?.length === 0)}
               onClick={handleSave}
               primary={true}
             >

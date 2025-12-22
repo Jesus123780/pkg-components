@@ -108,7 +108,10 @@ import {
   IconEmail,
   IconSuccess,
   IconWarning,
-  IconError
+  IconError,
+  IconSun,
+  IconMoon,
+  IconLinesFilter
 } from '../../../assets'
 
 type IconMap = Record<string, FC<IconProps>>
@@ -226,7 +229,10 @@ export const Icons: IconMap = {
   IconEmail,
   IconSuccess,
   IconWarning,
-  IconError
+  IconError,
+  IconSun,
+  IconMoon,
+  IconLinesFilter
 }
 
 const GetIcon = (key: string): FC<IconProps> | null => {
@@ -254,6 +260,7 @@ export const Icon: React.FC<IconPropsComponent> = ({
       width={width}
       height={height}
       style={{ cursor: 'pointer', ...style }}
+      arial-label={typeof icon === 'string' ? icon : 'icon'}
     />
   )
 }

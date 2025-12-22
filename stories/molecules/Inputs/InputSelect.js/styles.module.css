@@ -16,6 +16,10 @@
 
 .input-wrapper_content {
     height: 50px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .input-wrapper_content_input {
@@ -23,7 +27,7 @@
     border: none;
     outline: none;
     border-radius: 5px;
-
+    background-color: var(--color-base-white);
 }
 
 .input-wrapper__list {

@@ -2,7 +2,8 @@
 
 // main styles
 import './stories/assets/public/styles.css'
-import './stories/assets/public/global.css'
+import './stories/assets/public/global.light.css'
+import './stories/assets/public/global.dark.css'
 
 // swiper styles
 import 'swiper/css'

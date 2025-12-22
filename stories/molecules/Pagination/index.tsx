@@ -106,7 +106,11 @@ export const Pagination: React.FC<PaginationProps> = ({
 
       {isVisableButtons && isVisableButtonRight && (
         <button onClick={handleNextPage} className={`${styles.button} ${styles.nextButton}`} aria-label='Next Page'>
-          <Icon icon='IconArrowRight' size={20} color={getGlobalStyle('--color-icons-primary')} />
+          <Icon
+            icon='IconArrowRight'
+            size={20}
+            color={getGlobalStyle('--color-icons-primary')}
+          />
         </button>
       )}
 

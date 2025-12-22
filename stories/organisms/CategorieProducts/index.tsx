@@ -24,20 +24,6 @@ export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
     return id
   }
 }) => {
-  const iconsByNames: Record<string, string> = {
-    Combos: 'IconLunch',
-    Desayunos: 'IconEgg',
-    Entradas: 'IconNoodles',
-    Panadería: 'IconBread',
-    Sopas: 'IconSoup',
-    Ensaladas: 'IconPlatter',
-    'Platos Fuertes': 'IconDinner',
-    Acompañamientos: 'IconPotate',
-    'Menú Infantil': 'IconPancake',
-    Postres: 'IconDonut',
-    Bebidas: 'IconDrink',
-    NINGUNO: 'IconBox'
-  }
   return (
     <div>
       <Carousel breakpoints={breakpoints as any} pagination={false}>
@@ -46,33 +32,21 @@ export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
             key={item.carProId}
             className={styles.categorie}
             title={item.pName}
-            style={(typeof item?.checked === 'boolean' && item?.checked) ? { border: `1px solid ${getGlobalStyle('--color-text-primary')} ` } : {}}
             onClick={() => {
               handleChangeCheck(item.carProId)
             }}
           >
-            <div className={styles.cat_item}>
-              <Icon
-                color={getGlobalStyle('--color-icons-gray')}
-                icon={iconsByNames[item.pName] ?? 'IconBox'}
-                size={30}
-              />
+            <div className={styles.cat_item}
+            style={(typeof item?.checked === 'boolean' && item?.checked) ? { border: `1px solid ${getGlobalStyle('--color-text-primary')} ` } : {}}
+            >
               <Column justifyContent='flex-start' alignItems='flex-start'>
                 <Text
                   className={styles.cat_title}
-                  size="sm"
-                  align="center"
-                  color="gray"
+                  size='xl'
+                  align='center'
+                  color='primary'
                 >
                   {item.pName}
-                </Text>
-                <Text
-                  className={styles.cat_items}
-                  size="sm"
-                  align="center"
-                  color="gray"
-                >
-                  {Number(item?.productFoodsAll?.length)} items
                 </Text>
               </Column>
             </div>

@@ -157,7 +157,7 @@ export const MerchantInfo = styled.div`
   box-sizing: border-box;
   border-radius: 4px 4px 0 0;
   position: relative;
-  background-color: #fafbfc;
+  background-color: var(--color-base-white);
   display: flex;
   flex-direction: row;
   padding: 0 30px;

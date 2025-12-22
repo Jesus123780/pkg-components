@@ -4,9 +4,59 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 0 10px;
+    padding: 5px;
     background-color: var(--color-base-white);
     border-radius: 4px;
     border: 1px solid var(--color-neutral-gray-silver);
     box-sizing: border-box;
+}
+
+/* styles.module.css
+   All layout & look here. Uses CSS variables provided inline by the component
+   or falls back to design tokens (var(--color-base-white) etc).
+*/
+
+.search-bar__form {
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
+/* Icon wrapper */
+.search-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  color: var(--search-icon-color, #5f6368);
+  flex: 0 0 auto;
+}
+
+/* input styling */
+.search-input {
+  width: 100%;
+  font-size: 16px;
+  border: none;
+  background: transparent;
+  padding: 8px 0;
+  color: var(--color-neutral-black);
+  outline: none;
+  caret-color: var(--search-caret-color, var(--color-primary, #2EA6FF));
+  box-sizing: border-box;
+}
+
+/* placeholder color (compatible with most browsers) */
+.search-input::placeholder {
+  color: var(--search-placeholder-color, #9AA6AE);
+}
+
+/* focus ring - accessible but subtle */
+.search-input:focus {
+  outline: none;
+}
+
+/* ensure icon never captures pointer events for accessibility */
+.search-icon > * {
+  pointer-events: none;
 }

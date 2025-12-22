@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 import stylesInitial from './styles.module.css'
 import stylesSimple from './simpleStyles.module.css'
+import stylesLine from './stylesLine.module.css'
 
 interface StepperProps {
-  mode?: 'initial' | 'simple'
+  mode?: 'initial' | 'simple' | 'line'
   active: number
   steps: string[] | JSX.Element[]
   style?: React.CSSProperties
+  onOver?: boolean
   onClick: (step: number) => void
 }
 
@@ -15,11 +17,13 @@ export const Stepper: React.FC<StepperProps> = ({
   active,
   steps = [''],
   style,
+  onOver = false,
   onClick
 }) => {
   const styles = {
     initial: stylesInitial,
-    simple: stylesSimple
+    simple: stylesSimple,
+    line: stylesLine
   }[mode]
 
   const stepCount = steps.length
@@ -41,8 +45,8 @@ export const Stepper: React.FC<StepperProps> = ({
           className={`${styles.tabs} ${index === active ? 'active' : ''}`}
           role="button"
           onClick={() => onClick(index)}
-          onMouseEnter={() => setHoverIndex(index)}    /* <-- */
-          onMouseLeave={() => setHoverIndex(null)}     /* <-- */
+          onMouseEnter={() => onOver && setHoverIndex(index)}    /* <-- */
+          onMouseLeave={() => onOver && setHoverIndex(null)}     /* <-- */
         >
           <span
             className={`${styles.text} ${currentIndex === index ? styles.activeText : ''}`}

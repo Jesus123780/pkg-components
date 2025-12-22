@@ -63,7 +63,7 @@ export const Plan: React.FC<PlanProps> = ({
             Con {process.env.BUSINESS_TITLE} puedes seguir vendiendo en un click, sin importar si tienes un restaurante, una tienda o un negocio de servicios.
             ve al checkout realiza el pago y sigue vendiendo.
           </Paragraph>
-          <Row justifyContent='end'>
+          <Row>
             {paymentMethodCards?.map((card: Card) => {
               return (
                 <div key={card.name} style={{ width: 'min-content', marginLeft: getGlobalStyle('--spacing-xs') }}>
@@ -75,7 +75,7 @@ export const Plan: React.FC<PlanProps> = ({
           <Divider marginTop={getGlobalStyle('--spacing-xl')} />
           <Divider marginTop={getGlobalStyle('--spacing-xl')} />
           <Column>
-            <RippleButton onClick={onRedirectTo} widthButton='300px' radius='6px'>
+            <RippleButton onClick={onRedirectTo} radius='6px'>
               Ir al checkout
             </RippleButton>
           </Column>

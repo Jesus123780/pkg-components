@@ -9,6 +9,7 @@ interface ProductsSalesProps {
     data: any;
     dispatch: React.Dispatch<any>;
     onClick: (product: any) => void;
+    handleAddProduct: (product: any) => void;
     handleComment: (product: any) => void;
     handleDecrement: (product: any) => void;
     handleFreeProducts: (product: any) => void;
@@ -23,6 +24,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
     handleComment,
     handleDecrement,
     handleFreeProducts,
+    handleAddProduct,
     numberFormat
 }) => {
     return <>
@@ -60,7 +62,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 >
                                     <button
                                         onClick={(e) => {
-                                            e.stopPropagation() // evita que se propague al card
+                                            e.stopPropagation()
                                             dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
                                         }}
                                         style={{
@@ -73,7 +75,11 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                             height: 30
                                         }}
                                     >
-                                        <Icon icon='IconDelete' color={getGlobalStyle('--color-icons-primary')} size={16} />
+                                        <Icon
+                                            icon='IconDelete'
+                                            color={getGlobalStyle('--color-icons-primary')}
+                                            size={16}
+                                        />
                                     </button>
                                     <button
                                         onClick={(e) => {
@@ -88,7 +94,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                             justifyContent: 'center',
                                             width: 30,
                                             height: 30,
-                                            backgroundColor: getGlobalStyle('--color-neutral-gray-dark'),
+                                            backgroundColor: getGlobalStyle('--color-feedback-success-dark'),
                                         }}
                                     >
                                         <Icon
@@ -164,10 +170,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                     handleDecrement(product)
                                 }}
                                 handleIncrement={() => {
-                                    dispatch({
-                                        type: 'ADD_TO_CART',
-                                        payload: product
-                                    })
+                                    handleAddProduct(product)
                                 }}
                                 handleFreeProducts={() => {
                                     handleFreeProducts(product)
@@ -177,10 +180,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 }}
                                 edit={false}
                                 onClick={() => {
-                                    dispatch({
-                                        type: 'ADD_TO_CART',
-                                        payload: product
-                                    })
+                                    handleAddProduct(product)
                                 }}
                                 pName={product.pName}
                                 render={<Icon size={20} icon='IconSales' />}

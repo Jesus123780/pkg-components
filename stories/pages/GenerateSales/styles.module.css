@@ -1,19 +1,27 @@
 .container {
     width: 100%;
-    grid-template: 50px 20px auto 50px/3fr 1fr;
+    grid-template: 50px 50px 20px auto 50px/3fr 1fr;
     grid-template-areas:
         "header header-info"
-        "filter scroll"
+        "header-query header-info"
+        "product scroll"
         "product scroll"
         "action_product action";
     height: 100%;
     max-width: 100%;
     max-height: 100%;
     min-height: auto;
-    border-radius: 4px;
     display: grid;
-    gap: 20px;
+    gap: 0;
+}
 
+.header-query {
+    display: grid;
+    grid-area: header-query;
+    overflow: hidden;
+    grid-template: 50px/30% 1fr;
+    place-items: flex-end;
+    align-items: center;
 }
 
 .header-info {
@@ -23,6 +31,7 @@
     justify-content: space-between;
     padding: 0 20px;
 }
+
 .header-info__client-info_payment {
     display: flex;
     align-items: center;
@@ -43,6 +52,7 @@
     padding: 0 20px;
 
 }
+
 .header {
     align-items: center;
     border: 1px solid var(--color-neutral-gray-light);
@@ -51,7 +61,6 @@
     justify-content: space-between;
     overflow: hidden;
     position: relative;
-    height: 100px;
 }
 
 .content__products {
@@ -76,8 +85,8 @@
     padding-top: var(--spacing-2xl);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    row-gap: 85px;
     position: relative;
+    row-gap: 0;
 }
 
 .content__action {
@@ -105,7 +114,8 @@
     height: 60px;
     left: 5px;
     border-radius: 30px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0.7); /* Inicialmente sin sombra */
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.7);
+    /* Inicialmente sin sombra */
     animation: pulse 1.5s infinite ease-in-out;
 }
 
@@ -155,6 +165,7 @@
     text-overflow: ellipsis;
     font-size: 15px;
 }
+
 .header-info_content {
     display: flex;
     align-items: center;
@@ -162,13 +173,28 @@
     width: 150px;
 }
 
+.header__actions_filter {
+    background: #fcebea;
+    border: 1px solid #fcebea;
+    height: 40px;
+    border-radius: 20px;
+    padding: 9px 20px;
+    min-width: 7rem;
+    width: 7rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(59, 58, 58, 0.7); 
+        box-shadow: 0 0 0 0 rgba(59, 58, 58, 0.7);
     }
+
     70% {
         box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
     }
