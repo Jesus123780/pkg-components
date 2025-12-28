@@ -127,6 +127,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   openAside = false,
   isLoading = false,
   loadingClients = false,
+  dataFilter,
   client = {
     clientName: '',
     ccClient: '',
@@ -134,6 +135,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     clientNumber: ''
   },
   dispatch = () => { },
+  setActiveFilter = () => { },
+  activeFilter = () => { },
   handleFreeProducts = () => { },
   onClick = (product: MiniCardProductProps) => {
     return product
@@ -161,9 +164,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     { key: 'created_at', label: 'Fecha de creación', defaultDirection: 'desc' },
     { key: 'price', label: 'Precio', defaultDirection: 'asc' }
   ] as SortOption[]
-  
+
   const [sort, setSort] = useState<Sort>({ field: 'name', direction: 'asc' })
- const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   return (
     <AwesomeModal
       title='Crea una venta'
@@ -179,7 +182,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       zIndex={getGlobalStyle('--z-index-high')}
     >
       <AwesomeModal
-        title='Realiza filtrado avanzado'
         show={showFilter}
         size={MODAL_SIZES.small}
         header
@@ -196,6 +198,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           fields={fields}
           sort={sort}
           setSort={setSort}
+          dataFilter={dataFilter}
+          activeFilter={activeFilter}
+          setActiveFilter={setActiveFilter}
         />
       </AwesomeModal>
       <div className={styles.container}>
@@ -210,7 +215,15 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             padding='0px 20px'
             placeholder='Buscar producto por nombre o código'
           />
-          <div className={styles.header__actions_filter} onClick={() => setShowFilter(true)}>
+          <div
+            className={styles.header__actions_filter}
+            onClick={() => setShowFilter(true)}
+            data-test-id='filter-advanced'
+            style={{
+              backgroundColor: '#fcebea',
+              border: showFilter ? '1px solid #fcebea' : '1px solid transparent',
+            }}
+          >
             <Row alignItems='center'>
               <Text color='primary'>
                 Filtros
@@ -222,14 +235,28 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
               />
             </Row>
           </div>
+          <div
+            className={styles.header__actions_filter}
+            data-test-id='filter-advanced'
+            style={{
+              backgroundColor: getGlobalStyle('--color-base-transparent'),
+              border:  `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
+            }}
+          >
+            <Row alignItems='center' justifyContent='center'>
+              <Text color='gray-dark' align='center'>
+                Limpiar
+              </Text>
+            </Row>
+          </div>
         </div>
         <VirtualizedList
           items={productsFood}
           viewHeight="auto"
           grid={true}
           columns={15}  // Si no quieres calcular columnas automáticamente, mantén esto.
-          minColumnWidth={120} // Esto asegura un ancho mínimo para las tarjetas.
-          columnGap={15}  // Espacio entre columnas
+          minColumnWidth={140} // Esto asegura un ancho mínimo para las tarjetas.
+          columnGap={20}  // Espacio entre columnas
           itemHeight={300}  // Fijo o dinámico si se requiere.
           observeResize={true}  // Autoajuste del grid con ResizeObserver
           className={styles.content__products}
@@ -240,7 +267,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             };
             const isExistInSale = Boolean(product?.existsInSale);
             const manageStock = Boolean(product?.manageStock);
-
             return (
               <MiniCardProduct
                 {...product}
@@ -251,6 +277,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                 ProDescuento={product.ProDescuento}
                 ProImage={product.ProImage}
                 ProPrice={numberFormat(product.ProPrice)}
+                plainPrice={product.ProPrice}
                 ProQuantity={product.ProQuantity}
                 ValueDelivery={product.ValueDelivery}
                 comment={false}

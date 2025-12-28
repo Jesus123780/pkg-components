@@ -45,6 +45,7 @@ export interface MiniCardProductProps extends ProductFood {
   style?: React.CSSProperties & {
     quantity_container?: React.CSSProperties
   }
+  plainPrice?: number | string
   handleDecrement?: () => void
   handleComment?: () => void
   handleDelete?: () => void

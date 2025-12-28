@@ -8,6 +8,8 @@ export const choices = {
       tabasco: '#A21B11',
       chablis: '#FFF4F4',
       turquoise: '#63BBAE',
+      whiteIce: '#deffed',
+      crispyMintGreen: '#1ea664',
       pinkLight: '#FFC2C2',
       darkerRed: '#5C0F0A',
       redGradient: 'linear-gradient(180deg, #DA291C 0%, #C00000 96.15%)',

@@ -1,0 +1,98 @@
+/* styles.module.css */
+.root {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  display: block;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  padding: 6px 10px;
+  border: 1px solid #eee;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.tabActive {
+  background: #0b74de;
+  color: #fff;
+  border-color: #0b74de;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.group {
+  border: 1px solid #f2f4f7;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.groupTitle {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.valuesList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.valueItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.valueImage {
+  width: 22px;
+  height: 22px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.valueText {
+  flex: 1;
+}
+
+.valueBadge {
+  background: #eef6ff;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.noValues, .noGroups {
+  color: #7a7a7a;
+  font-size: 13px;
+}
+
+.error {
+  color: #b00020;
+  margin-bottom: 8px;
+}
+
+.retryBtn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}

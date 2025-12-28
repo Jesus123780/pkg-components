@@ -44,7 +44,7 @@ export const CategoriesProducts: React.FC<CategorieProductsProps> = ({
                   className={styles.cat_title}
                   size='xl'
                   align='center'
-                  color='primary'
+                  color='gray-dark'
                 >
                   {item.pName}
                 </Text>

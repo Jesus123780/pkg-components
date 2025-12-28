@@ -19,7 +19,7 @@
     display: grid;
     grid-area: header-query;
     overflow: hidden;
-    grid-template: 50px/30% 1fr;
+    grid-template: 50px/30% min-content min-content;
     place-items: flex-end;
     align-items: center;
 }
@@ -86,7 +86,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     position: relative;
-    row-gap: 0;
+    gap: 10px;
 }
 
 .content__action {
@@ -174,8 +174,6 @@
 }
 
 .header__actions_filter {
-    background: #fcebea;
-    border: 1px solid #fcebea;
     height: 40px;
     border-radius: 20px;
     padding: 9px 20px;

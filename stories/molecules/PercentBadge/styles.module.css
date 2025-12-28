@@ -1,0 +1,73 @@
+/* PercentBadge.module.css */
+.root {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-family-regular);
+    margin: 0 5px;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 1;
+    min-width: 40px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    transition: transform 140ms ease, box-shadow 140ms ease;
+    user-select: none;
+}
+
+.pill:hover {
+    transform: translateY(-1px);
+}
+
+.positive {
+    background: var(--color-primary-pink-light);
+    color: var(--color-text-primary);
+}
+
+.negative {
+    background: var(--color-background-white-ice);
+    color: var(--color-text-crispy-mint-green);
+}
+
+/* neutral / no-change */
+.neutral {
+    background: var(--color-neutral-gray);
+    color: var(--color-neutral-black);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.arrow {
+    display: inline-block;
+    transform-origin: center;
+    width: 12px;
+    height: 12px;
+    font-size: 12px;
+}
+
+/* size modifiers */
+.small {
+    font-size: 11px;
+    padding: 3px 6px;
+    width: min-content;
+}
+
+.medium {
+    font-size: 13px;
+    padding: 5px 10px;
+    min-width: 44px;
+    width: min-content;
+}
+
+.large {
+    font-size: 15px;
+    padding: 6px 12px;
+    width: min-content;
+
+}

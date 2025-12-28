@@ -37,7 +37,11 @@ export const Stepper: React.FC<StepperProps> = ({
   return (
     <div
       className={styles.container}
-      style={{ ...style, '--step-count': String(stepCount) } as React.CSSProperties}
+      style={{ 
+        ...style, 
+        '--step-count': String(stepCount),
+        borderBottom: mode === 'line' ? '2px solid #f5f0eb' : undefined
+      } as React.CSSProperties}
     >
       {steps.map((title, index) => (
         <div

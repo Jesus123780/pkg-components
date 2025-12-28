@@ -6,46 +6,49 @@
     display: flex;
     flex-direction: column;
     height: 250px;
+    padding: 10px;
     position: relative;
     transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    width: 122px;
+    width: 140px;
 }
 
 .product-card-content {
-    position: relative;
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    grid-gap: 6px;
     gap: 6px;
+    height: inherit;
+    position: relative;
     text-decoration: none;
     z-index: var(--z-index-5);
-    height: inherit;
 }
 
 .product-card-image__container {
-    position: relative;
-    background-size: cover;
-    background-position: center;
-    width: 122px;
-    height: 100px;
     align-items: center;
-    justify-content: center;
+    background-position: center;
+    background-size: cover;
     display: flex;
+    height: 100px;
+    justify-content: center;
+    position: relative;
+    width: 122px;
 }
 
 .wrapper-image {
     height: 100%;
     overflow: hidden;
+    border-radius: 8px;
 }
 
 .product-card-image {
+    border-radius: 8px;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
 .product-card-image__overlay {
+    border-radius: 8px;
     position: absolute;
     inset: 0;
     background: rgb(0 0 0 / 7%);
@@ -100,25 +103,38 @@
 }
 
 .stock_container {
-    display: flex;
-    justify-content: center;
     position: absolute;
-    top: 75px;
-    z-index: var(--z-index-50);
+    top: 85px;
+    left: 51%;
+    transform: translateX(-50%);
+
+    display: flex;
     align-items: center;
-    background-color: var(--color-base-white);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    justify-content: center;
+
+    width: 87%;
     height: 25px;
-    width: 100%;
-    transition: all 0.2s ease-in-out;
+
+    background-color: var(--color-base-white);
+    border: 1px solid var(--color-neutral-gray);
+    border-radius: 0 0 8px 8px;
+
+    z-index: var(--z-index-50);
+
+    /* Smooth & performant animations */
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+
+    will-change: transform, opacity;
 }
 
 .quantity_container {
     display: flex;
     justify-content: flex-end;
     position: absolute;
-    right: 5px;
+    right: 15px;
     top: 60px;
     z-index: var(--z-index-50);
     width: min-content;

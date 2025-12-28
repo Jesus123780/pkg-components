@@ -2642,25 +2642,12 @@ export const IconGrid: React.FC<IconProps> = ({ size, color }) => {
 export const IconTag: React.FC<IconProps> = ({ size, color }) => {
   return <svg
     xmlns="http://www.w3.org/2000/svg"
-    xmlSpace="preserve"
-    id="Capa_1"
-    x={0}
-    y={0}
     width={size ?? 24}
     height={size ?? 24}
-    viewBox="0 0 595.3 841.9"
+    viewBox="0 0 24 24"
+    fill={color ?? getGlobalStyle('--color-icons-black')}
   >
-    <style>
-      {".st0{fill:none;stroke:#000;stroke-width:50;stroke-miterlimit:10}"}
-    </style>
-    <path
-      d="M499.5 690.4H95.8c-34.7 0-62.7-28.1-62.7-62.7V214.2c0-34.7 28.1-62.7 62.7-62.7h403.7c34.7 0 62.7 28.1 62.7 62.7v413.4c0 34.7-28.1 62.8-62.7 62.8z"
-      className="st0"
-    />
-    <path
-      d="M373.7 690.4V585.1c0-41 33.3-74.3 74.3-74.3h114.3"
-      className="st0"
-    />
+    <path d="M20 11.5v-4A3.5 3.5 0 0 0 16.5 4h-9A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h5a1.5 1.5 0 0 0 1.5-1.5v-2a3.5 3.5 0 0 1 3.5-3.5h1a1.5 1.5 0 0 0 1.5-1.5Zm-.073 2.053A2.488 2.488 0 0 1 18.5 14h-1a2.5 2.5 0 0 0-2.5 2.5v2c0 .422-.105.82-.29 1.169a7.509 7.509 0 0 0 5.217-6.116ZM7.5 3h9A4.5 4.5 0 0 1 21 7.5v5a8.5 8.5 0 0 1-8.5 8.5h-5A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3Z" />
   </svg>
 }
 

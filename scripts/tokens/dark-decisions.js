@@ -89,7 +89,8 @@ const decisions = {
       white: brand.white,
       success: brand.japaneseLaurel,
       error: brand.kuCrimson,
-      warning: brand.meteor
+      warning: brand.meteor,
+      crispyMintGreen: brand.crispyMintGreen
     },
     background: {
       primary: brand.lust,
@@ -103,6 +104,7 @@ const decisions = {
       selection: brand.selection,
       pink: brand.sweetPink,
       success: brand.pigmentGreen,
+      whiteIce: brand.whiteIce
     },
     icons: {
       primary: brand.alizarinCrimson,

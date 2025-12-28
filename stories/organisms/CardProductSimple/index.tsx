@@ -17,6 +17,7 @@ import {
 } from './utils'
 import { QuantityButtonFloat } from '../../molecules/QuantityButtonFloat'
 import styles from './styles.module.css'
+import { PercentBadge } from '../../molecules'
 
 export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   del = false,
@@ -133,9 +134,19 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
             </span>
 
             <Row justifyContent='space-between'>
-              <span className={styles.price}>
-                {free ? 'Gratis' : priceOrFree}
-              </span>
+              <Row>
+                <span className={styles.price}>
+                  {free ? 'Gratis' : priceOrFree}
+                </span>
+                {Boolean(ProDescuento) &&
+                  <PercentBadge
+                    baseValue={ProDescuento}
+                    compareValue={ProPrice}
+                    precision={0}
+                  />
+                }
+              </Row>
+
               <span className={styles.price_discount}>
                 {numberFormat(ProDescuento)}
               </span>

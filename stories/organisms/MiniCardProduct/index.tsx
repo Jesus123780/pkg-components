@@ -9,9 +9,10 @@ import {
 } from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'
+import { PercentBadge } from '../../molecules'
 
 export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
-  ProPrice,
+  ProPrice = 0,
   ProDescription = '',
   ProImage = '/images/placeholder-image.webp',
   pName = '',
@@ -27,6 +28,8 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
   showInfo = false,
   manageStock = false,
   ProQuantity = 0,
+  plainPrice = 0,
+  ProDescuento = 0,
   stock = 0,
   comment = '',
   style = {},
@@ -61,7 +64,7 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
         }}
         className={styles['product-card']}
       >
-        {(withStock && manageStock) && <div className={styles.stock_container} >
+        {(withStock && manageStock) && <div className={styles.stock_container}>
           <Text
             align='center'
             color='default'
@@ -75,7 +78,8 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
               {stock <= 0 ? 'Agotado' : `${stock} Disponibles`}
             </span>
           </Text>
-        </div>}
+        </div>
+        }
         {withQuantity && (
           <div className={styles.quantity_container} style={{ ...style.quantity_container }}>
             <QuantityButtonFloat
@@ -131,6 +135,14 @@ export const MiniCardProduct: React.FC<MiniCardProductProps> = ({
             >
               {ProPrice}
             </div>
+            {Boolean(ProDescuento)
+              && <PercentBadge
+                baseValue={ProDescuento}
+                compareValue={plainPrice}
+                precision={0}
+                size='small'
+              />
+            }
             <span
               className={styles['product-card__title']}
               title={pName}

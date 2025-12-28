@@ -55,6 +55,7 @@
   --color-text-success: #50a773;
   --color-text-error: #EE0000;
   --color-text-warning: #CC870F;
+  --color-text-crispy-mint-green: #1ea664;
 
   --color-background-primary: #da291c;
   --color-background-primary-light: #FFF4F4;
@@ -67,6 +68,7 @@
   --color-background-selection: rgba(0, 0, 0, 0.1);
   --color-background-pink: #ec938d;
   --color-background-success: #00a650;
+  --color-background-white-ice: #deffed;
 
   --color-icons-primary: #ff0000;
   --color-icons-secondary: #0062ff;
