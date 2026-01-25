@@ -1,169 +1,54 @@
+/* Cleaned & optimized CSS (no :root definitions) */
+
+/* Layout */
 .container {
+    display: grid;
     width: 100%;
-    grid-template: 50px 50px 20px auto 50px/3fr 1fr;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    grid-template-rows: 50px 50px 20px 1fr 50px;
+    grid-template-columns: 3fr 1fr;
     grid-template-areas:
         "header header-info"
         "header-query header-info"
         "product scroll"
         "product scroll"
         "action_product action";
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    min-height: auto;
-    display: grid;
     gap: 0;
-}
-
-.header-query {
-    display: grid;
-    grid-area: header-query;
     overflow: hidden;
-    grid-template: 50px/30% min-content min-content;
-    place-items: flex-end;
-    align-items: center;
 }
 
+/* Shared panel border */
+.header,
+.header-info,
+.filter,
+.content__action,
+.content__action_product,
+.content__categorie__aside,
+.content__scrolling,
+.content__products {
+    border: 1px solid var(--color-neutral-gray-light);
+}
+
+/* Header */
+.header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header info */
 .header-info {
     grid-area: header-info;
-    border: 1px solid var(--color-neutral-gray-light);
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 0 20px;
-}
-
-.header-info__client-info_payment {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 8px 12px;
-    border-radius: 200px;
-    transition: background-color .3s ease-in-out;
-    border: 0;
-    cursor: pointer;
-    background-color: var(--color-background-primary-light);
-}
-
-.filter {
-    grid-area: filter;
-    border: 1px solid var(--color-neutral-gray-light);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-
-}
-
-.header {
-    align-items: center;
-    border: 1px solid var(--color-neutral-gray-light);
-    display: flex;
-    grid-area: header;
-    justify-content: space-between;
-    overflow: hidden;
-    position: relative;
-}
-
-.content__products {
-    align-items: self-start;
-    border: 1px solid var(--color-neutral-gray-light);
-    column-gap: 15px;
-    display: grid;
-    grid-area: product;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    justify-content: center;
-    overflow-y: auto;
-    padding-left: 20px;
-    row-gap: 60px;
-    overflow-x: hidden;
-}
-
-.content__scrolling {
-    grid-area: scroll;
-    border: 1px solid var(--color-neutral-gray-light);
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-top: var(--spacing-2xl);
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    position: relative;
-    gap: 10px;
-}
-
-.content__action {
-    border: 1px solid var(--color-neutral-gray-light);
-    grid-area: action;
-    justify-content: space-between;
-    display: flex;
-    align-items: center;
-}
-
-.content__action_product {
-    border: 1px solid var(--color-neutral-gray-light);
-    grid-area: action_product;
-    justify-content: flex-start;
-    display: flex;
-}
-
-.content__categorie__aside {
-    width: 10px;
-    background-color: var(--color-background-gray);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    height: 60px;
-    left: 5px;
-    border-radius: 30px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0.7);
-    /* Inicialmente sin sombra */
-    animation: pulse 1.5s infinite ease-in-out;
-}
-
-.content__counter {
-    align-items: center;
     border-radius: 4px;
-    border: 1px solid var(--color-neutral-gray-light);
-    display: flex;
-    justify-content: center;
-    margin-right: 10px;
-    padding: 10px;
-    position: relative;
-    width: min-content;
-}
-
-.counter {
-    background-color: var(--color-primary-red);
-    border-radius: 20px;
-    color: var(--color-text-white);
-    display: inline-block;
-    font-size: 13px;
-    height: var(--spacing-xl);
-    line-height: 20px;
-    position: absolute;
-    right: 0px;
-    text-align: center;
-    top: -5px;
-    width: var(--spacing-xl);
-}
-
-.container_circle {
-    background-color: var(--color-background-primary);
-    border-radius: 50%;
-    height: 10px;
-    margin-right: 8px;
-    width: 10px;
-    z-index: var(--z-index-50);
-}
-
-.header-info__client-name {
-    line-height: .875rem;
-    font-weight: 500;
-    display: block;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 15px;
 }
 
 .header-info_content {
@@ -173,6 +58,43 @@
     width: 150px;
 }
 
+/* Client pill */
+.header-info__client-info_payment {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 200px;
+    transition: background-color .3s ease-in-out;
+    border: 0;
+    cursor: pointer;
+    background-color: var(--color-background-primary-light);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Truncated name */
+.header-info__client-name {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+/* Header query controls */
+.header-query {
+    grid-area: header-query;
+    display: grid;
+    grid-template-columns: 30% min-content min-content;
+    align-items: center;
+    gap: 20px;
+    overflow: hidden;
+    justify-content: flex-start;
+}
+
+/* Filter/action button */
 .header__actions_filter {
     height: 40px;
     border-radius: 20px;
@@ -182,18 +104,130 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
+/* Products grid (left column) */
+.content__products {
+    grid-area: product;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    column-gap: 15px;
+    row-gap: 60px;
+    padding-left: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    justify-content: center;
+}
+
+/* Right scrolling area */
+.content__scrolling {
+    grid-area: scroll;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    row-gap: 20px;
+    padding-top: var(--spacing-2xl);
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Action areas */
+.content__action {
+    grid-area: action;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content__action_product {
+    grid-area: action_product;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Counter / badge */
+.content__counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-right: 10px;
+    position: relative;
+    border-radius: 4px;
+    width: min-content;
+}
+
+.counter {
+    position: absolute;
+    top: -6px;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    font-size: 13px;
+    background-color: var(--color-primary-red);
+    color: var(--color-text-white);
+}
+
+/* Small circular indicator */
+.container_circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-background-primary);
+    margin-right: 8px;
+    z-index: var(--z-index-50);
+}
+
+/* Category aside indicator with lightweight pulse (no expensive box-shadow) */
+.content__categorie__aside {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 60px;
+    width: 10px;
+    background-color: var(--color-background-gray);
+    border-radius: 30px;
+    overflow: visible;
+}
+
+/* visual pulse via pseudo-element (transform & opacity only) */
+.content__categorie__aside::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80px;
+    height: 80px;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    background: rgba(59, 58, 58, 0.06);
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: pulse 1.5s infinite;
+}
+
+/* Pulse animation (GPU-friendly: transform + opacity) */
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(59, 58, 58, 0.7);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.6;
     }
 
     70% {
-        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0;
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0;
     }
 }

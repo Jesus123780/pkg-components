@@ -9,8 +9,8 @@
   --color-primary-red: #ff0000;
   --color-primary-red2: #C00000;
   --color-primary-red-dark: #A21B11;
-  --color-primary-red-header: linear-gradient(180deg, #DA291C 0%, #C00000 96.15%);
-  --color-primary-red-qty-button: linear-gradient(180deg, #DA291C 0%, #C00000 44.44%);
+  --color-primary-red-header: linear-gradient(180deg, #ea1d2c 0%, #C00000 96.15%);
+  --color-primary-red-qty-button: linear-gradient(180deg, #ea1d2c 0%, #C00000 44.44%);
   --color-primary-red-bg: #FFF4F4;
   --color-primary-disabled: #c4c4c4;
   --color-primary-pink-light: #FFC2C2;
@@ -29,7 +29,7 @@
   --color-neutral-gray-white: #F9F9F9;
   --color-neutral-white: #FFFFFF;
 
-  --color-campaigns-red: #da291c;
+  --color-campaigns-red: #ea1d2c;
   --color-campaigns-black: #212322;
   --color-campaigns-blue: #006c85;
   --color-campaigns-orange: #e07c00;
@@ -46,7 +46,7 @@
   --color-gradients-shimmer: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0) 81%);
   --color-gradients-skeleton: -48px 78px 0 -48px #ededed, -51px 102px 0 -51px #ededed;
 
-  --color-text-primary: #da291c;
+  --color-text-primary: #ea1d2c;
   --color-text-secondary: #0062ff;
   --color-text-gray-light: #666666;
   --color-text-inactive: #C4C4C4;
@@ -57,7 +57,7 @@
   --color-text-warning: #CC870F;
   --color-text-crispy-mint-green: #1ea664;
 
-  --color-background-primary: #da291c;
+  --color-background-primary: #ea1d2c;
   --color-background-primary-light: #FFF4F4;
   --color-background-secondary: #0062ff;
   --color-background-secondary-light: #E4F7FC;
@@ -69,6 +69,7 @@
   --color-background-pink: #ec938d;
   --color-background-success: #00a650;
   --color-background-white-ice: #deffed;
+  --color-background-surface-hover: #00000012;
 
   --color-icons-primary: #ff0000;
   --color-icons-secondary: #0062ff;

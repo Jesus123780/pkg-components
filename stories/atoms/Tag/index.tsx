@@ -1,7 +1,6 @@
 'use client'
 
-import PropTypes from 'prop-types'
-import React from 'react'
+import React, { JSX } from 'react'
 import { classNames } from '../../../helpers'
 import styles from './styles.module.css'
 
@@ -14,24 +13,28 @@ interface TagProps {
   label?: string
   lineHeight?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '9xl' | '10xl'
   style?: object
+  as?: keyof JSX.IntrinsicElements
 }
 
 export const Tag: React.FC<TagProps> = ({
-  label = 'OBLIGATORIO',
+  label = '',
   children,
   className = '',
   color,
   backgroundColor,
   align,
   lineHeight,
+  as = 'span',
   style = {}
 }) => {
   const combinedClasses = Array.isArray(className)
     ? className.filter(Boolean).join(' ')
     : String(className)
 
+  const Component = as
+
   return (
-    <span
+    <Component
       style={style}
       className={classNames('marmita-minitag', {
         [`${combinedClasses}`]: combinedClasses,
@@ -44,12 +47,6 @@ export const Tag: React.FC<TagProps> = ({
     >
       {label}
       {children}
-    </span>
+    </Component>
   )
-}
-
-Tag.propTypes = {
-  children: PropTypes.any,
-  label: PropTypes.string,
-  className: PropTypes.string // Validación del tipo de className
 }

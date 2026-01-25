@@ -33,7 +33,8 @@ interface AsideProps {
     change: boolean
     ValueDelivery: boolean
   }
-  discount?: number
+  discountPercent?: number
+  discountAmount?: number
   handleClickAction?: () => void
   handleCloseAside?: () => void
   handleOpenAside?: () => void
@@ -63,16 +64,19 @@ export const AsideSales: React.FC<AsideProps> = ({
     ValueDelivery: false
   },
   overline = false,
-  discount = 0,
+  discountPercent = 0,
+  discountAmount = 0,
   dispatch = () => { },
   handleCloseAside = () => { },
   handleOpenAside = () => { },
   handleClickAction = () => { },
   handleChange = () => { }
 }) => {
+
   const handleDiscount = (percent: number): void => {
     dispatch({ type: 'APPLY_DISCOUNT', payload: percent });
-  };
+  }
+
   return (
     <>
       {overline && (
@@ -95,7 +99,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           handleOpenAside()
           handleCloseAside()
         }}
-        style={{ 
+        style={{
           padding: getGlobalStyle('--spacing-xs'),
           zIndex: getGlobalStyle('--z-index-modal'),
           height: '100%',
@@ -112,28 +116,31 @@ export const AsideSales: React.FC<AsideProps> = ({
           }}
           id='cliId'
           action={false}
+          beforeLabel='Cliente'
           loading={loadingClients}
           name='cliId'
-          width='100%'
-          onChange={(e) => handleChange({ target: { name: e.target.name, value: e.target.value } })}
-          optionName='clientName'
+          onChange={(e) => {
+            handleChange({ target: { name: String(e.target.name), value: e.target.value } })
+          }}
+          optionName={['clientName', 'clientLastName']}
           options={dataClientes?.data ?? []}
-          search={true}
           canDelete={true}
           handleClean={() => {
             return handleChange({ target: { name: 'cliId', value: '' } })
           }}
           title='Selecciona un cliente'
           value={values?.cliId ?? ''}
+
         />
         <Divider marginBottom={getGlobalStyle('--spacing-3xl')} />
         <NewSelect
           name='tableId'
-          width='100%'
           optionName='tableName'
           beforeLabel='Mesa'
           options={storeTables?.storeTables ?? []}
-          onChange={(e) => handleChange({ target: { name: e.target.name, value: e.target.value } })}
+          onChange={(e) => {
+            return handleChange({ target: { name: String(e.target.name), value: e.target.value } })
+          }}
           title='Selecciona una mesa'
           value={values?.tableId ?? ''}
           handleClean={() => {
@@ -188,7 +195,11 @@ export const AsideSales: React.FC<AsideProps> = ({
           prefix='$'
           value={values?.ValueDelivery}
         />
-        <OrderDiscount onChange={handleDiscount} initialValue={discount} />
+        <OrderDiscount
+          onChange={handleDiscount as any}
+          discountPercent={discountPercent}
+          discountAmount={discountAmount}
+        />
         <RippleButton
           style={{
             position: 'absolute',

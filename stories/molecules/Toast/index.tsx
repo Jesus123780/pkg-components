@@ -4,7 +4,8 @@
 import React, {
   useEffect,
   useState,
-  useRef
+  useRef,
+  useCallback
 } from 'react'
 import { PColor } from '../../../assets/colors'
 import { SwipeableCard } from '../SwipeableCard'
@@ -12,7 +13,7 @@ import { Icon, Row, Text } from '../../atoms'
 import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'
 
-enum ToastPosition {
+export enum ToastPosition {
   'top-left' = 'top-left',
   'top-right' = 'top-right',
   'bottom-left' = 'bottom-left',
@@ -32,6 +33,7 @@ export interface ToastProps {
   position?: ToastPosition
   autoDelete?: boolean
   autoDeleteTime?: number
+  deleteToast: (id: string) => void
 }
 
 const STACK_THRESHOLD = 0
@@ -45,49 +47,72 @@ export const Toast: React.FC<ToastProps> = (props) => {
     toastList,
     position = ToastPosition['top-right'],
     autoDelete,
-    autoDeleteTime = 5000
+    autoDeleteTime = 5000,
+    deleteToast
   } = props
 
   const [list, setList] = useState<ToastItem[]>([...toastList])
-  const intervalRef = useRef<number | null>(null)
+  const timeoutRefs = useRef<Record<number, ReturnType<typeof setTimeout>>>({})
 
   useEffect(() => {
     setList([...toastList])
   }, [toastList])
 
   useEffect(() => {
-    if (intervalRef.current) {
-      window.clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    if (autoDelete && toastList.length > 0) {
-      intervalRef.current = window.setInterval(() => {
-        if (toastList.length > 0) {
-          const idToDelete = toastList[0]?.id
-          if (typeof idToDelete === 'number') deleteToast(idToDelete)
-        }
-      }, autoDeleteTime)
-    }
+    // Clear all timeouts on unmount or when list changes
     return () => {
-      if (intervalRef.current) {
-        window.clearInterval(intervalRef.current)
-        intervalRef.current = null
+      Object.values(timeoutRefs.current).forEach((timeoutId) => {
+        globalThis.clearTimeout(timeoutId)
+      })
+      timeoutRefs.current = {}
+    }
+  }, [])
+
+  useEffect(() => {
+    if (autoDelete) {
+      // Set a timeout for each toast that doesn't already have one
+      list.forEach((toast) => {
+        if (!timeoutRefs.current[toast.id]) {
+          timeoutRefs.current[toast.id] = globalThis.setTimeout(() => {
+            deleteToastById(toast.id)
+          }, autoDeleteTime)
+        }
+      })
+    }
+    // Clean up timeouts for removed toasts
+    Object.keys(timeoutRefs.current).forEach((id) => {
+      if (!list.find((t) => t.id === Number(id))) {
+        globalThis.clearTimeout(timeoutRefs.current[Number(id)])
+        delete timeoutRefs.current[Number(id)]
       }
+    })
+    // Clean up on unmount
+    return () => {
+      Object.values(timeoutRefs.current).forEach((timeoutId) => {
+        globalThis.clearTimeout(timeoutId)
+      })
+      timeoutRefs.current = {}
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoDelete, autoDeleteTime, toastList])
+  }, [autoDelete, autoDeleteTime, list])
 
-  const deleteToast = (id: number) => {
+  /**
+   * Deletes toast by id: clears its timeout and updates state + parent.
+   */
+  const deleteToastById = useCallback((id: number) => {
     try {
-      const externalIndex = toastList.findIndex((t) => t.id === id)
-      if (externalIndex !== -1) {
-        toastList.splice(externalIndex, 1)
+      if (timeoutRefs.current[id]) {
+        globalThis.clearTimeout(timeoutRefs.current[id])
+        delete timeoutRefs.current[id]
       }
-    } catch {
-      // ignore if prop is immutable
+      setList((prev) => prev.filter((t) => t.id !== id))
+      deleteToast(String(id))
+    } catch (err) {
+      // defensive: avoid throwing inside timer
+      // eslint-disable-next-line no-console
+      console.error('Error deleting toast', err)
     }
-    setList((prev) => prev.filter((t) => t.id !== id))
-  }
+  }, [deleteToast])
 
   const getBackgroundColor = (color?: 'success' | 'warning' | 'error') => {
     switch (color) {
@@ -144,7 +169,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
               autoClose={false}
               shake={true}
               gradientAnimation={true}
-              onDelete={() => deleteToast(toast.id)}
+              onDelete={() => deleteToastById(toast.id)}
               delay={1500}
               style={{
                 top: 22,
@@ -153,7 +178,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
               rightActions={groupPos === ToastPosition['bottom-left']
                 ? null
                 : <div
-                  onClick={() => deleteToast(toast.id)}
+                  onClick={() => deleteToastById(toast.id)}
                   role='button'
                   aria-label={`Eliminar notificación ${toast.title}`}
                   style={{
@@ -188,7 +213,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
               >
                 <button
                   className={styles['notification-button']}
-                  onClick={() => deleteToast(toast.id)}
+                  onClick={() => deleteToastById(toast.id)}
                   aria-label='Cerrar notificación'
                 >
                   <Icon
@@ -235,7 +260,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
                       swipeWidth={100}
                       autoClose={false}
                       gradientAnimation={true}
-                      onDelete={() => deleteToast(toast.id)}
+                      onDelete={() => deleteToastById(toast.id)}
                       style={{
                         top: 15,
                         right: 15
@@ -243,7 +268,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
                       rightActions={groupPos === ToastPosition['bottom-left']
                         ? null
                         : <div
-                          onClick={() => deleteToast(toast.id)}
+                          onClick={() => deleteToastById(toast.id)}
                           role='button'
                           aria-label={`Eliminar notificación ${toast.title}`}
                           style={{
@@ -297,7 +322,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
                           </Row>
                           <button
                             className={styles['notification-button']}
-                            onClick={() => deleteToast(toast.id)}
+                            onClick={() => deleteToastById(toast.id)}
                             aria-label='Cerrar notificación'
                           >
                             <Icon

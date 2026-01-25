@@ -1,10 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import React from 'react'
 import { Tag } from './index'
 
 describe('Tag', () => {
   it('renders with default label', () => {
-    render(<Tag />)
+    render(<Tag label='OBLIGATORIO' />)
     const tagElement = screen.getByText('OBLIGATORIO')
     expect(tagElement)
   })

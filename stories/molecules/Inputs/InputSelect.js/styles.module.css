@@ -1,84 +1,110 @@
 .input-wrapper {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
     align-items: stretch;
-    border-radius: 5px;
-    border: 1px solid var(--color-neutral-gray-silver);
-    cursor: pointer;
-    flex-flow: wrap;
-    font-size: 14px;
-    height: auto;
     justify-content: space-between;
-    line-height: 1.57143;
-    max-width: 100%;
     min-height: 50px;
-    position: relative;
-    position: relative;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.57143;
+    border: 1px solid var(--color-neutral-gray-silver);
+    border-radius: 5px;
+    cursor: pointer;
 }
 
+/* Disabled wrapper */
+.input-wrapper[aria-disabled='true'] {
+    cursor: not-allowed;
+    background-color: var(--color-neutral-gray-light);
+}
+
+/* Input container */
 .input-wrapper_content {
-    height: 50px;
     display: flex;
-    width: 100%;
-    justify-content: space-between;
     align-items: center;
+    width: 100%;
+    height: 50px;
 }
 
 .input-wrapper_content_input {
-    padding: var(--spacing-lg);
-    border: none;
-    outline: none;
-    border-radius: 5px;
     background-color: var(--color-base-white);
+    border-radius: 5px;
+    border: none;
+    color: var(--color-neutral-black);
+    height: 100%;
+    outline: none;
+    padding: var(--spacing-lg);
+    width: 100%;
 }
 
+.input-wrapper_content_input:disabled {
+    cursor: not-allowed;
+    background-color: var(--color-neutral-gray-light);
+}
+
+/* Dropdown list */
 .input-wrapper__list {
     position: absolute;
-    border: 1px solid;
     top: 55px;
     z-index: var(--z-index-9999);
-    background-color: var(--color-base-white);
     max-height: 300px;
     overflow: auto;
+    border: 1px solid var(--color-neutral-gray-silver);
+    background-color: var(--color-base-white);
+    border-radius: var(--border-radius-2xs);
 }
 
+/* Options */
 .input-wrapper__list-option,
 .input-wrapper__list-option_action {
     padding: 10px;
-    color: var(--color-neutral-black);
     font-family: PFont-Regular;
     font-weight: 500;
+    color: var(--color-neutral-black);
 }
 
 .input-wrapper__list-option:hover {
-    background-color: var(--color-background-secondary);
-    color: var(--color-neutral-white);
+    background-color: var(--color-background-gray-light);
+    color: var(--color-neutral-gray-dark);
 }
 
+.input-wrapper__list-option--active {
+    background-color: var(--color-background-gray);
+    color: var(--color-campaigns-red);
+}
+
+/* Action option */
 .input-wrapper__list-option_action {
-    background-color: var(--color-neutral-gray-silver);
-    color: var(--color-neutral-white);
+    display: flex;
+    align-items: center;
     width: 100%;
     text-align: start;
-    display: flex;
     cursor: pointer;
-    align-items: center;
+    background-color: var(--color-neutral-gray-silver);
+    color: var(--color-neutral-white);
 }
 
 .input-wrapper__list-option_action:hover {
     background-color: var(--color-primary-pink-light);
 }
 
+/* Title */
 .input-wrapper__title {
-    background-color: var(--color-base-white);
-    color: var(--color-neutral-gray-dark);
-    font-size: 16px;
-    left: 10px;
-    pointer-events: none;
     position: absolute;
-    text-align: left;
     top: 7px;
-    transition: top 0.2s ease, color 0.3s ease, transform 0.3s ease;
-    user-select: none;
+    left: 10px;
     padding: 5px;
+    font-size: 16px;
+    color: var(--color-neutral-gray-dark);
+    background-color: var(--color-base-white);
+    pointer-events: none;
+    user-select: none;
+    transition: top 0.2s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.input-wrapper__title--active {
+    top: -17px;
 }
 
 .input-wrapper__title--animated:hover {
@@ -86,6 +112,27 @@
     transform: scale(1.05);
 }
 
-.input-wrapper__title--active {
-    top: -17px;
+.input-wrapper__title[aria-disabled='true'] {
+    top: 5px;
+    background-color: var(--color-neutral-gray-light);
+}
+
+.input-wrapper__title--disabled {
+    top: -20px;
+    left: 10px;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-base);
+    color: var(--color-feedback-error-light);
+}
+
+/* Actions */
+.input-wrapper__actions {
+    display: flex;
+    width: min-content;
+}
+
+.input-wrapper__btn {
+    margin: var(--spacing-md);
+    background-color: var(--color-background-surface-hover);
+    border-radius: var(--border-radius-xs);
 }

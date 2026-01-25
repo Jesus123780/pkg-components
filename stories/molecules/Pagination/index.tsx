@@ -57,7 +57,11 @@ export const Pagination: React.FC<PaginationProps> = ({
     <div className={styles.paginationContainer}>
       {isVisableButtons && isVisableButtonLeft && (
         <button onClick={handlePrevPage} className={`${styles.button} ${styles.prevButton}`} aria-label='Previous Page'>
-          <Icon icon='IconArrowLeft' size={20} color={getGlobalStyle('--color-icons-primary')} />
+          <Icon
+            icon='IconArrowLeft'
+            size={20}
+            color={getGlobalStyle('--color-icons-primary')}
+          />
         </button>
       )}
 
@@ -99,7 +103,11 @@ export const Pagination: React.FC<PaginationProps> = ({
       )}
 
       {currentPage < items.length - 3 && (
-        <button className={styles.button} onClick={() => handleOnClick(items.length)} aria-label={`Page ${items.length}`}>
+        <button
+          className={styles.button}
+          onClick={() => handleOnClick(items.length)}
+          aria-label={`Page ${items.length}`}
+        >
           {items.length}
         </button>
       )}

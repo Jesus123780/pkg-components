@@ -1,17 +1,10 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background: #fafafa;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e3e3e3;
-}
-
-.title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-2xs);
+  border: 1px solid var(--color-neutral-gray-silver);
 }
 
 .options {
@@ -20,22 +13,25 @@
   gap: 8px;
 }
 
-.optionBtn {
-  padding: 8px 12px;
-  background: white;
-  border: 1px solid #d1d1d1;
+.option-btn {
+  background-color: var(--color-base-white);
   border-radius: 8px;
+  border: 1px solid var(--color-neutral-gray-silver);
   cursor: pointer;
-  font-size: 14px;
+  padding: 10px;
+  position: relative;
   transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.optionBtn:hover {
-  border-color: #000;
+.option-btn:hover {
+  border-color: var(--color-feedback-success-dark);
 }
 
 .active {
-  background: #000;
+  background-color: var(--color-feedback-success-dark);
   color: #fff;
   border-color: transparent;
 }
@@ -44,11 +40,6 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-.customLabel {
-  font-size: 14px;
-  color: #444;
 }
 
 .customInput {
@@ -63,7 +54,8 @@
   border-color: #000;
 }
 
-.summary {
-  margin-top: 6px;
-  font-size: 14px;
+.icon-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }

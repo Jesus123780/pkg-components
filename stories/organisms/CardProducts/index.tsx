@@ -5,6 +5,8 @@ import { CardProductsContent, CtnBox, TooltipCardProduct, WrapperCard } from './
 import { IconEdit, IconDelete } from '../../../assets'
 import { numberFormat } from '../../../utils'
 import { type ProductFood } from '../../pages/GenerateSales/types'
+import { PercentBadge } from '../../molecules'
+import styles from './styles.module.css'
 
 interface CardProductsProps {
   isVisible?: boolean
@@ -16,7 +18,7 @@ interface CardProductsProps {
   loading?: boolean
   onClick?: () => void
   redirect?: () => void
-  handleDelete?: (food: ProductFood) => ProductFood
+  handleDelete?: (food?: ProductFood) => void
 }
 export const CardProductsComponent: React.FC<CardProductsProps> = ({
   isVisible = false,
@@ -43,19 +45,6 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
     return food
   }
 }) => {
-  const calculateDiscountPercentage = (price: number | string, discount: number | string): number => {
-    const parsedPrice = typeof price === 'string' ? parseFloat(price.replace(/\./g, '')) : price
-    const parsedDiscount = typeof discount === 'string' ? parseFloat(discount.replace(/\./g, '')) : discount
-
-    if (parsedPrice > 0) {
-      const percentage = (parsedDiscount / parsedPrice) * 100
-      return Math.round(percentage)
-    }
-    return 0
-  }
-
-  const discountPercentage = calculateDiscountPercentage(food?.ProPrice, food?.ProDescuento)
-
   return (
     <div ref={setRef} >
       {
@@ -84,7 +73,7 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
                 <>
                   <h3 className='card__description'>{food?.pName}</h3>
                   <h3 className='card__description'>{((food?.ProDescription)?.length > 0) || ''}</h3>
-                  <div className='footer'>
+                  <div className={styles['card__price-container']}>
                     <span className={Number(food?.ProPrice) > 0 ? 'card__price' : 'card__price free'}>
                       {Number(food?.ProPrice) > 0 ? `${numberFormat(food?.ProPrice)}` : 'Gratis'}
                     </span>
@@ -92,11 +81,16 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
                     <span className='card__des'>
                       {food?.ProDescuento > 0 ? `${numberFormat(food?.ProDescuento)}` : null}
                     </span>
-                    {showDiscount && food?.ProDescuento > 0 && (
-                      <span className={discountPercentage > 100 ? 'discount red' : 'discount green'}>
-                        {discountPercentage > 100 ? '+100' : discountPercentage}%
-                      </span>
-                    )}
+                    {showDiscount && food?.ProDescuento > 0
+                      && (
+                        <PercentBadge
+                          baseValue={food?.ProDescuento}
+                          compareValue={food?.ProPrice}
+                          precision={0}
+                          size='small'
+                        />
+                      )
+                    }
                   </div>
                 </>
               )}

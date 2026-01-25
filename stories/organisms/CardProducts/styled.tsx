@@ -114,8 +114,8 @@ export const CardProductsContent = styled.div`
   display: grid;
   grid-gap: 15px;
   grid-template-columns: 1fr 146px;
-  height: 147px;
-  min-height: 270px;
+  height: 170px;
+  min-height: 170px;
   min-width: 320px;
   overflow: hidden;
   padding: 20px;
@@ -128,8 +128,7 @@ export const CardProductsContent = styled.div`
     border: 1px solid var(--color-neutral-gray-silver);
   }
   .footer {
-    position: absolute;
-    bottom: 15px;
+
   }
   .card__price,
   .card__des {

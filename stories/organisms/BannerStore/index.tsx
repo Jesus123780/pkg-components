@@ -8,6 +8,23 @@ import { Skeleton } from '../../molecules/Skeleton'
 import { Text } from '../../atoms/Text'
 import { Button, Column, Icon, Tag } from '../../atoms'
 import styles from './styles.module.css'
+
+export interface IStoreInterface {
+  Image: string | undefined | null
+  storeName: string | undefined | null
+  idStore: string | undefined | null
+  scheduleOpenAll: string | undefined | null
+  scheduleOpen: string | undefined | null
+  scheduleClose: string | undefined | null
+  scheduleCloseAll: string | undefined | null
+  scheduleDay: number | undefined | null
+  scheduleId: number | undefined | null
+  scheduleStatus: number | undefined | null
+  scheduleStatusAll: number | undefined | null
+  storeId: number | undefined | null
+  banner: string | undefined | null
+  storeStatus: number | undefined | null
+}
 interface IBannerStore {
   altLogo?: string
   bnImageFileName?: any
@@ -30,22 +47,7 @@ interface IBannerStore {
   path?: string | undefined | null
   src?: string | undefined | null
   srcLogo?: string | undefined | null
-  store: {
-    Image: string | undefined | null
-    storeName: string | undefined | null
-    idStore: string | undefined | null
-    scheduleOpenAll: string | undefined | null
-    scheduleOpen: string | undefined | null
-    scheduleClose: string | undefined | null
-    scheduleCloseAll: string | undefined | null
-    scheduleDay: number | undefined | null
-    scheduleId: number | undefined | null
-    scheduleStatus: number | undefined | null
-    scheduleStatusAll: number | undefined | null
-    storeId: number | undefined | null
-    banner: string | undefined | null
-    storeStatus: number | undefined | null
-  }
+  store: IStoreInterface
 }
 export const BannerStore: React.FC<IBannerStore> = ({
   altLogo = '',

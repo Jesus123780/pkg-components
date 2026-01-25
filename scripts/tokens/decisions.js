@@ -104,7 +104,8 @@ const decisions = {
       selection: brand.selection,
       pink: brand.sweetPink,
       success: brand.pigmentGreen,
-      whiteIce: brand.whiteIce
+      whiteIce: brand.whiteIce,
+      surfaceHover: brand.surfaceHover
     },
     icons: {
       primary: brand.alizarinCrimson,

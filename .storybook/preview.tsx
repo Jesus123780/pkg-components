@@ -2,7 +2,8 @@ import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import type { Preview, Preview as StorybookPreview } from '@storybook/react';
 import { getRouter } from '@storybook/nextjs/router.mock';
 // global styles
-import '../stories/assets/public/global.css';
+import '../stories/assets/public/global.dark.css';
+import '../stories/assets/public/global.light.css';
 import '../stories/assets/public/styles.css';
 
 // swiper

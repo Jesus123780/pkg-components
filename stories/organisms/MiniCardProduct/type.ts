@@ -35,7 +35,7 @@ export interface MiniCardProductProps extends ProductFood {
   manageStock?: boolean
   editable?: boolean
   stock?: number
-  showInfo?: boolean
+  discount: number | string
   hoverFree?: boolean
   editing?: boolean
   withStock?: boolean
@@ -46,6 +46,7 @@ export interface MiniCardProductProps extends ProductFood {
     quantity_container?: React.CSSProperties
   }
   plainPrice?: number | string
+  height?: number
   handleDecrement?: () => void
   handleComment?: () => void
   handleDelete?: () => void

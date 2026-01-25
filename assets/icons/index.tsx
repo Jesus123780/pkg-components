@@ -1,6 +1,5 @@
 'use-client'
 
-import PropTypes from 'prop-types'
 import React from 'react'
 import { type IconProps } from '../../stories/assets/public/Icons'
 import { getGlobalStyle } from '../../helpers'
@@ -8,61 +7,47 @@ import { getGlobalStyle } from '../../helpers'
 export const IconTransfer: React.FC<IconProps> = ({ size, color }) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlSpace="preserve"
-      style={{
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-        strokeLinejoin: "round",
-        strokeMiterlimit: 2,
-      }}
-      viewBox="0 0 32 32"
-      width={size ?? 800}
       height={size ?? 800}
-      fill={color ?? getGlobalStyle('--color-icons-black')}
+      viewBox="0 0 24 24"
+      width={size ?? 800}
+      fill='none'
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="m14.998 24.994 2 .004a1 1 0 0 0 .004-2l-2-.004a1.001 1.001 0 0 0-.004 2Z" />
-      <path d="M9 7.065h13.996v11.92l-7.984-.006a1 1 0 0 0-.001 2l7.985.006v4.957a.997.997 0 0 1-1 1H15a1 1 0 0 0 0 2h6.996a3 3 0 0 0 3-3V4.023a3 3 0 0 0-3-3H10a3 3 0 0 0-3 3V12a1 1 0 0 0 2 0V7.065Zm13.996-2V4.023a1 1 0 0 0-1-1H10c-.552.001-1 .448-1 1v1.042h13.996Z" />
-      <path d="M6.99 17.006a3.001 3.001 0 0 0 0 6h2a1 1 0 0 1 0 2h-3a1 1 0 0 0 0 2H7v1a1 1 0 0 0 2 0v-1a3 3 0 0 0-.01-6h-2a1 1 0 0 1 0-2h3a1 1 0 0 0 0-2h-1v-1.049a1 1 0 0 0-2 0v1.049Z" />
+      <g
+        stroke={color ?? getGlobalStyle('--color-icons-black')}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        opacity={0.4}
+      >
+        <path d="M9.5 13.75c0 .97.75 1.75 1.67 1.75h1.88c.8 0 1.45-.68 1.45-1.53 0-.91-.4-1.24-.99-1.45l-3.01-1.05c-.59-.21-.99-.53-.99-1.45 0-.84.65-1.53 1.45-1.53h1.88c.92 0 1.67.78 1.67 1.75M12 7.5v9" />
+      </g>
+      <path
+        stroke={color ?? getGlobalStyle('--color-icons-gray')}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2M22 6V2h-4M17 7l5-5"
+      />
     </svg>
   )
 }
-export const IconDollar: React.FC<IconProps> = ({ size }) => {
+export const IconDollar: React.FC<IconProps> = ({ size, color }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlSpace="preserve"
-      id="Capa_1"
-      x={0}
-      y={0}
-      viewBox="0 0 48 48"
+      id="Layer_1"
+      viewBox="0 0 30 30"
       width={size ?? 800}
       height={size ?? 800}
     >
-      <style>{".st2{fill:#4da34d}"}</style>
       <path
-        d="m35.2 29.4-28.8-14c-.5-.3-.7-.9-.4-1.4L12.6.5c.2-.5.8-.7 1.3-.5l28.7 14.1c.5.2.7.8.5 1.3L36.5 29c-.2.5-.8.7-1.3.4z"
+        d="M26 5H4c-.6 0-1 .4-1 1v12c0 .6.4 1 1 1h22c.6 0 1-.4 1-1V6c0-.6-.4-1-1-1zM5.5 14c-.2 0-.4 0-.5.1V9.9c.1.1.3.1.5.1C6.9 10 8 8.9 8 7.5c0-.2 0-.4-.1-.5H22v.5c0 1.4 1.1 2.5 2.5 2.5.2 0 .4 0 .5-.1V14c-.1 0-.3-.1-.5-.1-1.4 0-2.5 1.1-2.5 2.5 0 .2 0 .4.1.5H7.9c.1 0 .1-.2.1-.4C8 15.1 6.9 14 5.5 14zm6.5-2c0-1.7 1.3-3 3-3s3 1.3 3 3-1.3 3-3 3-3-1.3-3-3zM5 22v-1h20v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1zm2.4 4v-1h15v1c0 .6-.4 1-1 1h-13c-.6 0-1-.4-1-1z"
         style={{
-          fill: "#307730",
+          fill: color ?? getGlobalStyle('--color-feedback-success-dark'),
         }}
       />
-      <path
-        d="M38.7 30.9 3.2 17.2c-.5-.2-.8-.8-.6-1.3l4-10.3c.2-.5.8-.8 1.3-.6l35.4 13.7c.5.2.8.8.6 1.3l-4 10.3c-.1.6-.7.8-1.2.6z"
-        style={{
-          fill: "#3f8e3f",
-        }}
-      />
-      <path
-        d="M46 43H2c-.6 0-1-.4-1-1V14c0-.6.4-1 1-1h44c.6 0 1 .4 1 1v28c0 .6-.4 1-1 1z"
-        className="st2"
-      />
-      <path
-        d="M38 16H10c0 3.3-2.7 6-6 6v12c3.3 0 6 2.7 6 6h28c0-3.3 2.7-6 6-6V22c-3.3 0-6-2.7-6-6z"
-        style={{
-          fill: "#9edb9e",
-        }}
-      />
-      <circle cx={24} cy={28} r={7} className="st2" />
     </svg>
   )
 }
@@ -293,12 +278,6 @@ export const IconBuys: React.FC<IconProps> = ({
   )
 }
 
-IconBuys.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.number,
-  style: PropTypes.object
-}
-
 /**
  * IconTime component
  * @param {Object} props - Component props
@@ -327,12 +306,6 @@ export const IconTime: React.FC<IconProps> = ({ style = {}, size, color, ...prop
       />
     </svg>
   )
-}
-
-IconTime.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.number,
-  style: PropTypes.object
 }
 
 /**
@@ -386,12 +359,6 @@ export const IconInfo: React.FC<IconProps> = ({ style = {}, size, color }: IconP
   )
 }
 
-IconInfo.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
 /**
  * IconInformationProduct component
  * @param {Object} props - Component props
@@ -426,12 +393,6 @@ export const IconInformationProduct: React.FC<IconProps> = ({
       />
     </svg>
   )
-}
-
-IconInformationProduct.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.number,
-  style: PropTypes.object
 }
 
 /**
@@ -505,12 +466,6 @@ export const IconCategorie: React.FC<IconProps> = ({
   )
 }
 
-IconCategorie.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.number,
-  style: PropTypes.object
-}
-
 /**
  * IconStore component
  * @param {Object} props - Component props
@@ -537,12 +492,6 @@ export const IconStore: React.FC<IconProps> = ({ style = {}, size, color }) => {
       <path d='M26.26 55.52V38.45h11.58v17.07M8.44 19.18s-1.1 7.76 6.45 8.94a7.17 7.17 0 0 0 6.1-2A7.43 7.43 0 0 0 32 26a7.4 7.4 0 0 0 5 2.49 11.82 11.82 0 0 0 5.9-2.15 6.66 6.66 0 0 0 4.67 2.15 8 8 0 0 0 7.93-9.3L50.78 9.05a1 1 0 0 0-.94-.65H14a1 1 0 0 0-.94.66ZM8.44 19.18h47.1M21.04 19.18V8.4M32.05 19.18V8.4M43.01 19.18V8.4' />
     </svg>
   )
-}
-
-IconStore.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.number,
-  style: PropTypes.object
 }
 
 export const IconColombia: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
@@ -597,10 +546,6 @@ export const IconCircleNumber: React.FC<IconProps> = ({ style = {}, size, color 
 
   )
 }
-IconColombia.propTypes = {
-  size: PropTypes.any,
-  style: PropTypes.object
-}
 
 export const IconArrowRight: React.FC<IconProps> = ({
   size,
@@ -627,11 +572,6 @@ export const IconArrowRight: React.FC<IconProps> = ({
   )
 }
 
-IconArrowRight.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
 /**
  * IconTicket component
  * @param {Object} props - Component props
@@ -665,12 +605,6 @@ export const IconTicket: React.FC<IconProps> = ({
   )
 }
 
-IconTicket.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.number,
-  style: PropTypes.object
-}
-
 export const IconDost: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -684,12 +618,6 @@ export const IconDost: React.FC<IconProps> = ({ style = {}, size, color }: IconP
       <path d='M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'></path>
     </svg>
   )
-}
-
-IconDost.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const Google: React.FC<IconProps> = ({ size, ...props }: IconProps) => {
@@ -726,10 +654,6 @@ export const Google: React.FC<IconProps> = ({ size, ...props }: IconProps) => {
   )
 }
 
-Google.propTypes = {
-  size: PropTypes.any
-}
-
 export const IconLogout: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
@@ -758,11 +682,6 @@ export const IconLogout: React.FC<IconProps> = ({ size, color }: IconProps) => {
   )
 }
 
-IconLogout.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any
-}
-
 export const IconMessageMain: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -775,12 +694,6 @@ export const IconMessageMain: React.FC<IconProps> = ({ style = {}, size, color }
       <path d='M14 2.042c6.76 0 12 4.952 12 11.64S20.76 25.322 14 25.322a13.091 13.091 0 0 1-3.474-.461.956 .956 0 0 0-.641.047L7.5 25.959a.961.961 0 0 1-1.348-.849l-.065-2.134a.957.957 0 0 0-.322-.684A11.389 11.389 0 0 1 2 13.682C2 6.994 7.24 2.042 14 2.042ZM6.794 17.086a.57.57 0 0 0 .827.758l3.786-2.874a.722.722 0 0 1 .868 0l2.8 2.1a1.8 1.8 0 0 0 2.6-.481l3.525-5.592a.57.57 0 0 0-.827-.758l-3.786 2.874a.722.722 0 0 1-.868 0l-2.8-2.1a1.8 1.8 0 0 0-2.6.481Z'></path>
     </svg>
   )
-}
-
-IconMessageMain.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const IconNotification: React.FC<IconProps> = ({
@@ -808,12 +721,6 @@ export const IconNotification: React.FC<IconProps> = ({
   )
 }
 
-IconNotification.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
 export const IconWallet: React.FC<IconProps> = ({ style = {}, color, size }: IconProps) => {
   return (
     <svg height={size} style={style} viewBox='0 0 54.01 39.97' width={size}>
@@ -833,12 +740,6 @@ export const IconWallet: React.FC<IconProps> = ({ style = {}, color, size }: Ico
   )
 }
 
-IconWallet.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
 export const IconUser: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -854,11 +755,6 @@ export const IconUser: React.FC<IconProps> = ({ style = {}, size, color }: IconP
   )
 }
 
-IconUser.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
 
 export const IconHorario: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
@@ -887,12 +783,6 @@ export const IconHorario: React.FC<IconProps> = ({ style = {}, size, color }: Ic
       />
     </svg>
   )
-}
-
-IconHorario.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const IconBoxes: React.FC<IconProps> = ({
@@ -951,18 +841,6 @@ export const IconLogo: React.FC<IconProps> = ({ color, size }: IconProps) => {
   )
 }
 
-IconLogo.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
-IconHome.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
 export const IconMiniCheck: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -982,46 +860,35 @@ export const IconMiniCheck: React.FC<IconProps> = ({ style = {}, size, color }: 
   )
 }
 
-IconMiniCheck.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-export const IconArrowTop = ({ size, style = {}, color, ...props }: IconProps) => {
+export const IconArrowTop = ({ size, color }: IconProps) => {
   return (
     <svg
+      fill={color}
+      height={size}
+      viewBox='0 0 330 330'
+      width={size}
       xmlns='http://www.w3.org/2000/svg'
       xmlSpace='preserve'
-      viewBox='0 0 330 330'
-      height={size}
-      style={style}
-      width={size}
     >
       <path d='m325.606 229.393-150.004-150a14.997 14.997 0 0 0-21.213.001l-149.996 150c-5.858 5.858-5.858 15.355 0 21.213 5.857 5.857 15.355 5.858 21.213 0l139.39-139.393 139.397 139.393A14.953 14.953 0 0 0 315 255a14.95 14.95 0 0 0 10.607-4.394c5.857-5.858 5.857-15.355-.001-21.213z' />
     </svg>
   )
 }
 
-export const IconArrowBottom = ({ style = {}, color, size }: IconProps) => {
+export const IconArrowBottom = ({ color, size }: IconProps) => {
   return (
     <svg
+      color={color}
+      fill={color}
+      height={size}
+      viewBox='0 0 330 330'
+      width={size}
       xmlns='http://www.w3.org/2000/svg'
       xmlSpace='preserve'
-      viewBox='0 0 330 330'
-      color={color}
-      height={size}
-      width={size}
-      style={style}
     >
       <path d='M325.607 79.393c-5.857-5.857-15.355-5.858-21.213.001l-139.39 139.393L25.607 79.393c-5.857-5.857-15.355-5.858-21.213.001-5.858 5.858-5.858 15.355 0 21.213l150.004 150a14.999 14.999 0 0 0 21.212-.001l149.996-150c5.859-5.857 5.859-15.355.001-21.213z' />
     </svg>
   )
-}
-
-IconArrowTop.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const IconSearch: React.FC<IconProps | any> = ({
@@ -1053,13 +920,6 @@ export const IconSearch: React.FC<IconProps | any> = ({
   )
 }
 
-IconSearch.propTypes = {
-  color: PropTypes.any,
-  props: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
 export const IconRate: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -1078,11 +938,6 @@ export const IconRate: React.FC<IconProps> = ({ style = {}, size, color }: IconP
   )
 }
 
-IconRate.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
 export const IconLoading: React.FC<IconProps> = ({ color, size, ...props }: IconProps) => {
   return (
     <svg
@@ -1101,11 +956,6 @@ export const IconLoading: React.FC<IconProps> = ({ color, size, ...props }: Icon
       />
     </svg>
   )
-}
-
-IconLoading.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any
 }
 
 export const IconNoShow: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
@@ -1127,10 +977,6 @@ export const IconNoShow: React.FC<IconProps> = ({ style = {}, size }: IconProps)
   )
 }
 
-IconNoShow.propTypes = {
-  size: PropTypes.any,
-  style: PropTypes.object
-}
 
 export const IconShowEye: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
   return (
@@ -1156,10 +1002,6 @@ export const IconShowEye: React.FC<IconProps> = ({ style = {}, size }: IconProps
   )
 }
 
-IconShowEye.propTypes = {
-  size: PropTypes.any,
-  style: PropTypes.object
-}
 export const IconPizza: React.FC<IconProps> = ({ ...props }) => {
   return (
     <svg
@@ -1224,11 +1066,6 @@ export const IconPizza: React.FC<IconProps> = ({ ...props }) => {
   )
 }
 
-IconPizza.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any
-}
-
 export const IconShopping: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -1243,12 +1080,6 @@ export const IconShopping: React.FC<IconProps> = ({ style = {}, size, color }: I
       <path d='M8.7.2c-1.1 0-2 .3-2.6.9-.6.6-1 1.4-1.2 2.2-.2.6-.3 1.1-.3 1.7H2C.9 5 0 5.9 0 7l.1 13c0 1.7 1.3 3 3 3H15c1.7 0 3-1.3 3-3V7c0-1.1-.9-2-2-2h-3.2c-.1-.6-.1-1.1-.3-1.6-.2-.8-.6-1.7-1.2-2.2-.7-.6-1.5-1-2.6-1zm2.7 6.3v2.6c0 .4.3.7.8.7.4 0 .7-.3.7-.8v-.8-1.8H16c.3 0 .5.2.5.5l-.1 13c0 .8-.7 1.5-1.5 1.5H3.1c-.8 0-1.5-.7-1.5-1.5L1.5 7c0-.3.2-.5.5-.5h2.5v2.6c0 .4.3.8.7.8.4 0 .8-.4.8-.8v-.8-1.8h5.4zM11.3 5c0-.4-.1-.8-.2-1.2-.2-.7-.4-1.2-.8-1.5-.4-.3-.8-.5-1.6-.5s-1.3.2-1.6.5c-.4.3-.6.8-.8 1.5-.1.4-.2.8-.2 1.2h5.2z'></path>
     </svg>
   )
-}
-
-IconShopping.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const IconCarrot: React.FC<IconProps> = ({
@@ -1308,12 +1139,6 @@ export const IconCarrot: React.FC<IconProps> = ({
   )
 }
 
-IconCarrot.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.number,
-  style: PropTypes.object
-}
-
 export const IconFigure: React.FC<IconProps> = ({
   style = {},
   size,
@@ -1358,12 +1183,6 @@ export const IconFigure: React.FC<IconProps> = ({
   )
 }
 
-IconFigure.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.number,
-  style: PropTypes.object
-}
-
 export const IconSales: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
   return (
     <svg
@@ -1391,12 +1210,6 @@ export const IconSales: React.FC<IconProps> = ({ style = {}, size, color }: Icon
   )
 }
 
-IconSales.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
 export const IconDelete: React.FC<IconProps> = ({ style = {}, size, color, ...props }: IconProps) => {
   return (
     <svg
@@ -1414,12 +1227,6 @@ export const IconDelete: React.FC<IconProps> = ({ style = {}, size, color, ...pr
       />
     </svg>
   )
-}
-
-IconDelete.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const IconInvoice: React.FC<IconProps> = ({ style = {}, size }) => {
@@ -1589,7 +1396,6 @@ export const IconDownload: React.FC<IconProps> = ({
 }
 
 export const IconComment: React.FC<IconProps> = ({
-  style = {},
   size,
   color
 }: IconProps) => {
@@ -1597,12 +1403,9 @@ export const IconComment: React.FC<IconProps> = ({
     <svg
       fill='none'
       height={size ?? 16}
-      style={{
-        cursor: 'pointer',
-        ...style
-      }}
-      width={16}
+      width={size ?? 16}
       xmlns='http://www.w3.org/2000/svg'
+      viewBox="0 0 24 24"
     >
       <path
         d='M4.667 12.288h2.667L10.3 14.26a.665.665 0 0 0 1.034-.553v-1.42c2 0 3.333-1.334 3.333-3.334v-4c0-2-1.333-3.333-3.333-3.333H4.667c-2 0-3.333 1.333-3.333 3.333v4c0 2 1.333 3.334 3.333 3.334zm1-5.288h4.666M5.667 7h4.666'
@@ -1615,10 +1418,43 @@ export const IconComment: React.FC<IconProps> = ({
   )
 }
 
-IconComment.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.number,
-  style: PropTypes.object
+export const IconAddComment: React.FC<IconProps> = ({
+  size,
+  color
+}: IconProps) => {
+  return (
+    <svg
+      width={size ?? 24}
+      height={size ?? 24}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path fill={color ?? getGlobalStyle('--color-icons-black')} d="M12.0223 2.99928C11.7254 3.46286 11.4858 3.96661 11.3133 4.50057L5.25 4.5C4.2835 4.5 3.5 5.2835 3.5 6.25V14.75C3.5 15.7165 4.2835 16.5 5.25 16.5H7.49879L7.49986 20.2506L12.5135 16.5H18.75C19.7165 16.5 20.5 15.7165 20.5 14.75L20.5011 12.2672C21.052 11.98 21.5566 11.616 22.0008 11.1896L22 14.75C22 16.5449 20.5449 18 18.75 18H13.0125L7.99868 21.7507C7.44585 22.1642 6.6625 22.0512 6.24901 21.4984C6.08736 21.2822 6 21.0196 6 20.7499L5.99921 18H5.25C3.45507 18 2 16.5449 2 14.75V6.25C2 4.45507 3.45507 3 5.25 3L12.0223 2.99928ZM17.5 1C20.5376 1 23 3.46243 23 6.5C23 9.53757 20.5376 12 17.5 12C14.4624 12 12 9.53757 12 6.5C12 3.46243 14.4624 1 17.5 1ZM17.5 2.5L17.4101 2.50806C17.206 2.5451 17.0451 2.70603 17.0081 2.91012L17 3L16.999 6H14L13.9101 6.00806C13.706 6.0451 13.5451 6.20603 13.5081 6.41012L13.5 6.5L13.5081 6.58988C13.5451 6.79397 13.706 6.9549 13.9101 6.99194L14 7H16.999L17 10L17.0081 10.0899C17.0451 10.294 17.206 10.4549 17.4101 10.4919L17.5 10.5L17.5899 10.4919C17.794 10.4549 17.9549 10.294 17.9919 10.0899L18 10L17.999 7H21L21.0899 6.99194C21.294 6.9549 21.4549 6.79397 21.4919 6.58988L21.5 6.5L21.4919 6.41012C21.4549 6.20603 21.294 6.0451 21.0899 6.00806L21 6H17.999L18 3L17.9919 2.91012C17.9549 2.70603 17.794 2.5451 17.5899 2.50806L17.5 2.5Z" />
+    </svg>
+  )
+}
+
+export const IconEditComment: React.FC<IconProps> = ({
+  size,
+  color
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size ?? 20}
+      height={size ?? 20}
+      fill="none"
+    >
+      <path
+        fill={color ?? getGlobalStyle('--color-icons-black')}
+        d="M17 8.134V5.566C17 4.713 16.296 4 15.4 4H4.6C3.704 4 3 4.713 3 5.566v6.71c0 .853.704 1.566 1.6 1.566h1.6V17h.003l.002-.001 2.167-1.6-.314 1.254c-.021.086-.037.17-.046.255l-1.213.895a1.009 1.009 0 0 1-1.4-.199.978.978 0 0 1-.199-.59v-2.172h-.6c-1.436 0-2.6-1.149-2.6-2.566v-6.71C2 4.149 3.164 3 4.6 3h10.8C16.836 3 18 4.149 18 5.566V8.69a2.853 2.853 0 0 0-1-.556Z"
+      />
+      <path
+        fill={color ?? getGlobalStyle('--color-icons-black')}
+        d="m14.807 9.546-4.83 4.83a2.197 2.197 0 0 0-.577 1.02l-.375 1.498a.89.89 0 0 0 1.079 1.079l1.498-.375c.386-.096.739-.296 1.02-.578l4.83-4.83a1.87 1.87 0 1 0-2.645-2.644Z"
+      />
+    </svg>
+  )
 }
 
 export const IconCopy: React.FC<IconProps> = ({
@@ -1669,18 +1505,6 @@ export const IconCancel: React.FC<IconProps> = ({ style = {}, size, color }: Ico
   )
 }
 
-IconCancel.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
-IconArrowBottom.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
 export const IconFolder: React.FC<IconProps> = ({ style = {}, size }: IconProps) => {
   return (
     <svg
@@ -1702,11 +1526,6 @@ export const IconFolder: React.FC<IconProps> = ({ style = {}, size }: IconProps)
       />
     </svg>
   )
-}
-
-IconFolder.propTypes = {
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const IconPlus: React.FC<IconProps> = ({ size = 24, color }: IconProps) => {
@@ -1739,16 +1558,6 @@ export const IconLinePart: React.FC<IconProps> = ({ size = 2, color, ...props }:
   )
 }
 
-IconLinePart.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.number
-}
-
-IconPlus.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
 export const IconMinus: React.FC<IconProps> = ({
   style = {},
   size = 24,
@@ -1773,45 +1582,27 @@ export const IconMinus: React.FC<IconProps> = ({
   )
 }
 
-IconMinus.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.number,
-  style: PropTypes.object
-}
-export const IconPromo: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
+export const IconPromo: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
-      fill={color}
-      height={size}
-      style={style}
-      viewBox='0 0 32 32'
-      width={size}
-      xmlns='http://www.w3.org/2000/svg'
+      xmlns="http://www.w3.org/2000/svg"
+      xmlSpace="preserve"
+      viewBox="0 0 15.118 15.107"
+      width={size ?? 16}
+      height={size ?? 16}
+      fill={color ?? getGlobalStyle('--color-icons-black')}
     >
-      <path
-        d='M28.2267 12.4802C28.7734 12.4802 29.2267 12.0268 29.2267 11.4802V6.48016C29.2267 5.20016 28.1867 4.16016 26.8934 4.16016H4.9334C3.6534 4.16016 2.6134 5.20016 2.6134 6.48016V18.8535C2.6134 20.1335 3.66674 21.1868 4.94674 21.1868H8.94674V26.8402C8.94674 27.2402 9.1734 27.6002 9.54674 27.7602C9.68007 27.8135 9.8134 27.8402 9.94674 27.8402C10.1867 27.8402 10.4267 27.7468 10.6134 27.5735L17.6401 21.1868H26.9067C28.1867 21.1868 29.2267 20.1468 29.2267 18.8668V17.9335C29.2267 17.3868 28.7734 16.9335 28.2267 16.9335C27.6801 16.9335 27.2267 17.3868 27.2267 17.9335V18.8668C27.2267 19.0402 27.0801 19.1868 26.9067 19.1868H17.2534C17.0001 19.1868 16.7601 19.2802 16.5867 19.4535L10.9467 24.5868V20.2002C10.9467 19.6535 10.4934 19.2002 9.94674 19.2002H4.94674C4.76007 19.2002 4.6134 19.0535 4.6134 18.8668V6.49349C4.6134 6.32016 4.76007 6.17349 4.9334 6.17349H26.8934C27.0667 6.17349 27.2134 6.32016 27.2134 6.49349V11.4802C27.2267 12.0268 27.6667 12.4802 28.2267 12.4802Z'
-        fill='red'
-        height={size}
-        width={size}
-      ></path>
-      <path d='M11.9334 14.2132C12.6256 14.2132 13.1867 13.6521 13.1867 12.9599C13.1867 12.2677 12.6256 11.7065 11.9334 11.7065C11.2412 11.7065 10.6801 12.2677 10.6801 12.9599C10.6801 13.6521 11.2412 14.2132 11.9334 14.2132Z'></path>
-      <path d='M19.9335 14.1862C20.6109 14.1862 21.1601 13.637 21.1601 12.9596C21.1601 12.2821 20.6109 11.7329 19.9335 11.7329C19.256 11.7329 18.7068 12.2821 18.7068 12.9596C18.7068 13.637 19.256 14.1862 19.9335 14.1862Z'></path>
-      <path d='M15.9333 14.2532C16.6476 14.2532 17.2267 13.6741 17.2267 12.9598C17.2267 12.2455 16.6476 11.6665 15.9333 11.6665C15.2191 11.6665 14.64 12.2455 14.64 12.9598C14.64 13.6741 15.2191 14.2532 15.9333 14.2532Z'></path>
+      <path d="M14.059 5.436V3.245l-2.204-1.102L9.712 0 7.559.538 5.406 0 3.263 2.143 1.059 3.245v2.191L0 7.554l1.059 2.118v2.191l2.204 1.102 2.143 2.143 2.153-.538 2.153.538 2.143-2.143 2.204-1.102V9.672l1.059-2.118-1.059-2.118zm-1 4v1.809l-1.724.862L9.406 14l-1.847-.462L5.712 14l-1.8-1.8-1.854-.956V9.436l-.94-1.882.941-1.882V3.863l1.724-.862 1.93-1.894 1.847.462 1.847-.462 1.8 1.8 1.854.956v1.809L14 7.554l-.941 1.882z" />
+      <path d="m4.205 10.2 6-6 .707.708-6 6zM5.559 7.054c.827 0 1.5-.673 1.5-1.5s-.673-1.5-1.5-1.5-1.5.673-1.5 1.5.673 1.5 1.5 1.5zm0-2a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zM9.559 8.054c-.827 0-1.5.673-1.5 1.5s.673 1.5 1.5 1.5 1.5-.673 1.5-1.5-.673-1.5-1.5-1.5zm0 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1z" />
     </svg>
   )
 }
 
-IconPromo.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-export const IconEdit: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
+export const IconEdit: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       fill={color}
       height={size}
-      style={style}
       viewBox='0 0 22 22'
       width={size}
       xmlns='http://www.w3.org/2000/svg'
@@ -1822,12 +1613,6 @@ export const IconEdit: React.FC<IconProps> = ({ style = {}, size, color }: IconP
       ></path>
     </svg>
   )
-}
-
-IconEdit.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
 }
 
 export const IconSendMessage: React.FC<IconProps> = ({ size, color }: IconProps) => {
@@ -1875,10 +1660,6 @@ export const IconSendMessage: React.FC<IconProps> = ({ size, color }: IconProps)
   )
 }
 
-IconSendMessage.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any
-}
 export const IconClose: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
@@ -1908,11 +1689,6 @@ export const IconClose: React.FC<IconProps> = ({ size, color }: IconProps) => {
   )
 }
 
-IconClose.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.any
-}
-
 export const IconLocationMap2: React.FC<IconProps> = ({ size, color, ...props }: IconProps) => {
   return (
     <svg
@@ -1934,11 +1710,6 @@ export const IconLocationMap2: React.FC<IconProps> = ({ size, color, ...props }:
       />
     </svg>
   )
-}
-
-IconLocationMap2.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.any
 }
 
 export const IconGoogleFullColor: React.FC<IconProps> = ({ size }: IconProps) => {
@@ -1964,15 +1735,10 @@ export const IconGoogleFullColor: React.FC<IconProps> = ({ size }: IconProps) =>
   )
 }
 
-IconGoogleFullColor.propTypes = {
-  size: PropTypes.any
-}
-
-export const IconArrowLeft: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
+export const IconArrowLeft: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       height={size}
-      style={style}
       viewBox='0 0 22.893 45.908'
       width={size}
       x='0px'
@@ -1989,18 +1755,6 @@ export const IconArrowLeft: React.FC<IconProps> = ({ style = {}, size, color }: 
       />
     </svg>
   )
-}
-
-IconArrowLeft.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.any,
-  style: PropTypes.object
-}
-
-IconChart.propTypes = {
-  color: PropTypes.any,
-  size: PropTypes.number,
-  style: PropTypes.object
 }
 
 export const IconQuestion: React.FC<IconProps> = (props: IconProps) => {
@@ -2021,11 +1775,6 @@ export const IconQuestion: React.FC<IconProps> = (props: IconProps) => {
       />
     </svg>
   )
-}
-
-IconQuestion.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.any
 }
 
 export const IconFilter: React.FC<IconProps> = ({ size, color }) => (
@@ -2842,3 +2591,34 @@ export const IconMoon: React.FC<IconProps> = ({ size, color }) => {
     />
   </svg>
 }
+
+// icon free
+export const IconFree: React.FC<IconProps> = ({ size, color }) => {
+  return <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlSpace="preserve"
+    id="Layer_1"
+    viewBox="0 0 50 50"
+    width={size ?? 50}
+    height={size ?? 50}
+  >
+    <style>{".st2{fill:#fff}"}</style>
+    <path
+      d="m44.7 16-5.2-8.9c-.4-.6-1.1-1-1.8-1h-35c-.9 0-1.7.8-1.7 1.7v18.5c0 1 .8 1.7 1.7 1.7h35c.7 0 1.4-.4 1.8-1l5.2-8.9c.4-.6.4-1.4 0-2.1zm-6.1 3.1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"
+      style={{
+        fill: "#ec6e62",
+      }}
+    />
+    <path
+      d="M28.9 43.9c-.3 0-.7 0-1-.1-1.3-.2-2.5-.8-3.3-1.8-1.3-1.6-1.7-4.2-1-6.5.7-1.9 2.1-3.6 4-4.5 1.4-.7 3.1-1.1 5.2-1.1h2.4c.9 0 1.7.1 2.5 0 2.1-.1 4.1-.5 6.1-1.2.9-.4 2-.8 2.6-1.8.8-1.2.9-3.1.2-4.7-.6-1.4-1.7-2.5-3.2-3.2-1.4-.6-3-.8-4.5-.9-.5 0-1-.5-.9-1 0-.5.5-1 1-.9 1.7.1 3.5.3 5.2 1 1.9.9 3.4 2.4 4.2 4.2.9 2.2.8 4.8-.4 6.6-.9 1.4-2.4 2.1-3.5 2.5-2.2.8-4.4 1.3-6.7 1.3h-2.7c-.8 0-1.5-.1-2.3 0-1.8 0-3.2.3-4.4.9-1.4.7-2.5 2-3 3.4-.5 1.6-.3 3.5.6 4.6.6.8 1.5 1 2.1 1.1 1.9.3 3.9-.7 5.2-2.5.3-.4.9-.6 1.4-.3s.6.9.3 1.4c-1.5 2.2-3.8 3.5-6.1 3.5z"
+      style={{
+        fill: "#656766",
+      }}
+    />
+    <path
+      d="M7.8 14.6v1.9H11v1.1H7.8v2.9H6.6v-7.1h4.7v1.1H7.8zM18.4 15.8c0 1.2-.5 1.9-1.5 2.2l1.9 2.6h-1.5l-1.7-2.4H14v2.4h-1.2v-7.1h2.6c1.1 0 1.9.2 2.3.5.5.4.7 1 .7 1.8zm-1.6 1c.2-.2.4-.5.4-1s-.1-.8-.4-1c-.3-.2-.7-.3-1.3-.3H14V17h1.5c.6.1 1.1 0 1.3-.2zM25.1 13.5v1.1h-3.8v1.9h3.4v1.1h-3.4v1.9h3.9v1.1h-5.1v-7.1h5zM31.8 13.5v1.1H28v1.9h3.4v1.1H28v1.9h3.9v1.1h-5.1v-7.1h5z"
+      className="st2"
+    />
+  </svg>
+}
+

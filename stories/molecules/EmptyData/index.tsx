@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types'
-import * as React from 'react'
-import { Column, Text } from '../../atoms'
+import { getGlobalStyle } from '../../../helpers'
+import { Column, Divider, Text } from '../../atoms'
 
-export const EmptyData = ({
+interface EmptyDataProps extends React.SVGProps<SVGSVGElement> {
+  height?: number
+  width?: number
+}
+export const EmptyData: React.FC<EmptyDataProps> = ({
   height = 590,
   width = 489,
   ...props
@@ -129,15 +132,19 @@ export const EmptyData = ({
           </g>
         </svg>
       </div>
-      <div style={{ justifyContent: 'center', display: 'flex', alignContent: 'center' }}>
-        <Text>
-          No hay datos
+      <Divider marginTop={getGlobalStyle('--spacing-2xl')} />
+      <Column
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Text
+          size='3xl'
+          weight='bold'
+          color='primary'
+        >
+          No hay datos disponibles
         </Text>
-      </div>
+      </Column>
     </Column>
   )
-}
-EmptyData.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
 }

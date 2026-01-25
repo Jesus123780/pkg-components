@@ -58,6 +58,8 @@ import {
   IconSales,
   IconDelete,
   IconComment,
+  IconAddComment,
+  IconEditComment,
   IconCancel,
   IconArrowBottom,
   IconPdf,
@@ -111,6 +113,7 @@ import {
   IconError,
   IconSun,
   IconMoon,
+  IconFree,
   IconLinesFilter
 } from '../../../assets'
 
@@ -181,6 +184,8 @@ export const Icons: IconMap = {
   IconStrokeLogo,
   IconCalendar,
   IconComment,
+  IconAddComment,
+  IconEditComment,
   IconMasterCardSimple,
   IconTransfer,
   IconCancel,
@@ -232,6 +237,7 @@ export const Icons: IconMap = {
   IconError,
   IconSun,
   IconMoon,
+  IconFree,
   IconLinesFilter
 }
 
@@ -248,7 +254,7 @@ export const Icon: React.FC<IconPropsComponent> = ({
   color,
   style
 }: IconPropsComponent) => {
-  const Icono = GetIcon(icon)
+  const Icono = GetIcon(icon as string)
   if (icon === 'none') return null
   if (Icono === undefined || Icono === null) {
     return <div>No se encontró el ícono</div>

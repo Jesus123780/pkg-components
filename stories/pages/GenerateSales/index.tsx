@@ -210,14 +210,22 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         <div className={styles['header-query']}>
           <SearchBar
             handleChange={(value, event) => {
-              return handleChangeFilter(value, event)
+              return handleChangeFilter(value, event as any)
             }}
             padding='0px 20px'
             placeholder='Buscar producto por nombre o código'
           />
           <div
+            role='button'
+            tabIndex={0}
             className={styles.header__actions_filter}
             onClick={() => setShowFilter(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setShowFilter(true)
+              }
+            }}
             data-test-id='filter-advanced'
             style={{
               backgroundColor: '#fcebea',
@@ -240,7 +248,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             data-test-id='filter-advanced'
             style={{
               backgroundColor: getGlobalStyle('--color-base-transparent'),
-              border:  `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
+              border: `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
             }}
           >
             <Row alignItems='center' justifyContent='center'>
@@ -255,18 +263,19 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           viewHeight="auto"
           grid={true}
           columns={15}  // Si no quieres calcular columnas automáticamente, mantén esto.
-          minColumnWidth={140} // Esto asegura un ancho mínimo para las tarjetas.
-          columnGap={20}  // Espacio entre columnas
-          itemHeight={300}  // Fijo o dinámico si se requiere.
+          minColumnWidth={130} // Esto asegura un ancho mínimo para las tarjetas.
+          columnGap={15}  // Espacio entre columnas
+          itemHeight={250}  // Fijo o dinámico si se requiere.
           observeResize={true}  // Autoajuste del grid con ResizeObserver
           className={styles.content__products}
-          emptyComponent={<EmptyData />}
+          emptyComponent={<EmptyData height={250} width={250} />}
           render={(product) => {
             const tag = {
               tag: product?.getOneTags?.nameTag
             };
             const isExistInSale = Boolean(product?.existsInSale);
-            const manageStock = Boolean(product?.manageStock);
+            const manageStock = Boolean(product?.manageStock)
+            const ProPrice = product.ProPrice
             return (
               <MiniCardProduct
                 {...product}
@@ -275,19 +284,21 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                 style={manageStock ? { quantity_container: { top: 35 } } : {}}
                 ProDescription={product.ProDescription}
                 ProDescuento={product.ProDescuento}
+                discount={numberFormat(product.ProDescuento) ?? 0}
                 ProImage={product.ProImage}
-                ProPrice={numberFormat(product.ProPrice)}
-                plainPrice={product.ProPrice}
+                ProPrice={numberFormat(ProPrice)}
+                plainPrice={ProPrice}
                 ProQuantity={product.ProQuantity}
                 ValueDelivery={product.ValueDelivery}
                 comment={false}
                 edit={false}
+                free={Number(ProPrice) === 0}
                 key={product.pId}
                 onClick={() => {
                   dispatch({
                     type: 'ADD_TO_CART',
                     payload: product
-                  });
+                  })
                 }}
                 handleDecrement={() => {
                   handleDecrement(product)
@@ -298,9 +309,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                 pName={product.pName}
                 tag={product?.getOneTags?.nameTag !== null && tag}
                 withStock={true}
-                showInfo={true}
               />
-            );
+            )
           }}
         />
 
@@ -318,7 +328,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           client={client}
           handleOpenAside={handleOpenAside}
           totalProductPrice={totalProductPrice}
-          payId={paymentMethods[data?.payId - 1]?.name ?? paymentMethods[0]?.name}
+          payId={paymentMethods[Number(data?.payId) - 1]?.name ?? paymentMethods[0]?.name}
         />
         <div
           className={styles.content__scrolling}
@@ -394,7 +404,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         handleChange={handleChange as any}
         errors={errors}
         dispatch={dispatch}
-        discount={0}
+        discountPercent={data.discountPercent ?? 0}
+        discountAmount={data?.discountAmount ?? 0}
         storeTables={storeTables as any}
         overline={true}
         payId={data?.payId}

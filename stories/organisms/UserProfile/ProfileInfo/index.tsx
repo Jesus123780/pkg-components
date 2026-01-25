@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types'
-import React from 'react'
 import Image from 'next/image'
 import {
   UserInfo,
@@ -87,7 +85,11 @@ export const ProfileInfo = ({
         <Title>
           Información personal
         </Title>
-        <EditButton disabled={loadingSubmit} editing={editingDataProfile} onClick={handleProfileDataEditClick}>
+        <EditButton
+          disabled={loadingSubmit}
+          editing={editingDataProfile}
+          onClick={handleProfileDataEditClick}
+        >
           {loadingSubmit ? 'Cargando' : label}
           <svg width='30' height='30' viewBox='0 0 21 21' fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path d='M11.6024 3.14982L4.41868 10.7536C4.14743 11.0423 3.88493 11.6111 3.83243 12.0048L3.50868 14.8398C3.39493 15.8636 4.12993 16.5636 5.14493 16.3886L7.96243 15.9073C8.35618 15.8373 8.90743 15.5486 9.17868 15.2511L16.3624 7.64732C17.6049 6.33482 18.1649 4.83857 16.2312 3.00982C14.3062 1.19857 12.8449 1.83732 11.6024 3.14982Z' stroke={editingDataProfile ? '#ffffff' : '#282828'} strokeWidth='1.5' strokeMiterlimit='10' strokeLinecap='round' strokeLinejoin='round' />
@@ -185,17 +187,4 @@ export const ProfileInfo = ({
       </ProfileSection>
     </div>
   )
-}
-
-ProfileInfo.propTypes = {
-  dataForm: PropTypes.object,
-  editingAddress: PropTypes.bool,
-  editingDataProfile: PropTypes.bool,
-  asEdited: PropTypes.bool,
-  editingProfile: PropTypes.bool,
-  handleAddressEditClick: PropTypes.func,
-  handleProfileDataEditClick: PropTypes.func,
-  handleProfileEditClick: PropTypes.func,
-  loadingSubmit: PropTypes.bool,
-  onChange: PropTypes.func
 }

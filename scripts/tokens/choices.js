@@ -12,10 +12,11 @@ export const choices = {
       crispyMintGreen: '#1ea664',
       pinkLight: '#FFC2C2',
       darkerRed: '#5C0F0A',
-      redGradient: 'linear-gradient(180deg, #DA291C 0%, #C00000 96.15%)',
-      redGradientButton: 'linear-gradient(180deg, #DA291C 0%, #C00000 44.44%)',
+      redGradient: 'linear-gradient(180deg, #ea1d2c 0%, #C00000 96.15%)',
+      redGradientButton: 'linear-gradient(180deg, #ea1d2c 0%, #C00000 44.44%)',
       // Secondary
       deepCerulean: '#0062ff',
+      surfaceHover: '#00000012',
       blueLagoon: '#006C85',
       blueStone: '#00586C',
       foam: '#E4F7FC',
@@ -38,7 +39,7 @@ export const choices = {
       fuelYellow: '#F0A92E',
       meteor: '#CC870F',
       // Text
-      lust: '#da291c',
+      lust: '#ea1d2c',
       easternBlue: '#0062ff',
       steel: '#666666',
       paleSlate: '#c4c4c4',

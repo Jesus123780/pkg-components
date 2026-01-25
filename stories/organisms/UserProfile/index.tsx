@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
 import { Devices } from '../Devices'
 import { Text } from '../../atoms'
@@ -74,8 +73,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   const memoizedComponents = {
     Perfil: (
       <ProfileInfo
-        dataForm={dataForm}
         asEdited={asEdited}
+        dataForm={dataForm}
         editingAddress={editingAddress}
         editingDataProfile={editingDataProfile}
         editingProfile={editingProfile}
@@ -96,7 +95,6 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           data={dataDevice}
           deviceId={deviceId}
           loading={loading}
-          loadingSubmit={loadingSubmit}
         />
       </div>
     ),
@@ -107,7 +105,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
 
   return <div style={{ backgroundColor: '#f6f6f6', padding: '30px' }}>
     <Container>
-      <ContainerColumn width='25%'>
+      <ContainerColumn style={{ width: '100%' }}>
         {Object.keys(memoizedComponents).map(view => {
           return (
           <Button
@@ -120,30 +118,9 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           )
         })}
       </ContainerColumn>
-      <ContainerColumn width='75%'>
+      <ContainerColumn style={{ width: '75%' }}>
         {memoizedComponents[currentView]}
       </ContainerColumn>
     </Container >
   </div>
-}
-
-UserProfile.propTypes = {
-  dataDevice: PropTypes.array,
-  dataForm: PropTypes.shape({
-    email: PropTypes.string,
-    lastName: PropTypes.string,
-    upAddress: PropTypes.any,
-    upDateBir: PropTypes.any,
-    upPhone: PropTypes.string,
-    upZipCode: PropTypes.any,
-    username: PropTypes.string
-  }),
-  dataStore: PropTypes.object,
-  deviceId: PropTypes.any,
-  asEdited: PropTypes.bool,
-  handleSubmit: PropTypes.func,
-  loading: PropTypes.bool,
-  loadingSubmit: PropTypes.bool,
-  onChange: PropTypes.func,
-  useFormatDate: PropTypes.func
 }

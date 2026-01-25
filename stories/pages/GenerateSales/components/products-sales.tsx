@@ -36,7 +36,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                         tag: product?.getOneTags?.nameTag ?? ''
                     }
                     const ProQuantity = product?.ProQuantity ?? 0
-
+                    const ProPrice = product.ProPrice
                     return (
                         <SwipeableCard
                             key={product.pId}
@@ -121,6 +121,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 editing={product.editing}
                                 editable={true}
                                 canDelete={true}
+                                height={300}
                                 handleDelete={() => {
                                     dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
                                 }}
@@ -136,9 +137,11 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                     })
                                 }}
                                 ProDescription={product.ProDescription}
+                                plainPrice={ProPrice}
                                 ProDescuento={product.ProDescuento}
                                 ProImage={product.ProImage}
-                                ProPrice={numberFormat(product.ProPrice)}
+                                ProPrice={numberFormat(ProPrice)}
+                                discount={numberFormat(product.ProDescuento) ?? 0}
                                 ProQuantity={ProQuantity}
                                 handleToggleEditingStatus={() => {
                                     dispatch({
@@ -161,10 +164,12 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 ValueDelivery={product.ValueDelivery}
                                 withQuantity={true}
                                 hoverFree={true}
+                                free={ProPrice === 0}
                                 handleComment={() => {
                                     handleComment(product)
                                 }}
                                 showDot={true}
+                                hasDiscount={true}
                                 openQuantity={Boolean(ProQuantity)}
                                 handleDecrement={() => {
                                     handleDecrement(product)

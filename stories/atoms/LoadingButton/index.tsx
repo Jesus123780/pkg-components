@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import styles from './Loader.module.css'
 
 interface LoadingButtonProps {
@@ -14,8 +13,4 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({ color }) => {
       <div className={styles.spinner} style={{ backgroundColor: color }}></div>
     </div>
   )
-}
-
-LoadingButton.propTypes = {
-  color: PropTypes.string
 }

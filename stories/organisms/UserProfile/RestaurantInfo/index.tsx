@@ -1,5 +1,8 @@
-import PropTypes from 'prop-types'
-import { UserInfo, ReadOnlyText, Label } from '../styled'
+import { 
+  UserInfo,
+  ReadOnlyText,
+  Label
+} from '../styled'
 import { Text } from '../../../atoms/Text'
 
 export const RestaurantInfo = ({ data = {} }) => {
@@ -47,7 +50,4 @@ export const RestaurantInfo = ({ data = {} }) => {
       </>
     </>
   )
-}
-RestaurantInfo.propTypes = {
-  data: PropTypes.object
 }

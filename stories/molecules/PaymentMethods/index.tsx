@@ -42,7 +42,7 @@ export const PaymentMethods: React.FC<PaymentMethodsProps> = ({
           >
             <Icon
               icon={method.icon}
-              size={40}
+              size={50}
             />
           </Column>
             <Text align='center'>

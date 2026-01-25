@@ -105,10 +105,8 @@ export const MiniCardProductShowInfo: Story = {
     free: false,
     canDelete: false,
     withQuantity: false,
-    withStock: false,
     editable: false,
     hoverFree: false,
-    showInfo: true,
     withStock: true,
     stock: 10
   }
