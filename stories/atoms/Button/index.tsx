@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { Icon } from '../Icon'
 import style from './button.module.css'
 import { Column } from '../Column'
-import { ButtonProps } from 'typesdefs'
+import type { ButtonProps } from 'typesdefs'
 
 export const Button: React.FC<ButtonProps> = ({
   children,
@@ -79,9 +79,9 @@ export const Button: React.FC<ButtonProps> = ({
       {...res}
     >
       {loading && (
-        <div className={style.loadingWrapper} id="loading">
+        <div className={style.loadingWrapper} id='loading'>
           <Icon
-            icon="IconLoading"
+            icon='IconLoading'
             size={30}
             color={getGlobalStyle('--color-base-white')}
           />

@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react'
 import { AlertContent } from './AlertContent'
-import { AlertContentProps } from './types'
+import type { ContainerToastProps } from './types'
 
-export const AlertBox: React.FC<AlertContentProps> = ({ err }) => {
+export const AlertBox: React.FC<ContainerToastProps> = ({ err }) => {
   const [closed, setClosed] = useState(false)
 
   useEffect(() => {

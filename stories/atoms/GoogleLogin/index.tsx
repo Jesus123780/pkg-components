@@ -1,9 +1,7 @@
 'use client'
 
-import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import { useGoogleLogin } from '../../../hooks/useGoogleLogin'
-import { ButtonContent } from './ButtonContent'
 
 interface GoogleLoginRenderProps {
   onClick: () => void
@@ -14,6 +12,7 @@ interface GoogleLoginProps {
   onSuccess?: (...args: any[]) => void
   onAutoLoadFinished?: (...args: any[]) => void
   onFailure?: (...args: any[]) => void
+  onPopupClosed?: (...args: any) => void
   onScriptLoadFailure?: (...args: any[]) => void
   tag?: keyof JSX.IntrinsicElements
   type?: string
@@ -28,13 +27,15 @@ interface GoogleLoginProps {
   clientId?: string
   autoLoad?: boolean
   prompt?: string
+  popupTimeoutMs?: number
 }
 
 export const GoogleLogin = ({
-  onSuccess = () => { },
-  onAutoLoadFinished = () => { },
-  onFailure = () => { },
-  onScriptLoadFailure = () => { },
+  onSuccess = () => {},
+  onAutoLoadFinished = () => {},
+  onFailure = () => {},
+  onScriptLoadFailure = () => {},
+  onPopupClosed = () => {},
   tag = 'button',
   type = 'button',
   className = '',
@@ -47,21 +48,39 @@ export const GoogleLogin = ({
   disabled: disabledProp = false,
   clientId = '',
   autoLoad = false,
-  prompt = ''
-}: GoogleLoginProps = {}): JSX.Element => {
+  prompt = '',
+  popupTimeoutMs = 10000
+}: GoogleLoginProps = {}) => {
   const [hovered, setHovered] = useState(false)
   const [active, setActive] = useState(false)
 
-  const { signIn, loaded } = useGoogleLogin({
+  const { signIn, loaded, popupClosed, resetPopupClosed } = useGoogleLogin({
     onSuccess,
     onAutoLoadFinished,
     onFailure,
     onScriptLoadFailure,
+    onPopupClosed,
     clientId,
     autoLoad,
-    prompt
+    prompt,
+    popupTimeoutMs
   })
   const disabled = disabledProp || !loaded
+
+  // If consumer passed onPopupClosed we still call it (hook calls it),
+  // here we also expose the event via prop as a convenience (keeps compatibility).
+  useEffect(() => {
+    if (!popupClosed) return
+    try {
+      // consumer already got callback via hook options, but ensure reset hook state after a short delay
+      setTimeout(() => {
+        resetPopupClosed()
+      }, 300)
+    } catch (e) {
+      // noop
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [popupClosed])
 
   if (typeof render === 'function') {
     return render({ onClick: signIn, disabled })
@@ -99,10 +118,6 @@ export const GoogleLogin = ({
     }
 
     if (active) {
-      if (theme === 'dark') {
-        return Object.assign({}, initialStyle, activeStyle)
-      }
-
       return Object.assign({}, initialStyle, activeStyle)
     }
 
@@ -112,8 +127,9 @@ export const GoogleLogin = ({
 
     return initialStyle
   })()
+
   const googleLoginButton = React.createElement(
-    tag,
+    tag as string,
     {
       onMouseEnter: () => { return setHovered(true) },
       onMouseLeave: () => {
@@ -130,33 +146,13 @@ export const GoogleLogin = ({
     },
     [
       icon && <div key={1} />,
-      <ButtonContent icon={icon} key={2}>
+      <div key={2} style={{ display: 'inline-flex', alignItems: 'center', padding: '10px 16px' }}>
         {children ?? buttonText}
-      </ButtonContent>
+      </div>
     ]
   )
 
   return googleLoginButton
-}
-
-GoogleLogin.propTypes = {
-  onSuccess: PropTypes.func,
-  onAutoLoadFinished: PropTypes.func,
-  onFailure: PropTypes.func,
-  onScriptLoadFailure: PropTypes.func,
-  tag: PropTypes.string,
-  type: PropTypes.string,
-  className: PropTypes.string,
-  disabledStyle: PropTypes.object,
-  buttonText: PropTypes.node,
-  children: PropTypes.node,
-  render: PropTypes.func,
-  theme: PropTypes.oneOf(['light', 'dark']),
-  icon: PropTypes.bool,
-  disabled: PropTypes.bool,
-  clientId: PropTypes.string.isRequired,
-  autoLoad: PropTypes.bool,
-  prompt: PropTypes.string
 }
 
 GoogleLogin.defaultProps = {
@@ -174,5 +170,6 @@ GoogleLogin.defaultProps = {
   },
   icon: true,
   theme: 'light',
-  onRequest: () => { }
+  onRequest: () => { },
+  popupTimeoutMs: 10000
 }

@@ -191,7 +191,7 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
       message: 'El campo debe contener solo letras'
     },
     email: {
-      validate: (v: string) => email === true && !isEmail(v),
+      validate: (v: string) => email === true && isEmail(v),
       message: 'El formato de email no es válido'
     },
     pass: {
@@ -369,10 +369,11 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
         {...(rest as any)}
         ref={setRef}
         autoFocus={autoFocus}
-        data-required={required}
-        disabled={disabled}
+        data-required={Boolean(required)}
+        disabled={Boolean(disabled)}
         name={name}
-        max={max}
+        max={typeof range?.max === 'number' ? range.max : undefined}
+        min={typeof range?.min === 'number' ? range.min : undefined}
         onFocus={handleFocus}
         onChange={handleChange}
         onPaste={handlePaste}

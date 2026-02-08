@@ -8,7 +8,9 @@ export interface AlertContentProps {
 }
 
 export interface ContainerToastProps {
-  error: boolean
-  closed: string | true | undefined
+  error?: boolean
+  closed?: string | true | undefined
   color?: string
+  duration?: number
+  message: string
 }

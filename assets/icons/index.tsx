@@ -317,7 +317,7 @@ export const IconTime: React.FC<IconProps> = ({ style = {}, size, color, ...prop
  * @param {Object} props... - Any other SVG attributes
  * @returns {JSX.Element} SVG icon
  */
-export const IconHome: React.FC<IconProps> = ({ style = {}, size, color, ...props }: IconProps) => {
+export const IconHome: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       fill='none'
@@ -325,7 +325,7 @@ export const IconHome: React.FC<IconProps> = ({ style = {}, size, color, ...prop
       viewBox='0 0 24 24'
       width={size ?? 800}
       xmlns='http://www.w3.org/2000/svg'
-      style={{ ...style, color }}
+      style={{ color }}
     >
       <path
         d='M9 16c.85.63 1.885 1 3 1s2.15-.37 3-1'
@@ -1737,23 +1737,17 @@ export const IconGoogleFullColor: React.FC<IconProps> = ({ size }: IconProps) =>
 
 export const IconArrowLeft: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
-    <svg
-      height={size}
-      viewBox='0 0 22.893 45.908'
-      width={size}
-      x='0px'
-      y='0px'
-    >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size} height={size} fill={color}>
+    <g data-name="Layer 2">
       <path
-        d='M1365.5,348.848l21.837-22.686L1365.5,303.635'
-        fill='none'
-        stroke={color}
-        strokeLinecap='round'
-        strokeLinejoin='bevel'
-        strokeWidth='5px'
-        transform='translate(1388.033 349.194) rotate(180)'
+        d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64Z"
+        data-name="arrow-ios-back"
+        style={{
+          fill: color ?? getGlobalStyle('--color-icons-black'),
+        }}
       />
-    </svg>
+    </g>
+  </svg>
   )
 }
 

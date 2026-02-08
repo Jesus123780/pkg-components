@@ -1,11 +1,10 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { StepsComponent } from './index';
 
 export default {
   title: 'molecules/StepsComponent',
   component: StepsComponent,
-} as Meta<typeof StepsComponent>;
+} as Meta<typeof StepsComponent>
 
 type Story = StoryObj<typeof StepsComponent>;
 

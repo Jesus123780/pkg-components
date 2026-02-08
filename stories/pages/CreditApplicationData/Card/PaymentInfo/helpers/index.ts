@@ -1,4 +1,4 @@
-import { TextLineHeight, TextWeight, TextSize } from 'typesdefs'
+import type { TextLineHeight, TextWeight, TextSize } from 'typesdefs'
 
 interface TextProps {
   content: string;

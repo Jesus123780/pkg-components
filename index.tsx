@@ -1,5 +1,8 @@
 'use client'
 
+// pkg json
+import pkg from './package.json';
+
 // main styles
 import './stories/assets/public/styles.css'
 import './stories/assets/public/global.light.css'
@@ -46,3 +49,5 @@ export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 export type { DropResult } from 'react-beautiful-dnd'
 export type { GridStackOptions, GridStackWidget } from 'gridstack'
 export { GridStack } from 'gridstack'
+
+export const version = pkg.version;

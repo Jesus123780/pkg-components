@@ -28,6 +28,7 @@ interface ColumnProps {
   /** Gap between children */
   gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   /** Additional props */
+  [key: string]: any
 }
 
 const GAP_SIZES: Record<NonNullable<ColumnProps['gap']>, string> = {

@@ -122,27 +122,27 @@
   "main": "index.tsx",
   "name": "pkg-components",
   "private": false,
-  "scripts": {
-    "build-storybook": "storybook build",
-    "build": "storybook build",
-    "semantic-release": "semantic-release --branches main",
-    "update:version": "node increment-version.js && git add package.json",
-    "build:components": "babel stories/** -d dist",
-    "build:tokens": "node scripts/build-tokens.js",
-    "prepare": "husky install || true",
-    "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
-    "check:te": "npm run check:types && npm run check:eslint",
-    "check:types": "tsc --noemit",
-    "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
-    "sb": "storybook dev -p 6006",
-    "test": "jest --config jest.config.ts",
-    "test:generate-output": "jest --json --outputFile=.jest-test-results.json",
-    "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
-  },
-  "version": "2.3.10",
   "repository": {
     "type": "git",
     "url": "https://github.com/Jesus123780/pkg-components.git"
-  }
+  },
+  "scripts": {
+    "build": "storybook build",
+    "build-storybook": "storybook build",
+    "build:components": "babel stories/** -d dist",
+    "build:tokens": "node scripts/build-tokens.js",
+    "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
+    "check:te": "npm run check:types && npm run check:eslint",
+    "check:types": "tsc --noemit",
+    "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "husky install || true",
+    "sb": "storybook dev -p 6006",
+    "semantic-release": "semantic-release --branches main",
+    "test": "jest --config jest.config.ts",
+    "test:generate-output": "jest --json --outputFile=.jest-test-results.json",
+    "update:version": "node increment-version.js && git add package.json"
+  },
+  "version": "2.3.15"
 }
