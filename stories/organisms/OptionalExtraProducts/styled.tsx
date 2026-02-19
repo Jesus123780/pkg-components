@@ -63,7 +63,6 @@ export const GarnishChoicesHeader = styled.div`
     --screen-x: 1495px;
     --screen-y: 937px;
     font-family: SulSans, Helvetica, sans-serif;
-    box-sizing: border-box;
     display: inline-block;
     background: #fff;
     border-radius: 3px;

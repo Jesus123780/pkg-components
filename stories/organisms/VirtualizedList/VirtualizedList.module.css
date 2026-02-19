@@ -31,7 +31,6 @@
   justify-content: center;
   align-items: start;
   padding-left: 20px; /* coincide con tu estilo previo */
-  box-sizing: border-box;
   will-change: transform;
 }
 

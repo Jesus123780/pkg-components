@@ -1737,17 +1737,17 @@ export const IconGoogleFullColor: React.FC<IconProps> = ({ size }: IconProps) =>
 
 export const IconArrowLeft: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size} height={size} fill={color}>
-    <g data-name="Layer 2">
-      <path
-        d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64Z"
-        data-name="arrow-ios-back"
-        style={{
-          fill: color ?? getGlobalStyle('--color-icons-black'),
-        }}
-      />
-    </g>
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size} height={size} fill={color}>
+      <g data-name="Layer 2">
+        <path
+          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64Z"
+          data-name="arrow-ios-back"
+          style={{
+            fill: color ?? getGlobalStyle('--color-icons-black'),
+          }}
+        />
+      </g>
+    </svg>
   )
 }
 
@@ -1837,6 +1837,26 @@ export const IconDrink: React.FC<IconProps> = ({ size, color }) => (
     <path d="M228.608 40.676c-30.678 0-56.571 24.066-60.174 53.944H134.31l-8.37-46.983c-3.48-17.401-15.661-29.582-31.322-34.802L51.116.653c-3.48-1.74-8.701 0-10.441 5.22-1.74 3.48 0 8.701 5.22 10.441l43.503 12.181c10.441 3.48 17.401 10.441 19.141 20.882l8.057 45.243H94.619c-5.22 0-12.181 1.74-15.661 6.96-3.48 3.48-5.22 10.441-5.22 15.661l22.621 179.232c1.74 19.141 19.141 33.062 38.283 33.062h38.283c19.141 0 34.802-13.921 38.283-33.062l16.914-134.042c.157 0 .313.052.487.052 33.062 0 60.904-27.842 60.904-60.904-.001-33.061-27.843-60.903-60.905-60.903zm-12.181 74.825-3.358 26.676c-13.851-5.186-24.188-17.018-27.094-31.897h26.989c1.74 0 3.48 1.74 3.48 1.74-.017 1.741-.017 1.741-.017 3.481zm-125.289-3.48c1.74-1.74 1.74-1.74 3.48-1.74h24.762l16.409 92.226h-33.671l-10.98-87.006c-1.74-1.74 0-3.48 0-3.48zm102.667 182.712c-1.74 10.441-10.441 19.141-20.882 19.141H134.64c-10.441 0-19.141-8.701-20.882-19.141l-9.449-74.825h34.576l6.195 34.802c1.74 3.48 5.22 6.96 8.701 6.96 5.22-1.74 8.701-5.22 8.701-8.701l-5.882-33.062h46.653l-9.448 74.826zm11.642-92.226h-51.942l-16.409-92.226h31.514c3.48 23.109 20.342 42.198 42.267 49.159l-5.43 43.067zm24.883-57.598 3.497-27.668c0-5.22-1.74-10.441-5.22-15.661-3.48-5.22-10.441-6.96-15.661-6.96h-27.163c3.271-20.934 20.847-36.543 42.824-36.543 22.621 0 43.503 19.141 43.503 43.503.001 23.77-18.27 42.424-41.78 43.329z" />
   </svg>
 )
+
+export const IconDrag: React.FC<IconProps> = ({ size, color }) => {
+  return <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size ?? 24}
+    height={size ?? 24}
+    fill="none"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    className="icon icon-tabler icon-tabler-drag-drop"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" />
+    <path d="M19 11V9a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+    <path d="m13 13 9 3-4 2-2 4-3-9M3 3v.01M7 3v.01M11 3v.01M15 3v.01M3 7v.01M3 11v.01M3 15v.01" />
+  </svg>
+}
+
 
 export const IconSandwich: React.FC<IconProps> = ({ size, color }) => {
   return (

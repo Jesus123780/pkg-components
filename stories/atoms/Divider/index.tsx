@@ -1,6 +1,5 @@
 'use client'
 
-import PropTypes from 'prop-types'
 import styles from './Divider.module.css'
 
 export interface DividerProps {
@@ -30,10 +29,4 @@ export const Divider: React.FC<DividerProps> = ({
   }
 
   return <div className={styles.divider} style={dividerStyle}></div>
-}
-
-Divider.propTypes = {
-  borderTop: PropTypes.bool,
-  borderBottom: PropTypes.bool,
-  margin: PropTypes.number
 }

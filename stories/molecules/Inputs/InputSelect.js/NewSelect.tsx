@@ -134,6 +134,7 @@ export interface NewSelectProps {
   error?: boolean
   canDelete?: boolean
   required?: boolean
+  step?: number | string
   accessor?: string
   dataForm?: Record<string, any>
   handleClean?: (dataForm: any) => void
@@ -167,6 +168,7 @@ export const NewSelect: React.FC<NewSelectProps> = ({
   error = false,
   canDelete = false,
   required = false,
+  step = undefined,
   accessor,
   dataForm = {},
   handleClean = () => { },
@@ -373,7 +375,7 @@ export const NewSelect: React.FC<NewSelectProps> = ({
     <div
       ref={rootRef}
       id={id}
-      data-testid='newselect-root'
+      data-test-id='newselect-root'
       className={styles['input-wrapper']}
       style={{ outline: `2px solid var(${error ? '--color-text-error' : '--color-base-transparent'})`, cursor: disabled ? 'not-allowed' : 'pointer' }}
       aria-disabled={disabled}
@@ -383,9 +385,9 @@ export const NewSelect: React.FC<NewSelectProps> = ({
           <span
             aria-disabled={disabled}
             className={`${styles['input-wrapper__title']} ${styles['input-wrapper__title--animated']} ${open || query.length > 0 || selectedLabel ? styles['input-wrapper__title--active'] : ''}`}
-            data-testid='title'
+            data-test-id='title'
           >
-            {title}{required ? ' *' : ''}
+            {title}{required ? '*' : ''}
           </span>
           <span className={styles['input-wrapper__title--disabled']}>
             {disabled ? ' (Deshabilitado)' : ''}
@@ -402,7 +404,7 @@ export const NewSelect: React.FC<NewSelectProps> = ({
       >
         <input
           ref={inputRef}
-          data-testid='newselect-input'
+          data-test-id='newselect-input'
           id={id}
           name={name}
           role='searchbox'
@@ -411,6 +413,8 @@ export const NewSelect: React.FC<NewSelectProps> = ({
           aria-activedescendant={highlight >= 0 ? `newselect-option-${highlight}` : undefined}
           placeholder={placeholder}
           autoComplete='off'
+          data-required={Boolean(required)}
+          data-required-step={step}
           className={styles['input-wrapper_content_input']}
           value={query}
           disabled={disabled}

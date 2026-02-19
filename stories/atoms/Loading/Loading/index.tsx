@@ -104,7 +104,6 @@ const Container = styled.div<{ bgColor?: string }>`
     background: #fff;
     border-radius: 50%;
     box-shadow: -24px 0 #fff, 24px 0 #fff;
-    box-sizing: border-box;
     display: block;
     height: 10px;
     margin: 0 auto;

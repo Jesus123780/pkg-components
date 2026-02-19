@@ -3,7 +3,6 @@
   display: grid;
   border-bottom: 1px solid var(--table-border-color, #f0f0f0);
   padding: 0;
-  box-sizing: border-box;
   width: 100%;
 }
 
@@ -44,7 +43,6 @@
   justify-content: space-around;
   margin: 10px 0;
   font-size: 15px;
-  box-sizing: border-box;
   min-width: 0;
 }
 

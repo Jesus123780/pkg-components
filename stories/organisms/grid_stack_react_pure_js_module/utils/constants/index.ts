@@ -1,0 +1,1 @@
+export const corners = ['se', 'sw', 'ne']

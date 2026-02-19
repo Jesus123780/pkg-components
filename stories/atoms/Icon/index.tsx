@@ -114,6 +114,7 @@ import {
   IconSun,
   IconMoon,
   IconFree,
+  IconDrag,
   IconLinesFilter
 } from '../../../assets'
 
@@ -140,6 +141,7 @@ export const Icons: IconMap = {
   IconVisa,
   IconInfo,
   IconMinus,
+  IconDrag,
   IconDownload,
   IconLines,
   IconInvoice,

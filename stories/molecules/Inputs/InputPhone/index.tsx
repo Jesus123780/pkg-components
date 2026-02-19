@@ -1,6 +1,5 @@
 'use client'
 
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { countries } from './helpers'
 import './styles.css'
@@ -16,6 +15,7 @@ interface PhoneInputProps {
   name?: string
   style?: React.CSSProperties
 }
+
 export const PhoneInput: React.FC<PhoneInputProps> = ({
   value,
   required = false,
@@ -28,12 +28,12 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   const [formattedPhoneNumber, setFormattedPhoneNumber] = useState(value)
   const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(true)
 
-  const handleCountrySelection = (countryCode) => {
+  const handleCountrySelection = (countryCode: string) => {
     setSelectedCountry(countryCode)
     onChange(countryCode)
   }
 
-  const formatPhoneNumber = (phoneNumber) => {
+  const formatPhoneNumber = (phoneNumber: string) => {
     // Remove all non-numeric characters from the input value
     const numericValue = phoneNumber.replace(/\D/g, '')
     let formattedValue = numericValue
@@ -49,13 +49,16 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
     onChange(formattedValue)
   }
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let phoneNumber = event.target.value
 
     // Si el número ingresado supera el formato deseado, truncarlo
     if (phoneNumber.length > 12) {
       phoneNumber = phoneNumber.slice(0, 12)
-    } else if (phoneNumber.length === 3 && event.nativeEvent.inputType === 'deleteContentBackward') {
+    } else if (
+      phoneNumber.length === 3 &&
+      (event.nativeEvent as InputEvent).inputType === 'deleteContentBackward'
+    ) {
       // Permitir la eliminación completa si solo se han ingresado tres primeros números
       phoneNumber = ''
     }
@@ -69,37 +72,29 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       <div className='phone-country-selector'>
         {countries.map((country) => {
           return (
-          <button
-            aria-label={`Select ${country.name}`}
-            className={`phone-country-selector-button ${
-              selectedCountry === country.code ? 'selected' : ''
-            }`}
-            key={country.code}
-            onClick={() => { return handleCountrySelection(country.code) }}
-            title={country.name}
-          >
-            <Icon icon='IconColombia' size={25} />
-          </button>
+            <button
+              aria-label={`Select ${country.name}`}
+              className={`phone-country-selector-button ${selectedCountry === country.code ? 'selected' : ''
+                }`}
+              key={country.code}
+              onClick={() => { return handleCountrySelection(country.code) }}
+              title={country.name}
+            >
+              <Icon icon='IconColombia' size={25} />
+            </button>
           )
         })}
       </div>
       <input
-        className={`phone-input ${
-          isValidPhoneNumber ? '' : 'invalid'
-        }`}
+        className={`phone-input ${isValidPhoneNumber ? '' : 'invalid'
+          }`}
         onChange={handleInputChange}
         placeholder='Ingresa el número de teléfono'
         type='tel'
         name={name}
+        required={required}
         value={formattedPhoneNumber}
       />
     </div>
   )
-}
-
-PhoneInput.propTypes = {
-  defaultCountry: PropTypes.string,
-  onChange: PropTypes.func,
-  required: PropTypes.bool,
-  value: PropTypes.any
 }

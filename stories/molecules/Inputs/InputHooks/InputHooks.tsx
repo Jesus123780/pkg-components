@@ -98,6 +98,7 @@ export interface InputHooksProps {
   width?: string
   info?: string
   max?: number
+  step?: number
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void
@@ -150,6 +151,7 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
     width = '100%',
     info = '',
     max = Infinity,
+    step = undefined,
     onChange = () => undefined,
     onFocus = () => undefined,
     onBlur = () => undefined,
@@ -371,6 +373,7 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
         autoFocus={autoFocus}
         data-required={Boolean(required)}
         disabled={Boolean(disabled)}
+        data-required-step={step}
         name={name}
         max={typeof range?.max === 'number' ? range.max : undefined}
         min={typeof range?.min === 'number' ? range.min : undefined}

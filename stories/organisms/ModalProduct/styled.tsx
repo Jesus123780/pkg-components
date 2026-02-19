@@ -62,7 +62,6 @@ export const DisRestaurant = styled.div`
     line-height: 1.15;
     font-size: 16px;
     cursor: pointer;
-    box-sizing: border-box;
     border-top: 2px dashed #f2f2f2;
     margin: 8px 0;
   }
@@ -100,7 +99,6 @@ export const GarnishChoicesHeader = styled.div`
     --screen-x: 1495px;
     --screen-y: 937px;
     font-family: SulSans, Helvetica, sans-serif;
-    box-sizing: border-box;
     display: inline-block;
     background: #fff;
     border-radius: 3px;

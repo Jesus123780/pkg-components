@@ -8,7 +8,6 @@
   height: 56px;
   position: relative;
   user-select: none;
-  box-sizing: border-box;
 }
 
 /* clase aplicada al contenedor durante resize: suspende transiciones para evitar "jump" visual */
@@ -90,7 +89,6 @@
   height: 56px;
   position: relative;
   user-select: none;
-  box-sizing: border-box;
 
   /* CLAVE: permitir que el flex-item se reduzca (sin esto no se recorta) */
   min-width: 0;
@@ -101,7 +99,6 @@
 .section__content > * {
   min-width: 0;        /* permite que los hijos se reduzcan dentro del contenedor */
   max-width: 100%;     /* no salirse del ancho del contenedor padre */
-  box-sizing: border-box;
 }
 
 /* Título con truncado (ellipsis) */
@@ -143,7 +140,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  box-sizing: border-box;
   min-width: 0;
 }
 
