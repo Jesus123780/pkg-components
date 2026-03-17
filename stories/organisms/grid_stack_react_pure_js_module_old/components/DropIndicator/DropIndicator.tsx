@@ -4,19 +4,31 @@
  * Small component that shows a visual indicator where the drop will land.
  */
 
-import { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import styles from './DropIndicator.module.css'; // optional: you can fallback to inline style
 import { getGlobalStyle } from '../../../../../helpers';
+import { GridItem } from '../../types';
 
+interface DropIndicatorProps {
+  radio: number;
+  target: GridItem | null;
+  pxHelpers: {
+    gridToPx: (value: number, isVertical: boolean) => number;
+    widthPx: (w: number) => number;
+    heightPx: (h: number) => number;
+  } | null;
+  animation?: { duration: number; easing: string };
+}
 /**
  * DropIndicator
- * @param {{target: {x:number,y:number,w:number,h:number}, pxHelpers: object, animation: object}} props
+ * @param {{radio: number, target: {x:number,y:number,w:number,h:number}, pxHelpers: object, animation: object}} props
  */
-const DropIndicator = ({ target, pxHelpers, animation = { duration: 180, easing: 'cubic-bezier(.2,.8,.2,1)' } }) => {
-  if (!target || !pxHelpers) return null;
+const DropIndicator: React.FC<DropIndicatorProps> = ({ radio, target, pxHelpers, animation = { duration: 180, easing: 'cubic-bezier(.2,.8,.2,1)' } }) => {
+  const style = useMemo((): React.CSSProperties => {
+    if (!target || !pxHelpers) {
+      return {};
+    }
 
-  const style = useMemo(() => {
     const left = pxHelpers.gridToPx(target.x, false);
     const top = pxHelpers.gridToPx(target.y, true);
     const width = pxHelpers.widthPx(target.w);
@@ -30,25 +42,16 @@ const DropIndicator = ({ target, pxHelpers, animation = { duration: 180, easing:
       height: `${height}px`,
       zIndex: 998,
       backgroundColor: getGlobalStyle('--color-neutral-gray-silver'),
-      borderRadius: 6,
+      borderRadius: radio,
       opacity: 0.7,
       transition: `all ${animation.duration}ms ${animation.easing}`,
       pointerEvents: 'none',
     };
   }, [target, pxHelpers, animation]);
 
-  return <div className={styles.dropIndicator} style={style} data-drop-indicator />;
-};
+  if (!target || !pxHelpers) return null;
 
-DropIndicator.propTypes = {
-  target: PropTypes.shape({
-    x: PropTypes.number,
-    y: PropTypes.number,
-    w: PropTypes.number,
-    h: PropTypes.number,
-  }),
-  pxHelpers: PropTypes.object.isRequired,
-  animation: PropTypes.object,
+  return <div className={styles.dropIndicator} style={style} data-drop-indicator />;
 };
 
 export default DropIndicator;

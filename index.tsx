@@ -18,9 +18,6 @@ import 'swiper/css/scrollbar'
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css'
 
-// gridstack styles
-import 'gridstack/dist/gridstack.css'
-import 'gridstack/dist/gridstack.min.css'
 
 // styles grid layout
 import 'react-grid-layout/css/styles.css'
@@ -47,7 +44,5 @@ export * from '@dnd-kit/core'
 export * from './scripts/tokens/choices'
 export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 export type { DropResult } from 'react-beautiful-dnd'
-export type { GridStackOptions, GridStackWidget } from 'gridstack'
-export { GridStack } from 'gridstack'
 
 export const version = pkg.version;

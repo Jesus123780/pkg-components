@@ -1,29 +1,58 @@
-// src/hooks/useGrid.js
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { 
+  useCallback, 
+  useEffect, 
+  useRef, 
+  useState
+} from 'react';
 import { resolveCollision, findPlacementBFS } from '../utils/collision';
 import { cloneLayout } from '../utils/grid-utils';
+import { GridItem, Overlay } from '../types';
+
+// Import extracted utilities from vanilla GridStack
+import { 
+  DDUtils,
+  GridStackUtils,
+  GridLayoutUtils,
+  type DragTransform,
+  type DDPosition,
+} from '../../../../utils';
+
 
 const POINTER_CAPTURE_RETRY = 3;
 
-const rectsOverlap = (a, b) => {
+interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/**
+ * Wrapper for GridLayoutUtils.collides for backward compatibility
+ * Converts rect format to GridLayoutUtils format
+ */
+const rectsOverlap = (a: Rect | null | undefined, b: Rect | null | undefined): boolean => {
   if (!a || !b) return false;
-  return !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+  return GridLayoutUtils.collides(
+    { x: a.x, y: a.y, w: a.w, h: a.h },
+    { x: b.x, y: b.y, w: b.w, h: b.h }
+  );
 };
 
 
 /**
  * Ensure no overlap with optional upward "sticky" compaction.
  *
- * @param {Array} inputLayout
+ * @param {GridItem[]} inputLayout
  * @param {number} cols
  * @param {number} reflowMaxDepth
  * @param {boolean} sticky
- * @returns {Array}
+ * @returns {GridItem[]}
  */
-const ensureNoOverlap = (inputLayout = [], cols = 12, reflowMaxDepth = 8, sticky = false) => {
+const ensureNoOverlap = (inputLayout: GridItem[] = [], cols = 12, reflowMaxDepth = 8, sticky = false): GridItem[] => {
   const layout = (inputLayout || []).map(l => ({ ...l }));
   layout.sort((a, b) => (a.y - b.y) || (a.x - b.x));
-  const placed = [];
+  const placed = [] as GridItem[];
 
   for (const node of layout) {
     let candidate = { ...node };
@@ -40,7 +69,7 @@ const ensureNoOverlap = (inputLayout = [], cols = 12, reflowMaxDepth = 8, sticky
       const others = placed.map(p => ({ ...p }));
       const fallback = findPlacementBFS(others, candidate, cols, reflowMaxDepth);
       if (fallback) {
-        candidate = { ...fallback, i: candidate.i };
+        candidate = { ...fallback, i: candidate.i, id: candidate.id }
       } else {
         candidate.y = Math.max(0, candidate.y);
         candidate.x = Math.max(0, Math.min(cols - candidate.w, candidate.x));
@@ -61,8 +90,8 @@ const ensureNoOverlap = (inputLayout = [], cols = 12, reflowMaxDepth = 8, sticky
       const { compactUp } = require('../utils/collision');
       // compactUp returns normalized layout; map back to ids
       const compacted = compactUp(out, cols);
-      const byId2 = new Map(compacted.map(p => [p.i, p]));
-      return inputLayout.map(orig => ({ ...(byId2.get(orig.i) || orig) }));
+      const byId2 = new Map(compacted.map((p: GridItem) => [p.i, p]));
+      return inputLayout.map(orig => ({ ...(byId2.get(orig.i) || orig) } as GridItem))
     } catch (_) {
       return out;
     }
@@ -71,136 +100,28 @@ const ensureNoOverlap = (inputLayout = [], cols = 12, reflowMaxDepth = 8, sticky
   return out;
 };
 
-/**
- * Try to greedily cascade-shift colliding items to nearest available spots.
- * Greedy algorithm: place `candidate`, then try to move overlapped neighbors horizontally
- * (closest x on same row), else try vertical shifts up/down up to maxDepth.
- *
- * Returns a new layout (array) with the candidate placed and neighbors shifted,
- * or `null` if it failed to find placements within constraints.
- *
- * @param {Array} others - array of layout items (excluding the moving item)
- * @param {Object} candidate - node to place ({ i, x, y, w, h })
- * @param {number} cols
- * @param {number} maxDepth - max vertical displacement rows to try
- * @returns {Array|null}
- */
-const cascadeSmartShift = (others = [], candidate, cols = 12, maxDepth = 6) => {
-  if (!candidate) return null;
-
-  // shallow clones
-  const layout = others.map(n => ({ ...n }));
-  const byId = new Map(layout.map(n => [n.i, n]));
-
-  // helper overlap check
-  const overlaps = (a, b) => {
-    if (!a || !b) return false;
-    return !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
-  };
-
-  const canPlaceAt = (node, arr) => !arr.some(p => p.i !== node.i && overlaps(p, node));
-
-  const clampX = (x, w) => Math.max(0, Math.min(cols - w, x | 0));
-
-  // find nearest horizontal spot on a given row y for node that doesn't overlap arr
-  const findNearestHorizontal = (node, arr, colsLimit) => {
-    const maxX = colsLimit - node.w;
-    const originX = clampX(node.x, node.w);
-    // search radius outward
-    for (let r = 0; r <= colsLimit; r++) {
-      // try left then right (closer first)
-      const candXs = [];
-      const left = originX - r;
-      const right = originX + r;
-      if (left >= 0) candXs.push(left);
-      if (right <= maxX && right !== left) candXs.push(right);
-      for (const cx of candXs) {
-        const test = { ...node, x: cx };
-        if (canPlaceAt(test, arr)) return { ...test };
-      }
-      if (originX - r < 0 && originX + r > maxX) break;
-    }
-    return null;
-  };
-
-  // try to place item by vertical shifts (0..maxDepth up/down) and horizontal search
-  const findPlaceWithVertical = (item, arr, colsLimit, maxD) => {
-    const origY = item.y;
-    // check same row first
-    let attempt = { ...item, y: origY };
-    const h0 = findNearestHorizontal(attempt, arr, colsLimit);
-    if (h0) return h0;
-
-    for (let d = 1; d <= maxD; d++) {
-      // try down then up (prefer moving down into free space to mimic push)
-      const ys = [origY + d, origY - d];
-      for (const yTry of ys) {
-        if (yTry < 0) continue;
-        attempt = { ...item, y: yTry };
-        const res = findNearestHorizontal(attempt, arr, colsLimit);
-        if (res) return res;
-      }
-    }
-    return null;
-  };
-
-  // place candidate first (it may overlap several)
-  layout.push({ ...candidate, i: candidate.i });
-
-  // build initial overlap queue: items that overlap candidate
-  const queue = [];
-  for (const p of layout) {
-    if (p.i === candidate.i) continue;
-    if (overlaps(p, candidate)) queue.push(p.i);
-  }
-
-  const processed = new Set();
-
-  while (queue.length) {
-    const id = queue.shift();
-    if (processed.has(id)) continue;
-    processed.add(id);
-
-    const item = byId.get(id);
-    if (!item) continue;
-
-    // temporarily remove current item from map/layout to test placements
-    // create a snapshot of others excluding this item
-    const othersSnapshot = layout.filter(x => x.i !== id);
-
-    // try find placement for this item near its original location
-    const found = findPlaceWithVertical(item, othersSnapshot, cols, maxDepth);
-    if (!found) {
-      // placement failed -> abort whole cascade
-      return null;
-    }
-
-    // apply found placement: update layout and byId
-    // replace item in layout
-    const idx = layout.findIndex(x => x.i === id);
-    if (idx >= 0) layout[idx] = { ...found, i: id };
-    else layout.push({ ...found, i: id });
-    byId.set(id, layout.find(x => x.i === id));
-
-    // after moving it, check newly overlapped items and enqueue them
-    for (const p of layout) {
-      if (p.i === id) continue;
-      if (overlaps(p, layout[idx])) {
-        if (!processed.has(p.i)) queue.push(p.i);
-      }
-    }
-  }
-
-  // final sanity: ensure no overlaps remain
-  for (let i = 0; i < layout.length; i++) {
-    for (let j = i + 1; j < layout.length; j++) {
-      if (overlaps(layout[i], layout[j])) return null;
-    }
-  }
-
-  return layout;
-};
-
+interface UseGridOptions {
+  items?: GridItem[];
+  cols?: number;
+  preventCollision?: boolean;
+  rowHeight?: number;
+  collisionMode?: 'push' | 'swap' | 'push-first' | 'none';
+  dragThrottleMs?: number;
+  onLayoutChange?: (layout: GridItem[]) => void;
+  allowOverlapDuringDrag?: boolean;
+  animateOnDrop?: boolean;
+  collisionSolverOpts?: Record<string, unknown>;
+  overlayAnchor?: 'grab' | 'pointer' | 'center';
+  reflowDuringDrag?: boolean;
+  reflowMaxDepth?: number;
+  reflowSymmetry?: boolean;
+  snapEnabled?: boolean;
+  snapThreshold?: number;
+  sticky?: boolean;
+  margin?: [number, number]
+  containerPadding?: [number, number]
+  dragMode?: 'preview' | 'overlay' | 'real'
+}
 /**
  * useGrid (revised)
  */
@@ -221,28 +142,28 @@ export function useGrid({
   snapEnabled = true,
   sticky = false,
   snapThreshold = 0,
-} = {}) {
-  const initial = (items || []).map((it) => ({
+}: UseGridOptions = {}) {
+  const initial = (items || []).map((it: GridItem) => ({
     i: it.id,
     x: it.x ?? 0,
     y: it.y ?? 0,
     w: it.w ?? 3,
     h: it.h ?? 4,
     static: !!it.static,
-  }));
+  }))
 
   const [layout, setLayout] = useState(initial);
-  const layoutRef = useRef(layout);
+  const layoutRef = useRef(layout)
   useEffect(() => { layoutRef.current = layout; }, [layout]);
 
-  const [overlay, setOverlay] = useState(null);
+  const [overlay, setOverlay] = useState<Overlay | null>(null);
 
   const dragState = useRef(null);
-  const rafRef = useRef(null);
-  const lastThrottleRef = useRef(0);
+  const rafRef = useRef<number | null>(null)
+  const lastThrottleRef = useRef<number>(0);
 
   useEffect(() => {
-    setLayout(() => (items || []).map((it) => ({
+    setLayout(() => (items || []).map((it: GridItem) => ({
       i: it.id,
       x: it.x ?? 0,
       y: it.y ?? 0,
@@ -256,21 +177,24 @@ export function useGrid({
 
   useEffect(() => () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }, [])
 
-  const commitLayout = useCallback((nextLayout) => {
-    const nl = cloneLayout(nextLayout)
+  const commitLayout = useCallback((nextLayout: GridItem[]) => {
+    const nl = cloneLayout(nextLayout) as GridItem[]
     const bounded = nl.map(n => {
-      const out = { ...n }
+      const out = { ...n, static: n.static ?? false }
       if (out.x < 0) out.x = 0
       if (out.y < 0) out.y = 0
       if (out.x + out.w > cols) out.x = Math.max(0, cols - out.w)
       return out
     })
-    const fixed = ensureNoOverlap(bounded, cols, reflowMaxDepth, sticky)
+    const fixed = ensureNoOverlap(bounded as GridItem[], cols, reflowMaxDepth, sticky).map(n => ({
+      ...n,
+      static: n.static ?? false
+    }))
     setLayout(fixed)
     onLayoutChange(fixed)
   }, [onLayoutChange, cols, reflowMaxDepth, sticky])
 
-  const schedule = useCallback((fn) => {
+  const schedule = useCallback((fn: () => void) => {
     if (dragThrottleMs > 0) {
       const now = Date.now()
       if (now - lastThrottleRef.current >= dragThrottleMs) {
@@ -288,7 +212,7 @@ export function useGrid({
 
 
 
-  const pxToGrid = useCallback((pxValue, pxHelpers, isVertical = false) => {
+  const pxToGrid = useCallback((pxValue: number, pxHelpers: any, isVertical: boolean = false) => {
     const offset = isVertical ? pxHelpers.containerPadding[1] : pxHelpers.containerPadding[0]
     const cell = isVertical ? pxHelpers.rowHeight : pxHelpers.colWidth
     const gap = isVertical ? pxHelpers.marginY : pxHelpers.marginX
@@ -302,14 +226,14 @@ export function useGrid({
     return Math.max(0, shouldIncrement ? floored + 1 : floored)
   }, [snapEnabled, snapThreshold])
 
-  const gridToPx = useCallback((gridPos, pxHelpers, isVertical = false) => {
+  const gridToPx = useCallback((gridPos: number, pxHelpers: any, isVertical = false) => {
     const offset = isVertical ? pxHelpers.containerPadding[1] : pxHelpers.containerPadding[0]
     const cell = isVertical ? pxHelpers.rowHeight : pxHelpers.colWidth
     const gap = isVertical ? pxHelpers.marginY : pxHelpers.marginX
     return offset + gridPos * (cell + gap)
   }, [])
 
-  const validateBounds = useCallback((node) => {
+  const validateBounds = useCallback((node: GridItem) => {
     const out = { ...node }
     if (out.x < 0) out.x = 0
     if (out.y < 0) out.y = 0
@@ -322,13 +246,14 @@ export function useGrid({
     setOverlay(null)
   }, [])
 
-  const startDrag = useCallback((e, node, pxHelpers) => {
+  const startDrag = useCallback((e: React.PointerEvent, node: GridItem, pxHelpers: any) => {
     if (!node || node.static) return
     const pointerId = e.pointerId
+    
+    // Use DDUtils for safe pointer capture
     for (let i = 0; i < POINTER_CAPTURE_RETRY; i++) {
-      try { e.currentTarget?.setPointerCapture?.(pointerId); break } catch (err) {
-        if (i === POINTER_CAPTURE_RETRY - 1) console.warn('Pointer capture failed on drag start', err)
-      }
+      if (DDUtils.setPointerCapture(e.currentTarget, pointerId)) break;
+      if (i === POINTER_CAPTURE_RETRY - 1) console.warn('Pointer capture failed on drag start')
     }
 
     const leftGridPx = pxHelpers.gridToPx(node.x)
@@ -355,7 +280,7 @@ export function useGrid({
       grabOffsetY,
       pxHelpers,
       containerRect,
-    }
+    } as any
 
     setOverlay({
       i: node.i,
@@ -363,15 +288,17 @@ export function useGrid({
       pxTop: topGridPx,
       widthPx,
       heightPx,
-      committedLayout: cloneLayout(layoutRef.current),
-      targetGrid: { x: node.x, y: node.y, w: node.w, h: node.h },
+      committedLayout: cloneLayout(layoutRef.current) as GridItem[],
+      targetGrid: { x: node.x, y: node.y, w: node.w, h: node.h } as GridItem,
     })
   }, [overlayAnchor])
 
-  const startResize = useCallback((e, node, corner, pxHelpers) => {
+  const startResize = useCallback((e: React.PointerEvent, node: GridItem, corner: string | undefined, pxHelpers: any) => {
     if (!node || node.static) return
     const actualCorner = corner ?? 'se'
-    try { e.currentTarget?.setPointerCapture?.(e.pointerId) } catch (err) { console.warn('Pointer capture failed on resize start', err) }
+    
+    // Use DDUtils for safe pointer capture
+    DDUtils.setPointerCapture(e.currentTarget, e.pointerId)
 
     dragState.current = {
       pointerId: e.pointerId,
@@ -383,7 +310,7 @@ export function useGrid({
       containerRect: pxHelpers.containerRect || { left: 0, top: 0 },
       startClientX: e.clientX,
       startClientY: e.clientY,
-    }
+    } as any
 
     setOverlay({
       i: node.i,
@@ -391,12 +318,12 @@ export function useGrid({
       pxTop: gridToPx(node.y, pxHelpers, true),
       widthPx: pxHelpers.widthPx(node.w),
       heightPx: pxHelpers.heightPx(node.h),
-      committedLayout: cloneLayout(layoutRef.current),
-      targetGrid: { x: node.x, y: node.y, w: node.w, h: node.h },
+      committedLayout: cloneLayout(layoutRef.current) as GridItem[],
+      targetGrid: { x: node.x, y: node.y, w: node.w, h: node.h } as GridItem,
     })
   }, [gridToPx])
 
-  const handleDragMove = useCallback((e, st) => {
+  const handleDragMove = useCallback((e: React.PointerEvent, st: any) => {
     const { pxHelpers, containerRect, grabOffsetX, grabOffsetY, orig, itemId } = st;
     const pxLeft = e.clientX - (containerRect.left ?? 0) - grabOffsetX;
     const pxTop = e.clientY - (containerRect.top ?? 0) - grabOffsetY;
@@ -412,7 +339,7 @@ export function useGrid({
       if (idx >= 0) {
         base[idx] = { ...base[idx], ...candidate };
       } else {
-        base.push({ ...candidate, i: itemId });
+        base.push({ ...candidate, i: itemId } as any);
       }
 
       setOverlay({
@@ -421,8 +348,8 @@ export function useGrid({
         pxTop,
         widthPx: pxHelpers.widthPx(candidate.w),
         heightPx: pxHelpers.heightPx(candidate.h),
-        committedLayout: base,
-        targetGrid: candidate,
+        committedLayout: base as GridItem[],
+        targetGrid: candidate as GridItem,
         fallback: false,
       });
       return;
@@ -451,57 +378,40 @@ export function useGrid({
         pxTop,
         widthPx: pxHelpers.widthPx(candidate.w),
         heightPx: pxHelpers.heightPx(candidate.h),
-        committedLayout: finalLayout,
-        targetGrid: targetItem,
+        committedLayout: finalLayout as GridItem[], 
+        targetGrid: targetItem as GridItem,
       });
       return;
     }
 
     const others = layoutRef.current.filter(n => n.i !== itemId);
-    // previous fallback call removed. New smart cascade attempt:
-    const smartPreview = cascadeSmartShift(others, { ...candidate, i: itemId }, cols, reflowMaxDepth);
+    const fallback = findPlacementBFS(others, candidate, cols, reflowMaxDepth);
 
-    if (smartPreview) {
-      // ensure no overlap + normalize
-      const preview = ensureNoOverlap(smartPreview, cols, reflowMaxDepth, sticky);
+    if (fallback) {
+      let preview = [...others.map(n => ({ ...n })), { ...fallback, i: itemId }];
+      preview = ensureNoOverlap(preview as GridItem[], cols, reflowMaxDepth, sticky) as any
+
+      setOverlay({
+        i: itemId,
+        pxLeft,
+        pxTop,
+        widthPx: pxHelpers.widthPx(fallback.w),
+        heightPx: pxHelpers.heightPx(fallback.h),
+        committedLayout: preview as GridItem[],
+        targetGrid: fallback as GridItem,
+        fallback: true,
+      });
+    } else {
       setOverlay({
         i: itemId,
         pxLeft,
         pxTop,
         widthPx: pxHelpers.widthPx(candidate.w),
         heightPx: pxHelpers.heightPx(candidate.h),
-        committedLayout: preview,
-        targetGrid: preview.find(p => p.i === itemId) || candidate,
-        fallback: true,
+        committedLayout: cloneLayout(layoutRef.current) as GridItem[],
+        targetGrid: candidate as GridItem,
+        fallback: false,
       });
-    } else {
-      // fallback to original BFS or empty preview
-      const fallback = findPlacementBFS(others, candidate, cols, reflowMaxDepth);
-      if (fallback) {
-        let preview = [...others.map(n => ({ ...n })), { ...fallback, i: itemId }];
-        preview = ensureNoOverlap(preview, cols, reflowMaxDepth, sticky);
-        setOverlay({
-          i: itemId,
-          pxLeft,
-          pxTop,
-          widthPx: pxHelpers.widthPx(fallback.w),
-          heightPx: pxHelpers.heightPx(fallback.h),
-          committedLayout: preview,
-          targetGrid: fallback,
-          fallback: true,
-        });
-      } else {
-        setOverlay({
-          i: itemId,
-          pxLeft,
-          pxTop,
-          widthPx: pxHelpers.widthPx(candidate.w),
-          heightPx: pxHelpers.heightPx(candidate.h),
-          committedLayout: cloneLayout(layoutRef.current),
-          targetGrid: candidate,
-          fallback: false,
-        });
-      }
     }
   }, [
     allowOverlapDuringDrag,
@@ -520,14 +430,8 @@ export function useGrid({
 
   /**
    * 🔥 FIX CLAVE: sticky aplicado también en SUCCESS PATH
-   *
-   * Resize path uses same resolution pipeline as drag:
-   *  - resolveCollision
-   *  - ensureNoOverlap (sticky)
-   *  - cascadeSmartShift fallback
-   *  - BFS fallback
    */
-  const handleResizeMove = useCallback((e, st) => {
+  const handleResizeMove = useCallback((e: React.PointerEvent, st: { pxHelpers: any; startClientX: number; startClientY: number; orig: GridItem; corner: string; itemId: string }) => {
     const { pxHelpers, startClientX, startClientY, orig, corner, itemId } = st;
 
     const dx = e.clientX - startClientX;
@@ -561,7 +465,7 @@ export function useGrid({
         resolved.layout,
         cols,
         reflowMaxDepth,
-        sticky // 👈 sticky applied in success path
+        sticky // 👈 AQUÍ estaba el bug
       );
 
       const targetItem =
@@ -580,55 +484,6 @@ export function useGrid({
       return;
     }
 
-    // fallback chain: cascadeSmartShift -> findPlacementBFS -> empty preview
-    const others = layoutRef.current.filter(n => n.i !== itemId);
-
-    const smartPreview = cascadeSmartShift(others, { ...candidate, i: itemId }, cols, reflowMaxDepth);
-    if (smartPreview) {
-      const preview = ensureNoOverlap(smartPreview, cols, reflowMaxDepth, sticky);
-      const target = preview.find(p => p.i === itemId) || candidate;
-      setOverlay({
-        i: itemId,
-        pxLeft: pxHelpers.gridToPx(target.x),
-        pxTop: pxHelpers.gridToPx(target.y, true),
-        widthPx: pxHelpers.widthPx(target.w),
-        heightPx: pxHelpers.heightPx(target.h),
-        committedLayout: preview,
-        targetGrid: target,
-        fallback: true,
-      });
-      return;
-    }
-
-    const bfsPlace = findPlacementBFS(others, candidate, cols, reflowMaxDepth);
-    if (bfsPlace) {
-      let preview = [...others.map(n => ({ ...n })), { ...bfsPlace, i: itemId }];
-      preview = ensureNoOverlap(preview, cols, reflowMaxDepth, sticky);
-      const target = preview.find(p => p.i === itemId) || bfsPlace;
-      setOverlay({
-        i: itemId,
-        pxLeft: pxHelpers.gridToPx(target.x),
-        pxTop: pxHelpers.gridToPx(target.y, true),
-        widthPx: pxHelpers.widthPx(target.w),
-        heightPx: pxHelpers.heightPx(target.h),
-        committedLayout: preview,
-        targetGrid: target,
-        fallback: true,
-      });
-      return;
-    }
-
-    // final fallback: show unchanged layout with candidate as targetGrid
-    setOverlay({
-      i: itemId,
-      pxLeft: pxHelpers.gridToPx(candidate.x),
-      pxTop: pxHelpers.gridToPx(candidate.y, true),
-      widthPx: pxHelpers.widthPx(candidate.w),
-      heightPx: pxHelpers.heightPx(candidate.h),
-      committedLayout: cloneLayout(layoutRef.current),
-      targetGrid: candidate,
-      fallback: false,
-    });
   }, [
     allowOverlapDuringDrag,
     collisionMode,
@@ -642,13 +497,13 @@ export function useGrid({
     validateBounds,
   ]);
 
-  const onPointerMove = useCallback((e) => {
-    const st = dragState.current;
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    const st = dragState.current as any;
     if (!st) return;
     if (typeof e.pointerId === 'number' && st.pointerId !== e.pointerId) return;
 
     schedule(() => {
-      const active = dragState.current;
+      const active = dragState.current as any;
       if (!active) return;
       if (active.type === 'drag') {
         handleDragMove(e, active);
@@ -658,25 +513,22 @@ export function useGrid({
     });
   }, [handleDragMove, handleResizeMove, schedule]);
 
-  const endInteraction = useCallback((e) => {
-    const st = dragState.current;
+  const endInteraction = useCallback((e: React.PointerEvent) => {
+    const st = dragState.current as any;
     if (st && typeof e?.pointerId === 'number') {
-      try {
-        e.currentTarget?.releasePointerCapture?.(e.pointerId);
-      } catch (err) {
-        console.warn('Failed to release pointer capture', err);
-      }
+      // Use DDUtils for safe pointer release
+      DDUtils.releasePointerCapture(e.currentTarget, e.pointerId);
     }
     dragState.current = null;
 
     try {
       const committed = overlay?.committedLayout
-        ? ensureNoOverlap(cloneLayout(overlay.committedLayout || overlay.committedLayout), cols, reflowMaxDepth, sticky)
-        : ensureNoOverlap(cloneLayout(layoutRef.current), cols, reflowMaxDepth, sticky);
+        ? ensureNoOverlap((overlay.committedLayout || []).map(item => ({ ...item, id: item.i })), cols, reflowMaxDepth, sticky)
+        : ensureNoOverlap(cloneLayout(layoutRef.current).map(item => ({ ...item, id: item.i })), cols, reflowMaxDepth, sticky);
       commitLayout(committed);
     } catch (err) {
       console.error('Failed to commit layout after interaction', err);
-      commitLayout(layoutRef.current);
+      commitLayout(layoutRef.current.map(item => ({ ...item, id: item.i })) as GridItem[]); 
     }
 
     if (animateOnDrop) {
@@ -684,7 +536,7 @@ export function useGrid({
     } else {
       setOverlay(null);
     }
-  }, [overlay, commitLayout, animateOnDrop, cols, reflowMaxDepth, sticky]);
+  }, [overlay, commitLayout, animateOnDrop, cols, reflowMaxDepth]);
 
   return {
     layout,

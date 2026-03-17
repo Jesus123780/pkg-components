@@ -2636,3 +2636,28 @@ export const IconFree: React.FC<IconProps> = ({ size, color }) => {
   </svg>
 }
 
+
+export const IconSticky: React.FC<IconProps> = ({ size, color }) => {
+  return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size ?? 24} height={size ?? 24}>
+    <path d="M19.608 19.51c.244-.266.392-.62.392-1.01v-13A1.5 1.5 0 0 0 18.5 4h-13A1.5 1.5 0 0 0 4 5.5v13a1.5 1.5 0 0 0 3 0v-2a.5.5 0 0 1 .64-.48l11.968 3.49Zm-1.894.49L8 17.167V18.5c0 .563-.186 1.082-.5 1.5h10.214ZM18.5 3A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-13A2.5 2.5 0 0 1 5.5 3h13Z" />
+  </svg>
+}
+
+export const IconToTop: React.FC<IconProps> = ({ size, color }) => {
+  return   <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size ?? 48}
+    height={size ?? 48}
+    fill="none"
+    viewBox="0 0 48 48"
+  >
+    <path fill="#fff" fillOpacity={0.01} d="M0 0h48v48H0z" />
+    <path
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4}
+      d="m12 33 12-12 12 12M12 13h24"
+    />
+  </svg>
+}

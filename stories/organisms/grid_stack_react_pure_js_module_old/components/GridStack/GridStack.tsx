@@ -1,12 +1,19 @@
-import { useRef, useState, useEffect, useCallback, useLayoutEffect } from 'react'
-import PropTypes from 'prop-types'
+import {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect
+} from 'react'
 import styles from './GridStack.module.css'
 
 import { useGrid } from '../../hooks/useGrid'
-import DragLayer from '../DragLayer'
 import DropIndicator from '../DropIndicator/DropIndicator'
 import ResizeHandles from '../ResizeHandles/ResizeHandles'
 import { corners } from '../../utils/constants'
+import { GridItem, GridStackProps } from '../../types'
+import DragLayer from '../DragLayer'
+
 
 /**
  * GridStack with improved FLIP animations (translate + scale) for displaced items.
@@ -16,17 +23,18 @@ import { corners } from '../../utils/constants'
 /* =========================
    Component
    ========================= */
-export default function GridStack(props) {
+export default function GridStack(props: Readonly<GridStackProps>) {
   const {
     items = [],
     cols = 12,
     rowHeight = 30,
+    radio = 14,
     margin = [20, 20],
     containerPadding = [0, 0],
     isDraggable = true,
     isResizable = true,
     preventCollision = true,
-    onLayoutChange = () => { },
+    onLayoutChange,
     componentMap = {},
     dragMode = 'overlay',
     collisionMode = 'push',
@@ -44,24 +52,32 @@ export default function GridStack(props) {
     rollAngleMax = 20,
     rollDuration = 320,
     rollStagger = 30,
+    enableHitOnPush = true,    // enable the hit / pulse overshoot
+    hitMultiplier = 1.12,     // how far overshoot is (1.0 = no overshoot)
+    hitDuration = 140,        // extra ms for the initial "hit" smoothing
+    hitThresholdPx = 6,
     sticky = false,
-    radio = 15,
   } = props
 
-  const containerRef = useRef(null)
-  const [lastDropId, setLastDropId] = useState(null)
+  const containerRef = useRef(null) as unknown as React.RefObject<HTMLDivElement>
+  const [lastDropId, setLastDropId] = useState<string | null>(null)
 
   // store refs to inner wrappers for FLIP animation
-  const itemInnerRefs = useRef({}) // id -> DOM element (inner wrapper)
+  const itemInnerRefs = useRef<Record<string, HTMLElement>>({}) // id -> DOM element (inner wrapper)
 
   // PREVIEW states for live preview (overlay.committedLayout)
-  const [previewCommittedLayout, setPreviewCommittedLayout] = useState(null)
-  const dragSnapshotRef = useRef(null) // original layout snapshot at drag start
-  const lastCommittedLayoutRef = useRef(null)
-  const [previewMode, setPreviewMode] = useState(null) // null | 'live' | 'reverting'
+  const [previewCommittedLayout, setPreviewCommittedLayout] = useState<Array<GridItem> | null>(null)
+  const dragSnapshotRef = useRef<Array<GridItem> | null>(null) // original layout snapshot at drag start
+  const lastCommittedLayoutRef = useRef<Array<GridItem> | null>(null)
+  enum PreviewMode {
+    None = 'none',
+    Live = 'live',
+    Reverting = 'reverting',
+  }
+  const [previewMode, setPreviewMode] = useState<PreviewMode>(PreviewMode.None) // null | 'live' | 'reverting'
 
   // cleanup handlers for running animations
-  const animCleanupRef = useRef({}) // id -> cleanup fn / timeout id
+  const animCleanupRef = useRef<Record<string, (() => void) | NodeJS.Timeout>>({}) // id -> cleanup fn / timeout id
 
   const getPxHelpers = useCallback(() => {
     const containerWidth = Math.max(800, containerRef.current?.clientWidth || 1200)
@@ -72,10 +88,10 @@ export default function GridStack(props) {
       marginX: margin[0],
       marginY: margin[1],
       containerPadding,
-      gridToPx: (gridX, isY = false) =>
+      gridToPx: (gridX: number, isY = false) =>
         (isY ? Math.round((rowHeight + margin[1]) * gridX + containerPadding[1]) : Math.round((colWidth + margin[0]) * gridX + containerPadding[0])),
-      widthPx: (w) => Math.round(colWidth * w + margin[0] * (w - 1)),
-      heightPx: (h) => Math.round(rowHeight * h + margin[1] * (h - 1)),
+      widthPx: (w: number) => Math.round(colWidth * w + margin[0] * (w - 1)),
+      heightPx: (h: number) => Math.round(rowHeight * h + margin[1] * (h - 1)),
       containerRect: containerRef.current?.getBoundingClientRect?.() || { left: 0, top: 0 },
     }
   }, [cols, margin, rowHeight, containerPadding])
@@ -104,13 +120,15 @@ export default function GridStack(props) {
   // Save layout snapshot at drag start for revert animation
   const saveDragSnapshot = useCallback(() => {
     try {
+      // @ts-ignore
       dragSnapshotRef.current = grid.layout.map((l) => ({ ...l }))
     } catch (err) {
       dragSnapshotRef.current = null
     }
   }, [grid.layout])
 
-  const handleHeaderPointerDown = (e, node) => {
+
+  const handleHeaderPointerDown = (e: React.PointerEvent, node: GridItem) => {
     if (!isDraggable || node.static) return
     try {
       e.currentTarget?.setPointerCapture?.(e.pointerId)
@@ -125,8 +143,8 @@ export default function GridStack(props) {
   }
 
   // FLIP helpers
-  const measureRects = (ids) => {
-    const rects = {}
+  const measureRects = (ids: string[]): Record<string, { left: number; top: number; width: number; height: number }> => {
+    const rects: Record<string, { left: number; top: number; width: number; height: number }> = {}
     if (!containerRef.current) return rects
     const containerRect = containerRef.current.getBoundingClientRect()
     ids.forEach((id) => {
@@ -143,170 +161,176 @@ export default function GridStack(props) {
     return rects
   }
 
-  /**
-   * Play FLIP (first-last invert play).
-   * Uses the global `animation` param for duration/easing and forces simultaneous start.
-   *
-   * @param {Object} firstRects
-   * @param {Object} lastRects
-   * @param {Object} options
-   */
-  const playFLIP = (firstRects, lastRects, options = {}) => {
-    const baseDuration = options.duration ?? animation?.duration ?? 260;
-    const displacementEasing = options.displacementEasing ?? animation?.easing ?? 'cubic-bezier(0.22,1,0.36,1)';
+  const playFLIP = (firstRects: Record<string, { left: number; top: number; width: number; height: number }>, lastRects: Record<string, { left: number; top: number; width: number; height: number }>, options: { duration?: number; easing?: string; delayMap?: Record<string, number>; displacementEasing?: string } = {}) => {
+    const baseDuration = (options.duration ?? animation.duration) || 260
+    const easing = options.easing ?? animation.easing ?? 'cubic-bezier(0.22, 1, 0.36, 1)'
+    const delayMap = options.delayMap || {}
+    const displacementEasing = options.displacementEasing ?? easing
 
-    // cleanup previous animations
     Object.keys(animCleanupRef.current || {}).forEach((k) => {
-      const c = animCleanupRef.current[k];
-      try { if (typeof c === 'function') c(); else clearTimeout(c); } catch (_) { }
-      delete animCleanupRef.current[k];
-    });
+      const c = animCleanupRef.current[k]
+      try { if (typeof c === 'function') c(); else clearTimeout(c) } catch (_) { }
+      delete animCleanupRef.current[k]
+    })
 
-    const animEntries = [];
+    const animEntries: Array<{ id: string; el: HTMLElement; dynDuration: number; delay: number }> = []
     Object.keys(lastRects).forEach((id) => {
-      const el = itemInnerRefs.current[id];
-      if (!el) return;
-      const first = firstRects[id];
-      const last = lastRects[id];
-      if (!first || !last) return;
+      const el = itemInnerRefs.current[id]
+      if (!el) return
+      const first = firstRects[id]
+      const last = lastRects[id]
+      if (!first || !last) return
 
-      const dx = first.left - last.left;
-      const dy = first.top - last.top;
-      const sx = (first.width && last.width) ? first.width / last.width : 1;
-      const sy = (first.height && last.height) ? first.height / last.height : 1;
+      const dx = first.left - last.left
+      const dy = first.top - last.top
+      const sx = (first.width && last.width) ? first.width / last.width : 1
+      const sy = (first.height && last.height) ? first.height / last.height : 1
 
-      if (Math.abs(dx) < 0.3 && Math.abs(dy) < 0.3 && Math.abs(1 - sx) < 0.01 && Math.abs(1 - sy) < 0.01) return;
+      if (Math.abs(dx) < 0.3 && Math.abs(dy) < 0.3 && Math.abs(1 - sx) < 0.01 && Math.abs(1 - sy) < 0.01) return
 
-      // **use global duration for all items** so they move synchronized
-      const dynDuration = baseDuration;
-      const invertTransform = `translate(${Math.round(dx)}px, ${Math.round(dy)}px) scale(${sx}, ${sy})`;
+      const distance = Math.hypot(dx, dy)
+      const scaleDelta = Math.max(Math.abs(1 - sx), Math.abs(1 - sy))
+      const dynDuration = Math.min(520, Math.max(120, Math.round(baseDuration + distance * 0.35 + scaleDelta * 220)))
+      const delay = Math.max(0, delayMap[id] || 0)
+      const invertTransform = `translate(${Math.round(dx)}px, ${Math.round(dy)}px) scale(${sx}, ${sy})`
 
-      // prepare element for FLIP invert transform
-      el.style.transition = 'none';
-      el.style.transformOrigin = '50% 50%';
-      el.style.transform = invertTransform;
-      el.style.opacity = '0.99';
-      el.style.willChange = 'transform, opacity';
+      el.style.transition = 'none'
+      el.style.transformOrigin = '50% 50%'
+      el.style.transform = invertTransform
+      el.style.opacity = '0.99'
+      el.style.willChange = 'transform, opacity'
 
-      // prevent child components from running their own transitions during the FLIP
-      el.classList.add('gs-animating');
+      animEntries.push({ id, el, dynDuration, delay })
+    })
 
-      animEntries.push({ id, el, dynDuration });
-    });
+    if (animEntries.length === 0) return
 
-    if (animEntries.length === 0) return;
-
-    // start all at the same RAF tick
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        animEntries.forEach(({ id, el, dynDuration }) => {
-          // no per-item delay -> start together
-          el.style.transition = `transform ${dynDuration}ms ${displacementEasing} 0ms, opacity ${Math.max(120, Math.round(dynDuration / 2))}ms ease 0ms`;
-          el.style.transform = '';
-          el.style.opacity = '1';
+        animEntries.forEach(({ id, el, dynDuration, delay }) => {
+          el.style.transition = `transform ${dynDuration}ms ${displacementEasing} ${delay}ms, opacity ${Math.max(140, Math.round(dynDuration / 2))}ms ease ${delay}ms`
+          el.style.transform = ''
+          el.style.opacity = '1'
 
-          let finished = false;
-          const onEnd = (ev) => {
-            if (ev && ev.propertyName && ev.propertyName !== 'transform') return;
-            if (finished) return;
-            finished = true;
+          let finished = false
+          const onEnd = (ev: TransitionEvent) => {
+            if (ev && ev.propertyName && ev.propertyName !== 'transform') return
+            if (finished) return
+            finished = true
             try {
-              el.removeEventListener('transitionend', onEnd);
-              el.style.transition = '';
-              el.style.willChange = '';
-              el.style.transform = '';
-              el.style.opacity = '';
-              el.classList.remove('gs-animating'); // restore inner transitions
+              el.removeEventListener('transitionend', onEnd)
+              el.style.transition = ''
+              el.style.willChange = ''
+              el.style.transform = ''
+              el.style.opacity = ''
             } catch (_) { }
-          };
-          el.addEventListener('transitionend', onEnd);
+          }
+          el.addEventListener('transitionend', onEnd)
 
           const tid = setTimeout(() => {
             if (!finished) {
-              finished = true;
-              try { el.removeEventListener('transitionend', onEnd); } catch (_) { }
-              try {
-                el.style.transition = '';
-                el.style.willChange = '';
-                el.style.transform = '';
-                el.style.opacity = '';
-                el.classList.remove('gs-animating');
-              } catch (_) { }
+              finished = true
+              try { el.removeEventListener('transitionend', onEnd) } catch (_) { }
+              try { el.style.transition = ''; el.style.willChange = ''; el.style.transform = ''; el.style.opacity = '' } catch (_) { }
             }
-          }, dynDuration + 120);
+          }, dynDuration + delay + 120)
 
           animCleanupRef.current[`flip-${id}`] = () => {
-            try { el.removeEventListener('transitionend', onEnd); } catch (_) { }
-            clearTimeout(tid);
-            try { el.classList.remove('gs-animating'); } catch (_) { }
-          };
-        });
-      });
-    });
-  };
+            try { el.removeEventListener('transitionend', onEnd) } catch (_) { }
+            clearTimeout(tid)
+            el.style.transition = ''
+            el.style.willChange = ''
+          }
+        })
+      })
+    })
+  }
 
   /* =========================
      SOFT DISPLACEMENT FUNCTIONS (NEW)
      ========================= */
 
-  /**
-  * Compute soft displacement (synchronous durations).
-  * All items will use animation.duration so they animate in same rhythm.
-  *
-  * @param {Object} firstRects
-  * @param {Object} lastRects
-  * @param {string|null} movingId
-  * @returns {Object}
-  */
-  const computeSoftDisplacement = (firstRects = {}, lastRects = {}, movingId = null) => {
-    const out = {};
+  const computeSoftDisplacement = (firstRects: Record<string, { left: number; top: number; width: number; height: number }> = {}, lastRects: Record<string, { left: number; top: number; width: number; height: number }> = {}, movingId: string | null = null) => {
+    const out: Record<string, any> = {};
     const ids = Object.keys(lastRects);
     if (!ids.length) return out;
 
-    const sampledHeights = ids.map(id => (firstRects[id] || lastRects[id] || {}).height).filter(Boolean);
-    const approxRow = sampledHeights.length ? (sampledHeights.reduce((a, b) => a + b, 0) / sampledHeights.length) : 40;
+    const positions = ids.map(id => {
+      const f = firstRects[id] 
+      const l = lastRects[id]
+      return { id, f, l, dyPx: f && l ? l.top - f.top : 0, dxPx: f && l ? l.left - f.left : 0 };
+    });
+
+    // approximate row height
+    const sampled = positions.map(p => (p.f ? p.f.height : 0)).filter(Boolean);
+    const approxRow = sampled.length ? (sampled.reduce((a, b) => a + b, 0) / sampled.length) : 40;
 
     const movingRect = movingId ? (firstRects[movingId] || lastRects[movingId] || null) : null;
-    const distFromMoving = (r) => {
+    const distFromMoving = (r: { left: number; top: number; width: number; height: number } | null) => {
       if (!movingRect || !r) return 0;
       const dx = (r.left + (r.width || 0) / 2) - (movingRect.left + (movingRect.width || 0) / 2);
       const dy = (r.top + (r.height || 0) / 2) - (movingRect.top + (movingRect.height || 0) / 2);
       return Math.hypot(dx, dy);
     };
 
-    for (const id of ids) {
-      const f = firstRects[id];
-      const l = lastRects[id];
+    for (const p of positions) {
+      const { id, f, l, dyPx, dxPx } = p;
       if (!f || !l) continue;
-      const dyPx = l.top - f.top;
-      const dxPx = l.left - f.left;
+      // ignore micro jitter
       if (Math.abs(dyPx) < 1.5 && Math.abs(dxPx) < 1.5) continue;
 
+      // rows moved normalized
       const rowsMoved = dyPx / Math.max(1, approxRow);
-      const intensity = Math.max(0, Math.min(1, Math.abs(rowsMoved) / 3));
-      const softenFactor = 0.94 + 0.06 * (1 - intensity);
+      const intensity = Math.max(0, Math.min(1, Math.abs(rowsMoved) / 3)); // 0..1
+
+      // softer undershoot: closer to full target (less aggressive)
+      const softenFactor = 0.94 + 0.06 * (1 - intensity); // 0.94..1.0
       const dy = Math.round(dyPx * softenFactor);
       const dx = Math.round(dxPx * 0.94);
+
+      // subtle scale breathing
       const scale = dyPx > 0 ? (1 - 0.01 * intensity) : 1;
 
-      // use single global duration for harmony
-      const duration = animation?.duration ?? 260;
+      // duration scaled but kept moderate (smoother)
+      const duration = Math.round(Math.min(600, Math.max(160, 160 + Math.abs(dyPx) * 0.16 + Math.abs(dxPx) * 0.03)));
 
+      // delay as small wave (shorter than before so motion feels coherent)
+      const distance = distFromMoving(f);
+      const delay = Math.round(Math.min(220, Math.max(0, distance * 0.045)));
+
+      // very small angle for depth cue, scaled down
       const angle = dyPx > 0 ? Math.min(8, Math.round(rowsMoved * 2.2)) : 0;
 
-      out[id] = { dx, dy, delay: 0, duration, scale, angle, distance: distFromMoving(f) };
+      out[id] = { dx, dy, delay, duration, scale, angle, distance };
+    }
+
+    // group by approx column for stable vertical distribution (tiny adjustments)
+    const byCol: Record<number, { id: string; top: number }[]> = {};
+    for (const id of Object.keys(out)) {
+      const r = firstRects[id] || lastRects[id];
+      if (!r) continue;
+      const key = Math.round(r.left / Math.max(1, r.width || approxRow));
+      byCol[key] = byCol[key] || [];
+      byCol[key].push({ id, top: r.top });
+    }
+    for (const k of Object.keys(byCol)) {
+      const g = byCol[k].sort((a, b) => a.top - b.top); // CUIDADO 
+      for (let i = 0; i < g.length; i++) {
+        const id = g[i].id;
+        if (!out[id]) continue;
+        const boost = 1 + (i / Math.max(1, g.length)) * 0.03; // tiny boost
+        out[id].dy = Math.round(out[id].dy * boost);
+        out[id].duration = Math.round(out[id].duration * (1 + i * 0.01));
+        out[id].delay = Math.round(out[id].delay + i * 8);
+      }
     }
 
     return out;
   };
 
-  /**
-   * Apply soft displacement synchronized to global animation param.
-   *
-   * @param {Object} map - id -> {dx, dy, delay, duration, scale, angle}
-   */
+
   const applySoftDisplacement = (map = {}) => {
-    // cleanup previous handlers
+    // cleanup previous soft/hit handlers
     Object.keys(animCleanupRef.current || {}).forEach(k => {
       if (!k.startsWith('soft-') && !k.startsWith('hit-')) return;
       try {
@@ -314,83 +338,102 @@ export default function GridStack(props) {
         if (typeof c === 'function') c();
         else clearTimeout(c);
       } catch (_) { }
-      delete animCleanupRef.current[k];
+      delete animCleanupRef.current[k]
     });
 
-    const baseEase = animation?.easing ?? 'cubic-bezier(0.22,0.9,0.28,1)';
-    const globalDuration = animation?.duration ?? 260;
+    const baseEase = 'cubic-bezier(0.22, 0.9, 0.28, 1)'; // smooth natural
+    const hitEase = 'cubic-bezier(0.2, 1.05, 0.3, 1)'; // gentle overshoot
 
-    const entries = Object.entries(map).map(([id, spec]) => {
+    Object.entries(map).forEach(([id, { dx, dy, delay = 0, duration = 220, scale = 1, angle = 0 }]) => {
       const el = itemInnerRefs.current[id];
-      if (!el) return null;
-      const dx = spec.dx || 0;
-      const dy = spec.dy || 0;
-      const scale = spec.scale || 1;
-      const angle = spec.angle || 0;
+      if (!el) return;
+
+      // ensure GPU layer
+      el.style.willChange = 'transform, opacity';
+      el.style.transformOrigin = '50% 20%';
+      el.style.transition = 'none';
+
+      const rotate = angle ? ` rotateX(${angle}deg)` : '';
       const target = `translate3d(${dx}px, ${dy}px, 0) scale(${scale})${rotate}`;
+
+      // micro initial offset (25% of target) to avoid jump and create smooth start
       const startDx = Math.round(dx * 0.25);
       const startDy = Math.round(dy * 0.25);
       const start = `translate3d(${startDx}px, ${startDy}px, 0) scale(${Math.max(0.995, scale - 0.002)})${rotate}`;
-      return { id, el, start, target, duration: globalDuration };
-    }).filter(Boolean);
 
-    if (entries.length === 0) return;
+      // decide hit
+      const movementMag = Math.hypot(dx || 0, dy || 0);
+      const applyHit = enableHitOnPush && movementMag >= (hitThresholdPx || 6);
 
-    // set initial state for all
-    entries.forEach(({ el, start }) => {
-      el.classList.add('gs-animating');
-      el.style.transition = 'none';
-      el.style.willChange = 'transform, opacity';
-      el.style.transformOrigin = '50% 20%';
-      el.style.transform = start;
-      el.style.opacity = '0.99';
-    });
+      if (applyHit) {
+        // overshoot larger than target then return to target (gives impact)
+        const overshootMul = Math.max(1.04, hitMultiplier || 1.08);
+        const over = `translate3d(${Math.round(dx * overshootMul)}px, ${Math.round(dy * overshootMul)}px, 0) scale(${Math.min(1.04, scale * 1.01)})${rotate}`;
 
-    // apply transitions to all in same RAF
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        entries.forEach(({ el, target, duration }) => {
-          el.style.transition = `transform ${duration}ms ${baseEase} 0ms, opacity ${Math.max(90, Math.round(duration / 2))}ms ease 0ms`;
-          el.style.transform = target;
-          el.style.opacity = '1';
+        // instant set to overshoot (no transition) to show impact quickly
+        el.style.transform = over;
 
-          let finished = false;
-          const onEnd = (ev) => {
-            if (ev && ev.propertyName && ev.propertyName !== 'transform') return;
-            if (finished) return;
+        // next RAF: animate back to target with hitEase and moderate duration
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const total = Math.max(140, duration);
+            el.style.transition = `transform ${total}ms ${hitEase} ${delay}ms, opacity ${Math.max(100, Math.round(total / 2))}ms ease ${delay}ms`;
+            el.style.transform = target;
+          });
+        });
+
+        const tid = setTimeout(() => {
+          try {
+            el.style.transition = '';
+            el.style.transform = '';
+            el.style.willChange = '';
+          } catch (_) { }
+        }, Math.max(160, duration) + (delay || 0) + 80);
+
+        animCleanupRef.current[`hit-${id}`] = () => clearTimeout(tid);
+      } else {
+        // Two-stage smooth movement: start (25%) -> full (target)
+        el.style.transform = start;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            el.style.transition = `transform ${duration}ms ${baseEase} ${delay}ms, opacity ${Math.max(90, Math.round(duration / 2))}ms ease ${delay}ms`;
+            el.style.transform = target;
+          });
+        });
+
+        // cleanup on transition end (robust)
+        let finished = false;
+        const onEnd = (ev: TransitionEvent) => {
+          if (ev && ev.propertyName && ev.propertyName !== 'transform') return;
+          if (finished) return;
+          finished = true;
+          try {
+            el.removeEventListener('transitionend', onEnd);
+            el.style.transition = '';
+            el.style.transform = '';
+            el.style.willChange = '';
+          } catch (_) { }
+        };
+        el.addEventListener('transitionend', onEnd);
+
+        const tid = setTimeout(() => {
+          if (!finished) {
             finished = true;
+            try { el.removeEventListener('transitionend', onEnd); } catch (_) { }
             try {
-              el.removeEventListener('transitionend', onEnd);
               el.style.transition = '';
               el.style.transform = '';
               el.style.willChange = '';
-              el.style.opacity = '';
-              el.classList.remove('gs-animating');
             } catch (_) { }
-          };
-          el.addEventListener('transitionend', onEnd);
+          }
+        }, duration + (delay || 0) + 120);
 
-          const tid = setTimeout(() => {
-            if (!finished) {
-              finished = true;
-              try { el.removeEventListener('transitionend', onEnd); } catch (_) { }
-              try {
-                el.style.transition = '';
-                el.style.transform = '';
-                el.style.willChange = '';
-                el.style.opacity = '';
-                el.classList.remove('gs-animating');
-              } catch (_) { }
-            }
-          }, duration + 120);
-
-          animCleanupRef.current[`soft-${el.dataset?.gridId || Math.random()}`] = () => {
-            try { el.removeEventListener('transitionend', onEnd); } catch (_) { }
-            clearTimeout(tid);
-            try { el.classList.remove('gs-animating'); } catch (_) { }
-          };
-        });
-      });
+        animCleanupRef.current[`soft-${id}`] = () => {
+          try { el.removeEventListener('transitionend', onEnd); } catch (_) { }
+          clearTimeout(tid);
+        };
+      }
     });
   };
 
@@ -399,16 +442,16 @@ export default function GridStack(props) {
   /* =========================
      computeRollMap (unchanged)
      ========================= */
-  const computeRollMap = (fromLayout, toLayout, movingId) => {
+  const computeRollMap = (fromLayout: ReadonlyArray<GridItem>, toLayout: ReadonlyArray<GridItem>, movingId: string | null) => {
     if (!enableRollOnPush || !fromLayout || !toLayout) return {};
     const byIdFrom = new Map(fromLayout.map((l) => [l.i, l]));
     const byIdTo = new Map(toLayout.map((l) => [l.i, l]));
-    const roll = {};
+    const roll: Record<string, any> = {};
 
-    const movingFrom = byIdFrom.get(movingId) || null;
-    const movingTo = byIdTo.get(movingId) || null;
+    const movingFrom = byIdFrom.get(String(movingId)) || null
+    const movingTo = byIdTo.get(String(movingId)) || null
 
-    for (const [id, to] of byIdTo.entries()) {
+    for (const [id, to] of Array.from(byIdTo.entries())) {
       if (id === movingId) continue;
       const fr = byIdFrom.get(id);
       if (!fr) continue;
@@ -430,11 +473,11 @@ export default function GridStack(props) {
         angle = relX > 0 ? Math.abs(magnitude) : -Math.abs(magnitude);
       }
 
-      const moving = byIdFrom.get(movingId) || { x: 0, y: 0 };
+      const moving = byIdFrom.get(String(movingId)) || { x: 0, y: 0 };
       const distance = Math.hypot((fr.x - moving.x), (fr.y - moving.y));
       const delay = Math.round(Math.min(rollStagger * distance, 350));
 
-      roll[id] = { deltaRows, angle, delay, axis: primaryAxis };
+      roll[id] = { deltaRows, angle, delay, axis: primaryAxis }
     }
 
     return roll;
@@ -447,11 +490,11 @@ export default function GridStack(props) {
     const newCommitted = grid.overlay?.committedLayout ?? null
     if (!newCommitted) return
 
-    const ids = grid.layout.map((l) => l.i)
+    const ids = grid.layout.map((l) => l.i).filter((id): id is string => !!id)
     const firstRects = measureRects(ids)
 
     setPreviewCommittedLayout(newCommitted)
-    setPreviewMode('live')
+    setPreviewMode(PreviewMode.Live)
     lastCommittedLayoutRef.current = newCommitted
 
     requestAnimationFrame(() => {
@@ -467,7 +510,7 @@ export default function GridStack(props) {
         const displaceMap = computeSoftDisplacement(firstRects, lastRects, draggedId)
         applySoftDisplacement(displaceMap)
 
-        const delayMap = {}
+        const delayMap: Record<string, number> = {}
         Object.entries(displaceMap).forEach(([id, m]) => { delayMap[id] = m.delay || 0 })
 
         playFLIP(firstRects, lastRects, {
@@ -478,7 +521,7 @@ export default function GridStack(props) {
         })
 
         // roll map (unchanged)
-        const rollMap = computeRollMap(grid.layout, newCommitted, draggedId)
+        const rollMap = computeRollMap(grid.layout as GridItem[], newCommitted, String(draggedId))
         if (enableRollOnPush && rollMap) {
           Object.entries(rollMap).forEach(([id, { angle, delay, axis }]) => {
             const el = itemInnerRefs.current[id]
@@ -504,12 +547,12 @@ export default function GridStack(props) {
     const newCommitted = grid.overlay?.committedLayout ?? null
     if (!newCommitted) return
 
-    const ids = grid.layout.map((l) => l.i)
+    const ids = grid.layout.map((l) => l.i).filter((id): id is string => !!id)
 
     const firstRects = measureRects(ids)
 
     setPreviewCommittedLayout(newCommitted)
-    setPreviewMode('live')
+    setPreviewMode(PreviewMode.Live)
     lastCommittedLayoutRef.current = newCommitted
 
     requestAnimationFrame(() => {
@@ -526,7 +569,7 @@ export default function GridStack(props) {
         // apply soft displacement visually
         applySoftDisplacement(displaceMap)
 
-        const delayMap = {}
+        const delayMap: Record<string, number> = {}
         Object.entries(displaceMap).forEach(([id, m]) => {
           delayMap[id] = m.delay || 0
         })
@@ -541,7 +584,7 @@ export default function GridStack(props) {
 
         // roll effect cleanly
         if (enableRollOnPush) {
-          const rollMap = computeRollMap(grid.layout, newCommitted, draggedId)
+          const rollMap = computeRollMap(grid.layout as GridItem[], newCommitted, String(draggedId))
 
           Object.entries(rollMap).forEach(([id, { angle, delay }]) => {
             const el = itemInnerRefs.current[id]
@@ -567,22 +610,22 @@ export default function GridStack(props) {
   /**
    * Cancel handler: animate items back to original snapshot (FLIP revert)
    */
-  const handlePointerCancel = useCallback((e) => {
-    grid.cancelInteraction?.(e)
+  const handlePointerCancel = useCallback((e: { pointerId: number | null; currentTarget: HTMLElement | null }) => {
+    grid.cancelInteraction?.()
 
     const preview = lastCommittedLayoutRef.current
     const original = dragSnapshotRef.current
     if (!preview || !original) {
       setPreviewCommittedLayout(null)
-      setPreviewMode(null)
+      setPreviewMode(PreviewMode.None)
       return
     }
 
-    const ids = Array.from(new Set([...preview.map(p => p.i), ...original.map(o => o.i)]))
+    const ids = Array.from(new Set([...preview.map(p => p.i), ...original.map(o => o.i)])).filter((id): id is string => !!id)
 
     // ensure preview positions are rendered
     setPreviewCommittedLayout(preview)
-    setPreviewMode('reverting')
+    setPreviewMode(PreviewMode.Reverting)
 
     requestAnimationFrame(() => {
       const firstRects = measureRects(ids)
@@ -603,7 +646,7 @@ export default function GridStack(props) {
         // clear preview after animation
         setTimeout(() => {
           setPreviewCommittedLayout(null)
-          setPreviewMode(null)
+          setPreviewMode(PreviewMode.None)
           dragSnapshotRef.current = null
           lastCommittedLayoutRef.current = null
         }, (animation?.duration ?? 260) + 40)
@@ -611,13 +654,13 @@ export default function GridStack(props) {
     })
   }, [grid, animation.duration, animation.easing])
 
-  const handlePointerMove = (e) => {
+  const handlePointerMove = (e: { pointerId: number | null; currentTarget: HTMLElement | null }) => {
     grid.onPointerMove(e)
   }
 
-  const handlePointerUp = (e) => {
+  const handlePointerUp = (e: { pointerId: number | null; currentTarget: HTMLElement | null }) => {
     try {
-      e.currentTarget?.releasePointerCapture?.(e.pointerId)
+      e.currentTarget?.releasePointerCapture?.(e.pointerId as number)
     } catch (err) {
       console.error('Failed to release pointer capture:', err)
     }
@@ -631,7 +674,7 @@ export default function GridStack(props) {
     }
 
     setPreviewCommittedLayout(null)
-    setPreviewMode(null)
+    setPreviewMode(PreviewMode.None)
     dragSnapshotRef.current = null
     lastCommittedLayoutRef.current = null
 
@@ -645,63 +688,71 @@ export default function GridStack(props) {
   }
 
   useEffect(() => {
-    const onKey = (ev) => {
+    const onKey = (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') {
         handlePointerCancel({ pointerId: null, currentTarget: containerRef.current })
       }
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    globalThis.window.addEventListener('keydown', onKey)
+    return () => globalThis.window.removeEventListener('keydown', onKey)
   }, [handlePointerCancel])
 
-  const handleResizePointerDown = (e, node, corner) => {
+  const handleResizePointerDown = (e: any, node: GridItem, corner: string) => {
     if (!isResizable || node.static) return
     try {
-      e.currentTarget?.setPointerCapture?.(e.pointerId)
+      e.currentTarget?.setPointerCapture?.(e.pointerId as number)
     } catch (err) {
       console.error('Failed to set pointer capture:', err)
     }
     saveDragSnapshot()
     const pxHelpers = getPxHelpers()
     pxHelpers.containerRect = containerRef.current?.getBoundingClientRect?.() || { left: 0, top: 0 }
-    grid.startResize(e, node, corner, pxHelpers)
+    grid.startResize(e as unknown as React.PointerEvent, node, corner, pxHelpers)
   }
 
-  /**
-   * posToStyle aligned with global animation param so static transitions are in-sync.
-   *
-   * @param {Object} node
-   * @returns {Object}
-   */
-  const posToStyle = (node) => {
-    const pxHelpers = getPxHelpers();
-    const left = Math.round(pxHelpers.gridToPx(node.x));
-    const top = Math.round(pxHelpers.gridToPx(node.y, true));
-    const width = `${pxHelpers.widthPx(node.w)}px`;
-    const height = `${pxHelpers.heightPx(node.h)}px`;
-
-    const isPreviewActive = Boolean(previewCommittedLayout && (previewMode === 'live' || previewMode === 'reverting'));
-    const transformDuration = isPreviewActive ? (animation?.duration ?? 260) : (animation?.duration ?? 200);
-    const transformEasing = animation?.easing ?? 'cubic-bezier(0.22, 1, 0.36, 1)';
-    const isDragged = grid.overlay?.i === node.i;
-
-    const transition = isDragged
-      ? 'none'
-      : `transform ${transformDuration}ms ${transformEasing}, width ${transformDuration}ms ${transformEasing}, height ${transformDuration}ms ${transformEasing}`;
-
+  const posToStyle = (node: GridItem): StyleResult => {
+    const pxHelpers = getPxHelpers()
+    const left = Math.round(pxHelpers.gridToPx(node.x))
+    const top = Math.round(pxHelpers.gridToPx(node.y, true))
+    const width = `${pxHelpers.widthPx(node.w)}px`
+    const height = `${pxHelpers.heightPx(node.h)}px`
     return {
       transform: `translate3d(${left}px, ${top}px, 0)`,
       width,
       height,
-      transition,
-      willChange: 'transform, width, height',
-    };
-  };
+      transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), width 160ms ease, height 160ms ease'
+    }
+  }
 
   // helper to compute a preview style for a node from previewCommittedLayout or original snapshot
-  const previewStyleFor = (node, pxHelpers, sourceLayout) => {
+  interface PxHelpers {
+    colWidth: number
+    rowHeight: number
+    marginX: number
+    marginY: number
+    containerPadding: [number, number]
+    gridToPx: (gridX: number, isY?: boolean) => number
+    widthPx: (w: number) => number
+    heightPx: (h: number) => number
+    containerRect: DOMRect | { left: number; top: number }
+  }
+
+  interface StyleResult {
+    transform: string
+    width: string
+    height: string
+    transition?: string
+    borderRadius?: number
+    willChange?: string
+  }
+
+  const previewStyleFor = (
+    node: GridItem,
+    pxHelpers: PxHelpers,
+    sourceLayout: ReadonlyArray<GridItem> | null
+  ): StyleResult => {
     const srcLayout = sourceLayout || previewCommittedLayout
-    const found = (srcLayout || []).find(l => l.i === node.i)
+    const found = (srcLayout || []).find((l) => l.i === node.i)
     if (!found) return posToStyle(node)
     const left = Math.round(pxHelpers.gridToPx(found.x))
     const top = Math.round(pxHelpers.gridToPx(found.y, true))
@@ -720,7 +771,7 @@ export default function GridStack(props) {
 
   // compute rollMap for rendering (used to augment style.transform with rotateX)
   const currentRollMap = enableRollOnPush && previewCommittedLayout
-    ? computeRollMap(grid.layout, previewCommittedLayout, draggedNodeId)
+    ? computeRollMap(grid.layout as GridItem[], previewCommittedLayout, draggedNodeId as string)
     : {}
 
   // --- Grid visual alignment: expose CSS variables from JS so the grid lines match layout math ---
@@ -736,22 +787,22 @@ export default function GridStack(props) {
       const padX = (px.containerPadding && px.containerPadding[0]) || 0;
       const padY = (px.containerPadding && px.containerPadding[1]) || 0;
 
-      const el = containerRef.current;
-      el.style.setProperty('--gs-cell-w', `${cellW}px`);
-      el.style.setProperty('--gs-cell-h', `${cellH}px`);
-      el.style.setProperty('--gs-offset-x', `${padX}px`);
-      el.style.setProperty('--gs-offset-y', `${padY}px`);
+      const el = containerRef.current as unknown as HTMLElement;
+      el.style.setProperty('--gs-cell-w', `${cellW}px`)
+      el.style.setProperty('--gs-cell-h', `${cellH}px`)
+      el.style.setProperty('--gs-offset-x', `${padX}px`)
+      el.style.setProperty('--gs-offset-y', `${padY}px`)
       // color/opacity tuned to your existing palette
-      el.style.setProperty('--gs-grid-color', 'rgba(15,23,42,0.04)');
+      el.style.setProperty('--gs-grid-color', 'rgba(15,23,42,0.04)')
       el.style.setProperty('--gs-grid-line', '1px'); // grid line thickness
-    };
+    }
 
     // initial
-    applyCssVars();
+    applyCssVars()
 
     // respond to container size changes
     const ro = new ResizeObserver(() => applyCssVars());
-    ro.observe(containerRef.current);
+    ro.observe(containerRef.current as unknown as HTMLElement);
 
     // also on window resize (covers when cols change with breakpoints)
     window.addEventListener('resize', applyCssVars);
@@ -775,12 +826,16 @@ export default function GridStack(props) {
       <div className={gridClassName} style={{ height: gridHeight, transition: 'height 0.3s ease-out' }}>
         {grid.layout.map((node) => {
           const pxHelpers = getPxHelpers()
-          const Comp = componentMap[node.i] || null
+          const Comp = (node.i && componentMap[node.i]) || null
           const itemData = items.find((it) => it.id === node.i) || {}
           const isBeingDragged = grid.overlay?.i === node.i
 
           // compute base style (layout-driven)
-          let style = posToStyle(node)
+          let style = posToStyle(node as GridItem)
+          style = {
+            ...style,
+            borderRadius: radio,
+          }
           let classNames = [
             styles.gridItem,
             node.static ? styles.static : '',
@@ -789,21 +844,21 @@ export default function GridStack(props) {
           ]
 
           // If previewCommittedLayout exists, we want other items to render at preview positions
-          if (previewCommittedLayout && previewMode === 'live') {
-            const previewEntry = previewCommittedLayout.find(l => l.i === node.i)
+          if (previewCommittedLayout && previewMode === PreviewMode.Live) {
+            const previewEntry = previewCommittedLayout.find((l: GridItem) => l.i === node.i)
             if (previewEntry && node.i !== draggedNodeId) {
-              style = previewStyleFor(node, pxHelpers, previewCommittedLayout)
+              style = previewStyleFor(node as GridItem, pxHelpers, previewCommittedLayout)
               classNames.push(styles.previewMoving)
             }
           }
 
           // If reverting, previewCommittedLayout contains original snapshot later
-          if (previewMode === 'reverting' && previewCommittedLayout) {
+          if (previewMode === PreviewMode.Reverting && previewCommittedLayout) {
             classNames.push(styles.previewReverting)
           }
 
           // apply roll transform (if any)
-          if (currentRollMap && currentRollMap[node.i] && node.i !== draggedNodeId) {
+          if (currentRollMap && node.i && currentRollMap[node.i] && node.i !== draggedNodeId) {
             const { angle, delay } = currentRollMap[node.i]
             // append rotateX to the existing transform
             style.transform = `${style.transform} rotateX(${angle}deg)`
@@ -815,10 +870,7 @@ export default function GridStack(props) {
             <div
               key={node.i}
               className={classNames.filter(Boolean).join(' ')}
-              style={{
-                ...style,
-                borderRadius: radio,
-              }}
+              style={style}
               data-grid-id={node.i}
             >
               <div
@@ -833,15 +885,19 @@ export default function GridStack(props) {
                   const isResizeHandle = e.target.closest('[data-resize-handle]')
                   if (isResizeHandle) return
 
-                  handleHeaderPointerDown(e, node)
+                  handleHeaderPointerDown(e, node as GridItem)
                 }}
               >
                 <div className={styles.content}>
-                  {Comp ? <Comp {...(itemData.component || {})} /> : null}
+                  {Comp ? <Comp {...((itemData as GridItem).component || {})} /> : null}
                 </div>
 
                 {isResizable && !node.static && (
-                  <ResizeHandles corners={corners} onPointerDown={(e, corner) => handleResizePointerDown(e, node, corner)} />
+                  <ResizeHandles
+                    radio={radio}
+                    corners={corners}
+                    onPointerDown={(e, corner: string) => handleResizePointerDown(e, node, corner)}
+                  />
                 )}
               </div>
             </div>
@@ -850,10 +906,10 @@ export default function GridStack(props) {
       </div>
 
       {grid.overlay?.targetGrid && (
-        <DropIndicator target={grid.overlay.targetGrid} pxHelpers={getPxHelpers()} animation={animation} />
+        <DropIndicator radio={radio} target={grid.overlay.targetGrid} pxHelpers={getPxHelpers()} animation={animation} />
       )}
 
-      <DragLayer overlay={grid.overlay} animation={animation}>
+      <DragLayer radio={radio} overlay={grid.overlay} animation={animation}>
         {draggedNodeId && (() => {
           const Comp = draggedItemData ? componentMap[draggedNodeId] : null
           const data = draggedItemData?.component || {}
@@ -869,40 +925,6 @@ export default function GridStack(props) {
   )
 }
 
-GridStack.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    component: PropTypes.object,
-  })),
-  cols: PropTypes.number,
-  rowHeight: PropTypes.number,
-  margin: PropTypes.arrayOf(PropTypes.number),
-  containerPadding: PropTypes.arrayOf(PropTypes.number),
-  isDraggable: PropTypes.bool,
-  isResizable: PropTypes.bool,
-  preventCollision: PropTypes.bool,
-  onLayoutChange: PropTypes.func,
-  componentMap: PropTypes.object,
-  dragMode: PropTypes.oneOf(['overlay', 'static']),
-  collisionMode: PropTypes.oneOf(['push', 'compact', 'disable']),
-  animation: PropTypes.shape({
-    duration: PropTypes.number,
-    easing: PropTypes.string,
-  }),
-  dragThrottleMs: PropTypes.number,
-  allowOverlapDuringDrag: PropTypes.bool,
-  animateOnDrop: PropTypes.bool,
-  overlayAnchor: PropTypes.oneOf(['grab', 'center']),
-  snapEnabled: PropTypes.bool,
-  snapThreshold: PropTypes.number,
-  showGrid: PropTypes.bool,
-  // roll props
-  enableRollOnPush: PropTypes.bool,
-  rollAngleMax: PropTypes.number,
-  rollDuration: PropTypes.number,
-  rollStagger: PropTypes.number,
-}
 GridStack.defaultProps = {
   items: [],
   cols: 12,

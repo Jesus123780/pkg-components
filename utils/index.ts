@@ -3,6 +3,17 @@
 export * from './constanst'
 export * from './test/linkRedirect'
 
+// GridStack utilities
+export { GridEventEmitter, EventEmitter, type GridStackEventMap, type GridStackEventType } from './eventSystem';
+export { GridStackUtils } from './gridstackUtils';
+export { GridLayoutUtils, type GridNode, type GridRect, type CollisionResult } from './gridLayout';
+export { DDUtils, type DDPosition, type DDSize, type DDEvent, type DragTransform } from './dragDropHelpers';
+
+// Re-export as namespace
+export * as EventUtils from './eventSystem';
+export * as LayoutUtils from './gridLayout';
+export * as DragDropUtils from './dragDropHelpers';
+
 export const getGlobalStyle = (token: string) => {
   return `var(${token})`
 }
@@ -12,9 +23,6 @@ export const validateEmail = (email: string) => {
   return re.test(email)
 }
 
-const locale = {
-  COP: 'es-CO'
-}
 
 /**
  * Format a number or string into currency using Intl.NumberFormat
@@ -62,7 +70,7 @@ export const numberFormat = (
       ...options,
       style: 'currency'
     } as Intl.NumberFormatOptions;
-    const currencyLocale = locale[options.currency] ?? 'es-CO';
+    const currencyLocale = locale[options.currency] ?? locale['COP'];
     return new Intl.NumberFormat(currencyLocale, settings).format(numericValue);
   }
 
