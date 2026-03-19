@@ -19,6 +19,9 @@ export interface Overlay {
   committedLayout?: GridItem[];
   targetGrid: GridItem | null;
   fallback?: boolean;
+  grabOffsetX?: number;
+  grabOffsetY?: number;
+  displacedIds?: string[];
 }
 
 export interface GridStackProps {
@@ -54,3 +57,12 @@ export interface GridStackProps {
   hitThresholdPx?: number
   sticky?: boolean
 }
+
+export const PreviewMode = {
+  None: 'none',
+  Live: 'live',
+  Reverting: 'reverting',
+} as const;
+
+
+export type PreviewModeType = typeof PreviewMode[keyof typeof PreviewMode];

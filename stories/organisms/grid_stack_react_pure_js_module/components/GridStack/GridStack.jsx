@@ -771,6 +771,9 @@ export default function GridStack(props) {
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
       onLostPointerCapture={handlePointerCancel}
+      onContextMenu={()=> {
+        return false
+      }}
     >
       <div className={gridClassName} style={{ height: gridHeight, transition: 'height 0.3s ease-out' }}>
         {grid.layout.map((node) => {
@@ -827,6 +830,9 @@ export default function GridStack(props) {
                   if (el) itemInnerRefs.current[node.i] = el
                   else delete itemInnerRefs.current[node.i]
                 }}
+                onContextMenu={() => {
+                  return false
+                }}
                 onPointerDown={(e) => {
                   if (!isDraggable || node.static) return
 
@@ -836,7 +842,11 @@ export default function GridStack(props) {
                   handleHeaderPointerDown(e, node)
                 }}
               >
-                <div className={styles.content}>
+                <div className={styles.content}
+                  onContextMenu={() => {
+                    return false
+                  }}
+                >
                   {Comp ? <Comp {...(itemData.component || {})} /> : null}
                 </div>
 

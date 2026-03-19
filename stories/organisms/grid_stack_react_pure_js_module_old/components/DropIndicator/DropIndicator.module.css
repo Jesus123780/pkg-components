@@ -1,5 +1,0 @@
-.dropIndicator {
-  position: absolute;
-  z-index: 998;
-  will-change: transform, width, height;
-}
