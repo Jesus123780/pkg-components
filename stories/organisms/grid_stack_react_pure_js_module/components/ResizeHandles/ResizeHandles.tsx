@@ -4,9 +4,13 @@
  * ResizeHandles: handles con quarter-arc y posicionamiento SVG fijo (-16px).
  */
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { 
+  useState, 
+  useRef, 
+  useEffect
+} from 'react'
 import { getGlobalStyle } from '../../../../../helpers'
-import type { Corner } from '../../utils/constants';
+import type { Corner } from '../../utils/constants'
 
 const TWO_PI = Math.PI * 2
 
@@ -28,7 +32,18 @@ function computeArcInterval(start: [number, number], end: [number, number], cent
   }
 }
 
-const ResizeHandles = ({
+interface ResizeHandlesProps {
+  corners: Corner[];
+  onPointerDown?: (e: React.PointerEvent, corner: Corner) => void;
+  radio?: number;
+  grosor?: number;
+  showMarkerOnHover?: boolean;
+  hoverStrokeOpacity?: number;
+  maxVisualSize?: number;
+  svgOffset?: number;
+}
+
+const ResizeHandles: React.FC<ResizeHandlesProps> = ({
   corners = ['se'],
   onPointerDown = () => {},
   radio = 14,

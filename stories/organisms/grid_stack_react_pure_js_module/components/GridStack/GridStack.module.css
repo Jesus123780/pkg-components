@@ -14,7 +14,7 @@
 
   /* Motion tokens (scoped to this GridStack instance) */
   --gs-motion-duration: 260ms;
-  --gs-motion-easing: cubic-bezier(.2,.9,.25,1);
+  --gs-motion-easing: cubic-bezier(.2, .9, .25, 1);
 
   /* Grid measurements (overridden dynamically from JS) */
   --gs-cell-w: 50px;
@@ -68,8 +68,8 @@
   background: var(--color-background-white);
   overflow: hidden;
 
-  border: var(--border-width-xs, 1px) solid var(--color-neutral-gray, rgba(0,0,0,0.06));
-  box-shadow: var(--box-shadow-xs, 0 1px 4px rgba(0,0,0,0.06));
+  border: var(--border-width-xs, 1px) solid var(--color-neutral-gray, rgba(0, 0, 0, 0.06));
+  box-shadow: var(--box-shadow-xs, 0 1px 4px rgba(0, 0, 0, 0.06));
 
   transform-origin: 0 0;
   will-change: transform, opacity;
@@ -103,11 +103,11 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-
-  transform: translateZ(0);
   backface-visibility: hidden;
-
-  will-change: transform, opacity;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  will-change: auto !important;
 }
 
 .gridItemInner.gs-animating,
@@ -118,10 +118,10 @@
   user-select: none;
 }
 
-.gridItemInner.gs-animating {
-  transform-origin: 50% 20%;
+.gridItemInner .gs-animating {
   opacity: 0.99;
 }
+
 
 /* =============================
    PREVIEW STATES
@@ -129,7 +129,7 @@
 
 .previewMoving {
   z-index: var(--z-index-50, 50);
-  box-shadow: var(--box-shadow-sm, 0 4px 14px rgba(0,0,0,0.06));
+  box-shadow: var(--box-shadow-sm, 0 4px 14px rgba(0, 0, 0, 0.06));
 
   transition:
     transform var(--gs-motion-duration) var(--gs-motion-easing),
@@ -140,7 +140,7 @@
 
 .previewReverting {
   z-index: var(--z-index-40, 40);
-  box-shadow: var(--box-shadow-sm, 0 4px 14px rgba(0,0,0,0.06));
+  box-shadow: var(--box-shadow-sm, 0 4px 14px rgba(0, 0, 0, 0.06));
 }
 
 /* =============================
@@ -157,11 +157,11 @@
   }
 
   50% {
-    box-shadow: 0 0 0 4px var(--color-background-secondary-light, rgba(0,98,255,0.12));
+    box-shadow: 0 0 0 4px var(--color-background-secondary-light, rgba(0, 98, 255, 0.12));
   }
 
   100% {
-    box-shadow: var(--box-shadow-xs, 0 1px 4px rgba(0,0,0,0.06));
+    box-shadow: var(--box-shadow-xs, 0 1px 4px rgba(0, 0, 0, 0.06));
   }
 }
 
@@ -173,8 +173,8 @@
   position: absolute;
   z-index: var(--z-index-999, 999);
 
-  background: var(--color-background-secondary-light, rgba(0,98,255,0.06));
-  border: var(--border-width-lg, 2px) dashed var(--color-secondary-blue, rgba(0,98,255,0.8));
+  background: var(--color-background-secondary-light, rgba(0, 98, 255, 0.06));
+  border: var(--border-width-lg, 2px) dashed var(--color-secondary-blue, rgba(0, 98, 255, 0.8));
   border-radius: var(--border-radius-md, 6px);
 
   animation: gs-indicator-pulse 1.2s infinite var(--gs-motion-easing);
@@ -183,9 +183,17 @@
 }
 
 @keyframes gs-indicator-pulse {
-  0% { opacity: var(--opacity-50, 0.5); }
-  50% { opacity: var(--opacity-100, 1); }
-  100% { opacity: var(--opacity-50, 0.5); }
+  0% {
+    opacity: var(--opacity-50, 0.5);
+  }
+
+  50% {
+    opacity: var(--opacity-100, 1);
+  }
+
+  100% {
+    opacity: var(--opacity-50, 0.5);
+  }
 }
 
 /* =============================
@@ -201,13 +209,11 @@
   cursor: grab;
   user-select: none;
 
-  background: linear-gradient(
-    180deg,
-    var(--color-background-gray-light, rgba(0,0,0,0.03)),
-    transparent
-  );
+  background: linear-gradient(180deg,
+      var(--color-background-gray-light, rgba(0, 0, 0, 0.03)),
+      transparent);
 
-  border-bottom: var(--border-width-xs, 1px) solid var(--color-neutral-gray, rgba(0,0,0,0.06));
+  border-bottom: var(--border-width-xs, 1px) solid var(--color-neutral-gray, rgba(0, 0, 0, 0.06));
 }
 
 .header:active {
@@ -269,9 +275,11 @@
    ============================= */
 
 .gridItem:focus {
-  outline: 2px solid rgba(0,98,255,0.12);
+  outline: 2px solid rgba(0, 98, 255, 0.12);
   outline-offset: 2px;
 }
+
+
 
 /* =============================
    RESPONSIVE
@@ -280,6 +288,6 @@
 @media (max-width: 480px) {
   .gridItem {
     border-radius: 6px;
-    box-shadow: var(--box-shadow-xs, 0 1px 6px rgba(0,0,0,0.06));
+    box-shadow: var(--box-shadow-xs, 0 1px 6px rgba(0, 0, 0, 0.06));
   }
 }

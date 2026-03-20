@@ -1,6 +1,6 @@
 // src/stories/GridStack.stories.tsx
 import React from 'react'
-import type { GridItem } from './grid_stack_react_pure_js_module/types'
+import type { GridItem } from './types/types'
 import GridStack from './components/GridStack/GridStack'
 import { type Meta, type StoryObj } from '@storybook/react'
 
