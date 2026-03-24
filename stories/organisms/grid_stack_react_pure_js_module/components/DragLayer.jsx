@@ -5,10 +5,11 @@
  * Uses the overlay object from useGrid which contains pxLeft, pxTop, widthPx, heightPx.
  */
 
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { InitialAnimationValue } from '../utils/constants';
 
-const layerStyle = {
+const baseStyle = {
   position: 'absolute',
   zIndex: 999,
   pointerEvents: 'none',
@@ -18,33 +19,61 @@ const layerStyle = {
   background: 'white',
   transformOrigin: '0 0',
   opacity: 0.9,
+  willChange: 'transform, left, top, width, height',
 };
 
 /**
  * DragLayer
- * @param {{overlay: object, animation: object, children: React.ReactNode}} props
+ * @param {{
+ *   overlay: {
+ *     pxLeft?: number,
+ *     pxTop?: number,
+ *     widthPx?: number,
+ *     heightPx?: number,
+ *     offsetX?: number,
+ *     offsetY?: number
+ *   } | null,
+ *   animation?: { duration?: number, easing?: string },
+ *   children?: React.ReactNode
+ * }} props
  */
-const DragLayer = ({ overlay, animation = { duration: 180, easing: 'cubic-bezier(.2,.8,.2,1)' }, children }) => {
+const DragLayer = ({
+  overlay,
+  animation = InitialAnimationValue,
+  children,
+}) => {
   if (!overlay) return null;
 
+  const pxLeft = Number.isFinite(overlay.pxLeft) ? overlay.pxLeft : 0;
+  const pxTop = Number.isFinite(overlay.pxTop) ? overlay.pxTop : 0;
+  const widthPx = Number.isFinite(overlay.widthPx) ? overlay.widthPx : undefined;
+  const heightPx = Number.isFinite(overlay.heightPx) ? overlay.heightPx : undefined;
+
   const style = {
-    ...layerStyle,
-    left: `${overlay.pxLeft}px`,
-    top: `${overlay.pxTop}px`,
-    width: overlay.widthPx ? `${overlay.widthPx}px` : 'auto',
-    height: overlay.heightPx ? `${overlay.heightPx}px` : 'auto',
+    ...baseStyle,
+    left: `${pxLeft}px`,
+    top: `${pxTop}px`,
+    ...(widthPx != null ? { width: `${widthPx}px` } : {}),
+    ...(heightPx != null ? { height: `${heightPx}px` } : {}),
     transition: `transform ${animation.duration}ms ${animation.easing}, width ${animation.duration}ms ${animation.easing}, height ${animation.duration}ms ${animation.easing}`,
   };
 
   return (
-    <div style={style} aria-hidden data-drag-layer>
+    <div style={style} aria-hidden="true" data-drag-layer>
       {children}
     </div>
   );
 };
 
 DragLayer.propTypes = {
-  overlay: PropTypes.object,
+  overlay: PropTypes.shape({
+    pxLeft: PropTypes.number,
+    pxTop: PropTypes.number,
+    widthPx: PropTypes.number,
+    heightPx: PropTypes.number,
+    offsetX: PropTypes.number,
+    offsetY: PropTypes.number,
+  }),
   animation: PropTypes.shape({
     duration: PropTypes.number,
     easing: PropTypes.string,
@@ -52,4 +81,4 @@ DragLayer.propTypes = {
   children: PropTypes.node,
 };
 
-export default DragLayer;
+export default memo(DragLayer);

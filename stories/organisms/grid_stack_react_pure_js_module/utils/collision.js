@@ -6,6 +6,26 @@ import {
 } from './grid-utils';
 
 /**
+ * A compatibility alias that now behaves like a guided A* search.
+ *
+ * @param {Array} baseLayout
+ * @param {Object} node
+ * @param {number} cols
+ * @param {number} maxDepth
+ * @returns {Object|null}
+ */
+export const findPlacementBFS = (baseLayout = [], node, cols, maxDepth = 8) => {
+  return findFreePlacementAStar(baseLayout, node, cols, {
+    maxDepth,
+    biasVector: { x: 0, y: 1 },
+    symmetry: true,
+    preferredX: normalizeNode(node).x,
+    preferredY: normalizeNode(node).y,
+    excludeId: getNodeId(node),
+  });
+};
+
+/**
  * Returns a stable node identifier.
  *
  * @param {Object} node
@@ -23,6 +43,19 @@ const getNodeId = (node) => node?.i ?? node?.id;
 const toNumber = (value, fallback = 0) => {
   const n = Number(value);
   return Number.isFinite(n) ? n : fallback;
+};
+
+/**
+ * Clamp a value to a range.
+ *
+ * @param {number} value
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ */
+const clamp = (value, min, max) => {
+  if (!Number.isFinite(value)) return min;
+  return Math.min(max, Math.max(min, value));
 };
 
 /**
@@ -55,11 +88,6 @@ const hasAabbCollision = (a, b) => {
 /**
  * Computes the collision manifold between two rectangles.
  * The manifold includes penetration depth and a minimum translation vector (MTV).
- *
- * The MTV is axis-aligned because the layout is grid-based:
- * - overlapX = shared width on X axis
- * - overlapY = shared height on Y axis
- * - MTV resolves along the smallest penetration axis
  *
  * @param {Object} a
  * @param {Object} b
@@ -170,8 +198,13 @@ const collidesWithLayout = (layout = [], candidate, excludeId) =>
 
 /**
  * Returns a cost score for a position.
- *
  * Lower is better.
+ *
+ * The cost model is intentionally biased toward lazy horizontal movement:
+ * - horizontal displacement is cheaper than vertical displacement
+ * - staying in the same row is preferred
+ * - downward motion is expensive unless required
+ * - collisions are penalized heavily
  *
  * @param {Array} layout
  * @param {Object} node
@@ -192,6 +225,11 @@ const scorePosition = (layout, node, x, y, cols, opts = {}) => {
     centerBiasX = 0,
     centerBiasY = 0,
     penaltyForOverlap = true,
+    horizontalWeight = 0.55,
+    verticalWeight = 1.9,
+    sameRowBonus = 0.9,
+    downwardPenalty = 1.25,
+    upwardPenalty = 0.85,
   } = opts;
 
   const candidate = { ...node, x, y };
@@ -201,19 +239,43 @@ const scorePosition = (layout, node, x, y, cols, opts = {}) => {
   const collisionPenalty = penaltyForOverlap ? getCollisionPenalty(layout, candidate) : 0;
   if (collisionPenalty >= Number.POSITIVE_INFINITY) return Number.POSITIVE_INFINITY;
 
-  const manhattan = Math.abs(x - preferredX) + Math.abs(y - preferredY);
-  const axisPenalty = axisWeight * Math.abs((x - preferredX) - centerBiasX) + Math.abs((y - preferredY) - centerBiasY);
-  const gravityPenalty = gravityWeight * y;
+  const dx = Math.abs(x - preferredX);
+  const dy = Math.abs(y - preferredY);
+  const manhattan = dx + dy;
+
+  const horizontalPenalty = horizontalWeight * dx;
+  const verticalPenalty = verticalWeight * dy;
+
+  const axisPenalty =
+    axisWeight * (
+      Math.abs((x - preferredX) - centerBiasX) +
+      Math.abs((y - preferredY) - centerBiasY)
+    );
+
+  const gravityPenalty = gravityWeight * Math.max(0, y - preferredY);
   const inertiaPenalty = inertiaWeight * manhattan;
+
+  const rowPenalty = y === preferredY ? -sameRowBonus : 0;
+  const directionPenalty =
+    y > preferredY ? downwardPenalty * (y - preferredY) : upwardPenalty * Math.abs(y - preferredY);
+
   const edgePenalty = edgeWeight * Math.max(0, x + candidate.w - cols);
 
-  return collisionPenalty + gravityPenalty + inertiaPenalty + axisPenalty + edgePenalty;
+  return (
+    collisionPenalty +
+    horizontalPenalty +
+    verticalPenalty +
+    axisPenalty +
+    gravityPenalty +
+    inertiaPenalty +
+    directionPenalty +
+    edgePenalty +
+    rowPenalty
+  );
 };
 
 /**
  * Minimal binary min-heap for A* search.
- *
- * @template T
  */
 class MinHeap {
   constructor(compare) {
@@ -221,18 +283,11 @@ class MinHeap {
     this.compare = compare;
   }
 
-  /**
-   * @param {T} value
-   * @returns {void}
-   */
   push(value) {
     this.items.push(value);
     this.#bubbleUp(this.items.length - 1);
   }
 
-  /**
-   * @returns {T|undefined}
-   */
   pop() {
     if (this.items.length === 0) return undefined;
     if (this.items.length === 1) return this.items.pop();
@@ -243,9 +298,6 @@ class MinHeap {
     return top;
   }
 
-  /**
-   * @returns {number}
-   */
   get size() {
     return this.items.length;
   }
@@ -281,33 +333,50 @@ class MinHeap {
 
 /**
  * Builds a deterministic neighbor order for search.
+ * Horizontal movement is preferred over vertical movement by default.
  *
  * @param {Object} origin
  * @param {Object} targetVector
  * @param {boolean} symmetry
+ * @param {Object} opts
  * @returns {Array<{dx:number, dy:number}>}
  */
-const buildNeighborOrder = (origin, targetVector = { x: 0, y: 1 }, symmetry = true) => {
+const buildNeighborOrder = (origin, targetVector = { x: 0, y: 1 }, symmetry = true, opts = {}) => {
   const vx = toNumber(targetVector.x, 0);
   const vy = toNumber(targetVector.y, 1);
 
-  const dominantIsX = Math.abs(vx) > Math.abs(vy);
+  const horizontalFirst = opts.horizontalFirst !== false;
+  const dominantIsX = Math.abs(vx) >= Math.abs(vy);
   const primaryX = vx >= 0 ? 1 : -1;
   const primaryY = vy >= 0 ? 1 : -1;
 
-  const base = dominantIsX
-    ? [
-        { dx: primaryX, dy: 0 },
-        { dx: -primaryX, dy: 0 },
-        { dx: 0, dy: primaryY },
-        { dx: 0, dy: -primaryY },
-      ]
-    : [
-        { dx: 0, dy: primaryY },
-        { dx: 0, dy: -primaryY },
-        { dx: primaryX, dy: 0 },
-        { dx: -primaryX, dy: 0 },
-      ];
+  const base = horizontalFirst
+    ? (dominantIsX
+        ? [
+            { dx: primaryX, dy: 0 },
+            { dx: -primaryX, dy: 0 },
+            { dx: 0, dy: primaryY },
+            { dx: 0, dy: -primaryY },
+          ]
+        : [
+            { dx: primaryX, dy: 0 },
+            { dx: -primaryX, dy: 0 },
+            { dx: 0, dy: primaryY },
+            { dx: 0, dy: -primaryY },
+          ])
+    : (dominantIsX
+        ? [
+            { dx: primaryX, dy: 0 },
+            { dx: -primaryX, dy: 0 },
+            { dx: 0, dy: primaryY },
+            { dx: 0, dy: -primaryY },
+          ]
+        : [
+            { dx: 0, dy: primaryY },
+            { dx: 0, dy: -primaryY },
+            { dx: primaryX, dy: 0 },
+            { dx: -primaryX, dy: 0 },
+          ]);
 
   const extras = symmetry
     ? [
@@ -318,17 +387,18 @@ const buildNeighborOrder = (origin, targetVector = { x: 0, y: 1 }, symmetry = tr
       ]
     : [];
 
-  return [...base, ...extras].filter((d, index, arr) => arr.findIndex((x) => x.dx === d.dx && x.dy === d.dy) === index);
+  return [...base, ...extras].filter(
+    (d, index, arr) => arr.findIndex((x) => x.dx === d.dx && x.dy === d.dy) === index
+  );
 };
 
 /**
  * Generic A* guided free-space search.
  *
- * This function replaces plain BFS with a heuristic search that:
- * - prioritizes nearby cells
- * - favors the requested direction
- * - penalizes collisions heavily
- * - stops after a bounded depth / visit count
+ * This function is tuned to prefer lateral displacement:
+ * - same-row or near-row positions are cheaper
+ * - vertical movement has a much higher cost than horizontal movement
+ * - the search is bounded to keep interaction responsive
  *
  * @param {Array} baseLayout
  * @param {Object} node
@@ -337,17 +407,24 @@ const buildNeighborOrder = (origin, targetVector = { x: 0, y: 1 }, symmetry = tr
  * @returns {Object|null}
  */
 const findFreePlacementAStar = (baseLayout = [], node, cols, opts = {}) => {
+  const normNode = normalizeNode(node);
+
   const {
     maxDepth = 8,
     biasVector = { x: 0, y: 1 },
     symmetry = true,
-    preferredX = node?.x ?? 0,
-    preferredY = node?.y ?? 0,
-    excludeId = getNodeId(node),
+    preferredX = normNode?.x ?? 0,
+    preferredY = normNode?.y ?? 0,
+    excludeId = getNodeId(normNode),
+    horizontalFirst = true,
+    horizontalWeight = 0.55,
+    verticalWeight = 2.1,
+    rowStickiness = 0.65,
+    downwardWeight = 1.35,
+    upwardWeight = 0.85,
   } = opts;
 
-  const normNode = normalizeNode(node);
-  const startX = Math.max(0, Math.min(toNumber(normNode.x, 0), cols - normNode.w));
+  const startX = Math.max(0, Math.min(toNumber(normNode.x, 0), Math.max(0, cols - normNode.w)));
   const startY = Math.max(0, toNumber(normNode.y, 0));
 
   const open = new MinHeap((a, b) => a.f - b.f || a.g - b.g || a.y - b.y || a.x - b.x);
@@ -357,13 +434,18 @@ const findFreePlacementAStar = (baseLayout = [], node, cols, opts = {}) => {
   const keyOf = (x, y) => `${x},${y}`;
 
   const heuristic = (x, y) => {
-    const manhattan = Math.abs(x - preferredX) + Math.abs(y - preferredY);
-    const gravityBias = y * 0.15;
-    const directionalBias = Math.abs(x - startX) * Math.abs(biasVector.x || 0) * 0.08;
-    return manhattan + gravityBias + directionalBias;
+    const dx = Math.abs(x - preferredX);
+    const dy = Math.abs(y - preferredY);
+    const hBias = horizontalWeight * dx;
+    const vBias = verticalWeight * dy;
+    const gravityBias = Math.max(0, y - preferredY) * downwardWeight;
+    const upwardBias = Math.max(0, preferredY - y) * upwardWeight;
+    const rowBias = y === preferredY ? -rowStickiness : 0;
+    const directionalBias = Math.abs(x - startX) * Math.abs(biasVector.x || 0) * 0.06;
+    return hBias + vBias + gravityBias + upwardBias + rowBias + directionalBias;
   };
 
-  const neighborOrder = buildNeighborOrder(normNode, biasVector, symmetry);
+  const neighborOrder = buildNeighborOrder(normNode, biasVector, symmetry, { horizontalFirst });
 
   open.push({
     x: startX,
@@ -400,7 +482,8 @@ const findFreePlacementAStar = (baseLayout = [], node, cols, opts = {}) => {
       if (prevDepth !== undefined && prevDepth <= nextDepth) continue;
       visited.set(nKey, nextDepth);
 
-      const g = cur.g + 1 + Math.abs(dir.dx) * 0.1 + Math.abs(dir.dy) * 0.1;
+      const stepCost = 1 + Math.abs(dir.dx) * 0.08 + Math.abs(dir.dy) * 0.18;
+      const g = cur.g + stepCost;
       const h = heuristic(nx, ny);
       open.push({ x: nx, y: ny, g, f: g + h, depth: nextDepth });
     }
@@ -420,8 +503,6 @@ const findFreePlacementAStar = (baseLayout = [], node, cols, opts = {}) => {
  *   2. minimal horizontal displacement
  *   3. compact packing near existing neighbors
  *
- * This preserves visual stability while reducing holes.
- *
  * @param {Array} baseLayout
  * @param {number} cols
  * @returns {Array}
@@ -431,7 +512,6 @@ const compactUp = (baseLayout = [], cols = 12) => {
   const statics = layout.filter((n) => n.static);
   const movables = layout.filter((n) => !n.static);
 
-  // Stable ordering: top-to-bottom, left-to-right, then larger tiles first when tied.
   movables.sort((a, b) => (a.y - b.y) || (a.x - b.x) || ((b.w * b.h) - (a.w * a.h)));
 
   const placed = [...statics];
@@ -441,17 +521,12 @@ const compactUp = (baseLayout = [], cols = 12) => {
     let best = null;
     let bestScore = Number.POSITIVE_INFINITY;
 
-    // Scan all feasible cells from top to the current row.
     for (let y = 0; y <= maxY; y++) {
       for (let x = 0; x <= cols - node.w; x++) {
         const candidate = { ...node, x, y };
         if (!isWithinBounds(candidate, cols)) continue;
         if (collidesWithLayout(placed, candidate, node.i)) continue;
 
-        // Packing score:
-        // - top rows are preferred heavily
-        // - within the same row, stay close to original x
-        // - reduce fragmentation by preferring left positions slightly
         const score =
           y * 1000 +
           Math.abs(x - node.x) * 15 +
@@ -472,28 +547,44 @@ const compactUp = (baseLayout = [], cols = 12) => {
 };
 
 /**
- * A compatibility alias that now behaves like a guided A* search.
+ * Attempts a safe swap between the moving node and the target node.
  *
- * @param {Array} baseLayout
- * @param {Object} node
+ * @param {Array} layout
+ * @param {Object} movingNodeRaw
+ * @param {Object} targetRaw
  * @param {number} cols
- * @param {number} maxDepth
- * @returns {Object|null}
+ * @returns {Array|null}
  */
-export const findPlacementBFS = (baseLayout = [], node, cols, maxDepth = 8) => {
-  return findFreePlacementAStar(baseLayout, node, cols, {
-    maxDepth,
-    biasVector: { x: 0, y: 1 },
-    symmetry: true,
-    preferredX: normalizeNode(node).x,
-    preferredY: normalizeNode(node).y,
-    excludeId: getNodeId(node),
-  });
+const trySwap = (layout = [], movingNodeRaw, targetRaw, cols = 12) => {
+  const movingNode = normalizeNode(movingNodeRaw);
+  const target = normalizeNode(targetRaw);
+
+  if (movingNode.i === target.i) return dedupeLayoutById(cloneLayout(layout || []));
+
+  const without = (layout || [])
+    .map((n) => cloneNode(n))
+    .filter((n) => getNodeId(n) !== movingNode.i && getNodeId(n) !== target.i);
+
+  const movingAtTarget = { ...movingNode, x: target.x, y: target.y };
+  const targetAtMoving = { ...target, x: movingNode.x, y: movingNode.y };
+
+  if (!isWithinBounds(movingAtTarget, cols) || !isWithinBounds(targetAtMoving, cols)) {
+    return null;
+  }
+
+  if (
+    collidesWithLayout(without, movingAtTarget, movingAtTarget.i) ||
+    collidesWithLayout(without, targetAtMoving, targetAtMoving.i)
+  ) {
+    return null;
+  }
+
+  return dedupeLayoutById([...without, movingAtTarget, targetAtMoving]);
 };
 
 /**
  * Finds a near-free position for a target node using motion-aware bias.
- * The search favors the direction implied by the moving node vector.
+ * The search favors lateral displacement and only falls back to vertical motion when needed.
  *
  * @param {Array} layout
  * @param {Object} movingNodeRaw
@@ -530,17 +621,18 @@ const findNearestFreePosition = (
     preferredX: target.x,
     preferredY: target.y,
     excludeId: target.i,
+    horizontalFirst: true,
+    horizontalWeight: 0.5,
+    verticalWeight: 2.3,
+    rowStickiness: 0.85,
+    downwardWeight: 1.4,
+    upwardWeight: 0.8,
   });
 };
 
 /**
  * Resolves a node against a set of obstacles using a physics-inspired cost model.
- *
- * The decision is guided by:
- * - MTV from the strongest collision
- * - dominant axis of movement
- * - minimum displacement principle
- * - local stability (keep the node close to its original spot)
+ * This version strongly prefers horizontal displacement over vertical movement.
  *
  * @param {Array} layout
  * @param {Object} movingNodeRaw
@@ -568,30 +660,38 @@ const resolveTargetNode = (
 
   if (!manifolds.length) return target;
 
-  // Heaviest collision first.
   manifolds.sort((a, b) => b.manifold.depth - a.manifold.depth);
 
   const strongest = manifolds[0];
   const mtv = strongest.manifold.mtv;
 
-  // The target should move away from the moving node, but remain visually stable.
+  const movingCx = movingNode.x + movingNode.w / 2;
+  const targetCx = target.x + target.w / 2;
+
+  const horizontalEscape = targetCx >= movingCx ? 1 : -1;
+
   const biasVector = {
-    x: mtv.x !== 0 ? mtv.x : target.x - movingNode.x,
-    y: mtv.y !== 0 ? mtv.y : target.y - movingNode.y,
+    x: mtv.x !== 0 ? mtv.x : horizontalEscape * Math.max(1, target.w),
+    y: mtv.y !== 0 ? mtv.y * 0.35 : target.y - movingNode.y,
   };
 
   const placed = findFreePlacementAStar(others, target, cols, {
     maxDepth,
     biasVector,
     symmetry,
-    preferredX: target.x + (mtv.x ? mtv.x : 0),
-    preferredY: target.y + (mtv.y ? mtv.y : 0),
+    preferredX: target.x + (mtv.x ? mtv.x : horizontalEscape),
+    preferredY: target.y + (mtv.y ? mtv.y * 0.25 : 0),
     excludeId: target.i,
+    horizontalFirst: true,
+    horizontalWeight: 0.45,
+    verticalWeight: 2.45,
+    rowStickiness: 1,
+    downwardWeight: 1.45,
+    upwardWeight: 0.8,
   });
 
   if (placed) return placed;
 
-  // Final fallback: search around the moving node vector.
   return findNearestFreePosition(layout, movingNode, target, cols, maxDepth, symmetry);
 };
 
@@ -632,6 +732,10 @@ const reflowPropagation = (baseLayout = [], movingNodeRaw, opts = {}) => {
       preferredX: movingNode.x,
       preferredY: movingNode.y,
       excludeId: movingId,
+      horizontalFirst: true,
+      horizontalWeight: 0.5,
+      verticalWeight: 2.3,
+      rowStickiness: 0.9,
     });
 
     if (candidatePlace) {
@@ -678,9 +782,6 @@ const reflowPropagation = (baseLayout = [], movingNodeRaw, opts = {}) => {
     }
   }
 
-  // Safety pass:
-  // resolve any residual overlaps by pushing the lower/right-most node away
-  // while preserving stable placement as much as possible.
   const safety = layout.map((n) => ({ ...n }));
   let changed = true;
   let guard = 0;
@@ -698,28 +799,60 @@ const reflowPropagation = (baseLayout = [], movingNodeRaw, opts = {}) => {
 
         changed = true;
 
-        // Push the less stable node away.
-        // Prefer moving the one lower in the grid to keep upper space compact.
-        const shouldMoveB = b.y >= a.y;
+        const aCenterX = a.x + a.w / 2;
+        const bCenterX = b.x + b.w / 2;
+        const moveBFirst = bCenterX >= aCenterX;
 
-        if (shouldMoveB && !b.static) {
-          const next = {
-            ...b,
-            x: manifold.axis === 'x' ? b.x + (manifold.mtv.x >= 0 ? 1 : -1) : b.x,
-            y: manifold.axis === 'y' ? b.y + (manifold.mtv.y >= 0 ? 1 : -1) : b.y + 1,
-          };
+        const stepX = manifold.axis === 'x'
+          ? (manifold.mtv.x >= 0 ? 1 : -1)
+          : (bCenterX >= aCenterX ? 1 : -1);
 
-          if (isWithinBounds(next, cols)) safety[j] = next;
-          else safety[j] = { ...b, y: Math.max(0, b.y + 1) };
+        const stepY = manifold.axis === 'y'
+          ? (manifold.mtv.y >= 0 ? 1 : -1)
+          : 1;
+
+        const tryVariants = moveBFirst
+          ? [
+              { x: b.x + stepX, y: b.y },
+              { x: b.x - stepX, y: b.y },
+              { x: b.x + stepX, y: Math.max(0, b.y + 1) },
+              { x: b.x - stepX, y: Math.max(0, b.y + 1) },
+              { x: b.x, y: b.y + stepY },
+            ]
+          : [
+              { x: a.x + stepX, y: a.y },
+              { x: a.x - stepX, y: a.y },
+              { x: a.x + stepX, y: Math.max(0, a.y + 1) },
+              { x: a.x - stepX, y: Math.max(0, a.y + 1) },
+              { x: a.x, y: a.y + stepY },
+            ];
+
+        if (moveBFirst && !b.static) {
+          let placed = false;
+          for (const candidate of tryVariants) {
+            const next = { ...b, x: candidate.x, y: candidate.y };
+            if (!isWithinBounds(next, cols)) continue;
+            if (safety.some((n, idx) => idx !== j && hasAabbCollision(n, next))) continue;
+            safety[j] = next;
+            placed = true;
+            break;
+          }
+          if (!placed) {
+            safety[j] = { ...b, y: Math.max(0, b.y + 1) };
+          }
         } else if (!a.static) {
-          const next = {
-            ...a,
-            x: manifold.axis === 'x' ? a.x + (manifold.mtv.x >= 0 ? 1 : -1) : a.x,
-            y: manifold.axis === 'y' ? a.y + (manifold.mtv.y >= 0 ? 1 : -1) : a.y + 1,
-          };
-
-          if (isWithinBounds(next, cols)) safety[i] = next;
-          else safety[i] = { ...a, y: Math.max(0, a.y + 1) };
+          let placed = false;
+          for (const candidate of tryVariants) {
+            const next = { ...a, x: candidate.x, y: candidate.y };
+            if (!isWithinBounds(next, cols)) continue;
+            if (safety.some((n, idx) => idx !== i && hasAabbCollision(n, next))) continue;
+            safety[i] = next;
+            placed = true;
+            break;
+          }
+          if (!placed) {
+            safety[i] = { ...a, y: Math.max(0, a.y + 1) };
+          }
         }
       }
     }
@@ -803,10 +936,8 @@ export function resolveCollision(layout = [], movingNodeRaw, opts = {}) {
         };
       }
     }
-    // fallthrough to push/reflow
   }
 
-  // Static nodes are hard constraints: place the moving node elsewhere.
   if (initialColls.some((n) => n.static)) {
     const candidatePlace = findFreePlacementAStar(other, movingNode, cols, {
       maxDepth,
@@ -815,6 +946,10 @@ export function resolveCollision(layout = [], movingNodeRaw, opts = {}) {
       preferredX: movingNode.x,
       preferredY: movingNode.y,
       excludeId: movingId,
+      horizontalFirst: true,
+      horizontalWeight: 0.5,
+      verticalWeight: 2.35,
+      rowStickiness: 0.85,
     });
 
     if (candidatePlace) {
@@ -852,7 +987,6 @@ export function resolveCollision(layout = [], movingNodeRaw, opts = {}) {
     }
   }
 
-  // Greedy fallback: push colliding nodes down first, then sideways when needed.
   let currentLayout = [...other];
   const movedIds = new Set();
   const queue = [...initialColls.map((c) => getNodeId(c)).filter((id) => id !== undefined)];
@@ -878,12 +1012,22 @@ export function resolveCollision(layout = [], movingNodeRaw, opts = {}) {
     let pushed = null;
 
     for (let d = 1; d <= maxDepth; d++) {
+      const awayX = candidateBias.x >= 0 ? 1 : -1;
+
       const tryCandidates = [
+        // horizontal first
+        { x: affectedNode.x + awayX * d, y: affectedNode.y },
+        { x: affectedNode.x - awayX * d, y: affectedNode.y },
+        // small lateral + tiny vertical drift
+        { x: affectedNode.x + awayX * d, y: Math.max(0, affectedNode.y + 1) },
+        { x: affectedNode.x - awayX * d, y: Math.max(0, affectedNode.y + 1) },
+        // only then vertical motion
         { x: affectedNode.x, y: affectedNode.y + d },
-        { x: affectedNode.x + (candidateBias.x >= 0 ? d : -d), y: affectedNode.y },
-        { x: affectedNode.x + (candidateBias.x >= 0 ? d : -d), y: affectedNode.y + 1 },
-        { x: affectedNode.x, y: Math.max(0, affectedNode.y - d) },
+        { x: affectedNode.x, y: Math.max(0, affectedNode.y - 1) },
       ];
+
+      let bestCandidate = null;
+      let bestScore = Number.POSITIVE_INFINITY;
 
       for (const candidate of tryCandidates) {
         const next = { ...affectedNode, x: candidate.x, y: candidate.y };
@@ -891,14 +1035,37 @@ export function resolveCollision(layout = [], movingNodeRaw, opts = {}) {
 
         const testLayout = currentLayout.map((n) => (getNodeId(n) === idToMove ? next : n));
         const colliding = testLayout.some((n) => getNodeId(n) !== movingId && hasAabbCollision(n, movingNode));
+        if (colliding) continue;
 
-        if (!colliding) {
-          pushed = next;
-          break;
+        const sc = scorePosition(
+          currentLayout,
+          affectedNode,
+          next.x,
+          next.y,
+          cols,
+          {
+            preferredX: affectedNode.x + (awayX * Math.min(1, d)),
+            preferredY: affectedNode.y,
+            horizontalWeight: 0.4,
+            verticalWeight: 2.4,
+            rowStickiness: 1.2,
+            gravityWeight: 0.4,
+            inertiaWeight: 0.8,
+            axisWeight: 0.4,
+            edgeWeight: 0.2,
+          }
+        );
+
+        if (sc < bestScore) {
+          bestScore = sc;
+          bestCandidate = next;
         }
       }
 
-      if (pushed) break;
+      if (bestCandidate) {
+        pushed = bestCandidate;
+        break;
+      }
     }
 
     if (pushed) {
