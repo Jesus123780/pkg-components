@@ -11,7 +11,11 @@ interface CardProps {
   children?: React.ReactNode
 }
 
-const Card: React.FC<CardProps> = ({ title, color = '#6366f1', children }) => (
+const Card: React.FC<CardProps> = ({
+  title,
+  color = '#6366f1',
+  children
+}) => (
   <div style={{
     width: '100%',
     height: '100%',
@@ -132,7 +136,7 @@ export const Primary: Story = {
 
     /* soft displacement - controla la suavidad del empuje */
     softDisplacementStrength: 0.94, // 0.9-0.97 recomendado
-    
+
     /* roll animation - rotación 3D sutil al empujar */
     enableRollOnPush: false, // Deshabilitado para movimiento más limpio
     rollAngleMax: 6,
@@ -144,7 +148,7 @@ export const Primary: Story = {
     hitMultiplier: 1.06, // 1.03-1.12 para bump perceptible
     hitDuration: 160, // Duración del efecto bump
     hitThresholdPx: 6, // Umbral mínimo de movimiento para activar
-    
+
     /* sticky compaction */
     sticky: false,
     animation: { duration: 380, easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.28)' },
@@ -157,7 +161,7 @@ export const SecondarySticky: Story = {
   render: (args) => <GridStack {...args} componentMap={COMPONENT_MAP} />,
   args: {
     items: SAMPLE_ITEMS,
-    
+
     /* layout */
     cols: 12,
     rowHeight: 100,
@@ -165,7 +169,7 @@ export const SecondarySticky: Story = {
     containerPadding: [12, 12],
     radio: 16,
     showGrid: true,
-    
+
     /* interacción */
     dragMode: 'overlay',
     collisionMode: 'push',
@@ -175,22 +179,22 @@ export const SecondarySticky: Story = {
     preventCollision: true,
     snapEnabled: true,
     snapThreshold: 5,
-    
+
     /* sticky mode - compactación automática */
     sticky: true,
-    
+
     /* animación optimizada con bounce spring */
     animation: { duration: 420, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }, // Bounce spring
-    
+
     /* soft displacement */
     softDisplacementStrength: 0.96, // Más suave para sticky mode
-    
+
     /* roll animation - rotación 3D visible */
     enableRollOnPush: true,
     rollAngleMax: 8, // Rotación más pronunciada
     rollDuration: 380,
     rollStagger: 40,
-    
+
     /* hit feedback - bump más notorio */
     enableHitOnPush: true,
     hitMultiplier: 1.10, // Bump más visible con sticky
@@ -207,14 +211,14 @@ export const UltraSmooth: Story = {
   render: (args) => <GridStack {...args} componentMap={COMPONENT_MAP} />,
   args: {
     items: SAMPLE_ITEMS,
-    
+
     cols: 12,
     rowHeight: 95,
     margin: [16, 16],
     containerPadding: [16, 16],
     radio: 18,
     showGrid: true,
-    
+
     dragMode: 'overlay',
     collisionMode: 'push',
     overlayAnchor: 'grab',
@@ -224,19 +228,19 @@ export const UltraSmooth: Story = {
     snapEnabled: true,
     snapThreshold: 5,
     sticky: false,
-    
+
     /* Duración máxima recomendada (320-480ms) */
     animation: { duration: 480, easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.28)' },
-    
+
     /* Displacement máximo (0.9-0.97) - más suave */
     softDisplacementStrength: 0.97,
-    
+
     /* Roll animation activado con valores altos */
     enableRollOnPush: true,
     rollAngleMax: 12,
     rollDuration: 440,
     rollStagger: 50,
-    
+
     /* Hit feedback máximo (1.03-1.12) */
     enableHitOnPush: true,
     hitMultiplier: 1.12, // Máximo recomendado

@@ -275,7 +275,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
             <Column className={styles['sidebar-header-router']}>
               <DragDropContext onDragEnd={onDragEnd} >
                 <Droppable droppableId="modules" direction="vertical">
-                  {(provided) => (
+                  {(provided: any) => (
                     <div
                       {...provided.droppableProps}
                       ref={provided.innerRef}
@@ -289,7 +289,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                         const isActive = `/${mPath}` === pathname
                         return (
                           <Draggable isDragDisabled={!isDragDisabled} key={module.mId} draggableId={module.mId} index={index}>
-                            {(provided: { innerRef: React.LegacyRef<HTMLDivElement> | undefined, draggableProps: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>, dragHandleProps: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement> }) => (
+                            {(provided: any) => (
                               <div
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}

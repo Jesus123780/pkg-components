@@ -19,6 +19,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 const preview: StorybookPreview = {
   parameters: {
     nextjs: {
+      appDirectory: true,
       router: {
         basePath: '/app/',
       },
@@ -29,7 +30,7 @@ const preview: StorybookPreview = {
         /* ... */
       });
     },
-    actions: { },
+    actions: {},
     viewport: {
       viewports: { ...INITIAL_VIEWPORTS },
     },

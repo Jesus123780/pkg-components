@@ -59,7 +59,7 @@ export const Button: React.FC<ButtonProps> = ({
     : null
   return (
     <button
-      title={title}
+      title={title ?? 'Button'}
       aria-label={title}
       type={type as 'submit' | 'reset' | 'button'}
       disabled={disabled}
