@@ -1,10 +1,11 @@
-import {
+import React, {
   useRef,
   useState,
   useEffect,
   useCallback,
   useLayoutEffect,
   useMemo,
+  memo,
   type PointerEvent as ReactPointerEvent,
 } from 'react'
 
@@ -219,6 +220,119 @@ function estimateRowHeight(rects: Array<Rect | null | undefined>) {
   if (!heights.length) return 40
   return heights.reduce((a, b) => a + b, 0) / heights.length
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Performance: stable empty object to avoid re-creating on every render
+// ─────────────────────────────────────────────────────────────────────────────
+const EMPTY_PROPS: Record<string, any> = {}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Performance: Memoized content wrapper prevents widget re-renders during drag
+// ─────────────────────────────────────────────────────────────────────────────
+const MemoizedContent = memo(function MemoizedContent({
+  ItemComp,
+  componentProps,
+}: {
+  ItemComp: React.ComponentType<any> | null
+  componentProps: Record<string, any>
+}) {
+  if (!ItemComp) return null
+  return <ItemComp {...componentProps} />
+}, (prev, next) => {
+  // Only re-render if the component itself or its props changed
+  if (prev.ItemComp !== next.ItemComp) return false
+  if (prev.componentProps === next.componentProps) return true
+  // Shallow compare componentProps
+  const prevKeys = Object.keys(prev.componentProps)
+  const nextKeys = Object.keys(next.componentProps)
+  if (prevKeys.length !== nextKeys.length) return false
+  return prevKeys.every(key => prev.componentProps[key] === next.componentProps[key])
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Performance: Memoized grid item node — prevents re-render of items whose
+// position/style hasn't changed during drag (the key optimization).
+// ─────────────────────────────────────────────────────────────────────────────
+interface GridItemNodeProps {
+  nodeId: string
+  style: StyleResult
+  className: string
+  radio: number
+  isBeingDragged: boolean
+  isDraggable: boolean
+  isResizable: boolean
+  isStatic: boolean
+  ItemComp: React.ComponentType<any> | null
+  componentProps: Record<string, any>
+  onPointerDown: (e: ReactPointerEvent<HTMLDivElement>) => void
+  onResizePointerDown: (e: React.PointerEvent, corner: Corner) => void
+  itemInnerRefCb: (el: HTMLElement | null) => void
+}
+
+const GridItemNode = memo(function GridItemNode({
+  nodeId,
+  style,
+  className,
+  radio,
+  isBeingDragged,
+  isDraggable,
+  isResizable,
+  isStatic,
+  ItemComp,
+  componentProps,
+  onPointerDown,
+  onResizePointerDown,
+  itemInnerRefCb,
+}: GridItemNodeProps) {
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        borderRadius: radio,
+      }}
+      data-grid-id={nodeId}
+    >
+      <div
+        className={styles.gridItemInner}
+        ref={itemInnerRefCb}
+        onContextMenu={(e) => e.preventDefault()}
+        onPointerDown={onPointerDown}
+      >
+        <div
+          className={styles.content}
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          <MemoizedContent ItemComp={ItemComp} componentProps={componentProps} />
+        </div>
+
+        {isResizable && !isStatic && (
+          <ResizeHandles
+            corners={corners as Corner[]}
+            onPointerDown={onResizePointerDown}
+            radio={radio}
+          />
+        )}
+      </div>
+    </div>
+  )
+}, (prev, next) => {
+  // Custom comparator: skip re-render if position/style haven't changed
+  return (
+    prev.style.transform === next.style.transform &&
+    prev.style.width === next.style.width &&
+    prev.style.height === next.style.height &&
+    prev.style.transition === next.style.transition &&
+    prev.className === next.className &&
+    prev.isBeingDragged === next.isBeingDragged &&
+    prev.ItemComp === next.ItemComp &&
+    prev.componentProps === next.componentProps &&
+    prev.radio === next.radio &&
+    prev.isDraggable === next.isDraggable &&
+    prev.isResizable === next.isResizable &&
+    prev.isStatic === next.isStatic
+  )
+})
 
 /**
  * GridStack: production-ready interactive grid layout surface.
@@ -1212,6 +1326,51 @@ export default function GridStack(props: Readonly<GridStackProps>) {
     grid.layout,
   ])
 
+  // ─── Stable ref callback factory ──────────────────────────────────────────
+  // Avoids creating a new function per item per render for the inner ref.
+  const getItemRefCallback = useCallback(
+    (nodeId: string) => (el: HTMLElement | null) => {
+      if (el) itemInnerRefs.current[nodeId] = el
+      else delete itemInnerRefs.current[nodeId]
+    },
+    [],
+  )
+
+  // ─── Stable per-item ref callbacks (memoized map) ───────────────────────
+  const itemRefCallbacks = useMemo(() => {
+    const map: Record<string, (el: HTMLElement | null) => void> = {}
+    grid.layout.forEach((node) => {
+      map[node.i] = getItemRefCallback(node.i)
+    })
+    return map
+  }, [grid.layout, getItemRefCallback])
+
+  // ─── Stable per-item pointerDown callbacks ──────────────────────────────
+  const itemPointerDownCallbacks = useMemo(() => {
+    const map: Record<string, (e: ReactPointerEvent<HTMLDivElement>) => void> = {}
+    grid.layout.forEach((node) => {
+      map[node.i] = (e: ReactPointerEvent<HTMLDivElement>) => {
+        if (!isDraggable || node.static) return
+        if ((e.target as HTMLElement | null)?.closest('[data-resize-handle]')) return
+        updatePointerMotion(e as ReactPointerEvent<HTMLElement>)
+        handleHeaderPointerDown(e, node)
+      }
+    })
+    return map
+  }, [grid.layout, isDraggable, updatePointerMotion, handleHeaderPointerDown])
+
+  // ─── Stable per-item resize pointerDown callbacks ───────────────────────
+  const itemResizeCallbacks = useMemo(() => {
+    const map: Record<string, (e: React.PointerEvent, corner: Corner) => void> = {}
+    grid.layout.forEach((node) => {
+      map[node.i] = (e: React.PointerEvent, corner: Corner) => {
+        updatePointerMotion(e as ReactPointerEvent<HTMLElement>)
+        handleResizePointerDown(e as ReactPointerEvent<HTMLDivElement>, node, corner)
+      }
+    })
+    return map
+  }, [grid.layout, updatePointerMotion, handleResizePointerDown])
+
   return (
     <div
       className={containerClassName}
@@ -1227,48 +1386,22 @@ export default function GridStack(props: Readonly<GridStackProps>) {
     >
       <div className={gridClassName} style={{ height: gridHeight, transition: 'height 0.3s ease-out' }}>
         {visibleItems.map(({ node, ItemComp, itemData, isBeingDragged, style, className }) => (
-          <div
+          <GridItemNode
             key={node.i}
+            nodeId={node.i}
+            style={style}
             className={className}
-            style={{
-              ...style,
-              borderRadius: radio,
-            }}
-            data-grid-id={node.i}
-          >
-            <div
-              className={styles.gridItemInner}
-              ref={(el) => {
-                if (el) itemInnerRefs.current[node.i] = el
-                else delete itemInnerRefs.current[node.i]
-              }}
-              onContextMenu={(e) => e.preventDefault()}
-              onPointerDown={(e) => {
-                if (!isDraggable || node.static) return
-                if ((e.target as HTMLElement | null)?.closest('[data-resize-handle]')) return
-                updatePointerMotion(e)
-                handleHeaderPointerDown(e, node)
-              }}
-            >
-              <div
-                className={styles.content}
-                onContextMenu={(e) => e.preventDefault()}
-              >
-                {ItemComp ? <ItemComp {...(itemData.component || {})} /> : null}
-              </div>
-
-              {isResizable && !node.static && (
-                <ResizeHandles
-                  corners={corners as Corner[]}
-                  onPointerDown={(e: React.PointerEvent, corner: Corner) => {
-                    updatePointerMotion(e as ReactPointerEvent<HTMLElement>)
-                    handleResizePointerDown(e as ReactPointerEvent<HTMLDivElement>, node, corner)
-                  }}
-                  radio={radio}
-                />
-              )}
-            </div>
-          </div>
+            radio={radio}
+            isBeingDragged={isBeingDragged}
+            isDraggable={isDraggable}
+            isResizable={isResizable}
+            isStatic={!!node.static}
+            ItemComp={ItemComp}
+            componentProps={itemData.component || EMPTY_PROPS}
+            onPointerDown={itemPointerDownCallbacks[node.i]}
+            onResizePointerDown={itemResizeCallbacks[node.i]}
+            itemInnerRefCb={itemRefCallbacks[node.i]}
+          />
         ))}
       </div>
 

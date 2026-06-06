@@ -100,7 +100,7 @@ const ensureNoOverlap = (
       const fallback = findPlacementBFS(others, candidate, cols, reflowMaxDepth);
 
       if (fallback) {
-        candidate = { ...fallback, i: candidate.i };
+        candidate = { ...fallback, i: candidate.i } as GridItem;
       } else {
         candidate.y = Math.max(0, candidate.y);
         candidate.x = Math.max(0, Math.min(cols - candidate.w, candidate.x));
@@ -271,10 +271,17 @@ export function useGrid({
 }: UseGridOptions & { dragOverlayOffset?: OverlayOffset } = {}) {
   const overlayOffset = normalizeOverlayOffset(dragOverlayOffset);
 
-  const initial = (items || []).map((it: GridItem, idx) => normalizeNode(it, idx));
+  const initial = ensureNoOverlap(
+    (items || []).map((it: GridItem, idx) => normalizeNode(it, idx)),
+    cols,
+    reflowMaxDepth,
+    sticky
+  );
 
   const [layout, setLayout] = useState<GridItem[]>(initial);
   const layoutRef = useRef(layout);
+  // Track the last layout WE committed internally, to avoid circular resets
+  const lastInternalCommitRef = useRef<string>('');
 
   useEffect(() => {
     layoutRef.current = layout;
@@ -286,7 +293,21 @@ export function useGrid({
   const lastThrottleRef = useRef(0);
 
   useEffect(() => {
-    setLayout((items || []).map((it, idx) => normalizeNode(it, idx)));
+    // Build a signature of incoming items to detect external changes
+    const normalized = (items || []).map((it, idx) => normalizeNode(it, idx));
+    const incomingSignature = normalized
+      .map((n) => `${n.i}:${n.x},${n.y},${n.w},${n.h}`)
+      .sort()
+      .join('|');
+
+    // If the incoming items match what we last committed, skip the reset.
+    // This prevents the circular: commit → onLayoutChange → parent updates items → useEffect resets layout
+    if (incomingSignature === lastInternalCommitRef.current) {
+      return;
+    }
+
+    const resolved = ensureNoOverlap(normalized, cols, reflowMaxDepth, sticky);
+    setLayout(resolved);
   }, [items]);
 
   useEffect(
@@ -309,6 +330,14 @@ export function useGrid({
       }) as GridItem[];
 
       const fixed = ensureNoOverlap(bounded, cols, reflowMaxDepth, sticky);
+
+      // Store signature of what we're committing so the items sync useEffect
+      // won't reset our own committed layout back to the old positions.
+      lastInternalCommitRef.current = fixed
+        .map((n) => `${n.i}:${n.x},${n.y},${n.w},${n.h}`)
+        .sort()
+        .join('|');
+
       setLayout(fixed);
       onLayoutChange(fixed);
     },
