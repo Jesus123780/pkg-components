@@ -176,5 +176,4 @@ export const ROUTES = Object.freeze({
   'reset-password': '/reset-password',
   merchant: '/merchant',
   login: '/login'
-
 })

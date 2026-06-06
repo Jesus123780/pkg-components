@@ -11,6 +11,8 @@ import { InitialAnimationValue } from '../utils/constants';
 
 const baseStyle = {
   position: 'absolute',
+  left: 0,
+  top: 0,
   zIndex: 999,
   pointerEvents: 'none',
   borderRadius: 8,
@@ -19,7 +21,8 @@ const baseStyle = {
   background: 'white',
   transformOrigin: '0 0',
   opacity: 0.9,
-  willChange: 'transform, left, top, width, height',
+  // translate3d activa GPU compositing — sin layout reflow en cada frame
+  willChange: 'transform, width, height',
 };
 
 /**
@@ -49,10 +52,12 @@ const DragLayer = ({
   const widthPx = Number.isFinite(overlay.widthPx) ? overlay.widthPx : undefined;
   const heightPx = Number.isFinite(overlay.heightPx) ? overlay.heightPx : undefined;
 
+  // Usar transform: translate3d en lugar de left/top para evitar layout reflow
   const style = {
     ...baseStyle,
-    left: `${pxLeft}px`,
-    top: `${pxTop}px`,
+    transform: `translate3d(${pxLeft}px, ${pxTop}px, 0)`,
+    left: 0,
+    top: 0,
     ...(widthPx != null ? { width: `${widthPx}px` } : {}),
     ...(heightPx != null ? { height: `${heightPx}px` } : {}),
     transition: `transform ${animation.duration}ms ${animation.easing}, width ${animation.duration}ms ${animation.easing}, height ${animation.duration}ms ${animation.easing}`,

@@ -24,13 +24,17 @@ const isNumber = (v) => typeof v === 'number' && Number.isFinite(v);
  */
 export const normalizeNode = (raw = {}) => {
   if (!raw || typeof raw !== 'object') raw = {};
-  const i = raw.i ?? raw.id ?? String(raw.id ?? raw.i ?? `${Math.random()}`);
+  // Fix: el fallback anterior producía String(undefined) = "undefined"
+  const rawId = raw.i !== undefined && raw.i !== null ? raw.i
+    : raw.id !== undefined && raw.id !== null ? raw.id
+    : null;
+  const i = rawId !== null ? String(rawId) : `node-${Math.random().toString(36).slice(2, 9)}`;
   const x = isNumber(raw.x) ? Math.round(raw.x) : 0;
   const y = isNumber(raw.y) ? Math.round(raw.y) : 0;
   const w = isNumber(raw.w) ? Math.max(1, Math.round(raw.w)) : 1;
   const h = isNumber(raw.h) ? Math.max(1, Math.round(raw.h)) : 1;
   const st = !!raw.static;
-  return { i: String(i), x, y, w, h, static: st };
+  return { i, x, y, w, h, static: st };
 };
 
 /**

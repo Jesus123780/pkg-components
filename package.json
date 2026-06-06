@@ -143,5 +143,5 @@
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json",
     "update:version": "node increment-version.js && git add package.json"
   },
-  "version": "2.3.22"
+  "version": "2.3.24"
 }

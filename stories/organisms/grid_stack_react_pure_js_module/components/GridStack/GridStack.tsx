@@ -267,6 +267,8 @@ export default function GridStack(props: Readonly<GridStackProps>) {
   const pendingPreviewTimeoutRef = useRef<number | null>(null)
   const pendingRafRef = useRef<number[]>([])
   const lastDropTimeoutRef = useRef<number | null>(null)
+  // Cache de pxHelpers — se actualiza en ResizeObserver, no en cada render
+  const pxHelpersRef = useRef<PxHelpers | null>(null)
 
   const [previewCommittedLayout, setPreviewCommittedLayout] = useState<Array<GridItem> | null>(null)
   const [previewMode, setPreviewMode] = useState<PreviewModeType | null>(null)
@@ -962,6 +964,8 @@ export default function GridStack(props: Readonly<GridStackProps>) {
 
     const applyCssVars = () => {
       const px = getPxHelpers()
+      // Cachear pxHelpers para que visibleItems no llame clientWidth en cada render
+      pxHelpersRef.current = px
       const cellW = Math.round(px.colWidth + px.marginX)
       const cellH = Math.round(px.rowHeight + px.marginY)
       const padX = safeNumber(px.containerPadding?.[0], 0)
@@ -1153,7 +1157,8 @@ export default function GridStack(props: Readonly<GridStackProps>) {
     className: string
   }>>(() => {
     return grid.layout.map((node) => {
-      const px = getPxHelpers()
+      // Usar pxHelpersRef en lugar de getPxHelpers() para evitar clientWidth en cada render
+      const px = pxHelpersRef.current ?? getPxHelpers()
       const isBeingDragged = draggedNodeId === node.i
       const ItemComp = componentMap[node.i] || null
       const itemData = items.find((it) => it.id === node.i) || {}
@@ -1255,9 +1260,9 @@ export default function GridStack(props: Readonly<GridStackProps>) {
               {isResizable && !node.static && (
                 <ResizeHandles
                   corners={corners as Corner[]}
-                  onPointerDown={(e, corner: Corner) => {
-                    updatePointerMotion(e)
-                    handleResizePointerDown(e, node, corner)
+                  onPointerDown={(e: React.PointerEvent, corner: Corner) => {
+                    updatePointerMotion(e as ReactPointerEvent<HTMLElement>)
+                    handleResizePointerDown(e as ReactPointerEvent<HTMLDivElement>, node, corner)
                   }}
                   radio={radio}
                 />
@@ -1278,7 +1283,7 @@ export default function GridStack(props: Readonly<GridStackProps>) {
 
       <DragLayer overlay={grid.overlay as Overlay} animation={animation}>
         {draggedNodeId && (() => {
-          const Comp = componentMap[draggedNodeId] || null
+          const Comp = componentMap[draggedNodeId] as React.ComponentType<any> | null || null
           const data = draggedItemData?.component || {}
           if (!Comp) {
             return (
