@@ -1,221 +1,1954 @@
-/* styles.module.css */
-
-/* --- existing styles (kept and respected) --- */
 .notification-container {
-  font-size: 14px;
   position: fixed;
-  z-index: 9999;
+  z-index: 2147483647;
+
   display: flex;
   flex-direction: column;
-  pointer-events: none; /* let children opt-in */
+
+  width: var(
+    --toast-width,
+    min(560px, calc(100vw - 24px))
+  );
+
+  max-width: calc(100vw - 24px);
+
+  font-size: 14px;
+
+  pointer-events: none;
+
+  isolation: isolate;
+
+  contain: layout style;
+
+  overflow: visible;
 }
 
-/* precise positions for each corner */
+/* =========================================================
+   ORIGINAL POSITIONS
+   ========================================================= */
+
 .top-right {
   top: 12px;
   right: 12px;
   left: auto;
-  width: auto;
-  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
-}
-
-.bottom-right {
-  bottom: -50px;
-  right: 12px;
-  left: auto;
-  width: auto;
-  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
+  bottom: auto;
 }
 
 .top-left {
   top: 12px;
   left: 12px;
   right: auto;
-  width: auto;
-  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
+  bottom: auto;
+}
+
+.bottom-right {
+  right: 12px;
+  bottom: 12px;
+  left: auto;
+  top: auto;
 }
 
 .bottom-left {
-  bottom: -50px;
+  left: 12px;
+  bottom: 12px;
+  right: auto;
+  top: auto;
+}
+
+/* =========================================================
+   NEW POSITIONS
+   ========================================================= */
+
+.top-center {
+  top: 12px;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+
+  transform: translateX(-50%);
+}
+
+.center-left {
+  top: 50%;
   left: 12px;
   right: auto;
-  width: auto;
-  transition: transform 0.45s cubic-bezier(0.2,0.9,0.2,1);
+  bottom: auto;
+
+  transform: translateY(-50%);
 }
 
-/* keep entrance animations but smoother and consistent */
-@keyframes toast-in-right {
-  from { transform: translateX(24px) translateZ(0); opacity: 0; }
-  to { transform: translateX(0) translateZ(0); opacity: 1; }
-}
-@keyframes toast-in-left {
-  from { transform: translateX(-24px) translateZ(0); opacity: 0; }
-  to { transform: translateX(0) translateZ(0); opacity: 1; }
+.center {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
 }
 
-/* apply animations selectively via classes (keeps previous behavior) */
-.top-right { animation: toast-in-right 0.45s; }
-.bottom-right { animation: toast-in-right 0.45s; }
-.top-left { animation: toast-in-left 0.45s; }
-.bottom-left { animation: toast-in-left 0.45s; }
+.center-right {
+  top: 50%;
+  right: 12px;
+  left: auto;
+  bottom: auto;
+
+  transform: translateY(-50%);
+}
+
+.bottom-center {
+  bottom: 12px;
+  left: 50%;
+  right: auto;
+  top: auto;
+
+  transform: translateX(-50%);
+}
+
+/* =========================================================
+   STACK HELPERS
+   ========================================================= */
+
+.stack-top {
+  align-items: flex-start;
+}
+
+.stack-bottom {
+  align-items: flex-end;
+}
+
+.stack-left {
+  justify-content: flex-start;
+}
+
+.stack-right {
+  justify-content: flex-end;
+}
+
+.stacked {
+  overflow: visible;
+}
+
+/* =========================================================
+   NON STACKED WRAPPER
+   ========================================================= */
+
+.toast-motion-container {
+  width: 100%;
+  overflow: visible;
+}
+
+/* =========================================================
+   TOAST MOTION
+   ========================================================= */
+
+.toast-motion {
+  position: relative;
+
+  width: 100%;
+
+  pointer-events: auto;
+
+  transform-origin:
+    center center;
+
+  will-change:
+    transform,
+    opacity,
+    filter;
+
+  backface-visibility:
+    hidden;
+
+  -webkit-font-smoothing:
+    antialiased;
+}
+
+/* =========================================================
+   ENTER
+   ========================================================= */
+
+.enter-top-right,
+.enter-top-center,
+.enter-top-left,
+.enter-center-right,
+.enter-center,
+.enter-center-left,
+.enter-bottom-right,
+.enter-bottom-center,
+.enter-bottom-left {
+  animation-duration:
+    420ms;
+
+  animation-timing-function:
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+
+  animation-fill-mode:
+    both;
+}
+
+.enter-top-right {
+  animation-name:
+    toast-enter-top-right;
+}
+
+.enter-top-center {
+  animation-name:
+    toast-enter-top-center;
+}
+
+.enter-top-left {
+  animation-name:
+    toast-enter-top-left;
+}
+
+.enter-center-right {
+  animation-name:
+    toast-enter-center-right;
+}
+
+.enter-center {
+  animation-name:
+    toast-enter-center;
+}
+
+.enter-center-left {
+  animation-name:
+    toast-enter-center-left;
+}
+
+.enter-bottom-right {
+  animation-name:
+    toast-enter-bottom-right;
+}
+
+.enter-bottom-center {
+  animation-name:
+    toast-enter-bottom-center;
+}
+
+.enter-bottom-left {
+  animation-name:
+    toast-enter-bottom-left;
+}
+
+/* =========================================================
+   ENTER KEYFRAMES
+   ========================================================= */
+
+@keyframes toast-enter-top-right {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        28px,
+        -8px,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        -1px,
+        0,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-top-center {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        0,
+        -24px,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        1px,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-top-left {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        -28px,
+        -8px,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        1px,
+        0,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-center-right {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        28px,
+        0,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        -1px,
+        0,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-center {
+  0% {
+    opacity: 0;
+
+    transform:
+      scale(0.94);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      scale(1.01);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-center-left {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        -28px,
+        0,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        1px,
+        0,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-bottom-right {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        28px,
+        8px,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        -1px,
+        0,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-bottom-center {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        0,
+        24px,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        -1px,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+@keyframes toast-enter-bottom-left {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        -28px,
+        8px,
+        0
+      )
+      scale(0.97);
+
+    filter:
+      blur(3px);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        1px,
+        0,
+        0
+      )
+      scale(1.004);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+}
+
+/* =========================================================
+   EXIT
+   ========================================================= */
+
+.exit-top-right,
+.exit-top-center,
+.exit-top-left,
+.exit-center-right,
+.exit-center,
+.exit-center-left,
+.exit-bottom-right,
+.exit-bottom-center,
+.exit-bottom-left {
+  animation-duration:
+    var(
+      --toast-exit-duration,
+      350ms
+    );
+
+  animation-timing-function:
+    cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    );
+
+  animation-fill-mode:
+    both;
+}
+
+.exit-top-right {
+  animation-name:
+    toast-exit-top-right;
+}
+
+.exit-top-center {
+  animation-name:
+    toast-exit-top-center;
+}
+
+.exit-top-left {
+  animation-name:
+    toast-exit-top-left;
+}
+
+.exit-center-right {
+  animation-name:
+    toast-exit-center-right;
+}
+
+.exit-center {
+  animation-name:
+    toast-exit-center;
+}
+
+.exit-center-left {
+  animation-name:
+    toast-exit-center-left;
+}
+
+.exit-bottom-right {
+  animation-name:
+    toast-exit-bottom-right;
+}
+
+.exit-bottom-center {
+  animation-name:
+    toast-exit-bottom-center;
+}
+
+.exit-bottom-left {
+  animation-name:
+    toast-exit-bottom-left;
+}
+
+/* =========================================================
+   EXIT KEYFRAMES
+   ========================================================= */
+
+@keyframes toast-exit-top-right {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        38px,
+        -6px,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-top-center {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        0,
+        -28px,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-top-left {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        -38px,
+        -6px,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-center-right {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        32px,
+        0,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-center {
+  0% {
+    opacity: 1;
+
+    transform:
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      scale(0.94);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-center-left {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        -32px,
+        0,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-bottom-right {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        38px,
+        6px,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-bottom-center {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        0,
+        28px,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+@keyframes toast-exit-bottom-left {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        -38px,
+        6px,
+        0
+      )
+      scale(0.96);
+
+    filter:
+      blur(2px);
+  }
+}
+
+/* =========================================================
+   BASE NOTIFICATION
+   ========================================================= */
 
 .notification {
-  transition: 0.25s ease;
   position: relative;
-  pointer-events: auto;
-  overflow: hidden;
-  padding: 30px;
-  width: 300px;
-  max-height: 100px;
-  border-radius: 3px 3px 3px 3px;
-  box-shadow: 0 0 10px #999;
-  background-position: 15px;
-  background-repeat: no-repeat;
-  will-change: transform, opacity;
+
+  width: 100%;
+  max-width: 100%;
+
+  min-width: 0;
+
+  height: auto;
+  min-height: 76px;
+
+  padding:
+    15px
+    46px
+    17px
+    16px;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  overflow: visible;
+
+  background:
+    var(
+      --toast-background,
+      #50a773
+    );
+
+  box-shadow:
+    0 12px 32px
+      rgba(
+        0,
+        0,
+        0,
+        0.18
+      ),
+    0 3px 10px
+      rgba(
+        0,
+        0,
+        0,
+        0.12
+      );
+
+  transition:
+    box-shadow
+      260ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    filter
+      260ms
+      ease;
+
+  will-change:
+    box-shadow,
+    filter;
+
+  backface-visibility:
+    hidden;
+
+  -webkit-font-smoothing:
+    antialiased;
 }
 
 .notification:hover {
-  box-shadow: 0 0 12px #fff;
-  opacity: 1;
-  cursor: pointer;
+  box-shadow:
+    0 16px 36px
+      rgba(
+        0,
+        0,
+        0,
+        0.20
+      ),
+    0 4px 12px
+      rgba(
+        0,
+        0,
+        0,
+        0.12
+      );
 }
 
-.notification-title {
-  width: 300px;
-  height: 18px;
-  color: var(--color-base-white);
-}
-
-.notification-message {
-  margin: 0;
-  text-align: left;
-  height: 18px;
-  margin-left: -1px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--color-base-white);
-  font-size: var(--font-size-base);
-}
-
-.notification-image {
-  float: left;
-  margin-right: 15px;
-}
-
-.notification-image img {
-  width: 30px;
-  height: 30px;
-}
+/* =========================================================
+   TOAST
+   ========================================================= */
 
 .toast {
-  height: 75px;
-  width: 370px;
-  color: var(--color-base-black);
-  padding: 10px;
-  margin: 10px;
+  width: 100%;
+  max-width: 100%;
+
+  min-height: 76px;
+  height: auto;
+
+  margin: 0;
+
+  box-sizing: border-box;
+
+  color:
+    var(
+      --color-base-black
+    );
 }
+
+/* =========================================================
+   TOAST HEADER
+   ========================================================= */
+
+.toast-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  width: 100%;
+
+  min-width: 0;
+
+  gap: 12px;
+}
+
+.toast-title-wrapper {
+  display: flex;
+  align-items: flex-start;
+
+  min-width: 0;
+
+  flex: 1 1 auto;
+
+  gap: 10px;
+}
+
+.toast-icon {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  padding-top: 1px;
+}
+
+.toast-copy {
+  min-width: 0;
+
+  flex: 1 1 auto;
+}
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.notification-title {
+  width: 100%;
+
+  margin: 0;
+
+  color:
+    var(
+      --color-base-white
+    );
+
+  font-size: 14px;
+  font-weight: 800;
+
+  line-height: 19px;
+
+  white-space: normal;
+
+  overflow-wrap:
+    anywhere;
+
+  word-break:
+    break-word;
+}
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.notification-message {
+  width: 100%;
+
+  margin:
+    8px 0 0;
+
+  color:
+    var(
+      --color-base-white
+    );
+
+  font-size:
+    var(
+      --font-size-base
+    );
+
+  line-height: 20px;
+
+  white-space: normal;
+
+  overflow-wrap:
+    anywhere;
+
+  word-break:
+    break-word;
+
+  overflow: visible;
+
+  text-overflow: clip;
+}
+
+/* =========================================================
+   CLOSE
+   ========================================================= */
 
 .notification-button {
-  position: relative;
-  right: -0.3em;
-  top: -0.3em;
-  float: right;
-  font-weight: 700;
-  color: red;
-  outline: none;
-  border: none;
-  text-shadow: 0 1px 0 #fff;
-  opacity: 0.8;
-  line-height: 1;
-  font-size: 16px;
-  padding: 0;
-  cursor: pointer;
-  background: 0 0;
-  border: 0;
-}
-
-/* --- new stacking / card presentation styles --- */
-
-.toast-stack-container {
-  pointer-events: none;
-}
-
-/* stack wrapper: keeps consistent width and allows absolute stacking */
-.toast-stack {
-  position: relative;
-  width: 370px; /* match .toast width */
-  height: calc(75px + (5 * 20px));
-  pointer-events: none;
-  margin: 10px;
-}
-
-/* For different corner alignments */
-.stack-top.stack-right .toast-stack { align-items: flex-start; }
-.stack-top.stack-left .toast-stack { align-items: flex-start; }
-.stack-bottom.stack-right .toast-stack { align-items: flex-end; }
-.stack-bottom.stack-left .toast-stack { align-items: flex-end; }
-
-/* Each toast-card sits absolutely and is transformed for stack effect */
-.toast-card {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  width: 100%;
-  pointer-events: auto;
-  will-change: transform, opacity;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
 
-/* subtle counter for hidden items */
-.toast-stack-counter {
-  position: absolute;
-  bottom: 8px;
+  top: 8px;
   right: 8px;
-  width: auto;
-  height: 22px;
+
+  z-index: 10;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  border-radius: 12px;
-  background: rgba(0,0,0,0.45);
-  color: var(--color-base-white);
-  pointer-events: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-  transform: translateY(6px);
-}
 
-/* ensure SwipeableCard content fills card area and looks consistent */
-.toast-card .notification {
+  width: 30px;
+  height: 30px;
+
   margin: 0;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 0;
+
+  border: 0;
+  outline: none;
+
+  border-radius: 7px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  cursor: pointer;
+
+  opacity: 0.78;
+
+  transition:
+    transform
+      180ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    opacity
+      180ms
+      ease,
+    background-color
+      180ms
+      ease;
 }
 
-/* Accessibility: keep focus outlines visible for keyboard users */
-.notification-button:focus,
-.toast-card button:focus {
-  outline: 2px solid rgba(255,255,255,0.9);
+.notification-button:hover {
+  opacity: 1;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+}
+
+.notification-button:active {
+  transform:
+    scale(0.93);
+}
+
+.notification-button:focus-visible {
+  outline:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    );
+
   outline-offset: 2px;
 }
 
-/* Reduce unexpected lateral movement: keep transform-origin centered to avoid left/right shifts */
-.notification {
-  transform-origin: center top;
+/* =========================================================
+   SWIPE DELETE ACTION
+   ========================================================= */
+
+.toast-delete-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 64px;
+
+  height: 100%;
+
+  cursor: pointer;
 }
 
-/* On small screens ensure stack fits */
-@media (max-width: 420px) {
-  .toast-stack {
-    width: calc(100vw - 24px);
+.toast-delete-action-button {
+  all: unset;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   STACK CONTAINER
+   ========================================================= */
+
+.toast-stack-container {
+  width: 100%;
+
+  pointer-events: none;
+
+  overflow: visible;
+}
+
+/* =========================================================
+   STACK
+   ========================================================= */
+
+.toast-stack {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    );
+
+  grid-template-rows:
+    auto;
+
+  width:
+    var(
+      --toast-width,
+      min(
+        560px,
+        calc(
+          100vw - 24px
+        )
+      )
+    );
+
+  max-width:
+    calc(
+      100vw - 24px
+    );
+
+  min-width: 0;
+
+  margin: 10px;
+
+  pointer-events: none;
+
+  overflow: visible;
+
+  contain:
+    layout style;
+
+  transform:
+    translate3d(
+      0,
+      0,
+      0
+    );
+
+  transform-style:
+    preserve-3d;
+}
+
+/* =========================================================
+   STACK CARD
+   ========================================================= */
+
+.toast-card {
+  grid-column: 1;
+  grid-row: 1;
+
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  pointer-events: auto;
+
+  transform-origin:
+    center center;
+
+  transform:
+    translate3d(
+      0,
+      var(
+        --stack-y,
+        0px
+      ),
+      0
+    )
+    scale(
+      calc(
+        var(
+          --stack-scale,
+          1
+        ) *
+        var(
+          --stack-hover-scale,
+          1
+        )
+      )
+    );
+
+  transform-style:
+    preserve-3d;
+
+  opacity:
+    var(
+      --stack-opacity,
+      1
+    );
+
+  will-change:
+    transform,
+    opacity,
+    filter;
+
+  backface-visibility:
+    hidden;
+
+  transition:
+    transform
+      var(
+        --stack-transition-duration,
+        520ms
+      )
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    opacity
+      320ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    filter
+      260ms
+      ease;
+
+  -webkit-font-smoothing:
+    antialiased;
+}
+
+/* =========================================================
+   STACK DEPTH
+   ========================================================= */
+
+.toast-card[data-anchor='true'] {
+  filter: none;
+
+  transform-origin:
+    center center;
+}
+
+.toast-card[data-depth='1'] {
+  filter:
+    saturate(0.97);
+}
+
+.toast-card[data-depth='2'] {
+  filter:
+    saturate(0.94);
+}
+
+.toast-card[data-depth='3'] {
+  filter:
+    saturate(0.91);
+}
+
+.toast-card[data-depth='4'] {
+  filter:
+    saturate(0.88);
+}
+
+/* =========================================================
+   STACK HOVER
+   ========================================================= */
+
+/*
+ * IMPORTANT:
+ *
+ * Hover NEVER changes z-index.
+ * Hover NEVER lifts a card.
+ * Hover NEVER changes its scale.
+ *
+ * It only gives a very subtle visual response.
+ */
+
+.toast-card[data-hovered='true'] {
+  filter:
+    saturate(1)
+    brightness(1.01);
+}
+
+.toast-card[data-hovered='true']
+  .notification {
+  box-shadow:
+    0 14px 34px
+      rgba(
+        0,
+        0,
+        0,
+        0.20
+      ),
+    0 4px 12px
+      rgba(
+        0,
+        0,
+        0,
+        0.12
+      );
+}
+
+/* =========================================================
+   LIFECYCLE
+   ========================================================= */
+
+.toast-card[data-lifecycle='queued'] {
+  pointer-events: none;
+}
+
+.toast-card[data-lifecycle='exiting'] {
+  pointer-events: none;
+}
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.toast-card
+  .toast-motion {
+  width: 100%;
+}
+
+.toast-card
+  .notification {
+  width: 100%;
+  max-width: 100%;
+
+  margin: 0;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+.toast-progress-track {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 3px;
+
+  overflow: hidden;
+
+  border-radius:
+    0 0 10px 10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+
+  pointer-events: none;
+}
+
+.toast-progress {
+  position: absolute;
+
+  inset: 0;
+
+  transform-origin:
+    left center;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  animation-name:
+    toast-progress;
+
+  animation-timing-function:
+    linear;
+
+  animation-fill-mode:
+    both;
+
+  will-change:
+    transform;
+}
+
+@keyframes toast-progress {
+  from {
+    transform:
+      scaleX(1);
   }
-  .toast {
+
+  to {
+    transform:
+      scaleX(0);
+  }
+}
+
+.toast-motion[data-paused='true']
+  .toast-progress,
+.toast-card[data-paused='true']
+  .toast-progress {
+  animation-play-state:
+    paused;
+}
+
+/* =========================================================
+   COUNTER
+   ========================================================= */
+
+.toast-stack-counter {
+  position: absolute;
+
+  top: -8px;
+  right: -8px;
+
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 30px;
+  height: 24px;
+
+  padding:
+    0 9px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.68
+    );
+
+  color:
+    var(
+      --color-base-white
+    );
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  box-shadow:
+    0 3px 8px
+      rgba(
+        0,
+        0,
+        0,
+        0.24
+      );
+
+  pointer-events: none;
+
+  backdrop-filter:
+    blur(5px);
+
+  -webkit-backdrop-filter:
+    blur(5px);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .notification-container {
+    width:
+      calc(
+        100vw - 16px
+      );
+
+    max-width:
+      calc(
+        100vw - 16px
+      );
+  }
+
+  .top-center {
+    left: 50%;
+    right: auto;
+
+    transform:
+      translateX(-50%);
+  }
+
+  .center {
+    left: 50%;
+    right: auto;
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      );
+  }
+
+  .center-left {
+    left: 8px;
+  }
+
+  .center-right {
+    right: 8px;
+  }
+
+  .bottom-center {
+    left: 50%;
+    right: auto;
+
+    transform:
+      translateX(-50%);
+  }
+
+  .toast-stack {
+    width:
+      calc(
+        100vw - 16px
+      );
+
+    max-width:
+      calc(
+        100vw - 16px
+      );
+
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .toast-card {
     width: 100%;
-    padding-left: 18px;
-    padding-right: 18px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+  .top-right,
+  .bottom-right {
+    right: 8px;
+  }
+
+  .top-left,
+  .bottom-left {
+    left: 8px;
+  }
+
+  .center-left {
+    left: 8px;
+  }
+
+  .center-right {
+    right: 8px;
+  }
+
+  .notification {
+    min-height: 72px;
+
+    padding:
+      14px
+      44px
+      16px
+      14px;
+
+    border-radius: 9px;
+  }
+
+  .notification-title {
+    font-size: 14px;
+
+    line-height: 18px;
+  }
+
+  .notification-message {
+    font-size:
+      var(
+        --font-size-base
+      );
+
+    line-height: 19px;
+  }
+
+  .notification-button {
+    top: 7px;
+    right: 7px;
+
+    width: 28px;
+    height: 28px;
+  }
+
+  .toast-stack-counter {
+    top: -7px;
+    right: -7px;
+  }
+}
+
+/* =========================================================
+   TOUCH
+   ========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .toast-card[data-hovered='true'] {
+    filter: none;
+  }
+
+  .toast-card[data-hovered='true']
+    .notification {
+    box-shadow:
+      0 12px 32px
+        rgba(
+          0,
+          0,
+          0,
+          0.18
+        ),
+      0 3px 10px
+        rgba(
+          0,
+          0,
+          0,
+          0.12
+        );
+  }
+
+  .notification-button:hover {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .toast-motion,
+  .toast-card,
+  .notification,
+  .notification-button,
+  .toast-progress {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+
+  .toast-motion {
+    opacity: 1 !important;
+
+    transform:
+      none !important;
+  }
+
+  .toast-card {
+    transform:
+      translate3d(
+        0,
+        var(
+          --stack-y,
+          0px
+        ),
+        0
+      )
+      scale(
+        var(
+          --stack-scale,
+          1
+        )
+      ) !important;
+  }
+
+  .toast-progress {
+    transform:
+      scaleX(0) !important;
   }
 }

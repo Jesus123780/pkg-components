@@ -90,28 +90,30 @@ export const IconChair: React.FC<IconProps> = ({
   size,
   color = getGlobalStyle('--color-icons-black')
 }) => (
-  <svg
-    xmlns='http://www.w3.org/2000/svg'
-    width={size ?? 800}
-    height={size ?? 800}
-    viewBox='0 0 24 24'
-  >
-    <defs>
-      <style>
-        {
-          `.cls-1{fill:none;stroke:${color};stroke-miterlimit:10;stroke-width:1.91px}`
-        }
-      </style>
-    </defs>
-    <path
-      d='M18.37 9.18a2 2 0 0 0-1.59 2A2.76 2.76 0 0 1 14 13.93h-4a2.76 2.76 0 0 1-2.76-2.76 2 2 0 0 0-1.59-2 1.91 1.91 0 0 0-2.24 1.89 6.7 6.7 0 0 0 6.7 6.69h3.82a6.7 6.7 0 0 0 6.7-6.69 1.91 1.91 0 0 0-2.26-1.88Z'
-      className='cls-1'
-    />
-    <path
-      d='M6.26 9.42V7.24a5.74 5.74 0 1 1 11.48 0v2.18M6.26 23.5l.96-6.7M16.78 16.8l.96 6.7'
-      className='cls-1'
-    />
-  </svg>
+<svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Respaldo elegante con curva continua */}
+      <path d="M7 11.5V6.8C7 4.7 8.7 3 10.8 3H13.2C15.3 3 17 4.7 17 6.8V11.5" />
+
+      {/* Reposabrazos minimalistas */}
+      <rect x="4" y="10" width="2.5" height="6.5" rx="1.25" />
+      <rect x="17.5" y="10" width="2.5" height="6.5" rx="1.25" />
+
+      {/* Asiento estilizado */}
+      <rect x="6.5" y="12" width="11" height="3" rx="1" />
+
+      {/* Patas con ángulo refinado */}
+      <path d="M7 16.5L5.5 21" />
+      <path d="M17 16.5L18.5 21" />
+    </svg>
 )
 
 export const IconCalendar: React.FC<IconProps> = ({

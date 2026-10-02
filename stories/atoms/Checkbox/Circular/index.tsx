@@ -1,7 +1,7 @@
 'use client'
 
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import styles from './styles.module.css'
 import { getGlobalStyle } from '../../../../utils'
@@ -15,7 +15,10 @@ interface CheckboxProps {
   indeterminate?: boolean
   label?: any
   name?: any
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, id: string) => void
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => void
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
@@ -30,9 +33,6 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ...restProps
 }) => {
   const inputEl = useRef<HTMLInputElement>(null)
-  const [clickCount, setClickCount] = useState(0)
-  const [lastClickTime, setLastClickTime] = useState(0)
-  const clickThreshold = 1000
 
   const syncIndeterminateState = useCallback(() => {
     if (inputEl.current) {
@@ -42,26 +42,29 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   useEffect(() => {
     syncIndeterminateState()
-  }, [indeterminate, syncIndeterminateState])
+  }, [syncIndeterminateState])
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (indeterminate) syncIndeterminateState()
-
-    const now = Date.now()
-    setClickCount(now - lastClickTime < clickThreshold ? prev => prev + 1 : 1)
-    if (clickCount >= 7) setClickCount(0)
-    setLastClickTime(now)
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (indeterminate) {
+      syncIndeterminateState()
+    }
 
     onChange(event, id)
   }
 
-  const disabledStyles = { color: getGlobalStyle('--color-text-inactive') }
+  const disabledStyles = disabled
+    ? {
+        color: getGlobalStyle('--color-text-inactive')
+      }
+    : {}
 
   return (
     <span
       className={styles.container}
       id={id}
-      style={disabled ? disabledStyles : {}}
+      style={disabledStyles}
       {...restProps}
     >
       <input
@@ -72,15 +75,18 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         name={name}
         onChange={handleChange}
         ref={inputEl}
-        type="checkbox"
+        type='checkbox'
       />
+
       <label
         htmlFor={`checkbox-${id}`}
         className={classNames(styles.label, {
           [styles.checked]: checked,
+          [styles.disabled]: disabled,
           [className]: !!className
         })}
       >
+        <span className={styles.circle} />
         {label}
       </label>
     </span>

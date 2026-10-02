@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -28,7 +27,3 @@ export const Portal = ({ children, selector = 'portal' }) => {
   return null
 }
 
-Portal.propTypes = {
-  children: PropTypes.any,
-  selector: PropTypes.string
-}

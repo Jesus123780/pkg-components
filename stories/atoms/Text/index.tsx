@@ -3,7 +3,23 @@
 import { CustomText } from './styled'
 import { classNames } from '../../../helpers'
 import style from './text.module.css'
-import { TextProps } from 'pkg-components-types'
+// import { TextProps } from 'pkg-components-types'
+import type { CSSProperties, ElementType, ReactNode } from 'react'
+
+interface TextProps {
+  children?: ReactNode
+  color?: string
+  size?: string
+  align?: string
+  font?: string
+  weight?: number | string
+  className?: string | string[]
+  title?: string
+  lineHeight?: string | number
+  as?: ElementType
+  styles?: CSSProperties
+  customSize?: string
+}
 
 export const Text: React.FC<TextProps> = ({
   children,

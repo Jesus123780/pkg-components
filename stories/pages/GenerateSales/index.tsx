@@ -167,6 +167,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
 
   const [sort, setSort] = useState<Sort>({ field: 'name', direction: 'asc' })
   const [showFilter, setShowFilter] = useState<boolean>(false)
+
   return (
     <AwesomeModal
       title='Crea una venta'
