@@ -1,41 +1,97 @@
-import { escapeRegExp } from './escapeRegExp';
+
+
+// ============================================================
+// parseAbbrValue.ts
+// ============================================================
+
+type Abbreviation = 'k' | 'm' | 'b'
+
+const ABBREVIATION_MULTIPLIERS: Record<
+  Abbreviation,
+  number
+> = {
+  k: 1_000,
+  m: 1_000_000,
+  b: 1_000_000_000
+}
 
 /**
- * Abbreviate number eg. 1000 = 1k
+ * Parses:
  *
- * Source: https://stackoverflow.com/a/9345181
+ * 10k
+ * 10m
+ * 10b
+ * 1,5m
+ *
+ * and returns a numeric value.
+ *
+ * Invalid examples return undefined:
+ *
+ * 10m000
+ * 10k000
+ * m10
  */
-export const abbrValue = (value: number, decimalSeparator = '.', _decimalPlaces = 10): string => {
-  if (value > 999) {
-    let valueLength = ('' + value).length;
-    const p = Math.pow;
-    const d = p(10, _decimalPlaces);
-    valueLength -= valueLength % 3;
-
-    const abbrValue = Math.round((value * d) / p(10, valueLength)) / d + ' kMGTPE'[valueLength / 3];
-    return abbrValue.replace('.', decimalSeparator);
+export const parseAbbrValue = (
+  value: string,
+  decimalSeparator = '.'
+): number | undefined => {
+  if (!value) {
+    return undefined
   }
 
-  return String(value);
-};
+  const normalizedDecimalSeparator =
+    decimalSeparator === ''
+      ? '.'
+      : decimalSeparator
 
-type AbbrMap = { [key: string]: number };
+  const escapedSeparator =
+    normalizedDecimalSeparator.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      '\\$&'
+    )
 
-const abbrMap: AbbrMap = { k: 1000, m: 1000000, b: 1000000000 };
+  const regex = new RegExp(
+    `^(-?(?:\\d+(?:${escapedSeparator}\\d+)?|${escapedSeparator}\\d+))(k|m|b)$`,
+    'i'
+  )
 
-/**
- * Parse a value with abbreviation e.g 1k = 1000
- */
-export const parseAbbrValue = (value: string, decimalSeparator = '.'): number | undefined => {
-  const reg = new RegExp(`(\\d+(${escapeRegExp(decimalSeparator)}\\d*)?)([kmb])$`, 'i');
-  const match = value.match(reg);
+  const match =
+    value.trim().match(regex)
 
-  if (match) {
-    const [, digits, , abbr] = match;
-    const multiplier = abbrMap[abbr.toLowerCase()];
-
-    return Number(digits.replace(decimalSeparator, '.')) * multiplier;
+  if (!match) {
+    return undefined
   }
 
-  return undefined;
-};
+  const numericPart =
+    match[1].replace(
+      new RegExp(
+        escapedSeparator,
+        'g'
+      ),
+      '.'
+    )
+
+  const abbreviation =
+    match[2].toLowerCase() as Abbreviation
+
+  const numericValue =
+    Number(numericPart)
+
+  if (
+    !Number.isFinite(
+      numericValue
+    )
+  ) {
+    return undefined
+  }
+
+  const result =
+    numericValue *
+    ABBREVIATION_MULTIPLIERS[
+      abbreviation
+    ]
+
+  return Number.isFinite(result)
+    ? result
+    : undefined
+}

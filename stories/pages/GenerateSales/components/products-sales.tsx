@@ -1,43 +1,45 @@
-import { getGlobalStyle } from "../../../../helpers";
-import { Column, Icon } from "../../../atoms";
-import { EmptyData } from "../../../molecules";
-import { SwipeableCard } from "../../../molecules/SwipeableCard";
-import { MiniCardProduct } from "../../../organisms";
+'use client'
+
+import { getGlobalStyle } from '../../../../helpers'
+import { Column, Icon } from '../../../atoms'
+import { EmptyData } from '../../../molecules'
+import { SwipeableCard } from '../../../molecules/SwipeableCard'
+import { MiniCardProduct } from '../../../organisms'
 
 interface ProductsSalesProps {
-    isLoading: boolean;
-    data: any;
-    dispatch: React.Dispatch<any>;
-    onClick: (product: any) => void;
-    handleAddProduct: (product: any) => void;
-    handleComment: (product: any) => void;
-    handleDecrement: (product: any) => void;
-    handleFreeProducts: (product: any) => void;
-    numberFormat: (value: string | number) => string | number;
+  isLoading: boolean
+  data: any
+  dispatch: React.Dispatch<any>
+  onClick: (product: any) => void
+  handleAddProduct: (product: any) => void
+  handleComment: (product: any) => void
+  handleDecrement: (product: any) => void
+  handleFreeProducts: (product: any) => void
+  numberFormat: (value: string | number) => string | number
 }
 
 export const ProductsSales: React.FC<ProductsSalesProps> = ({
-    isLoading,
-    data,
-    dispatch,
-    onClick,
-    handleComment,
-    handleDecrement,
-    handleFreeProducts,
-    handleAddProduct,
-    numberFormat
+  isLoading,
+  data,
+  dispatch,
+  onClick,
+  handleComment,
+  handleDecrement,
+  handleFreeProducts,
+  handleAddProduct,
+  numberFormat
 }) => {
-    return <>
+  return <>
 
         {!isLoading && data.PRODUCT.length > 0
-            ? (
-                data.PRODUCT.map((product: any, index: number) => {
-                    const tag = {
-                        tag: product?.getOneTags?.nameTag ?? ''
-                    }
-                    const ProQuantity = product?.ProQuantity ?? 0
-                    const ProPrice = product.ProPrice
-                    return (
+          ? (
+              data.PRODUCT.map((product: any, index: number) => {
+                const tag = {
+                  tag: product?.getOneTags?.nameTag ?? ''
+                }
+                const ProQuantity = product?.ProQuantity ?? 0
+                const ProPrice = product.ProPrice
+                return (
                         <SwipeableCard
                             key={product.pId}
                             swipeWidth={30}
@@ -46,33 +48,33 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                             shake={true}
                             gradientAnimation={false}
                             onDelete={() => {
-                                dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
+                              dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
                             }}
                             onSwipeUp={() => {
-                                onClick(product)
+                              onClick(product)
                             }}
                             rightActions={
                                 <Column
                                     style={{
-                                        height: '100%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
+                                      height: '100%',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center'
                                     }}
                                 >
                                     <button
                                         onClick={(e) => {
-                                            e.stopPropagation()
-                                            dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
+                                          e.stopPropagation()
+                                          dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
                                         }}
                                         style={{
-                                            all: 'unset',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            width: 30,
-                                            height: 30
+                                          all: 'unset',
+                                          cursor: 'pointer',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          width: 30,
+                                          height: 30
                                         }}
                                     >
                                         <Icon
@@ -83,18 +85,18 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                     </button>
                                     <button
                                         onClick={(e) => {
-                                            e.stopPropagation() // evita que se propague al card
-                                            handleComment(product)
+                                          e.stopPropagation() // evita que se propague al card
+                                          handleComment(product)
                                         }}
                                         style={{
-                                            all: 'unset',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            width: 30,
-                                            height: 30,
-                                            backgroundColor: getGlobalStyle('--color-feedback-success-dark'),
+                                          all: 'unset',
+                                          cursor: 'pointer',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          width: 30,
+                                          height: 30,
+                                          backgroundColor: getGlobalStyle('--color-feedback-success-dark')
                                         }}
                                     >
                                         <Icon
@@ -107,8 +109,8 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                     {/* sub productos  */}
                                     <button
                                         onClick={(e) => {
-                                            e.stopPropagation() // evita que se propague al card
-                                            onClick(product)
+                                          e.stopPropagation() // evita que se propague al card
+                                          onClick(product)
                                         }}
                                     >
                                         <Icon size={20} icon='IconBox' />
@@ -123,18 +125,18 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 canDelete={true}
                                 height={300}
                                 handleDelete={() => {
-                                    dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
+                                  dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
                                 }}
                                 handleChangeQuantity={(event) => {
-                                    const { value } = event.target
-                                    return dispatch({
-                                        type: 'ON_CHANGE',
-                                        payload: {
-                                            id: product.pId,
-                                            index,
-                                            value
-                                        }
-                                    })
+                                  const { value } = event.target
+                                  return dispatch({
+                                    type: 'ON_CHANGE',
+                                    payload: {
+                                      id: product.pId,
+                                      index,
+                                      value
+                                    }
+                                  })
                                 }}
                                 ProDescription={product.ProDescription}
                                 plainPrice={ProPrice}
@@ -144,61 +146,61 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 discount={numberFormat(product.ProDescuento) ?? 0}
                                 ProQuantity={ProQuantity}
                                 handleToggleEditingStatus={() => {
-                                    dispatch({
-                                        type: 'TOGGLE_EDITING_PRODUCT',
-                                        payload: product
-                                    })
+                                  dispatch({
+                                    type: 'TOGGLE_EDITING_PRODUCT',
+                                    payload: product
+                                  })
                                 }}
                                 handleCancelUpdateQuantity={() => {
-                                    dispatch({
-                                        type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
-                                        payload: product
-                                    })
+                                  dispatch({
+                                    type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
+                                    payload: product
+                                  })
                                 }}
                                 handleSuccessUpdateQuantity={() => {
-                                    dispatch({
-                                        type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
-                                        payload: product
-                                    })
+                                  dispatch({
+                                    type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
+                                    payload: product
+                                  })
                                 }}
                                 ValueDelivery={product.ValueDelivery}
                                 withQuantity={true}
                                 hoverFree={true}
                                 free={ProPrice === 0}
                                 handleComment={() => {
-                                    handleComment(product)
+                                  handleComment(product)
                                 }}
                                 showDot={true}
                                 hasDiscount={true}
                                 openQuantity={Boolean(ProQuantity)}
                                 handleDecrement={() => {
-                                    handleDecrement(product)
+                                  handleDecrement(product)
                                 }}
                                 handleIncrement={() => {
-                                    handleAddProduct(product)
+                                  handleAddProduct(product)
                                 }}
                                 handleFreeProducts={() => {
-                                    handleFreeProducts(product)
+                                  handleFreeProducts(product)
                                 }}
                                 handleGetSubItems={() => {
-                                    onClick(product)
+                                  onClick(product)
                                 }}
                                 edit={false}
                                 onClick={() => {
-                                    handleAddProduct(product)
+                                  handleAddProduct(product)
                                 }}
                                 pName={product.pName}
                                 render={<Icon size={20} icon='IconSales' />}
                                 tag={product?.getOneTags?.nameTag !== null && tag}
                             />
                         </SwipeableCard>
-                    )
-                })
+                )
+              })
             )
-            : (
+          : (
                 <EmptyData height={200} width={200} />
             )
         }
 
-    </>;
+    </>
 }

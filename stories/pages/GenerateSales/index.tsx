@@ -1,35 +1,33 @@
+'use client'
+
 import React, { useState } from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import {
   Button,
-  Column,
   Icon,
   Row,
   Text
 } from '../../atoms'
 import {
-  EmptyData,
+  LayoutSwitcher,
   type Methods,
   Pagination,
-  SearchBar,
-  Skeleton,
-  Stepper
+  SearchBar
 } from '../../molecules'
 import type { Data, ProductFood } from './types'
-import { MiniCardProduct } from '../../organisms/MiniCardProduct'
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
-import { CategoriesProducts, VirtualizedList } from '../../organisms'
+import { CategoriesProducts } from '../../organisms'
 import type { MiniCardProductProps } from '../../organisms/MiniCardProduct/type'
 import type { Root } from '../../organisms/CategorieProducts/types'
 import { HeaderInfo } from './HeaderInfo'
 import styles from './styles.module.css'
-import { SwipeableCard } from '../../molecules/SwipeableCard'
 import { ProductsSales } from './components/products-sales'
-import InputHooks from '../../molecules/Inputs/InputHooks/InputHooks'
-import Sorter, { SortOption } from '../../molecules/Sorter'
+import { type SortOption } from '../../molecules/Sorter'
 import { MODAL_SIZES } from '../../molecules/Modal/helpers'
-import { Query, Sort } from './components/querys'
+import { Query, type Sort } from './components/querys'
+import { LAYOUT_TYPES } from './constants'
+import { ProductsView } from './components/ProductsView'
 
 interface IpropsSliderCategory {
   data: Root[]
@@ -90,7 +88,11 @@ interface GenerateSalesProps {
   handleComment?: (product: ProductFood) => void
   onClick?: () => void
   numberFormat?: (number: string | number) => number
+  sendNotification: (props: any) => void
+  setActiveFilter: (props: any) => void
+  activeFilter: (props: any) => void
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
+  dataFilter: any
 }
 export const GenerateSales: React.FC<GenerateSalesProps> = ({
   productsFood = [],
@@ -149,6 +151,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   handleComment = () => { },
   handleOpenAside = () => { },
   handleChangeFilter = () => { },
+  sendNotification = () => { },
   numberFormat = (number) => {
     return number
   },
@@ -156,9 +159,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     return product
   }
 }) => {
-  const findChecked = propsSliderCategory.data?.some((item) =>
-    Boolean(item?.checked)
-  )
   const fields = [
     { key: 'name', label: 'Nombre', defaultDirection: 'asc' },
     { key: 'created_at', label: 'Fecha de creación', defaultDirection: 'desc' },
@@ -167,6 +167,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
 
   const [sort, setSort] = useState<Sort>({ field: 'name', direction: 'asc' })
   const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [layout, setLayout] = useState<LAYOUT_TYPES>(LAYOUT_TYPES.COLUMN)
 
   return (
     <AwesomeModal
@@ -175,6 +176,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       size={MODAL_SIZES.large}
       header
       footer={false}
+      animation='top'
+      animationDuration={420}
       height='100vh'
       borderRadius='0'
       onHide={() => {
@@ -209,110 +212,75 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           <CategoriesProducts {...propsSliderCategory} />
         </div>
         <div className={styles['header-query']}>
-          <SearchBar
-            handleChange={(value, event) => {
-              return handleChangeFilter(value, event as any)
-            }}
-            padding='0px 20px'
-            placeholder='Buscar producto por nombre o código'
-          />
-          <div
-            role='button'
-            tabIndex={0}
-            className={styles.header__actions_filter}
-            onClick={() => setShowFilter(true)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                setShowFilter(true)
-              }
-            }}
-            data-test-id='filter-advanced'
-            style={{
-              backgroundColor: '#fcebea',
-              border: showFilter ? '1px solid #fcebea' : '1px solid transparent',
-            }}
-          >
-            <Row alignItems='center'>
-              <Text color='primary'>
-                Filtros
-              </Text>
-              <Icon
-                size={60}
-                icon='IconLinesFilter'
-                color={getGlobalStyle('--color-icons-primary')}
-              />
-            </Row>
+          <div className={styles['header-query__search']}>
+            <SearchBar
+              handleChange={(value, event) => {
+                return handleChangeFilter(
+                  value,
+                  event
+                )
+              }}
+              padding='0 20px'
+              placeholder='Buscar producto por nombre o código'
+            />
           </div>
-          <div
-            className={styles.header__actions_filter}
+
+          <button
+            type='button'
+            className={`${styles['header-query__action']} ${showFilter
+              ? styles['header-query__action--active']
+              : ''
+              }`}
+            onClick={() => setShowFilter(true)}
             data-test-id='filter-advanced'
-            style={{
-              backgroundColor: getGlobalStyle('--color-base-transparent'),
-              border: `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
-            }}
+            aria-label='Abrir filtros avanzados'
+            aria-expanded={showFilter}
           >
-            <Row alignItems='center' justifyContent='center'>
-              <Text color='gray-dark' align='center'>
-                Limpiar
-              </Text>
-            </Row>
+            <Text color='primary'>
+              Filtros
+            </Text>
+
+            <Icon
+              size={24}
+              icon='IconLinesFilter'
+              color={getGlobalStyle(
+                '--color-icons-primary'
+              )}
+            />
+          </button>
+
+          <button
+            type='button'
+            className={styles['header-query__action--clear']}
+            data-test-id='clear-filters'
+          >
+            <Text
+              color='gray-dark'
+              align='center'
+            >
+              Limpiar
+            </Text>
+          </button>
+
+          <div className={styles['header-query__layout']}>
+            <LayoutSwitcher
+              layout={layout}
+              setLayout={setLayout}
+              disabled={false}
+              ariaLabel='Seleccionar tipo de visualización'
+              size='md'
+            />
           </div>
         </div>
-        <VirtualizedList
-          items={productsFood}
-          viewHeight="auto"
-          grid={true}
-          columns={15}  // Si no quieres calcular columnas automáticamente, mantén esto.
-          minColumnWidth={130} // Esto asegura un ancho mínimo para las tarjetas.
-          columnGap={15}  // Espacio entre columnas
-          itemHeight={250}  // Fijo o dinámico si se requiere.
-          observeResize={true}  // Autoajuste del grid con ResizeObserver
-          className={styles.content__products}
-          emptyComponent={<EmptyData height={250} width={250} />}
-          render={(product) => {
-            const tag = {
-              tag: product?.getOneTags?.nameTag
-            };
-            const isExistInSale = Boolean(product?.existsInSale);
-            const manageStock = Boolean(product?.manageStock)
-            const ProPrice = product.ProPrice
-            return (
-              <MiniCardProduct
-                {...product}
-                openQuantity={isExistInSale}
-                withQuantity={true}
-                style={manageStock ? { quantity_container: { top: 35 } } : {}}
-                ProDescription={product.ProDescription}
-                ProDescuento={product.ProDescuento}
-                discount={numberFormat(product.ProDescuento) ?? 0}
-                ProImage={product.ProImage}
-                ProPrice={numberFormat(ProPrice)}
-                plainPrice={ProPrice}
-                ProQuantity={product.ProQuantity}
-                ValueDelivery={product.ValueDelivery}
-                comment={false}
-                edit={false}
-                free={Number(ProPrice) === 0}
-                key={product.pId}
-                onClick={() => {
-                  dispatch({
-                    type: 'ADD_TO_CART',
-                    payload: product
-                  })
-                }}
-                handleDecrement={() => {
-                  handleDecrement(product)
-                }}
-                handleIncrement={() => {
-                  handleAddProduct(product)
-                }}
-                pName={product.pName}
-                tag={product?.getOneTags?.nameTag !== null && tag}
-                withStock={true}
-              />
-            )
-          }}
+
+        <ProductsView
+          layout={layout}
+          productsFood={productsFood}
+          dispatch={dispatch}
+          handleDecrement={handleDecrement}
+          handleAddProduct={handleAddProduct}
+          handleComment={handleComment}
+          sendNotification={sendNotification}
         />
 
         <Pagination
@@ -391,10 +359,10 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             </Button>
             <Button
               disabled={Boolean(data?.PRODUCT?.length === 0)}
-              onClick={handleSave}
+              onClick={handleOpenAside}
               primary={true}
             >
-              Guardar
+              Continuar
             </Button>
           </Row>
         </div>
@@ -405,9 +373,10 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         handleChange={handleChange as any}
         errors={errors}
         dispatch={dispatch}
+        handleSave={handleSave}
         discountPercent={data.discountPercent ?? 0}
         discountAmount={data?.discountAmount ?? 0}
-        storeTables={storeTables as any}
+        storeTables={storeTables.storeTables as any}
         overline={true}
         payId={data?.payId}
         handleOpenAside={handleOpenAside}

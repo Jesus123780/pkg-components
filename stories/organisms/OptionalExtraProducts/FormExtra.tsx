@@ -110,6 +110,8 @@ export const FormExtra: React.FC<Props> = ({
   return (
     <div style={{ height: '100%' }}>
       <div>
+                      <Divider marginTop={getGlobalStyle('--spacing-2xl')} />
+              <AlertInfo message='Crea una lista de productos opcionales, como adicionales, toppings o salsas, que tus clientes podrán seleccionar.' type='warning' />
         <ChoicesHeader
           description={`Escoge hasta ${isEdit ? selectedExtra?.numberLimit : numberLimit} opciones.`}
           title={finalTitle}
@@ -216,8 +218,6 @@ export const FormExtra: React.FC<Props> = ({
               >
                 Añadir
               </Button>
-              <Divider marginTop={getGlobalStyle('--spacing-2xl')} />
-              <AlertInfo message='Crea una lista de productos opcionales, como adicionales, toppings o salsas, que tus clientes podrán seleccionar.' type='warning' />
             </>
           )}
         </div>

@@ -48,6 +48,8 @@ export interface ProductFood {
   } | null
   dataExtra?: ExtProductFood[]
   dataOptional?: ExtProductFoodOptional[]
+  createdAt?: string
+  stock?: number
 
 }
 

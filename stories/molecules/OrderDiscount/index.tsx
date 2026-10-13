@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react'
+import React, { type ChangeEvent, useCallback, useMemo, useRef, useState } from 'react'
 import InputHooks from '../Inputs/InputHooks/InputHooks'
 import {
   Button,
@@ -40,9 +40,8 @@ export interface OrderDiscountProps {
    * Initial fixed discount amount.
    */
   discountAmount?: number
+  tabIndex?: number
 }
-
-
 
 /**
  * OrderDiscount Component
@@ -55,8 +54,17 @@ export interface OrderDiscountProps {
 export const OrderDiscount: React.FC<OrderDiscountProps> = ({
   onChange,
   discountPercent = 0,
-  discountAmount = 0
+  discountAmount = 0,
+  tabIndex = 0
 }) => {
+  const getInternalTabIndex = (
+    offset = 0
+  ): number | undefined => {
+    return tabIndex === undefined
+      ? undefined
+      : tabIndex + offset
+  }
+
   const predefinedPercents = useMemo(() => [1, 2, 5, 10, 15], [])
   const [mode, setMode] = useState<DiscountType>(
     discountAmount > 0 ? DiscountTypes.AMOUNT : DiscountTypes.PERCENT
@@ -204,6 +212,7 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
           title='Otro porcentaje (%), Ej: 25'
           value={percentInput}
           onChange={(e) => handlePercentChange(e as ChangeEvent<HTMLInputElement>)}
+          tabIndex={getInternalTabIndex(0)}
         />
       </div>
 
@@ -214,6 +223,7 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
           value={valueInput}
           defaultValue={discountAmount}
           onChange={handleValueChange}
+          tabIndex={getInternalTabIndex(1)}
         />
       </div>
 

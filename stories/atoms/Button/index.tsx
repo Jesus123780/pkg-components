@@ -26,6 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
   iconPosition = 'left',
   iconName,
   title = '',
+  tabIndex,
   ...res
 }) => {
   const buttonStyle = {
@@ -59,6 +60,7 @@ export const Button: React.FC<ButtonProps> = ({
     : null
   return (
     <button
+      tabIndex={tabIndex}
       title={title ?? 'Button'}
       aria-label={title}
       type={type as 'submit' | 'reset' | 'button'}

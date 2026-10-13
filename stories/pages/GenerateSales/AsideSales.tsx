@@ -47,12 +47,8 @@ export const AsideSales: React.FC<AsideProps> = ({
   loadingClients = false,
   payId = '',
   paymentMethods = [],
-  storeTables = {
-    storeTables: []
-  },
-  dataClientes = {
-    data: []
-  },
+  storeTables = [],
+  dataClientes = [],
   values = {
     cliId: '',
     change: '',
@@ -67,16 +63,15 @@ export const AsideSales: React.FC<AsideProps> = ({
   discountPercent = 0,
   discountAmount = 0,
   dispatch = () => { },
+  handleSave = () => {},
   handleCloseAside = () => { },
   handleOpenAside = () => { },
   handleClickAction = () => { },
   handleChange = () => { }
 }) => {
-
   const handleDiscount = (percent: number): void => {
     dispatch({ type: 'APPLY_DISCOUNT', payload: percent });
   }
-
   return (
     <>
       {overline && (
@@ -115,6 +110,7 @@ export const AsideSales: React.FC<AsideProps> = ({
             handleClickAction()
           }}
           id='cliId'
+          tabIndex={0}
           action={false}
           beforeLabel='Cliente'
           loading={loadingClients}
@@ -123,7 +119,7 @@ export const AsideSales: React.FC<AsideProps> = ({
             handleChange({ target: { name: String(e.target.name), value: e.target.value } })
           }}
           optionName={['clientName', 'clientLastName']}
-          options={dataClientes?.data ?? []}
+          options={dataClientes ?? []}
           canDelete={true}
           handleClean={() => {
             return handleChange({ target: { name: 'cliId', value: '' } })
@@ -136,8 +132,9 @@ export const AsideSales: React.FC<AsideProps> = ({
         <NewSelect
           name='tableId'
           optionName='tableName'
+          tabIndex={1}
           beforeLabel='Mesa'
-          options={storeTables?.storeTables ?? []}
+          options={storeTables ?? []}
           onChange={(e) => {
             return handleChange({ target: { name: String(e.target.name), value: e.target.value } })
           }}
@@ -158,6 +155,7 @@ export const AsideSales: React.FC<AsideProps> = ({
         <AmountInput
           allowDecimals={true}
           decimalSeparator=','
+          tabIndex={2}
           decimalsLimit={2}
           disabled={false}
           groupSeparator='.'
@@ -178,7 +176,8 @@ export const AsideSales: React.FC<AsideProps> = ({
         <AmountInput
           allowDecimals={true}
           decimalSeparator=','
-          decimalsLimit={2}
+          decimalsLimit={3}
+          tabIndex={3}
           disabled={false}
           groupSeparator='.'
           label='Precio del domicilio'
@@ -196,11 +195,13 @@ export const AsideSales: React.FC<AsideProps> = ({
           value={values?.ValueDelivery}
         />
         <OrderDiscount
+          tabIndex={4}
           onChange={handleDiscount as any}
           discountPercent={discountPercent}
           discountAmount={discountAmount}
         />
         <RippleButton
+          tabIndex={8}
           style={{
             position: 'absolute',
             bottom: '0',
@@ -209,9 +210,10 @@ export const AsideSales: React.FC<AsideProps> = ({
           }}
           onClick={() => {
             handleOpenAside()
+            handleSave()
           }}
         >
-          Aceptar
+          Continuar
         </RippleButton>
       </LateralModal>
     </>

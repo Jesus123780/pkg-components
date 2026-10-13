@@ -55,6 +55,92 @@ const useDebouncedCallback = <Args extends unknown[]>(
   }, [delay])
 }
 
+const focusNextByTabIndex = (
+  currentElement: HTMLElement
+): void => {
+  const currentTabIndex =
+    currentElement.tabIndex
+
+  if (currentTabIndex < 0) {
+    return
+  }
+
+  const focusableElements =
+    Array.from(
+      document.querySelectorAll<HTMLElement>(
+        [
+          'input:not([disabled])',
+          'textarea:not([disabled])',
+          'button:not([disabled])',
+          'select:not([disabled])',
+          'a[href]',
+          '[tabindex]:not([tabindex="-1"])',
+          '[contenteditable="true"]'
+        ].join(',')
+      )
+    ).filter((element) => {
+      if (
+        element === currentElement
+      ) {
+        return false
+      }
+
+      if (
+        element.hidden ||
+        element.getAttribute(
+          'aria-hidden'
+        ) === 'true'
+      ) {
+        return false
+      }
+
+      if (
+        element.getClientRects()
+          .length === 0
+      ) {
+        return false
+      }
+
+      return (
+        element.tabIndex >
+        currentTabIndex
+      )
+    })
+
+  focusableElements.sort(
+    (a, b) =>
+      a.tabIndex - b.tabIndex
+  )
+
+  const nextElement =
+    focusableElements[0]
+
+  if (!nextElement) {
+    return
+  }
+
+  nextElement.focus()
+
+  if (
+    nextElement instanceof
+    HTMLInputElement ||
+    nextElement instanceof
+    HTMLTextAreaElement
+  ) {
+    try {
+      const length =
+        nextElement.value.length
+
+      nextElement.setSelectionRange(
+        length,
+        length
+      )
+    } catch {
+      // No todos los inputs soportan selection range.
+    }
+  }
+}
+
 /**
  * Validation result
  */
@@ -76,7 +162,12 @@ export interface InputHooksProps {
   name?: string
   nit?: boolean
   numeric?: boolean
-  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, hasError: boolean) => void
+  onChange?: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >,
+    hasError: boolean
+  ) => void
   paddingInput?: string
   pass?: boolean
   passConfirm?: {
@@ -99,19 +190,34 @@ export interface InputHooksProps {
   info?: string
   max?: number
   step?: number
-  onFocus?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
-  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+
   /**
-   * When to run validations. 'change' keeps original behavior (validate on every change).
-   * 'blur' validates only on blur. 'paste' validates on paste events.
+   * Orden de navegación por teclado.
+   *
+   * Enter -> siguiente tabIndex
    */
+  tabIndex?: number
+
+  onFocus?: (
+    e: React.FocusEvent<
+      HTMLTextAreaElement | HTMLInputElement
+    >
+  ) => void
+
+  onBlur?: (
+    e: React.FocusEvent<
+      HTMLTextAreaElement | HTMLInputElement
+    >
+  ) => void
+
+  onKeyDown?: (
+    e: React.KeyboardEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => void
+
   validateOn?: 'change' | 'blur' | 'paste'
-  /**
-   * Debounce milliseconds for change validation. 0 = no debounce (default).
-   * IMPORTANT: onChange is still called immediately for controlled inputs (so parent updates value).
-   * The second param (hasError) will be updated later once debounced validation completes.
-   */
+
   debounceMs?: number
 }
 
@@ -152,6 +258,7 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
     info = '',
     max = Infinity,
     step = undefined,
+    tabIndex,
     onChange = () => undefined,
     onFocus = () => undefined,
     onBlur = () => undefined,
@@ -316,17 +423,94 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
     onBlur(e)
   }, [onBlur, validateOn, emitValidationResult])
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const navKeys = ['Enter', 'Tab', 'Escape', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Backspace', 'Delete']
-    if (navKeys.includes(e.key) && validateOn === 'change' && debounceMs === 0) {
-      // re-validate synchronously on special nav keys only when not debounced (keeps previous behaviour)
-      const val = (e.target as HTMLInputElement).value
-      const { valid, message: m } = validateInput(val)
-      setErrors(!valid)
-      setMessage(m || messageError)
-    }
-    onKeyDown(e)
-  }, [onKeyDown, validateInput, messageError, validateOn, debounceMs])
+  const handleKeyDown =
+    useCallback(
+      (
+        e: React.KeyboardEvent<
+          HTMLInputElement |
+          HTMLTextAreaElement
+        >
+      ) => {
+        const navKeys = [
+          'Enter',
+          'Tab',
+          'Escape',
+          'ArrowDown',
+          'ArrowUp',
+          'ArrowLeft',
+          'ArrowRight',
+          'Backspace',
+          'Delete'
+        ]
+
+        if (
+          navKeys.includes(e.key) &&
+          validateOn === 'change' &&
+          debounceMs === 0
+        ) {
+          const val =
+            (
+              e.target as
+              HTMLInputElement |
+              HTMLTextAreaElement
+            ).value
+
+          const {
+            valid,
+            message: m
+          } = validateInput(val)
+
+          setErrors(!valid)
+          setMessage(
+            m || messageError
+          )
+        }
+
+        /**
+         * =====================================================
+         * TAB
+         * =====================================================
+         *
+         * Totalmente nativo.
+         */
+        if (e.key === 'Tab') {
+          onKeyDown(e)
+          return
+        }
+
+        /**
+         * =====================================================
+         * ENTER
+         * =====================================================
+         *
+         * Solo hacemos navegación especial
+         * cuando NO es textarea.
+         */
+        if (
+          e.key === 'Enter' &&
+          as !== 'textarea'
+        ) {
+          e.preventDefault()
+
+          focusNextByTabIndex(
+            e.currentTarget
+          )
+
+          onKeyDown(e)
+          return
+        }
+
+        onKeyDown(e)
+      },
+      [
+        onKeyDown,
+        validateInput,
+        messageError,
+        validateOn,
+        debounceMs,
+        as
+      ]
+    )
 
   const handleFocus = useCallback((e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFocused(true)
@@ -371,6 +555,7 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
         {...(rest as any)}
         ref={setRef}
         autoFocus={autoFocus}
+        tabIndex={tabIndex}
         data-required={Boolean(required)}
         disabled={Boolean(disabled)}
         data-required-step={step}

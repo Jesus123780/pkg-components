@@ -1,174 +1,776 @@
-/* suavizado normal (cuando no se está redimensionando) */
-.section__content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  font-size: 14px;
-  height: 56px;
-  position: relative;
-  user-select: none;
-}
-
-/* clase aplicada al contenedor durante resize: suspende transiciones para evitar "jump" visual */
-.resizing .section__content {
-  transition: none !important;
-}
-
-/* resizer más visible, mejor target hitbox y feedback */
-.resizer {
-  position: absolute;
-  right: 0;
-  top: 6px;
-  height: calc(100% - 12px);
-  width: 14px; /* hit area más grande */
-  transform: translateX(50%);
-  cursor: col-resize;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* indicador visual pequeño (opcional) */
-.resizer::after {
-  content: '';
-  width: 2px;
-  min-width: 2px;
-  max-width: 2px;
-  height: 60%;
-  background-color: var(--color-neutral-gray-dark);
-  border-radius: 2px;
-}
-
-/* hover para mejorar affordance */
-.section__content:hover .resizer::after {
-  background: rgba(0,0,0,0.24);
-}
-
-/* focus estado header */
-.headerFocus {
-  outline: 2px solid var(--focus-color, #2b6df6);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 2px var(--focus-weak, rgba(43,109,246,0.12));
-}
-
-/* tabla wrapper (opcional) */
-.tableWrapper {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-/* estilo para la celda enfocada (navegación por teclado) */
-.cellFocusVisible {
-  /* fallback to the variable if no RGB var is available */
-  /* use an RGB var with explicit alpha to increase opacity (90%) */
-  background-color: rgba(var(--color-primary-pink-light-rgb, 01,12,10), 0.1);
-}
-
-/* --- Contenedores externos (si usas styles.tableOuter / styles.tableInner) --- */
 .tableOuter {
-  overflow: hidden;
+  position: relative;
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font-family-sans);
 }
 
 .tableInner {
+  position: relative;
+  width: 100%;
+  min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable;
+}
+
+.tableCanvas {
+  position: relative;
+  display: block;
+  min-width: 100%;
+  width: max-content;
+  border: var(--border-width-xs) solid var(--color-neutral-gray);
+  border-radius: var(--border-radius-2xs);
+  background: var(--color-background-white);
+}
+
+.gridRow {
+  display: grid;
+  grid-template-columns: var(--table-grid-template);
+}
+
+.headerRow {
+  position: relative;
+  z-index: var(--z-index-30);
+  min-width: max-content;
+  border-bottom: var(--border-width-xs) solid var(--color-neutral-gray);
+  background: var(--color-background-white);
+}
+
+.section__content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  width: 100%;
+  height: 56px;
+  padding: 7px 12px;
+  box-sizing: border-box;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  color: var(--color-text-black);
+  user-select: none;
+  background: var(--color-background-white);
+  isolation: isolate;
+  transform: translate3d(0, 0, 0);
+  transform-origin: center center;
+  transition:
+    background-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  backface-visibility: hidden;
+}
+
+.headerRow .section__content:hover {
+  background: var(--color-background-gray-light);
+}
+
+.headerRow .section__content:focus-visible {
+  z-index: var(--z-index-50);
+  outline: var(--border-width-md) solid var(--color-secondary-blue);
+  outline-offset: -2px;
+}
+
+.headerMain {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+  flex: 1 1 auto;
+  gap: 10px;
+}
+
+.titleZone {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.title {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+  color: var(--color-text-gray-light);
+  line-height: 1.3rem;
+  word-break: break-word;
+  font-family: var(--font-family-regular);
+  font-weight: var(--font-weight-semibold);
+  margin-left: var(--spacing-sm);
+}
+
+.customTitleContent {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 42%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.customTitleContent>* {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.headerActions {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  margin-left: 2px;
+}
+
+.dragHandle {
+  position: relative;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 20px;
+  margin-right: 1px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  opacity: 0.22;
+}
+
+.dragHandle i,
+.dragOverlayGrip i {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background-color: var(--color-icons-gray);
+  box-shadow: 4px 0 0 var(--color-icons-gray);
+}
+
+.section__content:hover .dragHandle,
+.section__content:focus-visible .dragHandle {
+  opacity: 0.68;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.sortControls {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 1px;
+  min-height: 28px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--color-base-transparent);
+  opacity: 0.58;
+  transform: translate3d(0, 1px, 0) scale(0.985);
+  transform-origin: center center;
+  width: min-content;
+  transition:
+    background-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section__content:hover .sortControls,
+.sortControls:focus-within,
+.sortControlsActive {
+  background: var(--color-background-white);
+  border-color: var(--color-neutral-gray);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.72) inset;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.sortButton,
+.formatButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-base-transparent);
+  color: var(--color-icons-gray-light);
+  cursor: pointer;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    background-color 125ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 145ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 145ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 145ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sortButton:hover,
+.formatButton:hover {
+  background: var(--color-background-gray-light);
+  transform: translate3d(0, -1px, 0) scale(1.02);
+}
+
+.sortButton:active,
+.formatButton:active {
+  transform: translate3d(0, 0, 0) scale(0.92);
+}
+
+.sortButtonActive {
+  background: var(--color-background-primary-light);
+  color: var(--color-text-black);
+  box-shadow: inset 0 0 0 1px var(--color-neutral-gray-silver);
+}
+
+.sortButtonActive:hover {
+  background: var(--color-background-primary-light);
+  transform: translate3d(0, -1px, 0) scale(1.035);
+}
+
+.sortButtonActive :global(svg) {
+  transform: scale(1.08) translateY(-0.25px);
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sortButton:focus-visible,
+.formatButton:focus-visible {
+  outline: var(--border-width-md) solid var(--color-secondary-blue);
+  outline-offset: 1px;
+}
+
+.sortPrioritySlot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin-left: 1px;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--color-text-black);
+  color: var(--color-background-white);
+  font-size: 9px;
+  line-height: 1;
+  font-weight: var(--font-weight-semibold);
+  opacity: 0;
+  transform: scale(0.72);
+  transition:
+    opacity 170ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 190ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 170ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sortPriorityVisible {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.formatButton {
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  color: var(--color-icons-gray-light);
+}
+
+.formatButtonActive {
+  color: var(--color-text-black);
+  background: var(--color-background-primary-light);
+  box-shadow: inset 0 0 0 1px var(--color-neutral-gray-silver);
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  right: -7px;
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-index-40);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.resizer::before {
+  content: '';
+  width: 2px;
+  height: 62%;
+  border-radius: var(--border-radius-full);
+  background: var(--color-neutral-gray-silver);
+  opacity: 0;
+  transform: scaleX(0.8);
+  transition:
+    opacity 120ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 120ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.resizer:hover::before,
+.resizer:focus-visible::before {
+  opacity: 1;
+  background: var(--color-primary-red);
+  transform: scaleX(1.15);
+}
+
+.resizer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.columnDragging .headerRow,
+.columnResizing .headerRow {
+  user-select: none;
+}
+
+.columnDragging .headerRow {
+  touch-action: none;
+}
+
+.columnDragging .section__content {
+  touch-action: none;
+  will-change: transform;
+  transition:
+    background-color 110ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 190ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.columnDragging .headerRow .section__content:not([data-dragging='true']) {
+  cursor: grabbing !important;
+}
+
+.columnDragSource {
+  z-index: var(--z-index-40);
+  border: 1px dashed var(--color-neutral-gray-silver);
+  box-shadow:
+    inset 0 0 0 1px var(--color-neutral-gray),
+    0 0 0 1px var(--color-background-white);
+}
+
+
+.columnDragOverBefore,
+.columnDragOverAfter {
+  position: relative;
+  z-index: var(--z-index-40);
+}
+
+.columnDragOverBefore {
+  background:
+    linear-gradient(90deg,
+      color-mix(in srgb,
+        var(--color-primary-red) 9%,
+        transparent) 0%,
+      transparent 42%),
+    var(--color-background-white);
+}
+
+.columnDragOverAfter {
+  background:
+    linear-gradient(270deg,
+      color-mix(in srgb,
+        var(--color-primary-red) 9%,
+        transparent) 0%,
+      transparent 42%),
+    var(--color-background-white);
+}
+
+.columnDragOverBefore::before,
+.columnDragOverAfter::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--color-primary-red);
+  box-shadow:
+    0 0 0 2px var(--color-background-white),
+    0 0 0 5px color-mix(in srgb,
+      var(--color-primary-red) 18%,
+      transparent),
+    0 0 18px color-mix(in srgb,
+      var(--color-primary-red) 36%,
+      transparent);
+  animation: tableDropIndicator 760ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  pointer-events: none;
+  z-index: var(--z-index-50);
+}
+
+.columnDragOverBefore::before {
+  left: -2px;
+  transform-origin: center center;
+}
+
+.columnDragOverAfter::after {
+  right: -2px;
+  transform-origin: center center;
+}
+
+.columnDropSettling {
+  background: var(--color-background-white);
+  border: 1px solid var(--color-neutral-gray);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.88),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  opacity: 1;
+}
+
+.columnDropSettling>.headerMain {
+  opacity: 1;
+  animation: tableHeaderSettleIn 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.columnDropSettling>.dragHandle {
+  opacity: 0.68;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.columnDropSettling::after {
+  display: none;
+}
+
+@keyframes tableDropIndicator {
+
+  0%,
+  100% {
+    opacity: 0.54;
+    transform: scaleY(0.84);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes tableHeaderSettleIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 1px, 0) scale(0.992);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate3d(0, -0.5px, 0) scale(1.002);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.dragOverlay {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb,
+      var(--color-primary-red) 58%,
+      var(--color-neutral-gray) 42%);
+  border-radius: 11px;
+  background: var(--color-background-white);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.18),
+    0 10px 24px rgba(0, 0, 0, 0.12),
+    0 0 0 4px color-mix(in srgb,
+      var(--color-primary-red) 10%,
+      transparent);
+  opacity: 0.98;
+  will-change: transform, opacity, box-shadow;
+  transform-origin: 20% 50%;
+}
+
+.dragOverlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.78),
+      rgba(255, 255, 255, 0) 58%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dragOverlaySurface {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  gap: 8px;
+  padding: 8px 11px;
+  box-sizing: border-box;
+  animation: dragOverlaySurfaceIn 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes dragOverlaySurfaceIn {
+  0% {
+    opacity: 0;
+    filter: blur(0.8px);
+    transform: scale(0.965) translate3d(0, 2px, 0);
+  }
+
+  68% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1.006) translate3d(0, -0.5px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+.dragOverlayGrip {
+  position: relative;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 20px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  opacity: 0.58;
+}
+
+.dragOverlayGrip i {
+  background: var(--color-primary-red);
+  box-shadow: 4px 0 0 var(--color-primary-red);
+}
+
+.dragOverlayContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 8px;
+}
+
+.dragOverlayContent>* {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dragOverlayContent .titleZone {
   width: 100%;
 }
 
-/* --- Header / cell container --- */
-.section__content {
+.dragOverlaySort {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--color-background-primary-light);
+  color: var(--color-text-black);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  box-shadow: inset 0 0 0 1px var(--color-neutral-gray-silver);
+}
+
+.body {
+  position: relative;
+  min-width: max-content;
+}
+
+.tableCell {
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+}
+
+.tableCell:focus-visible {
+  background: var(--color-background-primary-light);
+  box-shadow:
+    inset 0 0 0 var(--border-width-md) var(--color-primary-red);
+}
+
+.formatMenu {
+  position: fixed;
+  z-index: 10000;
+  width: 248px;
+  max-width: calc(100vw - 16px);
+  max-height: min(520px, calc(100vh - 16px));
+  overflow: auto;
+  border: var(--border-width-xs) solid var(--color-neutral-gray);
+  border-radius: var(--border-radius-2xs);
+  background: var(--color-background-white);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.16),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 6px;
+}
+
+.formatMenuHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px 10px;
+  margin-bottom: 4px;
+  border-bottom: var(--border-width-xs) solid var(--color-neutral-gray);
+}
+
+.formatMenuHeader strong {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  color: var(--color-text-black);
+}
+
+.formatMenuHeader span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--color-icons-gray-light);
+}
+
+.formatMenuOptions {
+  display: grid;
+  gap: 2px;
+}
+
+.formatMenuOption {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  font-size: 14px;
-  height: 56px;
-  position: relative;
-  user-select: none;
-
-  /* CLAVE: permitir que el flex-item se reduzca (sin esto no se recorta) */
-  min-width: 0;
-  overflow: hidden; /* recorta cualquier contenido que sobresalga */
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: var(--border-radius-2xs);
+  background: transparent;
+  color: var(--color-text-black);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 130ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 130ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Forzar que los hijos puedan encogerse y sean clippeables */
-.section__content > * {
-  min-width: 0;        /* permite que los hijos se reduzcan dentro del contenedor */
-  max-width: 100%;     /* no salirse del ancho del contenedor padre */
+.formatMenuOption:hover {
+  background: var(--color-background-gray-light);
+  transform: translate3d(2px, 0, 0);
 }
 
-/* Título con truncado (ellipsis) */
-.title {
-  display: block;
-  flex: 1 1 0;                 /* ocupa el espacio disponible pero puede encoger */
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  min-width: 0;                /* important: permite el shrink correcto */
+.formatMenuOptionActive {
+  background: var(--color-background-primary-light);
 }
 
-/* Label de flechas (sort) no debe crecer ni empujar */
-.arrow_label {
+.formatMenuOptionText {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  flex: 0 0 auto;              /* no permitimos que crezca para empujar el title */
-  margin-left: 8px;
-}
-
-/* Si tienes iconos/botones a la derecha: no dejar que empujen */
-.section__content .actions,
-.tableCell .actions {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-/* --- Celdas del body --- */
-.tableCell {
-  padding: 8px 12px;
-  height: 100%;
-  min-height: 40px;
-
-  /* CLAVE: recortar contenido si no cabe */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  gap: 1px;
   min-width: 0;
 }
 
-/* Si dentro de la celda hay elementos que necesitan truncar */
-.tableCell > * {
+.formatMenuOptionText span {
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.formatMenuOptionText small {
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--color-icons-gray-light);
+}
+
+.formatMenuCheck {
+  flex: 0 0 auto;
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-red);
+}
+
+.tableInner::-webkit-scrollbar {
+  height: 10px;
+}
+
+.tableInner::-webkit-scrollbar-track {
+  background: var(--color-background-gray-light);
+}
+
+.tableInner::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-gray-silver);
+  border-radius: var(--border-radius-full);
+}
+
+.tableInner::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-gray-dark);
+}
+
+.section__content>* {
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-/* --- Resizer / affordance --- */
-.resizer {
-  position: absolute;
-  right: 0;
-  top: 6px;
-  height: calc(100% - 12px);
-  width: 14px;
-  transform: translateX(50%);
-  cursor: col-resize;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
+.section__content :global(button),
+.section__content :global(input),
+.section__content :global(select),
+.section__content :global(textarea) {
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* quitar transiciones mientras se redimensiona (clase .resizing la añade/remueve tu JS) */
-.resizing .section__content {
-  transition: none !important;
+@media (prefers-reduced-motion: reduce) {
+
+  .section__content,
+  .dragHandle,
+  .sortControls,
+  .sortButton,
+  .formatButton,
+  .sortPrioritySlot,
+  .resizer::before,
+  .formatMenuOption,
+  .dragOverlaySurface,
+  .columnDragSource::after,
+  .columnDragOverBefore::before,
+  .columnDragOverAfter::after,
+  .columnDropSettling>.headerMain {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .section__content {
+    scroll-behavior: auto;
+  }
 }

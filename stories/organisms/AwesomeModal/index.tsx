@@ -1,6 +1,5 @@
 'use client'
 
-import PropTypes from 'prop-types'
 import {
   useCallback,
   useEffect,
@@ -246,40 +245,4 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
       </div>
     </div>
   )
-}
-
-AwesomeModal.propTypes = {
-  backdrop: PropTypes.string,
-  backdropAnimation: PropTypes.bool,
-  backgroundColor: PropTypes.any,
-  bgColor: PropTypes.any,
-  borderRadius: PropTypes.string,
-  btnCancel: PropTypes.bool,
-  btnConfirm: PropTypes.bool,
-  cancel: PropTypes.string,
-  children: PropTypes.any,
-  confirm: PropTypes.any,
-  customHeight: PropTypes.bool,
-  disabled: PropTypes.any,
-  display: PropTypes.any,
-  footer: PropTypes.bool,
-  header: PropTypes.bool,
-  height: PropTypes.any,
-  hideOnConfirm: PropTypes.bool,
-  iconConfirm: PropTypes.any,
-  keyboard: PropTypes.bool,
-  onCancel: PropTypes.func,
-  onConfirm: PropTypes.func,
-  onHide: PropTypes.func,
-  openLateral: PropTypes.any,
-  padding: PropTypes.any,
-  question: PropTypes.bool,
-  show: PropTypes.any,
-  size: PropTypes.any,
-  sizeIconClose: PropTypes.number,
-  submit: PropTypes.bool,
-  timeOut: PropTypes.number,
-  title: PropTypes.string,
-  useScroll: PropTypes.bool,
-  zIndex: PropTypes.any
 }

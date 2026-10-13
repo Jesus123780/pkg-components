@@ -40,6 +40,7 @@ export interface MiniCardProductProps extends ProductFood {
   editing?: boolean
   withStock?: boolean
   free?: boolean
+  shadow?: string
   canDelete?: boolean
   render: React.ReactNode | null
   style?: React.CSSProperties & {

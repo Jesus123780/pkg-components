@@ -1,88 +1,500 @@
+/* =========================================================
+   LAYOUT SWITCHER
+   ========================================================= */
+
 .toolbar {
-  position: relative;
-  display: inline-flex;
-  gap: 8px;
-  width: fit-content;
-  margin-bottom: 16px;
-  border: 1px solid var(--color-neutral-gray-silver);
-  /* usa inline-flex para que width se ajuste al contenido sin overflow */
-  padding: 6px;
-  border-radius: 10px;
-  overflow: visible; /* slider se mantiene dentro por cálculo preciso */
-  background: var(--color-base-white);
-  align-items: center;
+    --ls-height: 46px;
+    --ls-horizontal-padding: 6px;
+    --ls-button-padding-inline: 14px;
+    --ls-button-gap: 8px;
+    --ls-border-radius: 12px;
+    --ls-button-radius: 8px;
+    --ls-transition:
+        180ms cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    min-width: max-content;
+    min-height:
+        var(--ls-height);
+
+    margin: 0 0 16px;
+
+    padding:
+        var(--ls-horizontal-padding);
+
+    gap: 4px;
+
+    background:
+        var(--color-base-white);
+
+    border:
+        1px solid
+        var(--color-neutral-gray-silver);
+
+    border-radius:
+        var(--ls-border-radius);
+
+    box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.04);
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    transition:
+        border-color
+        var(--ls-transition),
+        box-shadow
+        var(--ls-transition),
+        background-color
+        var(--ls-transition),
+        opacity
+        var(--ls-transition);
 }
 
-/* Slider indicator: animación con left & width */
+/* =========================================================
+   HOVER / FOCUS CONTAINER
+   ========================================================= */
+
+.toolbar:hover:not(
+    [data-disabled='true']
+) {
+    border-color:
+        var(--color-neutral-gray-dark);
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.06);
+}
+
+.toolbar:focus-within:not(
+    [data-disabled='true']
+) {
+    border-color:
+        var(--color-secondary-blue);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(43, 124, 255, 0.12);
+}
+
+/* =========================================================
+   SLIDER
+   ========================================================= */
+
 .slider {
-  position: absolute;
-  top: 4px;
-  height: calc(100% - 8px);
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.03));
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
-  z-index: 0;
-  transition:
-    left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    background 220ms ease,
-    box-shadow 220ms ease;
-  will-change: left, width;
+    position: absolute;
+
+    top:
+        var(--ls-horizontal-padding);
+
+    left: 0;
+
+    z-index: 0;
+
+    height:
+        calc(
+            var(--ls-height) -
+            (
+                var(--ls-horizontal-padding) * 2
+            )
+        );
+
+    min-width: 0;
+
+    pointer-events: none;
+
+    border-radius:
+        var(--ls-button-radius);
+
+    background:
+        var(--color-background-surface-hover);
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.08),
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.75);
+
+    transform:
+        translate3d(0, 0, 0);
+
+    will-change:
+        transform,
+        width,
+        opacity;
+
+    transition:
+        transform
+            300ms cubic-bezier(
+                0.22,
+                1,
+                0.36,
+                1
+            ),
+        width
+            300ms cubic-bezier(
+                0.22,
+                1,
+                0.36,
+                1
+            ),
+        opacity
+            140ms ease;
 }
 
-/* Buttons */
-.toolbar button {
-  position: relative;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: color 160ms ease, transform 160ms ease;
-  justify-content: center;
-  align-items: center;
-  display: inline-flex;
-  gap: 8px;
-  min-width: 84px;
-  font-size: 14px;
-  color: var(--color-text-button, #333);
-  z-index: 1; /* encima del slider */
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.button {
+    position: relative;
+
+    z-index: 1;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    min-width: 96px;
+    min-height:
+        calc(
+            var(--ls-height) -
+            (
+                var(--ls-horizontal-padding) * 2
+            )
+        );
+
+    margin: 0;
+    padding:
+        0
+        var(--ls-button-padding-inline);
+
+    gap:
+        var(--ls-button-gap);
+
+    color:
+        var(--color-text-gray-light);
+
+    background:
+        transparent;
+
+    border: none;
+
+    border-radius:
+        var(--ls-button-radius);
+
+    cursor: pointer;
+
+    font: inherit;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    user-select: none;
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+    transition:
+        color
+            160ms ease,
+        transform
+            140ms cubic-bezier(
+                0.22,
+                1,
+                0.36,
+                1
+            ),
+        opacity
+            160ms ease;
 }
 
-.toolbar button:focus-visible {
-  outline: 2px solid var(--color-focus, #2b7cff);
-  outline-offset: 2px;
+/* =========================================================
+   BUTTON HOVER
+   ========================================================= */
+
+.button:hover:not(
+    :disabled
+) {
+    color:
+        var(--color-text-black);
 }
 
-/* active button text emphasis */
+/* =========================================================
+   BUTTON ACTIVE
+   ========================================================= */
+
+.button:active:not(
+    :disabled
+) {
+    transform:
+        scale(0.97);
+}
+
+/* =========================================================
+   ACTIVE BUTTON
+   ========================================================= */
+
 .activeButton {
-  color: var(--color-accent-text, #0b1116);
-  font-weight: 600;
+  background-color: var(--color-neutral-gray-light);
+    color:
+        var(--color-text-black);
+
+    font-weight:
+        var(--font-weight-semibold);
 }
 
-/* small screens: reduce padding */
-@media (max-width: 420px) {
-  .toolbar button {
-    padding: 6px 8px;
-    min-width: 64px;
-    font-size: 13px;
-  }
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex:
+        0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    transition:
+        transform
+            200ms cubic-bezier(
+                0.22,
+                1,
+                0.36,
+                1
+            );
 }
 
-/* dark mode support */
-@media (prefers-color-scheme: dark) {
-  .toolbar {
-    border-color: #333;
-    background: #111214;
-  }
-  .slider {
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    box-shadow: 0 6px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-  }
-  .toolbar button {
-    color: #ddd;
-  }
-  .activeButton {
-    color: #fff;
-  }
+.button:hover:not(
+    :disabled
+) .icon {
+    transform:
+        scale(1.05);
+}
+
+.activeButton .icon {
+    transform:
+        scale(1.02);
+}
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.button:focus {
+    outline: none;
+}
+
+.button:focus-visible {
+    outline:
+        2px solid
+        var(--color-secondary-blue);
+
+    outline-offset:
+        -2px;
+
+    box-shadow:
+        0 0 0 2px
+        var(--color-background-white);
+}
+
+/* =========================================================
+   DISABLED
+   ========================================================= */
+
+.toolbar[data-disabled='true'] {
+    cursor:
+        not-allowed;
+
+    opacity:
+        var(--opacity-75);
+}
+
+.button:disabled {
+    color:
+        var(--color-text-inactive);
+
+    cursor:
+        not-allowed;
+
+    opacity:
+        var(--opacity-75);
+}
+
+.toolbar[data-disabled='true']
+    .slider {
+    box-shadow: none;
+}
+
+/* =========================================================
+   FULL WIDTH
+   ========================================================= */
+
+.fullWidth {
+    width: 100%;
+}
+
+.fullWidth .button {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* =========================================================
+   SMALL
+   ========================================================= */
+
+.small {
+    --ls-height: 38px;
+    --ls-button-padding-inline: 10px;
+    --ls-button-gap: 6px;
+    --ls-border-radius: 10px;
+    --ls-button-radius: 7px;
+}
+
+.small .button {
+    min-width: 76px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 520px) {
+    .toolbar {
+        --ls-height: 42px;
+        --ls-button-padding-inline: 10px;
+
+        width: 100%;
+        min-width: 0;
+
+        margin-bottom: 12px;
+    }
+
+    .button {
+        min-width: 0;
+        flex: 1 1 0;
+    }
+}
+
+/* =========================================================
+   VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+    .toolbar {
+        --ls-button-gap: 5px;
+        --ls-button-padding-inline: 8px;
+    }
+}
+
+/* =========================================================
+   TOUCH
+   ========================================================= */
+
+@media (hover: none) {
+    .toolbar:hover:not(
+        [data-disabled='true']
+    ) {
+        border-color:
+            var(
+                --color-neutral-gray-silver
+            );
+
+        box-shadow:
+            0 2px 6px
+            rgba(0, 0, 0, 0.04);
+    }
+
+    .button:hover:not(
+        :disabled
+    ) {
+        color:
+            var(--color-text-gray-light);
+    }
+
+    .button:hover:not(
+        :disabled
+    ) .icon {
+        transform:
+            none;
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+    .toolbar,
+    .slider,
+    .button,
+    .icon {
+        transition: none !important;
+        animation: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* =========================================================
+   FORCED COLORS
+   ========================================================= */
+
+@media (
+    forced-colors: active
+) {
+    .toolbar {
+        border:
+            1px solid CanvasText;
+
+        background:
+            Canvas;
+
+        box-shadow: none;
+    }
+
+    .slider {
+        background:
+            Highlight;
+
+        box-shadow: none;
+    }
+
+    .button {
+        color:
+            ButtonText;
+    }
+
+    .activeButton {
+        color:
+            HighlightText;
+    }
+
+    .button:focus-visible {
+        outline:
+            2px solid Highlight;
+
+        outline-offset:
+            2px;
+    }
 }

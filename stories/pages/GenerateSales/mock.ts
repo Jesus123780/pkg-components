@@ -243,7 +243,25 @@ export const data: Data = {
         nameTag: 'Tag 1'
       },
       ProDescuento: 3,
-      ValueDelivery: '0'
+      ValueDelivery: '0',
+      __typename: '',
+      sizeId: null,
+      colorId: null,
+      cId: null,
+      dId: null,
+      ctId: null,
+      fId: null,
+      ProUniDisponibles: undefined,
+      ProProtegido: undefined,
+      ProAssurance: undefined,
+      ProStar: 0,
+      comment: false,
+      edit: false,
+      onClick: function (): void {
+        throw new Error('Function not implemented.')
+      },
+      render: undefined,
+      tag: undefined
     },
     {
       pId: '486c7a48-1511-bc69-3ebf-13e8c04d2125',
@@ -326,7 +344,28 @@ export const data: Data = {
           quantity: 3,
           newExtraPrice: 15000
         }
-      ]
+      ],
+      __typename: '',
+      sizeId: null,
+      colorId: null,
+      cId: null,
+      dId: null,
+      ctId: null,
+      fId: null,
+      ProDescuento: 0,
+      ProUniDisponibles: undefined,
+      ProProtegido: undefined,
+      ProAssurance: undefined,
+      ValueDelivery: undefined,
+      ProStar: 0,
+      comment: false,
+      edit: false,
+      onClick: function (): void {
+        throw new Error('Function not implemented.')
+      },
+      render: undefined,
+      tag: undefined,
+      getOneTags: null
     }
   ],
   totalPrice: 0,

@@ -27,7 +27,7 @@ const shallowEqualArrayByKey = (a?: any[], b?: any[], key?: string) => {
   if (!a || !b) return false
   if (a.length !== b.length) return false
   if (!key) return a.every((v, i) => v === b[i])
-  return a.every((v, i) => (v && b[i] && v[key]) === (b[i] && a[i] && a[i][key]))
+  return a.every((v, i) => (v && b[i] && v[key]) === (b[i] && a[i]?.[key]))
 }
 
 /**
@@ -59,6 +59,7 @@ const MiniCardProductComponent: React.FC<MiniCardProductProps> = ({
   height = 250,
   comment = '',
   style = {},
+  shadow = '',
   onClick = () => { },
   handleDecrement = () => { },
   handleIncrement = () => { },
@@ -134,8 +135,8 @@ const MiniCardProductComponent: React.FC<MiniCardProductProps> = ({
             <Text align='center' color='white' size='sm'>
               {free ? 'Gratis' : 'Marcar gratis'}
             </Text>
-            {free
-              && <Icon
+            {free &&
+              <Icon
                 icon='IconSuccess'
                 size={15}
                 color={getGlobalStyle('--color-icons-white')}
@@ -147,7 +148,7 @@ const MiniCardProductComponent: React.FC<MiniCardProductProps> = ({
           className={`${styles.productCardWrapper}`}
           onClick={onClick}
           data-test-id='mini-card-product-container'
-          style={{ height }}
+          style={{ height, boxShadow: shadow }}
         >
           <div className={styles['product-card-content']} data-test-id='product-card-test-id'>
             <div className={styles['product-card-image__container']} data-test-id='product-card-image'>
@@ -181,7 +182,7 @@ const MiniCardProductComponent: React.FC<MiniCardProductProps> = ({
                     styles={{
                       borderRadius: getGlobalStyle('--border-radius-2xs'),
                       backgroundColor: getGlobalStyle('--color-primary-pink-light'),
-                      padding: '2px 6px',
+                      padding: '2px 6px'
                     }}
                     data-test-id='mini-card-product-delete'
                     onClick={(event) => {
@@ -302,14 +303,14 @@ const areEqual = (prev: Readonly<MiniCardProductProps>, next: Readonly<MiniCardP
   // fast path: same reference
   if (prev === next) return true
 
-  const keysToCompare: (keyof MiniCardProductProps)[] = [
+  const keysToCompare: Array<keyof MiniCardProductProps> = [
     'pName', 'ProPrice', 'ProImage', 'ProQuantity', 'plainPrice',
     'ProDescuento', 'discount', 'stock', 'height', 'free',
-    'editable', 'editing', 'withQuantity', 'openQuantity', 'showDot', 'canDelete', 'withStock', 'comment', 'hoverFree'
+    'editable', 'editing', 'withQuantity', 'openQuantity', 'showDot', 'canDelete', 'withStock', 'comment', 'hoverFree', 'shadow'
   ]
 
   for (const k of keysToCompare) {
-    // @ts-ignore
+    // @ts-expect-error
     if (prev[k] !== next[k]) return false
   }
 

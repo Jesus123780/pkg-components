@@ -1,5 +1,6 @@
-/* eslint-disable multiline-ternary */
-import { MouseEvent, FC } from 'react'
+'use client'
+
+import { type MouseEvent, type FC } from 'react'
 import { Icon, Text } from '../../atoms'
 import { EditableInput, type EditableInputProps } from './helpers/EditableInput'
 import styles from './styles.module.css'
@@ -33,12 +34,13 @@ export const QuantityButtonFloat: FC<QuantityButtonFloatProps> = ({
   return (
     <div style={{
       position: 'relative',
-      width: open ? '100px' : '38px',
+      width: open ? '100px' : '38px'
     }}
     className={`${styles['quick-add']} ${!open && styles['quick-add_initial']} ${editing && styles['quick-add_editing']}`}
     >
       <>
-        {(editable && editing) ? (
+        {(editable && editing)
+          ? (
           <EditableInput
             quantity={quantity}
             handleChangeQuantity={handleChangeQuantity}
@@ -49,7 +51,8 @@ export const QuantityButtonFloat: FC<QuantityButtonFloatProps> = ({
               return handleCancelUpdateQuantity()
             }}
           />
-        ) : (
+            )
+          : (
           <>
             {decrement &&
               <button onClick={(event) => {
@@ -83,7 +86,7 @@ export const QuantityButtonFloat: FC<QuantityButtonFloatProps> = ({
               </button>
             }
           </>
-        )}
+            )}
       </>
     </div>
   )

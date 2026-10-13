@@ -1,103 +1,142 @@
 /**
  * orderColumn.ts
  *
- * Lightweight, strictly typed helper to compare two records by nested key path.
- * Exports: orderColumn, OrderColumnInput
+ * Comparator robusto para tablas:
+ * - 0 = ASC
+ * - 1 = DESC
+ * - null/undefined/NaN al final
+ * - strings con Intl.Collator (numérico + case-insensitive)
+ * - números, booleanos, Date y objetos convertibles
+ * - soporta paths anidados: "user.profile.name"
  */
 
-export type OrderColumnInput = {
+export type SortDirection = 0 | 1
+
+export interface OrderColumnInput {
   key: string
   [k: string]: any
 }
 
-/**
- * Safely resolves nested property by dot path.
- * @param obj object to read
- * @param path dot-separated path (e.g. 'a.b.c')
- */
-const resolvePath = (obj: Record<string, any>, path?: string): any => {
-  if (!path) return undefined
+const collator = new Intl.Collator('es', {
+  numeric: true,
+  sensitivity: 'base'
+})
+
+export const resolvePath = (
+  obj: Record<string, any> | null | undefined,
+  path?: string
+): any => {
+  if (!obj || !path) return undefined
+
   const keys = path.split('.').filter(Boolean)
-  let cur: any = obj
-  for (const k of keys) {
-    if (cur == null) return undefined
-    cur = cur[k]
+  let current: any = obj
+
+  for (const key of keys) {
+    if (current == null) return undefined
+    current = current[key]
   }
-  return cur
+
+  return current
 }
 
-/**
- * Compare two items for ordering based on currentColumn state.
- *
- * - If `first` is string -> localeCompare
- * - If number -> numeric compare
- * - Fallback -> 0 (stable)
- *
- * @param prev left item
- * @param post right item
- * @param currentColumn object like { key: 'field.path', 'field.path': 0 | 1 }
- * @returns negative | positive | 0
- */
-export const orderColumn = (prev: Record<string, any>, post: Record<string, any>, currentColumn: OrderColumnInput = { key: '' }): number => {
+const isNullish = (value: any): boolean => {
+  return value === null || value === undefined
+}
+
+const isInvalidNumber = (value: any): boolean => {
+  return typeof value === 'number' && Number.isNaN(value)
+}
+
+const normalizeComparable = (value: any): any => {
+  if (value instanceof Date) return value.getTime()
+
+  if (
+    typeof value === 'number' ||
+    typeof value === 'string' ||
+    typeof value === 'boolean'
+  ) {
+    return value
+  }
+
+  if (value != null && typeof value.valueOf === 'function') {
+    const primitive = value.valueOf()
+
+    if (primitive !== value) {
+      return primitive
+    }
+  }
+
+  return value
+}
+
+export const compareValues = (
+  firstValue: any,
+  secondValue: any,
+  direction: SortDirection = 0
+): number => {
+  const firstNullish =
+    isNullish(firstValue) || isInvalidNumber(firstValue)
+
+  const secondNullish =
+    isNullish(secondValue) || isInvalidNumber(secondValue)
+
+  // Nulls/undefined siempre al final. Esto evita "saltos" entre páginas.
+  if (firstNullish && secondNullish) return 0
+  if (firstNullish) return 1
+  if (secondNullish) return -1
+
+  const first = normalizeComparable(firstValue)
+  const second = normalizeComparable(secondValue)
+
+  let result = 0
+
+  if (typeof first === 'number' && typeof second === 'number') {
+    if (first < second) result = -1
+    else if (first > second) result = 1
+    else result = 0
+  } else if (typeof first === 'boolean' && typeof second === 'boolean') {
+    result = Number(first) - Number(second)
+  } else {
+    result = collator.compare(String(first), String(second))
+  }
+
+  return direction === 1 ? -result : result
+}
+
+export const orderColumn = (
+  prev: Record<string, any>,
+  post: Record<string, any>,
+  currentColumn: OrderColumnInput = { key: '' }
+): number => {
   const { key } = currentColumn
+
   if (!key) return 0
 
   const firstElem = resolvePath(prev, key)
   const secondElem = resolvePath(post, key)
 
-  // handle undefineds — move undefined to the end
-  if (firstElem === undefined && secondElem === undefined) return 0
-  if (firstElem === undefined) return 1
-  if (secondElem === undefined) return -1
+  const rawDirection = currentColumn[key]
+  const direction: SortDirection =
+    rawDirection === 1 ? 1 : 0
 
-  if (typeof firstElem === 'string' && typeof secondElem === 'string') {
-    // currentColumn[key] === 1 => ascending? Keep existing semantics:
-    if (currentColumn[key] === 1) {
-      // 1: numeric compare? preserving previous behaviour: second - first
-      return secondElem.localeCompare(firstElem)
-    }
-    if (currentColumn[key] === 0) {
-      return firstElem.localeCompare(secondElem)
-    }
-    return firstElem.localeCompare(secondElem)
-  }
-
-  if (typeof firstElem === 'number' && typeof secondElem === 'number') {
-    if (currentColumn[key] === 1) {
-      return firstElem - secondElem
-    }
-    if (currentColumn[key] === 0) {
-      return secondElem - firstElem
-    }
-    return firstElem - secondElem
-  }
-
-  // fallback to string conversion
-  const a = String(firstElem)
-  const b = String(secondElem)
-  return a.localeCompare(b)
+  return compareValues(firstElem, secondElem, direction)
 }
 
-/* ---------------------------
-   Basic test examples (plain TS)
-   ---------------------------
-   These are tiny, dependency-free tests you can run manually or port to your test runner.
-   They are intentionally minimal and use runtime asserts.
-*/
-if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
-  const assert = (condition: boolean, msg?: string) => { if (!condition) throw new Error(msg || 'Assertion failed') }
-
-  // test: numeric ascending
-  ;(() => {
-    const a = { v: 1 }, b = { v: 2 }
-    const res = orderColumn(a, b, { key: 'v', 'v': 1 })
-    assert(res < 0, 'expected 1 < 2 with key v asc')
-  })()
-
-  // test: string descending
-  ;(() => {
-    const a = { name: 'a' }, b = { name: 'b' }
-    const res = orderColumn(a, b, { key: 'name', name: 0 })
-    assert(res < 0, 'expected a < b with name desc (locale)')
-  })()
+/**
+ * Stable sort.
+ *
+ * Los elementos con el mismo valor conservan el orden original.
+ * Esto evita el "flicker" cuando una tabla tiene muchos valores repetidos.
+ */
+export const stableSort = <T,>(
+  data: T[],
+  comparator: (a: T, b: T) => number
+): T[] => {
+  return data
+    .map((value, index) => ({ value, index }))
+    .sort((a, b) => {
+      const result = comparator(a.value, b.value)
+      return result !== 0 ? result : a.index - b.index
+    })
+    .map(item => item.value)
 }
