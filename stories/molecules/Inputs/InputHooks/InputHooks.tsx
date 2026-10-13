@@ -1,38 +1,17 @@
 'use client'
-
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
-import {
-  isCC,
-  isEmail,
-  isPassword,
-  onlyLetters,
-  valNit,
-  validatePhoneNumber
-} from '../../../../utils'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import { isCC, isEmail, isPassword, onlyLetters, valNit, validatePhoneNumber } from '../../../../utils'
 import { getGlobalStyle } from '../../../../helpers'
 import { Column, Icon, Row, Text } from '../../../atoms'
 import styles from './styles.module.css'
-
 /**
  * Minimal debounced callback hook.
  * If delay === 0 returns the original callback (no debounce).
  */
-const useDebouncedCallback = <Args extends unknown[]>(
-  cb: (...args: Args) => void,
-  delay = 0
-) => {
+const useDebouncedCallback = <Args extends unknown[]>(cb: (...args: Args) => void, delay = 0) => {
   const timerRef = useRef<number | null>(null)
   const cbRef = useRef(cb)
   cbRef.current = cb
-
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -41,111 +20,71 @@ const useDebouncedCallback = <Args extends unknown[]>(
       }
     }
   }, [])
-
   return useCallback((...args: Args) => {
     if (!delay) {
       cbRef.current(...args)
       return
     }
-    if (timerRef.current) clearTimeout(timerRef.current)
+    if (timerRef.current) { clearTimeout(timerRef.current) }
     timerRef.current = window.setTimeout(() => {
       cbRef.current(...args)
       timerRef.current = null
     }, delay)
   }, [delay])
 }
-
-const focusNextByTabIndex = (
-  currentElement: HTMLElement
-): void => {
-  const currentTabIndex =
-    currentElement.tabIndex
-
+const focusNextByTabIndex = (currentElement: HTMLElement): void => {
+  const currentTabIndex = currentElement.tabIndex
   if (currentTabIndex < 0) {
     return
   }
-
-  const focusableElements =
-    Array.from(
-      document.querySelectorAll<HTMLElement>(
-        [
-          'input:not([disabled])',
-          'textarea:not([disabled])',
-          'button:not([disabled])',
-          'select:not([disabled])',
-          'a[href]',
-          '[tabindex]:not([tabindex="-1"])',
-          '[contenteditable="true"]'
-        ].join(',')
-      )
-    ).filter((element) => {
-      if (
-        element === currentElement
-      ) {
-        return false
-      }
-
-      if (
-        element.hidden ||
-        element.getAttribute(
-          'aria-hidden'
-        ) === 'true'
-      ) {
-        return false
-      }
-
-      if (
-        element.getClientRects()
-          .length === 0
-      ) {
-        return false
-      }
-
-      return (
-        element.tabIndex >
-        currentTabIndex
-      )
-    })
-
-  focusableElements.sort(
-    (a, b) =>
-      a.tabIndex - b.tabIndex
-  )
-
-  const nextElement =
-    focusableElements[0]
-
+  const focusableElements = Array.from(document.querySelectorAll<HTMLElement>([
+    'input:not([disabled])',
+    'textarea:not([disabled])',
+    'button:not([disabled])',
+    'select:not([disabled])',
+    'a[href]',
+    '[tabindex]:not([tabindex="-1"])',
+    '[contenteditable="true"]'
+  ].join(','))).filter((element) => {
+    if (element === currentElement) {
+      return false
+    }
+    if (element.hidden ||
+            element.getAttribute('aria-hidden') === 'true') {
+      return false
+    }
+    if (element.getClientRects()
+      .length === 0) {
+      return false
+    }
+    return (element.tabIndex >
+            currentTabIndex)
+  })
+  focusableElements.sort((a, b) => a.tabIndex - b.tabIndex)
+  const nextElement = focusableElements[0]
   if (!nextElement) {
     return
   }
-
   nextElement.focus()
-
-  if (
-    nextElement instanceof
-    HTMLInputElement ||
-    nextElement instanceof
-    HTMLTextAreaElement
-  ) {
+  if (nextElement instanceof
+        HTMLInputElement ||
+        nextElement instanceof
+            HTMLTextAreaElement) {
     try {
-      const length =
-        nextElement.value.length
-
-      nextElement.setSelectionRange(
-        length,
-        length
-      )
+      const length = nextElement.value.length
+      nextElement.setSelectionRange(length, length)
     } catch {
       // No todos los inputs soportan selection range.
     }
   }
 }
-
 /**
  * Validation result
  */
-type ValidationResult = { valid: boolean; message: string }
-
+interface ValidationResult {
+  valid: boolean
+  message: string
+}
 /**
  * Input props
  */
@@ -159,15 +98,11 @@ export interface InputHooksProps {
   error?: string | boolean
   letters?: boolean
   maxWidth?: string
+  marginBottom?: React.CSSProperties['marginBottom']
   name?: string
   nit?: boolean
   numeric?: boolean
-  onChange?: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >,
-    hasError: boolean
-  ) => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, hasError: boolean) => void
   paddingInput?: string
   pass?: boolean
   passConfirm?: {
@@ -190,37 +125,18 @@ export interface InputHooksProps {
   info?: string
   max?: number
   step?: number
-
   /**
-   * Orden de navegación por teclado.
-   *
-   * Enter -> siguiente tabIndex
-   */
+     * Orden de navegación por teclado.
+     *
+     * Enter -> siguiente tabIndex
+     */
   tabIndex?: number
-
-  onFocus?: (
-    e: React.FocusEvent<
-      HTMLTextAreaElement | HTMLInputElement
-    >
-  ) => void
-
-  onBlur?: (
-    e: React.FocusEvent<
-      HTMLTextAreaElement | HTMLInputElement
-    >
-  ) => void
-
-  onKeyDown?: (
-    e: React.KeyboardEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >
-  ) => void
-
+  onFocus?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
+  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   validateOn?: 'change' | 'blur' | 'paste'
-
   debounceMs?: number
 }
-
 /**
  * InputHooks
  *
@@ -229,56 +145,15 @@ export interface InputHooksProps {
  * - Component is memoized and supports forwarding refs to the underlying input/textarea.
  */
 export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputHooksProps>((props, forwardedRef) => {
-  const {
-    autoComplete = 'off',
-    border = '',
-    autoFocus = false,
-    disabled = false,
-    email = false,
-    error = false,
-    letters = false,
-    maxWidth = '',
-    name = '',
-    nit = false,
-    numeric = false,
-    paddingInput = '',
-    pass = false,
-    passConfirm,
-    placeholder = '',
-    range = null,
-    containerRef,
-    required = false,
-    title = '',
-    cc = false,
-    messageError = 'El campo no debe estar vacío',
-    type = 'text',
-    as = 'input',
-    value = '',
-    width = '100%',
-    info = '',
-    max = Infinity,
-    step = undefined,
-    tabIndex,
-    onChange = () => undefined,
-    onFocus = () => undefined,
-    onBlur = () => undefined,
-    onKeyDown = () => undefined,
-    validateOn = 'change',
-    debounceMs = 0,
-    ...rest
-  } = props
-
+  const { autoComplete = 'off', border = '', autoFocus = false, disabled = false, email = false, error = false, letters = false, maxWidth = '', marginBottom, name = '', nit = false, numeric = false, paddingInput = '', pass = false, passConfirm, placeholder = '', range = null, containerRef, required = false, title = '', cc = false, messageError = 'El campo no debe estar vacío', type = 'text', as = 'input', value = '', width = '100%', info = '', max = Infinity, step = undefined, tabIndex, onChange = () => undefined, onFocus = () => undefined, onBlur = () => undefined, onKeyDown = () => undefined, validateOn = 'change', debounceMs = 0, ...rest } = props
   // Internal refs
   const internalRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null)
-
   // expose internalRef to parent (keeps parity with previous implementation)
   useImperativeHandle(forwardedRef, () => internalRef.current as any, [internalRef])
-
   // error state
-  const [errors, setErrors] = useState<string | boolean>(Boolean(error) ? error : false)
+  const [errors, setErrors] = useState<string | boolean>(error || false)
   const [message, setMessage] = useState<string>(messageError)
   const [focused, setFocused] = useState(false)
-
   // stable validators object (memoized)
   const validationRules = useMemo(() => ({
     required: {
@@ -290,9 +165,8 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
       message: 'El campo debe ser numérico'
     },
     range: {
-      validate: (v: string) =>
-        range !== null &&
-        (Number((v ?? '').length) < Number(range?.min) || Number((v ?? '').length) > Number(range?.max)),
+      validate: (v: string) => range !== null &&
+                (Number((v ?? '').length) < Number(range?.min) || Number((v ?? '').length) > Number(range?.max)),
       message: `El rango de caracteres es de ${range?.min} a ${range?.max}`
     },
     letters: {
@@ -300,13 +174,12 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
       message: 'El campo debe contener solo letras'
     },
     email: {
-      validate: (v: string) => email === true && isEmail(v),
+      validate: (v: string) => email && isEmail(v),
       message: 'El formato de email no es válido'
     },
     pass: {
       validate: (v: string) => Boolean(pass) && !isPassword(v),
-      message:
-        'La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.'
+      message: 'La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.'
     },
     nit: {
       validate: (v: string) => nit && !valNit(v),
@@ -321,18 +194,16 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
       message: 'El número de teléfono no es correcto'
     },
     passConfirm: {
-      validate: (v: string) =>
-        Boolean(passConfirm?.validate) && String(v) !== String(passConfirm?.passValue),
+      validate: (v: string) => Boolean(passConfirm?.validate) && String(v) !== String(passConfirm?.passValue),
       message: 'Las contraseñas no coinciden.'
     }
   }), [required, numeric, range, letters, email, pass, nit, cc, type, passConfirm])
-
   /**
-   * Validate value against rules and return status + message
-   */
+     * Validate value against rules and return status + message
+     */
   const validateInput = useCallback((v: string): ValidationResult => {
     for (const key of Object.keys(validationRules)) {
-      // @ts-ignore - index by key
+      // @ts-expect-error - index by key
       const rule = validationRules[key]
       if (rule?.validate?.(v)) {
         return { valid: false, message: rule.message }
@@ -340,12 +211,10 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
     }
     return { valid: true, message: '' }
   }, [validationRules])
-
   // keep external error prop in sync (only when prop changes)
   useEffect(() => {
-    setErrors(Boolean(error) ? error : false)
+    setErrors(error || false)
   }, [error])
-
   // Memoize style object to avoid re-creating on each render
   const containerStyle = useMemo<React.CSSProperties>(() => ({
     boxShadow: errors === true
@@ -354,30 +223,28 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
         ? `${getGlobalStyle('--box-shadow-xs')}`
         : border,
     maxWidth,
+    marginBottom,
     padding: paddingInput,
     width,
     border: errors === true ? '1px solid transparent' : `1px solid ${getGlobalStyle('--color-neutral-gray-silver')}`,
     maxHeight: 'auto',
     minHeight: 'auto'
-  }), [errors, focused, border, maxWidth, paddingInput, width, as])
-
+  }), [errors, focused, border, maxWidth, marginBottom, paddingInput, width, as])
   const inputStyle = useMemo<React.CSSProperties>(() => ({
     maxHeight: 'auto',
     minHeight: 'auto'
   }), [as])
-
   /**
-   * Build a small synthetic event-compatible object for async callbacks.
-   * This avoids using React's pooled synthetic event asynchronously.
-   */
+     * Build a small synthetic event-compatible object for async callbacks.
+     * This avoids using React's pooled synthetic event asynchronously.
+     */
   const makeEventLike = useCallback((val: string) => {
     return { target: { value: val, name } } as unknown as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   }, [name])
-
   /**
-   * Core: validate & emit (sync)
-   * Used by immediate flows (blur, paste when not debounced, or when debounceMs === 0)
-   */
+     * Core: validate & emit (sync)
+     * Used by immediate flows (blur, paste when not debounced, or when debounceMs === 0)
+     */
   const emitValidationResult = useCallback((val: string, originalEvent: React.ChangeEvent<any> | null) => {
     const { valid, message: m } = validateInput(val)
     setErrors(!valid)
@@ -386,22 +253,19 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
     const eToSend = originalEvent ?? makeEventLike(val)
     onChange(eToSend as any, !valid)
   }, [validateInput, onChange, makeEventLike, messageError])
-
   /**
-   * Debounced variant of emitValidationResult (only used when debounceMs > 0)
-   * It receives (value) and then calls emitValidationResult with a synthetic event.
-   */
+     * Debounced variant of emitValidationResult (only used when debounceMs > 0)
+     * It receives (value) and then calls emitValidationResult with a synthetic event.
+     */
   const debouncedEmit = useDebouncedCallback((val: string) => {
     emitValidationResult(val, null)
   }, debounceMs)
-
   // handlers (memoized)
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value: val } = e.target
     // important: call onChange immediately so parent-controlled value updates without input lag
     // but pass current "errors" (stale) so parent can update its state; real validation will come debounced.
     onChange(e, Boolean(errors))
-
     if (validateOn === 'change') {
       if (debounceMs > 0) {
         // schedule debounced validation that will call onChange later with the real hasError
@@ -412,7 +276,6 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
       }
     }
   }, [onChange, errors, validateOn, debounceMs, debouncedEmit, emitValidationResult])
-
   const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (validateOn === 'blur' || validateOn === 'change') {
       // on blur we always validate immediately (do not rely on debounced result)
@@ -422,63 +285,38 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
     setFocused(false)
     onBlur(e)
   }, [onBlur, validateOn, emitValidationResult])
-
-  const handleKeyDown =
-    useCallback(
-      (
-        e: React.KeyboardEvent<
-          HTMLInputElement |
-          HTMLTextAreaElement
-        >
-      ) => {
-        const navKeys = [
-          'Enter',
-          'Tab',
-          'Escape',
-          'ArrowDown',
-          'ArrowUp',
-          'ArrowLeft',
-          'ArrowRight',
-          'Backspace',
-          'Delete'
-        ]
-
-        if (
-          navKeys.includes(e.key) &&
-          validateOn === 'change' &&
-          debounceMs === 0
-        ) {
-          const val =
-            (
-              e.target as
-              HTMLInputElement |
-              HTMLTextAreaElement
-            ).value
-
-          const {
-            valid,
-            message: m
-          } = validateInput(val)
-
-          setErrors(!valid)
-          setMessage(
-            m || messageError
-          )
-        }
-
-        /**
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const navKeys = [
+      'Enter',
+      'Tab',
+      'Escape',
+      'ArrowDown',
+      'ArrowUp',
+      'ArrowLeft',
+      'ArrowRight',
+      'Backspace',
+      'Delete'
+    ]
+    if (navKeys.includes(e.key) &&
+            validateOn === 'change' &&
+            debounceMs === 0) {
+      const val = (e.target as HTMLInputElement | HTMLTextAreaElement).value
+      const { valid, message: m } = validateInput(val)
+      setErrors(!valid)
+      setMessage(m || messageError)
+    }
+    /**
          * =====================================================
          * TAB
          * =====================================================
          *
          * Totalmente nativo.
          */
-        if (e.key === 'Tab') {
-          onKeyDown(e)
-          return
-        }
-
-        /**
+    if (e.key === 'Tab') {
+      onKeyDown(e)
+      return
+    }
+    /**
          * =====================================================
          * ENTER
          * =====================================================
@@ -486,37 +324,26 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
          * Solo hacemos navegación especial
          * cuando NO es textarea.
          */
-        if (
-          e.key === 'Enter' &&
-          as !== 'textarea'
-        ) {
-          e.preventDefault()
-
-          focusNextByTabIndex(
-            e.currentTarget
-          )
-
-          onKeyDown(e)
-          return
-        }
-
-        onKeyDown(e)
-      },
-      [
-        onKeyDown,
-        validateInput,
-        messageError,
-        validateOn,
-        debounceMs,
-        as
-      ]
-    )
-
+    if (e.key === 'Enter' &&
+            as !== 'textarea') {
+      e.preventDefault()
+      focusNextByTabIndex(e.currentTarget)
+      onKeyDown(e)
+      return
+    }
+    onKeyDown(e)
+  }, [
+    onKeyDown,
+    validateInput,
+    messageError,
+    validateOn,
+    debounceMs,
+    as
+  ])
   const handleFocus = useCallback((e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFocused(true)
     onFocus(e)
   }, [onFocus])
-
   const handlePaste = useCallback((e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const pasted = e.clipboardData.getData('text')
     if (validateOn === 'paste' || validateOn === 'change') {
@@ -532,73 +359,33 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
       onChange(e as any, Boolean(errors))
     }
   }, [validateOn, debounceMs, debouncedEmit, emitValidationResult, onChange, errors])
-
   // attach internalRef to actual DOM node
   const setRef = useCallback((node: HTMLInputElement | HTMLTextAreaElement | null) => {
     internalRef.current = node
   }, [])
-
   // focus helper for label button
   const focusInput = useCallback(() => {
     internalRef.current?.focus()
   }, [])
-
   const Component = as === 'textarea' ? 'textarea' : 'input'
-
-  return (
-    <div
-      ref={containerRef}
-      style={containerStyle}
-      className={styles.wrap_input}
-    >
-      <Component
-        {...(rest as any)}
-        ref={setRef}
-        autoFocus={autoFocus}
-        tabIndex={tabIndex}
-        data-required={Boolean(required)}
-        disabled={Boolean(disabled)}
-        data-required-step={step}
-        name={name}
-        max={typeof range?.max === 'number' ? range.max : undefined}
-        min={typeof range?.min === 'number' ? range.min : undefined}
-        onFocus={handleFocus}
-        onChange={handleChange}
-        onPaste={handlePaste}
-        onBlur={handleBlur}
-        placeholder={placeholder}
-        autoComplete={autoComplete}
-        value={value}
-        aria-invalid={errors === true}
-        onKeyDown={handleKeyDown as any}
-        className={styles.input}
-        type={type}
-        style={inputStyle}
-      />
-      <button
-        type="button"
-        className={styles['label-input']}
-        tabIndex={0}
-        onClick={focusInput}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            focusInput()
-          }
-        }}
-        style={{
-          top: typeof value === 'string' && value.trim() !== '' ? '-8px' : '20px',
-          border: 'none',
-          padding: 0,
-          margin: 0,
-          width: 'auto',
-          textAlign: 'left',
-          cursor: 'pointer'
-        }}
-      >
+  return (<div ref={containerRef} style={containerStyle} className={styles.wrap_input}>
+      <Component {...(rest as any)} ref={setRef} autoFocus={autoFocus} tabIndex={tabIndex} data-required={Boolean(required)} disabled={Boolean(disabled)} data-required-step={step} name={name} max={typeof range?.max === 'number' ? range.max : undefined} min={typeof range?.min === 'number' ? range.min : undefined} onFocus={handleFocus} onChange={handleChange} onPaste={handlePaste} onBlur={handleBlur} placeholder={placeholder} autoComplete={autoComplete} value={value} aria-invalid={errors === true} onKeyDown={handleKeyDown as any} className={styles.input} type={type} style={inputStyle}/>
+      <button type="button" className={styles['label-input']} tabIndex={0} onClick={focusInput} onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          focusInput()
+        }
+      }} style={{
+        top: typeof value === 'string' && value.trim() !== '' ? '-8px' : '20px',
+        border: 'none',
+        padding: 0,
+        margin: 0,
+        width: 'auto',
+        textAlign: 'left',
+        cursor: 'pointer'
+      }}>
         {title?.includes('*')
-          ? (
-            <>
+          ? (<>
               {title.replace('*', '')}
               <span style={{
                 fontSize: getGlobalStyle('--font-size-xs'),
@@ -610,31 +397,18 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
               <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>
                 *
               </span>
-            </>
-          )
-          : (
-            <>{title}</>
-          )}
+            </>)
+          : (<>{title}</>)}
       </button>
 
-      {(errors === true || info !== '') && (
-        <Row className={styles.wrap_tooltip} alignItems='center'>
-          <Icon
-            icon='IconInfo'
-            size={10}
-            color={getGlobalStyle(errors === true ? '--color-icons-error' : '--color-icons-info')}
-          />
-          <span
-            className={styles.tooltip}
-            style={{ color: getGlobalStyle(errors === true ? '--color-text-error' : '--color-text-black') }}
-          >
+      {(errors === true || info !== '') && (<Row className={styles.wrap_tooltip} alignItems='center'>
+          <Icon icon='IconInfo' size={10} color={getGlobalStyle(errors === true ? '--color-icons-error' : '--color-icons-info')}/>
+          <span className={styles.tooltip} style={{ color: getGlobalStyle(errors === true ? '--color-text-error' : '--color-text-black') }}>
             {errors === true ? message : info}
           </span>
-        </Row>
-      )}
+        </Row>)}
 
-      {typeof range?.max !== 'undefined' && range?.max !== null && typeof value === 'string' && as === 'textarea' && (
-        <Column className={styles.range_counter_container} alignItems='flex-end'>
+      {typeof range?.max !== 'undefined' && range?.max !== null && typeof value === 'string' && as === 'textarea' && (<Column className={styles.range_counter_container} alignItems='flex-end'>
           <Text className={styles.range_counter_text} color='gray'>
             <span style={{
               marginRight: getGlobalStyle('--spacing-sm'),
@@ -643,11 +417,8 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
               {value.length}
             </span>/ {range.max}
           </Text>
-        </Column>
-      )}
-    </div>
-  )
+        </Column>)}
+    </div>)
 })
-
 // memo for preventing unnecessary re-renders when props shallowly equal
 export default React.memo(InputHooks)

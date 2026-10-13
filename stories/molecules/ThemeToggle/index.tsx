@@ -1,12 +1,12 @@
 // ThemeToggle.jsx
-import { ToggleSwitch } from "../ToggleSwitch";
+import { ToggleSwitch } from '../ToggleSwitch'
 
 interface ThemeToggleProps {
-    defaultDark?: boolean;
-    onChange: (checked: boolean) => void
-    width?: number | string;
-    height?: number | string;
-    ariaLabel?: string;
+  defaultDark?: boolean
+  onChange: (checked: boolean) => void
+  width?: number | string
+  height?: number | string
+  ariaLabel?: string
 }
 /**
  * ThemeToggle
@@ -22,12 +22,11 @@ interface ThemeToggleProps {
  * @returns {JSX.Element} The ThemeToggle component
  */
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({
-    defaultDark = false,
-    onChange,
-    ariaLabel = "Toggle-theme"
+  defaultDark = false,
+  onChange,
+  ariaLabel = 'Toggle-theme'
 }) => {
-
-    return (
+  return (
         <ToggleSwitch
             checked={defaultDark}
             id={`theme-toggle-switch-${ariaLabel}`}
@@ -36,5 +35,5 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
             iconLeft='IconSun'
             iconRight='IconMoon'
         />
-    );
-};
+  )
+}

@@ -1,5 +1,6 @@
+'use client'
+
 import Link from 'next/link'
-import PropTypes from 'prop-types'
 import React from 'react'
 import {
   Column,
@@ -16,24 +17,60 @@ import { getGlobalStyle } from '../../../helpers'
 import { MODAL_SIZES } from '../AwesomeModal/constanst'
 import styles from './styles.module.css'
 
-export const Header = ({
-  errorPush,
-  loadingPush,
-  pushNotificationSupported,
-  salesOpen,
-  location = {},
+export interface HeaderProps {
+  errorPush?: Error | null
+  loadingPush?: boolean
+  pushNotificationSupported?: boolean
+  userConsent?: NotificationPermission
+  userSubscription?: PushSubscription | null
+  pushServerSubscriptionId?: string | null
+  onClickAskUserPermission?: () => Promise<void> | void
+  onClickSubscribeToPushNotification?: () => Promise<void> | void
+  onClickSusbribeToPushNotification?: () => Promise<void> | void
+  onClickSendSubscriptionToPushServer?: () => Promise<void> | void
+  onClickSendNotification?: (notification?: any) => Promise<void> | void
+  onClickEnablePushNotifications?: () => Promise<void> | void
+  salesOpen?: boolean
+  location?: unknown
+  style?: React.CSSProperties
+  count?: number
+  countOrders?: number
+  isMobile?: boolean
+  loadingCount?: boolean
+  onClickLogout?: () => Promise<void> | void
+  setIsOpenOrder?: (open: boolean) => void
+  handleOpenMenu?: () => void
+  setSalesOpen?: (open: boolean) => void
+  toggleTheme?: () => void
+  theme?: 'light' | 'dark'
+}
+
+export const Header: React.FC<HeaderProps> = ({
+  errorPush = null,
+  loadingPush = false,
+  pushNotificationSupported = false,
+  userConsent,
+  userSubscription = null,
+  pushServerSubscriptionId = null,
+  onClickAskUserPermission = () => undefined,
+  onClickSubscribeToPushNotification = () => undefined,
+  onClickSusbribeToPushNotification,
+  onClickSendSubscriptionToPushServer = () => undefined,
+  onClickSendNotification = () => undefined,
+  onClickEnablePushNotifications,
+  salesOpen = false,
+  location: _location,
   style = {},
   count = 0,
   countOrders = 0,
   isMobile = false,
   loadingCount = false,
-  onClickLogout = () => { return null },
-  setIsOpenOrder = (boolean: boolean) => { return boolean },
-  handleOpenMenu = () => { return null },
-  onClickAskUserPermission = () => { return null },
-  setSalesOpen = (boolean: boolean) => { return boolean },
-  toggleTheme,
-  theme
+  onClickLogout = () => undefined,
+  setIsOpenOrder = () => undefined,
+  handleOpenMenu = () => undefined,
+  setSalesOpen = () => undefined,
+  toggleTheme = () => undefined,
+  theme = 'light'
 }) => {
   return (
     <div className={styles.header_container} style={style}>
@@ -46,9 +83,9 @@ export const Header = ({
         header={false}
         height='min-content'
         customHeight='min-content'
-        onCancel={() => { return false }}
-        onHide={() => { return false }}
-        padding={'30px'}
+        onCancel={() => false}
+        onHide={() => false}
+        padding='30px'
         show={false}
         size={MODAL_SIZES.small}
         zIndex='9999'
@@ -60,25 +97,21 @@ export const Header = ({
               size={20}
               color={getGlobalStyle('--color-primary-red')}
             />
-            <Text size='2xl'>
-              Tu session terminara pronto
-            </Text>
+            <Text size='2xl'>Tu sesión terminará pronto</Text>
           </Row>
           <Divider marginTop={getGlobalStyle('--spacing-4xl')} />
           <Row alignItems='center' justifyContent='space-between'>
-            <Button onClick={() => { }}>
-              cancelar
-            </Button>
-            <Button onClick={() => { return onClickLogout() }} primary={true}>
-              cerrar session
+            <Button onClick={() => undefined}>Cancelar</Button>
+            <Button onClick={() => { void onClickLogout() }} primary>
+              Cerrar sesión
             </Button>
           </Row>
         </Column>
-
       </AwesomeModal>
+
       <Row alignItems='center'>
         {isMobile && <Burger handleOpenMenu={handleOpenMenu} />}
-        <Link href={'/dashboard'}>
+        <Link href='/dashboard' aria-label='Ir al dashboard'>
           <Icon
             icon='IconLogo'
             size={100}
@@ -86,66 +119,60 @@ export const Header = ({
           />
         </Link>
       </Row>
+
       <div className={styles.header_options}>
-        {!isMobile && <Options
-          countOrders={countOrders}
-          error={false}
-          errorPush={errorPush}
-          loading={false}
-          loadingPush={loadingPush}
-          location={location}
-          theme={theme}
-          toggleTheme={toggleTheme}
-          onClickAskUserPermission={onClickAskUserPermission}
-          onClickLogout={onClickLogout}
-          pushNotificationSupported={pushNotificationSupported}
-          setIsOpenOrder={setIsOpenOrder}
-        />
-        }
-        <div className={styles.button_action_sale} onClick={() => { return setSalesOpen(!salesOpen) }}>
+        {!isMobile && (
+          <Options
+            countOrders={countOrders}
+            theme={theme}
+            toggleTheme={toggleTheme}
+            onClickLogout={onClickLogout}
+            setIsOpenOrder={setIsOpenOrder}
+            userConsent={userConsent}
+            pushNotificationSupported={pushNotificationSupported}
+            userSubscription={userSubscription}
+            pushServerSubscriptionId={pushServerSubscriptionId}
+            loadingPush={loadingPush}
+            errorPush={errorPush}
+            onClickAskUserPermission={onClickAskUserPermission}
+            onClickSubscribeToPushNotification={onClickSubscribeToPushNotification}
+            onClickSusbribeToPushNotification={onClickSusbribeToPushNotification}
+            onClickSendSubscriptionToPushServer={onClickSendSubscriptionToPushServer}
+            onClickSendNotification={onClickSendNotification}
+            onClickEnablePushNotifications={onClickEnablePushNotifications}
+          />
+        )}
+
+        <div
+          className={styles.button_action_sale}
+          onClick={() => setSalesOpen(!salesOpen)}
+          role='button'
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault()
+              setSalesOpen(!salesOpen)
+            }
+          }}
+        >
           <Icon
             color={getGlobalStyle('--color-primary-red')}
             icon='IconSales'
             size={40}
           />
           <div className='info-sales'>
-            <Text size='md' font='regular'>
-              Crear una venta
-            </Text>
+            <Text size='md' font='regular'>Crear una venta</Text>
             <Divider marginTop={getGlobalStyle('--spacing-xs')} />
             {loadingCount
-              ? <Text font='light' size='sm' >
-                Cargando...
-              </Text>
+              ? <Text font='light' size='sm'>Cargando...</Text>
               : (
                 <Text font='light' color='gray-dark' size='sm'>
-                  Total de ventas hoy  {count}
+                  Total de ventas hoy {count}
                 </Text>
-              )
-            }
+                )}
           </div>
         </div>
       </div>
     </div>
   )
-}
-Header.propTypes = {
-  count: PropTypes.number,
-  countOrders: PropTypes.number,
-  errorPush: PropTypes.any,
-  handleOpenMenu: PropTypes.func,
-  isMobile: PropTypes.bool,
-  loading: PropTypes.bool,
-  loadingCount: PropTypes.bool,
-  loadingPush: PropTypes.bool,
-  location: PropTypes.object,
-  onClickAskUserPermission: PropTypes.func,
-  onClickLogout: PropTypes.func,
-  pushNotificationSupported: PropTypes.any,
-  salesOpen: PropTypes.bool,
-  scrollNav: PropTypes.any,
-  setAlertBox: PropTypes.func,
-  setIsOpenOrder: PropTypes.func,
-  setSalesOpen: PropTypes.func,
-  style: PropTypes.object
 }

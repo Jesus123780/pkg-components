@@ -176,7 +176,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       size={MODAL_SIZES.large}
       header
       footer={false}
-      animation='top'
       animationDuration={420}
       height='100vh'
       borderRadius='0'

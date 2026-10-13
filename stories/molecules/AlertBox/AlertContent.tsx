@@ -1,22 +1,43 @@
 'use client'
 
 import React from 'react'
-import { ContainerToast, ContentToast } from './styled'
+import { BGColor, PColor } from '../../../assets/colors'
 import { type AlertContentProps } from './types'
+import styles from './AlertContent.module.css'
 
+type ColorMap = Record<string, string>
+
+const colorMap: ColorMap = {
+  error: PColor,
+  warning: '#ebbc26',
+  success: '#50a773',
+  default: 'rgba(0, 0, 0, 0.9)'
+}
 
 export const AlertContent: React.FC<AlertContentProps> = ({ err, closed }) => {
+  const message = typeof err?.message === 'string' ? err.message : ''
+  const hasMessage = message.length > 0
+  const colorKey = typeof err?.color === 'string' ? err.color : ''
+  const backgroundColor = colorMap[colorKey] ?? colorMap.default
+
+  const containerClassName = [
+    styles.containerToast,
+    hasMessage ? styles.visible : styles.hidden,
+    hasMessage && closed ? styles.closed : ''
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <>
-      <ContainerToast
-        closed={closed ? 'true' : undefined}
-        color={err?.color}
-        error={err?.message !== undefined && err?.message !== ''}
-      >
-        <ContentToast>
-          <div>{err?.message !== undefined && err?.message !== '' ? err.message : ''}</div>
-        </ContentToast>
-      </ContainerToast>
-    </>
+    <div
+      className={containerClassName}
+      style={{ backgroundColor, color: BGColor }}
+      role={hasMessage ? 'alert' : undefined}
+      aria-hidden={!hasMessage || Boolean(closed)}
+    >
+      <div className={styles.contentToast}>
+        <div>{message}</div>
+      </div>
+    </div>
   )
 }

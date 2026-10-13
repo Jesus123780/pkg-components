@@ -61,6 +61,7 @@ interface MemoAsideProps {
   pathname: DashboardPath | string
   setIsDragDisabled?: Dispatch<SetStateAction<boolean>>
 }
+
 const MemoAside: React.FC<MemoAsideProps> = ({
   isElectron = false,
   isMobile = false,
@@ -78,21 +79,24 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     uState: 1
   },
   modules = [],
-  handleClick = (state: boolean) => { return state },
-  handleOpenDeliveryTime = () => { },
-  setSalesOpen = (state: boolean) => { return state },
-  handleCollapsedMenu = () => { return null },
-  setShowComponentModal = (state: boolean) => { return state },
-  onDragEnd = (result: any) => { return result }
+  handleClick = (state: boolean) => state,
+  handleOpenDeliveryTime = () => {},
+  setSalesOpen = () => {},
+  handleCollapsedMenu = () => null,
+  setShowComponentModal = () => {},
+  onDragEnd = () => {}
 }) => {
   const [show, setShow] = useState(false)
-  const [isDragDisabled, setIsDragDisabled] = useState(false)
+  // El interruptor activa el modo de edición; fuera de ese modo se bloquea el arrastre.
+  const [isEditingModules, setIsEditingModules] = useState(false)
   const [active, setActive] = useState<boolean | number>(false)
+
   interface DataStore {
     storeName: string
     idStore: string
     uState: number | string
   }
+
   const {
     storeName,
     uState
@@ -108,88 +112,90 @@ const MemoAside: React.FC<MemoAsideProps> = ({
     setShow(!show)
   }
 
-  const modulesArray = modules?.map((module) => {
-    return module
-  })
+  const modulesArray = modules ?? []
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
-        setSalesOpen((prevState: boolean) => !(prevState))
+        setSalesOpen((prevState: boolean) => !prevState)
       }
     }
+
     document.addEventListener('keydown', handleKeyDown)
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [salesOpen])
+  }, [setSalesOpen])
 
   const handleMenu = (index: boolean | number): void => {
     setActive((prev: boolean | number) => {
-      const state = index === prev ? false : index
-      return state
+      return index === prev ? false : index
     })
   }
+
   const handleClickAction = (path: string): void => {
     const action: Record<string, () => void> = {
       '?time=true': handleOpenDeliveryTime,
       '?goals=true': handleOpenDeliveryTime
     }
+
     action[path]?.()
   }
 
-  const isDashboardRoute = (pathname: DashboardPath | string): boolean => {
-    return pathname.startsWith('/dashboard')
+  const isDashboardRoute = (currentPathname: DashboardPath | string): boolean => {
+    return currentPathname.startsWith('/dashboard')
   }
+
   const hidden = isDashboardRoute(pathname)
 
   return (
     <>
-      {isMobile &&
+      {isMobile && (
         <Overline
           bgColor={getGlobalStyle('--color-background-overline')}
-          onClick={() => { return setCollapsed(!collapsed) }}
+          onClick={() => setCollapsed?.(!collapsed)}
           show={collapsed}
           zIndex={getGlobalStyle('--z-index-99999')}
         />
-      }
-      {/* {!isMobile &&
-        // <Overline
-        //   bgColor={getGlobalStyle('--color-background-overline')}
-        //   onClick={() => { setShow(!show) }}
-        //   show={show}
-        //   zIndex={getGlobalStyle('--z-index-999')}get
-        // />
-      } */}
+      )}
+
       <div
         className={`${styles.containerAside} ${isMobile && collapsed ? styles.collapsed : ''}`}
-        style={isMobile
-          ? {
-            width: isCollapsedMenu ? '40px' : '80%',
-            zIndex: getGlobalStyle('--z-index-99999')
-          }
-          : {}
+        style={
+          isMobile
+            ? {
+                width: isCollapsedMenu ? '40px' : '80%',
+                zIndex: getGlobalStyle('--z-index-99999')
+              }
+            : {}
         }
       >
         <Column className={styles['sidebar-header-container']}>
-          <div style={{
-            overflowY: 'hidden',
-            overflowX: 'hidden',
-            height: '100%'
-          }}>
+          <div
+            style={{
+              overflowY: 'hidden',
+              overflowX: 'hidden',
+              height: '100%'
+            }}
+          >
             <div>
               <Row className={styles['sidebar-header']}>
-                <Column className={styles['sidebar-header-column']} style={(isMobile && isCollapsedMenu) ? { width: 'min-content' } : {}}>
+                <Column
+                  className={styles['sidebar-header-column']}
+                  style={isMobile && isCollapsedMenu ? { width: 'min-content' } : {}}
+                >
                   {null}
                 </Column>
+
                 <Button
                   className={styles['sidebar-header-button']}
                   styles={{
                     border: 'none',
                     padding: '5px 3px'
                   }}
-                  onClick={() => { handleCollapsedMenu() }}
+                  onClick={() => handleCollapsedMenu()}
                 >
                   <Icon
                     color={getGlobalStyle('--color-icons-gray')}
@@ -198,28 +204,30 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                   />
                 </Button>
               </Row>
+
               {isElectron && <NavigationButtons />}
+
               <Portal>
                 <div
-                  className={clsx(
-                    styles.quick_options as string,
-                    {
-                      [styles.visible]: show && salesOpen === false,
-                      [styles.hidden]: !show || salesOpen === true,
-                      [styles['quick_options--colapsed'] as string]: isCollapsedMenu
-                    }
-                  )}>
-                  {!hidden &&
+                  className={clsx(styles.quick_options as string, {
+                    [styles.visible]: show && salesOpen === false,
+                    [styles.hidden]: !show || salesOpen === true,
+                    [styles['quick_options--colapsed'] as string]: isCollapsedMenu
+                  })}
+                >
+                  {!hidden && (
                     <Button
                       border='gray'
                       color='black'
                       iconName='IconBox'
                       iconPosition='right'
-                      onClick={() => { handleOpenCreateProduct() }}>
+                      onClick={() => handleOpenCreateProduct()}
+                    >
                       Nuevo producto
                     </Button>
-                  }
-                  {!hidden &&
+                  )}
+
+                  {!hidden && (
                     <Button
                       border='gray'
                       color='black'
@@ -232,159 +240,190 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                     >
                       Categorías
                     </Button>
-                  }
+                  )}
+
                   <Button
                     border='gray'
                     color='black'
                     iconName='IconSales'
                     iconPosition='right'
-                    onClick={() => { return setSalesOpen(salesOpen ?? false) }}
+                    onClick={() => setSalesOpen(salesOpen ?? false)}
                   >
                     Ventas
                   </Button>
                 </div>
               </Portal>
+
               {!isCollapsedMenu &&
-                typeof dataStore?.storeName === 'string' && dataStore.storeName.trim() !== '' &&
-                typeof dataStore?.idStore === 'string' && dataStore.idStore.trim() !== '' &&
-                <Link href={`/dashboard/${dataStore?.storeName.replace(/ /g, '-')}/${dataStore.idStore}`}>
-                  <Text
-                    as='h2'
-                    lineHeight='sm'
-                    className={styles['sidebar-header-text']}
-                    size='3xl'
-                    align='center'
-                  >
-                    {storeName}
-                  </Text>
-                </Link>
-              }
-              {uState === '1' &&
+                typeof dataStore?.storeName === 'string' &&
+                dataStore.storeName.trim() !== '' &&
+                typeof dataStore?.idStore === 'string' &&
+                dataStore.idStore.trim() !== '' && (
+                  <Link href={`/dashboard/${dataStore.storeName.replace(/ /g, '-')}/${dataStore.idStore}`}>
+                    <Text
+                      as='h2'
+                      lineHeight='sm'
+                      className={styles['sidebar-header-text']}
+                      size='3xl'
+                      align='center'
+                    >
+                      {storeName}
+                    </Text>
+                  </Link>
+                )}
+
+              {uState === '1' && (
                 <Column>
                   <Text size='sm' align='center'>
                     En pausa programada
                   </Text>
                 </Column>
-              }
-              {!isCollapsedMenu &&
-                <Button onClick={() => { setShow(!show) }} className={styles.button_global_create}>
+              )}
+
+              {!isCollapsedMenu && (
+                <Button
+                  onClick={() => setShow(!show)}
+                  className={styles.button_global_create}
+                >
                   Agregar nuevo
                 </Button>
-              }
+              )}
             </div>
+
             <Column className={styles['sidebar-header-router']}>
-              <DragDropContext onDragEnd={onDragEnd} >
-                <Droppable droppableId="modules" direction="vertical">
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable
+                  droppableId='modules'
+                  direction='vertical'
+                  isDropDisabled={false}
+                  isCombineEnabled={false}
+                  ignoreContainerClipping={false}
+                >
                   {(provided: any) => (
                     <div
                       {...provided.droppableProps}
                       ref={provided.innerRef}
                       className={styles.modulesContainer}
                     >
-                      {modulesArray?.map((module, index) => {
+                      {modulesArray.map((module, index) => {
                         const subModules = module?.subModules ?? []
-                        const existSubModules = Boolean(subModules.length > 0)
+                        const existSubModules = subModules.length > 0
                         const action = module?.mPath?.startsWith('?')
-                        const mPath = action === true ? '' : module?.mPath as string
+                        const mPath = action === true ? '' : (module?.mPath as string)
                         const isActive = `/${mPath}` === pathname
+                        const draggableId = String(module?.mId ?? `module-${index}`)
+
                         return (
-                          <Draggable isDragDisabled={!isDragDisabled} key={module.mId} draggableId={module.mId} index={index}>
-                            {(provided: any) => (
+                          <Draggable
+                            key={draggableId}
+                            draggableId={draggableId}
+                            index={index}
+                            isDragDisabled={!isEditingModules}
+                          >
+                            {(dragProvided: any) => (
                               <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
+                                ref={dragProvided.innerRef}
+                                {...dragProvided.draggableProps}
+                                {...dragProvided.dragHandleProps}
                                 className={styles.containerOption}
                                 style={{
-                                  borderLeft: `2px solid ${getGlobalStyle(isActive ? '--color-primary-red' : '--color-base-transparent')}`
+                                  // No sobrescribir transform/position que requiere el drag and drop.
+                                  ...dragProvided.draggableProps.style,
+                                  borderLeft: `2px solid ${getGlobalStyle(
+                                    isActive
+                                      ? '--color-primary-red'
+                                      : '--color-base-transparent'
+                                  )}`
                                 }}
                               >
-
-                                {(!existSubModules) &&
+                                {!existSubModules && (
                                   <CustomLinkAside
-                                    onClick={() => {
-                                      handleClickAction(module.mPath as string)
-                                    }}
+                                    onClick={() => handleClickAction(module.mPath as string)}
                                     mPath={mPath}
                                     isActive={isActive}
                                     action={action}
                                     mIcon={module?.mIcon}
                                     mName={module?.mName}
                                   />
-                                }
-                                {(existSubModules && !isCollapsedMenu) &&
-                                  <span style={{
-                                    cursor: 'pointer',
-                                    fontSize: '.8rem',
-                                    padding: '10px',
-                                    display: 'block',
-                                    fontWeight: '600',
-                                    color: getGlobalStyle('--color-neutral-gray-dark')
-                                  }}>
+                                )}
+
+                                {existSubModules && !isCollapsedMenu && (
+                                  <span
+                                    style={{
+                                      cursor: 'pointer',
+                                      fontSize: '.8rem',
+                                      padding: '10px',
+                                      display: 'block',
+                                      fontWeight: '600',
+                                      color: getGlobalStyle('--color-neutral-gray-dark')
+                                    }}
+                                  >
                                     {module.mName}
                                   </span>
-                                }
+                                )}
+
                                 <div>
-                                  {(existSubModules && !isCollapsedMenu) &&
+                                  {existSubModules && !isCollapsedMenu && (
                                     <Options
                                       size={10}
                                       active={index === active}
-                                      handleClick={() => { handleMenu(index) }}
+                                      handleClick={() => handleMenu(index)}
                                       index={active}
                                       icon='IconTicket'
                                       label={module.mName}
                                     >
-                                      {subModules?.map((item: any) => {
-                                        return (
-                                          <div key={item.smId} style={{ marginLeft: '20px', width: '90%', marginTop: '10px' }} >
-                                            <CustomLinkAside
-                                              mPath={item?.smPath}
-                                              mIcon={item.smIcon}
-                                              mName={item?.smName}
-                                            />
-                                          </div>
-                                        )
-                                      })}
+                                      {subModules.map((item: any, subIndex: number) => (
+                                        <div
+                                          key={item?.smId ?? `${draggableId}-sub-${subIndex}`}
+                                          style={{
+                                            marginLeft: '20px',
+                                            width: '90%',
+                                            marginTop: '10px'
+                                          }}
+                                        >
+                                          <CustomLinkAside
+                                            mPath={item?.smPath}
+                                            mIcon={item?.smIcon}
+                                            mName={item?.smName}
+                                          />
+                                        </div>
+                                      ))}
                                     </Options>
-                                  }
+                                  )}
                                 </div>
                               </div>
                             )}
                           </Draggable>
                         )
                       })}
+
                       {provided.placeholder}
                     </div>
                   )}
                 </Droppable>
               </DragDropContext>
+
               <ToggleSwitch
-                checked={isDragDisabled}
+                checked={isEditingModules}
                 id='edit_modules'
                 label={isCollapsedMenu ? '' : 'Editar módulos'}
-                onChange={() => setIsDragDisabled(!isDragDisabled)}
+                onChange={() => setIsEditingModules((previous) => !previous)}
                 successColor='green'
               />
             </Column>
           </div>
-          <Pulse
-            active={connected}
-          />
+
+          <Pulse active={connected} />
+
           <Column
             justifyContent='center'
             alignItems='center'
             className={styles['sidebar-footer']}
             style={isCollapsedMenu ? { display: 'none' } : {}}
           >
-            <Text color='gray-dark'>
-              version: {version}
-            </Text>
-            <Text color='gray-dark'>
-              UI: {packageJson.version}
-            </Text>
-            <Text color='gray-dark'>
-              logical: {logicalVersion}
-            </Text>
+            <Text color='gray-dark'>version: {version}</Text>
+            <Text color='gray-dark'>UI: {packageJson.version}</Text>
+            <Text color='gray-dark'>logical: {logicalVersion}</Text>
           </Column>
         </Column>
       </div>

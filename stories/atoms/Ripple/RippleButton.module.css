@@ -1,18 +1,143 @@
 .rippleButton {
-    position: relative;
-    overflow: hidden;
-    transform: translate3d(0, 0, 0);
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  min-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transform: translate3d(0, 0, 0);
+  padding: var(--rb-padding, 1em);
+  background-color: var(--rb-bg-color, var(--color-primary-red));
+  color: var(--rb-color, #ffffff);
+  font-family: var(--rb-font-family, 'PFont-Light');
+  margin: var(--rb-margin, 0);
+  border: var(--rb-border, none);
+  border-radius: var(--rb-radius, 0);
+  height: var(--rb-height, auto);
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rippleButton:disabled:not(.isLoading) {
+  background-color: var(--rb-disabled-bg) !important;
+  cursor: not-allowed;
+}
+
+.rippleButton:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.rippleButton:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.rippleButton:active:not(:disabled) {
+  filter: brightness(0.98);
+}
+
+.autoWidth {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.buttonContent {
+  position: relative;
+  z-index: 1;
+}
+
+.isLoading .buttonContent {
+  opacity: 0;
+}
+
+.ripple {
+  position: absolute;
+  z-index: 0;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+  background: var(--rb-ripple-color, rgba(255, 255, 255, 0.42));
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transform-origin: center;
+  animation: rippleEffect var(--rb-ripple-duration, 650ms)
+    cubic-bezier(0.15, 0.65, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.loadingWrapper {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+  pointer-events: none;
+}
+
+.loadingSpinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: rotator 1s linear infinite;
+}
+
+.loadingSpinner :global(svg) {
+  fill: #ffffff;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes rippleEffect {
+  0% {
+    opacity: 0.58;
+    transform: translate(-50%, -50%) scale(0);
   }
+
+  62% {
+    opacity: 0.24;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+@keyframes rotator {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.6);
-    transform: scale(0);
-    animation: rippleEffect .8s linear;
+    animation-duration: 1ms;
+    will-change: auto;
   }
-  @keyframes rippleEffect {
-    to {
-      transform: scale(4);
-      opacity: 0;
-    }
+
+  .loadingSpinner {
+    animation: none;
   }
+
+  .rippleButton:active:not(:disabled) {
+    filter: none;
+  }
+}

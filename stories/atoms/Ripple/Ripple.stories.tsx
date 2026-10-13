@@ -1,93 +1,102 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react'; 
-import { RippleButtonProps, RippleButton } from './index';
+import type { Meta, StoryObj } from '@storybook/react'
 
-const meta: Meta<RippleButtonProps> = {
+import { RippleButton } from './index'
+
+const meta = {
+  title: 'Components/Buttons/RippleButton',
   component: RippleButton,
-  title: 'atoms/RippleButton',
+  tags: ['autodocs'],
+  parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    layout: 'centered'
+  },
+  args: {
+    label: 'Continuar',
+    type: 'button',
+    loading: false,
+    disabled: false,
+    ripple: true,
+    rippleDuration: 650,
+    fullWidth: true
+  },
   argTypes: {
     label: { control: 'text' },
     loading: { control: 'boolean' },
-    style: { control: 'object' },
-    family: { control: 'text' },
-    border: { control: 'text' },
-    height: { control: 'text' },
     disabled: { control: 'boolean' },
-    standard: { control: 'boolean' },
-    active: { control: 'text' },
-    type: { control: 'text' },
-    widthButton: { control: 'text' },
-    bgColor: { control: 'text' },
-    color: { control: 'text' },
-    margin: { control: 'text' },
-    padding: { control: 'text' },
+    ripple: { control: 'boolean' },
+    rippleDuration: {
+      control: { type: 'number', min: 100, max: 2000, step: 50 }
+    },
+    rippleColor: { control: 'color' },
+    fullWidth: { control: 'boolean' },
+    bgColor: { control: 'color' },
+    color: { control: 'color' },
     radius: { control: 'text' },
+    padding: { control: 'text' },
+    height: { control: 'text' },
+    margin: { control: 'text' },
+    border: { control: 'text' },
+    family: { control: 'text' },
+    loadingLabel: { control: 'text' },
+    active: { control: 'text' },
+    standard: { control: 'boolean' }
   }
-};
+} satisfies Meta<typeof RippleButton>
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof RippleButton>;
+type Story = StoryObj<typeof meta>
 
-export const Example: Story = (args = {}) => <RippleButton {...args as RippleButtonProps} />
-Example.args = {
-  onClick: () => {
-    console.log('Button clicked!');
-  },
-  loading: false,
-  style: {},
-  family: 'PFont-Light',
-  disabled: false,
-  standard: false,
-  active: '',
-  type: 'button',
-  widthButton: '100%',
-  bgColor: '',
-  color: '',
-  margin: '',
-  padding: '',
-  radius: '',
-  children: <span>Click Me</span>
-};
+export const Default: Story = {}
 
-export const disableExample: Story = (args = {}) => <RippleButton {...args as RippleButtonProps} />
-disableExample.args = {
-  onClick: () => {
-    console.log('Button clicked!');
-  },
-  loading: false,
-  style: {},
-  family: 'PFont-Light',
-  disabled: true,
-  standard: false,
-  active: '',
-  type: 'button',
-  widthButton: '100%',
-  bgColor: '',
-  color: '',
-  margin: '',
-  padding: '',
-  radius: '',
-  children: <span>Click Me</span>
-};
+export const WithChildren: Story = {
+  args: {
+    label: 'Comprar',
+    children: <strong aria-hidden="true"> ↗</strong>,
+    radius: '8px'
+  }
+}
 
-export const loadingExample: Story = (args = {}) => <RippleButton {...args as RippleButtonProps} />
-loadingExample.args = {
-  onClick: () => {
-    alert('Button clicked!');
-  },
-  loading: true,
-  style: {},
-  family: 'PFont-Light',
-  disabled: false,
-  standard: false,
-  active: '',
-  type: 'button',
-  widthButton: '100%',
-  bgColor: '',
-  color: '',
-  margin: '',
-  padding: '',
-  radius: '',
-  children: <span>Click Me</span>
-};
+export const Loading: Story = {
+  args: {
+    label: 'Guardando cambios',
+    loading: true,
+    loadingLabel: 'Guardando, por favor espera…'
+  }
+}
+
+export const Disabled: Story = {
+  args: {
+    label: 'No disponible',
+    disabled: true
+  }
+}
+
+export const CustomAppearance: Story = {
+  args: {
+    label: 'Confirmar pago',
+    bgColor: '#202938',
+    color: '#ffffff',
+    radius: '12px',
+    border: '1px solid #3b4658',
+    padding: '0.9rem 1.4rem',
+    height: '52px',
+    rippleColor: 'rgba(255, 255, 255, 0.52)'
+  }
+}
+
+export const WithoutRipple: Story = {
+  args: {
+    label: 'Sin animación ripple',
+    ripple: false
+  }
+}
+
+export const ContentWidth: Story = {
+  args: {
+    label: 'Ancho según el contenido',
+    fullWidth: false,
+    radius: '8px',
+    padding: '0.8rem 1.25rem'
+  }
+}
