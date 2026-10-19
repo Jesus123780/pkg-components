@@ -118,7 +118,12 @@ import {
   IconFree,
   IconDrag,
   IconLinesFilter,
-  IconLink
+  IconLink,
+  IconWhatsApp,
+  IconSendMessageV2,
+  IconShield,
+  IconActivity,
+  IconReload
 } from '../../../assets'
 
 type IconMap = Record<string, FC<IconProps>>
@@ -246,7 +251,12 @@ export const Icons: IconMap = {
   IconMoon,
   IconFree,
   IconLinesFilter,
-  IconLink
+  IconLink,
+  IconWhatsApp,
+  IconSendMessageV2,
+  IconShield,
+  IconActivity,
+  IconReload
 }
 
 const GetIcon = (key: string): FC<IconProps> | null => {
