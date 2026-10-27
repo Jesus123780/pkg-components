@@ -293,9 +293,17 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           items={Array.from({ length: pagination.totalPages ?? 0 }, (_, index) => { return index + 1 })}
         />
         <HeaderInfo
-          client={client}
+          client={{
+            ...client,
+            clientName:
+              dataClientes.find((c: any) => c?.cliId === values?.cliId)?.clientName ??
+              client?.clientName ??
+              ''
+          }}
           handleOpenAside={handleOpenAside}
           totalProductPrice={totalProductPrice}
+          discountPercent={data.discountPercent ?? 0}
+          discountAmount={data?.discountAmount ?? 0}
           payId={paymentMethods[Number(data?.payId) - 1]?.name ?? paymentMethods[0]?.name}
         />
         <div
@@ -373,8 +381,11 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         errors={errors}
         dispatch={dispatch}
         handleSave={handleSave}
+        client={client}
+        totalProductPrice={totalProductPrice}
         discountPercent={data.discountPercent ?? 0}
         discountAmount={data?.discountAmount ?? 0}
+        discountResetKey={data?.PRODUCT?.length ?? 0}
         storeTables={storeTables.storeTables as any}
         overline={true}
         payId={data?.payId}

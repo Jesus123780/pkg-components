@@ -1,6 +1,6 @@
 'use client'
 
-import React, { JSX, useEffect, useState } from 'react'
+import React, { type JSX, useEffect, useState } from 'react'
 import { useGoogleLogin } from '../../../hooks/useGoogleLogin'
 
 interface GoogleLoginRenderProps {
@@ -79,7 +79,6 @@ export const GoogleLogin = ({
     } catch (e) {
       // noop
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [popupClosed])
 
   if (typeof render === 'function') {

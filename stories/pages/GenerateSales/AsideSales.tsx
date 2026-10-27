@@ -23,6 +23,13 @@ interface AsideProps {
   storeTables?: any[]
   paymentMethods?: Methods[]
   dataClientes?: any[]
+  /** Client currently selected for the sale. */
+  client?: {
+    clientName: string
+    ccClient?: string
+  }
+  /** Formatted total price of the sale (e.g. "$ 93,10"). */
+  totalProductPrice?: string | number
   values?: {
     cliId: string
     ValueDelivery: string
@@ -35,6 +42,10 @@ interface AsideProps {
   }
   discountPercent?: number
   discountAmount?: number
+  /** Key that changes when the cart is fully cleared (e.g. REMOVE_ALL_PRODUCTS),
+   *  forcing OrderDiscount to remount and reset its internal input state. */
+  discountResetKey?: number | string
+  handleSave?: () => void
   handleClickAction?: () => void
   handleCloseAside?: () => void
   handleOpenAside?: () => void
@@ -55,23 +66,21 @@ export const AsideSales: React.FC<AsideProps> = ({
     tableId: '',
     ValueDelivery: ''
   },
-  errors = {
-    change: false,
-    ValueDelivery: false
-  },
   overline = false,
   discountPercent = 0,
   discountAmount = 0,
+  discountResetKey = 0,
   dispatch = () => { },
-  handleSave = () => {},
+  handleSave = () => { },
   handleCloseAside = () => { },
   handleOpenAside = () => { },
   handleClickAction = () => { },
   handleChange = () => { }
 }) => {
-  const handleDiscount = (percent: number): void => {
-    dispatch({ type: 'APPLY_DISCOUNT', payload: percent });
+  const handleDiscount = (payload: { type: string, value: number }): void => {
+    dispatch({ type: 'APPLY_DISCOUNT', payload })
   }
+
   return (
     <>
       {overline && (
@@ -133,7 +142,6 @@ export const AsideSales: React.FC<AsideProps> = ({
           name='tableId'
           optionName='tableName'
           tabIndex={1}
-          beforeLabel='Mesa'
           options={storeTables ?? []}
           onChange={(e) => {
             return handleChange({ target: { name: String(e.target.name), value: e.target.value } })
@@ -195,8 +203,9 @@ export const AsideSales: React.FC<AsideProps> = ({
           value={values?.ValueDelivery}
         />
         <OrderDiscount
+          key={discountResetKey}
           tabIndex={4}
-          onChange={handleDiscount as any}
+          onChange={handleDiscount}
           discountPercent={discountPercent}
           discountAmount={discountAmount}
         />

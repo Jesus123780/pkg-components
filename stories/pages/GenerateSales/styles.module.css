@@ -766,3 +766,43 @@
             var(--color-neutral-gray-silver);
     }
 }
+
+
+/* =========================================================
+   HEADER INFO — DISCOUNT BADGE
+   ========================================================= */
+
+.header-info__discount {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    margin-top: 2px;
+}
+
+.header-info__discount-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+
+    padding: 1px 6px;
+
+    border-radius: 10px;
+
+    background-color: var(--color-primary-red, #e02020);
+
+    color: var(--color-text-white, #fff);
+
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    white-space: nowrap;
+}
+
+.header-info__discount-amount {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-primary-red, #e02020);
+    white-space: nowrap;
+}

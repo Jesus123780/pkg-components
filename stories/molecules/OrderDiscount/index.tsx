@@ -1,4 +1,4 @@
-import React, { type ChangeEvent, useCallback, useMemo, useRef, useState } from 'react'
+import React, { type ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import InputHooks from '../Inputs/InputHooks/InputHooks'
 import {
   Button,
@@ -70,15 +70,31 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
     discountAmount > 0 ? DiscountTypes.AMOUNT : DiscountTypes.PERCENT
   )
   const [percent, setPercent] = useState<number>(discountPercent)
-  const [percentInput, setPercentInput] = useState<string>(
-    discountPercent > 0 ? String(discountPercent) : ''
-  )
+  // If the initial discountPercent matches a predefined button, the input field
+  // stays empty — the active button is the visual indicator, not the text field.
+  const [percentInput, setPercentInput] = useState<string>(() => {
+    if (discountPercent <= 0) return ''
+    const predefined = [1, 2, 5, 10, 15]
+    return predefined.includes(discountPercent) ? '' : String(discountPercent)
+  })
   const [valueInput, setValueInput] = useState<string>(
     discountAmount > 0 ? String(discountAmount) : ''
   )
 
   // avoid emitting identical payloads repeatedly
   const lastEmitRef = useRef<OrderDiscountChange | null>(null)
+
+  // When the parent resets both discount values to 0 (e.g. REMOVE_ALL_PRODUCTS),
+  // clear the local display state so the inputs don't show stale values.
+  useEffect(() => {
+    if (discountPercent === 0 && discountAmount === 0) {
+      setMode(DiscountTypes.PERCENT)
+      setPercent(0)
+      setPercentInput('')
+      setValueInput('')
+      lastEmitRef.current = null
+    }
+  }, [discountPercent, discountAmount])
 
   const safeEmit = useCallback((payload: OrderDiscountChange) => {
     const last = lastEmitRef.current
@@ -104,7 +120,8 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
   const handleSelectPercent = useCallback((value: number) => {
     setMode(DiscountTypes.PERCENT)
     setPercent(value)
-    setPercentInput(String(value))
+    // Keep the manual text field clear — the active button is the visual indicator
+    setPercentInput('')
     setValueInput('')
     safeEmit({ type: DiscountTypes.PERCENT, value })
   }, [safeEmit])
@@ -116,17 +133,9 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
     setMode(DiscountTypes.PERCENT)
     setPercentInput(raw)
     setValueInput('')
-
-    if (raw === '') {
-      setPercent(0)
-      safeEmit({ type: DiscountTypes.PERCENT, value: 0 })
-      return
-    }
-
-    const num = Number(raw)
-    setPercent(num)
-    safeEmit({ type: DiscountTypes.PERCENT, value: num })
-  }, [safeEmit])
+    setPercent(raw === '' ? 0 : Number(raw))
+    // No emit here — the user must click "Aplicar porcentaje" to commit
+  }, [])
 
   const handleValueChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.trim()
@@ -136,21 +145,8 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
     setValueInput(raw)
     setPercent(0)
     setPercentInput('')
-
-    if (raw === '') {
-      safeEmit({ type: DiscountTypes.AMOUNT, value: 0 })
-      return
-    }
-
-    const num = Number(raw)
-    // guard negative or NaN
-    if (Number.isNaN(num) || num < 0) {
-      safeEmit({ type: DiscountTypes.AMOUNT, value: 0 })
-      return
-    }
-
-    safeEmit({ type: DiscountTypes.AMOUNT, value: num })
-  }, [safeEmit])
+    // No emit here — the user must click "Agregar descuento" to commit
+  }, [])
 
   const handleClean = useCallback(() => {
     setMode(DiscountTypes.PERCENT)
@@ -171,6 +167,12 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
     if (Number.isNaN(num) || num < 0) return
     safeEmit({ type: DiscountTypes.AMOUNT, value: num })
   }, [valueInput, safeEmit])
+
+  const handleApplyPercent = useCallback(() => {
+    const num = Number(percentInput || 0)
+    if (Number.isNaN(num) || num < 0 || num > 100) return
+    safeEmit({ type: DiscountTypes.PERCENT, value: num })
+  }, [percentInput, safeEmit])
 
   return (
     <div className={styles.wrapper}>
@@ -200,7 +202,7 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
         ))}
       </Row>
 
-      {!(discountPercent > 0 || discountAmount > 0) && (
+      {(discountPercent > 0 || discountAmount > 0) && (
         <Button primary onClick={handleClean}>
           Eliminar descuento
         </Button>
@@ -216,12 +218,18 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
         />
       </div>
 
+      {percentInput !== '' && !predefinedPercents.includes(Number(percentInput)) && (
+        <Button primary onClick={handleApplyPercent}>
+          Aplicar porcentaje
+        </Button>
+      )}
+
       <div className={styles.customWrapper}>
         <AmountInput
           type='text'
           label='Valor fijo ($), Ej: 10000'
-          value={valueInput}
-          defaultValue={discountAmount}
+          value={valueInput !== '' ? valueInput : undefined}
+          defaultValue={discountAmount > 0 ? discountAmount : undefined}
           onChange={handleValueChange}
           tabIndex={getInternalTabIndex(1)}
         />

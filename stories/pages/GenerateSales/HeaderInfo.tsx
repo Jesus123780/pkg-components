@@ -17,6 +17,8 @@ interface HeaderInfoProps {
   }
   totalProductPrice: string | number
   payId: string
+  discountPercent?: number
+  discountAmount?: number
   handleOpenAside: () => void
 }
 
@@ -29,8 +31,13 @@ export const HeaderInfo: React.FC<HeaderInfoProps> = ({
   },
   totalProductPrice = 0,
   payId = '',
+  discountPercent = 0,
+  discountAmount = 0,
   handleOpenAside = () => { }
 }) => {
+  const hasDiscount = discountPercent > 0 || discountAmount > 0
+  const resolvedClientName = (client?.clientName ?? '').trim()
+
   return (
     <Column className={styles['header-info']}>
       <Row>
@@ -49,12 +56,33 @@ export const HeaderInfo: React.FC<HeaderInfoProps> = ({
                 color={getGlobalStyle('--color-icons-primary')}
               />
             </div>
-            <Text className={styles['header-info__client-name']} title={client?.clientName}>
-              {client?.clientName !== null
-                ? client?.clientName
-                : 'No hay cliente seleccionado'
-              }
-            </Text>
+            <Column alignItems='flex-start' justifyContent='center'>
+              <Text className={styles['header-info__client-name']} title={client?.clientName}>
+                {resolvedClientName !== ''
+                  ? resolvedClientName
+                  : 'Sin cliente'
+                }
+              </Text>
+              {hasDiscount && (
+                <div className={styles['header-info__discount']}>
+                  {discountPercent > 0 && (
+                    <span className={styles['header-info__discount-badge']}>
+                      <Icon
+                        icon='IconPromo'
+                        size={10}
+                        color={getGlobalStyle('--color-text-white')}
+                      />
+                      {discountPercent}%
+                    </span>
+                  )}
+                  {discountAmount > 0 && (
+                    <span className={styles['header-info__discount-amount']}>
+                      -${Number(discountAmount).toLocaleString('es-CO')}
+                    </span>
+                  )}
+                </div>
+              )}
+            </Column>
           </Row>
         </Column>
         <button className={styles['header-info__client-info_payment']} onClick={handleOpenAside}>

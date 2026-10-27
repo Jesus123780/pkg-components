@@ -1,0 +1,62 @@
+/* =========================================================
+   SALE SUMMARY PANEL
+   ========================================================= */
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 12px 16px;
+  margin-bottom: 8px;
+
+  border-radius: 8px;
+  background-color: var(--color-background-primary-light, #fcebea);
+
+  border: 1px solid var(--color-neutral-gray-light, #e5e5e5);
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.summaryLabel {
+  flex-shrink: 0;
+  color: var(--color-neutral-gray-dark, #555);
+  font-size: var(--font-size-sm, 13px);
+}
+
+.summaryValue {
+  font-size: var(--font-size-sm, 13px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-text-black, #111);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summaryValueEmpty {
+  font-size: var(--font-size-sm, 13px);
+  color: var(--color-neutral-gray-silver, #999);
+  font-style: italic;
+}
+
+.summaryDivider {
+  height: 1px;
+  background-color: var(--color-neutral-gray-light, #e5e5e5);
+  margin: 2px 0;
+}
+
+.summaryBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: var(--color-primary-red, #e02020);
+  color: var(--color-text-white, #fff);
+  font-size: var(--font-size-xs, 11px);
+  font-weight: var(--font-weight-semibold, 600);
+}
