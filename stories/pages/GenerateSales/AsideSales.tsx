@@ -203,7 +203,6 @@ export const AsideSales: React.FC<AsideProps> = ({
           value={values?.ValueDelivery}
         />
         <OrderDiscount
-          key={discountResetKey}
           tabIndex={4}
           onChange={handleDiscount}
           discountPercent={discountPercent}

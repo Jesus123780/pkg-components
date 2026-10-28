@@ -15,8 +15,8 @@
     min-height: 0;
 
     grid-template-rows:
-        50px
-        50px
+        minmax(50px, auto)
+        minmax(50px, auto)
         minmax(0, 1fr)
         50px;
 
@@ -79,7 +79,7 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 0 20px;
+    padding: 8px 20px;
 
     border-radius: 4px;
 }
@@ -87,9 +87,11 @@
 .header-info_content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    width: 150px;
+    gap: 10px;
+
+    width: auto;
+    min-width: 0;
 }
 
 
@@ -775,9 +777,9 @@
 .header-info__discount {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 
-    margin-top: 2px;
+    margin-top: 4px;
 }
 
 .header-info__discount-badge {
@@ -785,7 +787,7 @@
     align-items: center;
     gap: 3px;
 
-    padding: 1px 6px;
+    padding: 2px 8px;
 
     border-radius: 10px;
 
@@ -795,7 +797,7 @@
 
     font-size: 11px;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.6;
 
     white-space: nowrap;
 }
@@ -805,4 +807,32 @@
     font-weight: 500;
     color: var(--color-primary-red, #e02020);
     white-space: nowrap;
+}
+
+/* =========================================================
+   HEADER INFO — CLIENT META (phone, items count)
+   ========================================================= */
+
+.header-info__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 3px;
+}
+
+.header-info__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-neutral-gray-dark, #555);
+    white-space: nowrap;
+}
+
+.header-info__meta-item--highlight {
+    font-weight: 600;
+    color: var(--color-text-black, #111);
 }

@@ -157,7 +157,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   },
   handleAddProduct = (product: ProductFood) => {
     return product
-  }
+  },
+  handleSavePendingOrder,
+  pendingOrdersCount
 }) => {
   const fields = [
     { key: 'name', label: 'Nombre', defaultDirection: 'asc' },
@@ -302,6 +304,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           }}
           handleOpenAside={handleOpenAside}
           totalProductPrice={totalProductPrice}
+          productCount={data?.PRODUCT?.length ?? 0}
           discountPercent={data.discountPercent ?? 0}
           discountAmount={data?.discountAmount ?? 0}
           payId={paymentMethods[Number(data?.payId) - 1]?.name ?? paymentMethods[0]?.name}
@@ -357,6 +360,13 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             </Text>
           </Row>
           <Row style={{ width: 'min-content', display: 'flex' }}>
+              <Button
+              disabled={Boolean(data?.PRODUCT?.length === 0)}
+              onClick={handleSavePendingOrder}
+              primary={false}
+            >
+              Enviar a espera
+            </Button>
             <Button
               onClick={() => {
                 dispatch({ type: 'REMOVE_ALL_PRODUCTS' })

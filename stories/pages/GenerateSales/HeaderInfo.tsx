@@ -19,6 +19,8 @@ interface HeaderInfoProps {
   payId: string
   discountPercent?: number
   discountAmount?: number
+  /** Total number of line items currently in the cart. */
+  productCount?: number
   handleOpenAside: () => void
 }
 
@@ -33,36 +35,68 @@ export const HeaderInfo: React.FC<HeaderInfoProps> = ({
   payId = '',
   discountPercent = 0,
   discountAmount = 0,
+  productCount = 0,
   handleOpenAside = () => { }
 }) => {
   const hasDiscount = discountPercent > 0 || discountAmount > 0
   const resolvedClientName = (client?.clientName ?? '').trim()
+  const resolvedPhone = (client?.clientNumber ?? '').trim()
 
   return (
     <Column className={styles['header-info']}>
       <Row>
         <Column alignItems='flex-start' justifyContent='center'>
           <Row
-            alignItems='center'
+            alignItems='flex-start'
             className={styles['header-info_content']}
             onClick={handleOpenAside}
           >
-            <div style={{ width: 'min-content' }}>
+            <div style={{ width: 'min-content', paddingTop: '2px' }}>
               <Icon
                 icon='IconUser'
-                size={30}
-                height={30}
-                width={30}
+                size={28}
+                height={28}
+                width={28}
                 color={getGlobalStyle('--color-icons-primary')}
               />
             </div>
             <Column alignItems='flex-start' justifyContent='center'>
+              {/* Client name */}
               <Text className={styles['header-info__client-name']} title={client?.clientName}>
                 {resolvedClientName !== ''
                   ? resolvedClientName
                   : 'Sin cliente'
                 }
               </Text>
+
+              {/* Phone + item count row */}
+              <div className={styles['header-info__meta']}>
+                {resolvedPhone !== '' && (
+                  <span className={styles['header-info__meta-item']}>
+                    <Icon
+                      icon='IconPhone'
+                      size={10}
+                      color={getGlobalStyle('--color-neutral-gray-dark')}
+                    />
+                    {resolvedPhone}
+                  </span>
+                )}
+                {productCount > 0 && (
+                  <span className={styles['header-info__meta-item']}>
+                    <Icon
+                      icon='IconShopping'
+                      size={10}
+                      color={getGlobalStyle('--color-neutral-gray-dark')}
+                    />
+                    <span className={styles['header-info__meta-item--highlight']}>
+                      {productCount}
+                    </span>
+                    {productCount === 1 ? ' producto' : ' productos'}
+                  </span>
+                )}
+              </div>
+
+              {/* Discount row */}
               {hasDiscount && (
                 <div className={styles['header-info__discount']}>
                   {discountPercent > 0 && (
