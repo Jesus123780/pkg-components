@@ -28,6 +28,7 @@ import { MODAL_SIZES } from '../../molecules/Modal/helpers'
 import { Query, type Sort } from './components/querys'
 import { LAYOUT_TYPES } from './constants'
 import { ProductsView } from './components/ProductsView'
+import { PendingOrdersManager } from '../../organisms/PendingOrdersManager/PendingOrdersManager'
 
 interface IpropsSliderCategory {
   data: Root[]
@@ -158,8 +159,19 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   handleAddProduct = (product: ProductFood) => {
     return product
   },
-  handleSavePendingOrder,
-  pendingOrdersCount
+  pendingOrders = [],
+  pendingOrdersCount = 0,
+  totalStoredOrdersCount = 0,
+  isPendingOrdersReady = true,
+  canPersistPendingOrders = false,
+  handleSavePendingOrder = () => null,
+  handleResumePendingOrder = () => false,
+  handleRemovePendingOrder = () => false,
+  handleUpdatePendingOrder = () => undefined,
+  handleUpdatePendingStatus = () => undefined,
+  handleClearPendingOrders = () => false,
+  handlePersistPendingOrder = async () => false,
+  searchPendingOrders = undefined,
 }) => {
   const fields = [
     { key: 'name', label: 'Nombre', defaultDirection: 'asc' },
@@ -170,6 +182,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   const [sort, setSort] = useState<Sort>({ field: 'name', direction: 'asc' })
   const [showFilter, setShowFilter] = useState<boolean>(false)
   const [layout, setLayout] = useState<LAYOUT_TYPES>(LAYOUT_TYPES.COLUMN)
+  const [showPendingOrders, setShowPendingOrders] = useState(false)
 
   return (
     <AwesomeModal
@@ -336,11 +349,13 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           </button>
         </div>
         <div className={styles.content__action}>
-          <Row style={{ width: '50%', display: 'flex', alignItems: 'center' }}>
+          {/* Cart summary */}
+          <div className={styles['content__action-summary']}>
             <div className={styles.content__counter}>
               <span className={styles.counter}>
                 {data?.counter > 99 ? '+99' : data?.counter ?? 0}
               </span>
+
               <Icon
                 size={20}
                 icon='IconInformationProduct'
@@ -349,39 +364,77 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                 color={getGlobalStyle('--color-icons-primary')}
               />
             </div>
-            <Text
-              align='center'
-              size='2xl'
-              color='gray-dark'
-              lineHeight='2xl'
-              styles={{ margin: '0 20px 0 20px' }}
-            >
-              {totalProductPrice}
-            </Text>
-          </Row>
-          <Row style={{ width: 'min-content', display: 'flex' }}>
+
+            <div className={styles['content__action-total']}>
+              <span className={styles['content__action-label']}>
+                Total de la venta
+              </span>
+
+              <Text
+                align='left'
+                size='2xl'
+                color='gray-dark'
+                lineHeight='2xl'
+                styles={{ margin: 0 }}
+              >
+                {totalProductPrice}
+              </Text>
+            </div>
+          </div>
+
+          {/* Sale actions */}
+          <div
+            className={styles['content__action-buttons']}
+            role='group'
+            aria-label='Acciones de la venta'
+          >
+            <div className={styles['content__action-button']}>
               <Button
-              disabled={Boolean(data?.PRODUCT?.length === 0)}
-              onClick={handleSavePendingOrder}
-              primary={false}
-            >
-              Enviar a espera
-            </Button>
-            <Button
-              onClick={() => {
-                dispatch({ type: 'REMOVE_ALL_PRODUCTS' })
-              }}
-            >
-              Eliminar
-            </Button>
-            <Button
-              disabled={Boolean(data?.PRODUCT?.length === 0)}
-              onClick={handleOpenAside}
-              primary={true}
-            >
-              Continuar
-            </Button>
-          </Row>
+                primary={false}
+                disabled={!isPendingOrdersReady || !data?.PRODUCT?.length}
+                onClick={() => {
+                  handleSavePendingOrder({
+                    name: client?.clientName,
+                    document: client?.ccClient,
+                    phone: client?.clientNumber,
+                    address: client?.ClientAddress
+                  })
+                }}
+              >
+                Enviar a espera
+              </Button>
+            </div>
+
+            <div className={styles['content__action-button']}>
+              <Button
+                primary={false}
+                disabled={!isPendingOrdersReady}
+                onClick={() => setShowPendingOrders(true)}
+              >
+                Lista de espera ({pendingOrdersCount})
+              </Button>
+            </div>
+
+            <div className={styles['content__action-button']}>
+              <Button
+                onClick={() => {
+                  dispatch({ type: 'REMOVE_ALL_PRODUCTS' })
+                }}
+              >
+                Eliminar
+              </Button>
+            </div>
+
+            <div className={styles['content__action-button']}>
+              <Button
+                primary={true}
+                disabled={!data?.PRODUCT?.length}
+                onClick={handleOpenAside}
+              >
+                Continuar
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
       <AsideSales
@@ -403,6 +456,22 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         dataClientes={dataClientes}
         loadingClients={loadingClients}
         openAside={openAside}
+      />
+      <PendingOrdersManager
+        show={showPendingOrders}
+        onHide={() => setShowPendingOrders(false)}
+        orders={pendingOrders}
+        pendingOrdersCount={pendingOrdersCount}
+        totalStoredOrdersCount={totalStoredOrdersCount}
+        hasCurrentCart={Boolean(data?.PRODUCT?.length)}
+        canPersistPendingOrders={canPersistPendingOrders}
+        onResumePendingOrder={handleResumePendingOrder}
+        onRemovePendingOrder={handleRemovePendingOrder}
+        onUpdatePendingOrder={handleUpdatePendingOrder}
+        onUpdatePendingStatus={handleUpdatePendingStatus}
+        onClearPendingOrders={handleClearPendingOrders}
+        onPersistPendingOrder={handlePersistPendingOrder}
+        searchPendingOrders={searchPendingOrders}
       />
     </AwesomeModal >
   )
