@@ -298,6 +298,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         />
 
         <Pagination
+          size='md'
           currentPage={pagination.currentPage}
           handleNextPage={() => { return handlePageChange(pagination.currentPage + 1) }}
           handleOnClick={(pageNumber) => { return handlePageChange(pageNumber) }}

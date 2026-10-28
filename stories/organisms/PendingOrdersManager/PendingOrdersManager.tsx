@@ -189,7 +189,6 @@ export const PendingOrdersManager: React.FC<PendingOrdersManagerProps> = ({
       size={MODAL_SIZES.large}
       header
       footer={false}
-      animationDuration={250}
       customHeight='80vh'
       height='min-content'
       borderRadius={getGlobalStyle('--border-radius-xs')}

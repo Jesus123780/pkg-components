@@ -1,18 +1,45 @@
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
 .paginationContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.button,
+.active {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius-2xs);
+  cursor: pointer;
+  font: inherit;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .button {
-  cursor: pointer;
-  margin: 5px;
-  border: none;
   background-color: var(--color-neutral-gray-light);
-  border-radius: var(--border-radius-2xs);
-  width: var(--spacing-4xl);
-  height: var(--spacing-4xl);
   color: var(--color-neutral-black);
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(0.96);
 }
 
 .button:disabled {
@@ -23,23 +50,117 @@
 .active {
   background-color: var(--color-primary-red);
   color: var(--color-text-white);
-  padding: 10px;
-  border-radius: var(--border-radius-2xs);
-  width: var(--spacing-4xl);
-  height: var(--spacing-4xl);
+  font-weight: 600;
 }
+
+.button:focus-visible,
+.active:focus-visible {
+  outline: 2px solid var(--color-primary-red);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   SIZE VARIANTS
+   ========================================================= */
+
+/* Small: 28px */
+
+.size-sm .button,
+.size-sm .active {
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+}
+
+.size-sm .pageInput {
+  width: 76px;
+  height: 28px;
+  font-size: 12px;
+}
+
+.size-sm .goButton {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* Medium: 36px */
+
+.size-md .button,
+.size-md .active {
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+}
+
+.size-md .pageInput {
+  width: 100px;
+  height: 36px;
+  font-size: 14px;
+}
+
+.size-md .goButton {
+  height: 36px;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+/* Large: 44px */
+
+.size-lg .button,
+.size-lg .active {
+  width: 44px;
+  height: 44px;
+  font-size: 16px;
+}
+
+.size-lg .pageInput {
+  width: 120px;
+  height: 44px;
+  font-size: 16px;
+}
+
+.size-lg .goButton {
+  height: 44px;
+  padding: 0 16px;
+  font-size: 16px;
+}
+
+/* Extra large: 52px */
+
+.size-xl .button,
+.size-xl .active {
+  width: 52px;
+  height: 52px;
+  font-size: 18px;
+}
+
+.size-xl .pageInput {
+  width: 140px;
+  height: 52px;
+  font-size: 18px;
+}
+
+.size-xl .goButton {
+  height: 52px;
+  padding: 0 20px;
+  font-size: 18px;
+}
+
+/* =========================================================
+   PAGE INPUT
+   ========================================================= */
 
 .pageInputContainer {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   width: fit-content;
 }
 
 .pageInput {
-  width: 100px;
-  height: var(--spacing-4xl);
-  padding: 0.5rem;
+  box-sizing: border-box;
+  padding: 0 8px;
   border: 1px solid var(--color-neutral-gray);
   border-radius: 4px;
   text-align: center;
@@ -47,13 +168,25 @@
   background-color: var(--color-base-white);
 }
 
+.pageInput:focus-visible {
+  outline: 2px solid var(--color-primary-red);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   GO BUTTON
+   ========================================================= */
+
 .goButton {
+  box-sizing: border-box;
+  border: none;
+  border-radius: var(--border-radius-2xs);
   background-color: var(--color-primary-red);
   color: var(--color-text-white);
-  border: none;
-  padding: 0.5rem 1rem;
   cursor: pointer;
-  height: var(--spacing-4xl);
-  border-radius: var(--border-radius-2xs);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
+}
+
+.goButton:hover {
+  filter: brightness(0.92);
 }
