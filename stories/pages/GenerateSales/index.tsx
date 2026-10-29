@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { AwesomeModal } from '../../organisms/AwesomeModal'
 import {
   Button,
   Icon,
-  Row,
   Text
 } from '../../atoms'
 import {
@@ -26,6 +25,7 @@ import { ProductsSales } from './components/products-sales'
 import { type SortOption } from '../../molecules/Sorter'
 import { MODAL_SIZES } from '../../molecules/Modal/helpers'
 import { Query, type Sort } from './components/querys'
+import type { FilterSelection } from './components/querys/FilterConfigsViewer'
 import { LAYOUT_TYPES } from './constants'
 import { ProductsView } from './components/ProductsView'
 import { PendingOrdersManager } from '../../organisms/PendingOrdersManager/PendingOrdersManager'
@@ -94,6 +94,15 @@ interface GenerateSalesProps {
   activeFilter: (props: any) => void
   setShow?: React.Dispatch<React.SetStateAction<boolean>>
   dataFilter: any
+  /**
+   * Applies the selected filters by translating the selection into query
+   * variables and running the real product search. Receives the raw selection
+   * (groupId → Set of value ids); the parent builds the variables via
+   * useFilterConfigs().buildVariables(selection).
+   */
+  onApplyFilters?: (selection: Record<string, Set<string>>) => void
+  /** Clears every applied filter and reloads the full product list. */
+  onClearFilters?: () => void
 }
 export const GenerateSales: React.FC<GenerateSalesProps> = ({
   productsFood = [],
@@ -172,6 +181,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   handleClearPendingOrders = () => false,
   handlePersistPendingOrder = async () => false,
   searchPendingOrders = undefined,
+  onApplyFilters = () => undefined,
+  onClearFilters = () => undefined,
 }) => {
   const fields = [
     { key: 'name', label: 'Nombre', defaultDirection: 'asc' },
@@ -183,6 +194,37 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   const [showFilter, setShowFilter] = useState<boolean>(false)
   const [layout, setLayout] = useState<LAYOUT_TYPES>(LAYOUT_TYPES.COLUMN)
   const [showPendingOrders, setShowPendingOrders] = useState(false)
+
+  // ── Filter selection state ─────────────────────────────────────────────────
+  const [filterSelection, setFilterSelection] = useState<FilterSelection>({})
+  const [clearTrigger, setClearTrigger] = useState(false)
+
+  const totalActiveFilters = Object.values(filterSelection).reduce(
+    (acc, s) => acc + s.size,
+    0
+  )
+
+  const handleSelectionChange = useCallback((next: FilterSelection) => {
+    setFilterSelection(next)
+    // Reset the clear trigger once a new selection comes in
+    setClearTrigger(false)
+  }, [])
+
+  const handleClearFilters = useCallback(() => {
+    setFilterSelection({})
+    setClearTrigger(true)
+    // Flip back immediately so the trigger can fire again next time
+    requestAnimationFrame(() => setClearTrigger(false))
+    // Reload the full product list upstream
+    onClearFilters()
+  }, [onClearFilters])
+
+  const handleApplyFilters = useCallback((selection: FilterSelection) => {
+    // Delegate translation (selection → query variables) + the real search to
+    // the parent, then close the filter modal.
+    onApplyFilters(selection)
+    setShowFilter(false)
+  }, [onApplyFilters])
 
   return (
     <AwesomeModal
@@ -217,8 +259,12 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
           sort={sort}
           setSort={setSort}
           dataFilter={dataFilter}
-          activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
+          selection={filterSelection}
+          onSelectionChange={handleSelectionChange}
+          clearTrigger={clearTrigger}
+          onApplyFilters={handleApplyFilters}
+          onClearFilters={handleClearFilters}
+          totalActiveFilters={totalActiveFilters}
         />
       </AwesomeModal>
       <div className={styles.container}>
@@ -251,7 +297,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             aria-expanded={showFilter}
           >
             <Text color='primary'>
-              Filtros
+              Filtros{totalActiveFilters > 0 ? ` (${totalActiveFilters})` : ''}
             </Text>
 
             <Icon
@@ -267,6 +313,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             type='button'
             className={styles['header-query__action--clear']}
             data-test-id='clear-filters'
+            disabled={totalActiveFilters === 0}
+            onClick={handleClearFilters}
           >
             <Text
               color='gray-dark'

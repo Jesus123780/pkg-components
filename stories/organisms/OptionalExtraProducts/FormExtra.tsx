@@ -35,8 +35,8 @@ interface Props {
   }) => void
   setSelectedExtra?: (
     args:
-      | SelectedExtra
-      | ((prev: SelectedExtra) => SelectedExtra)
+    | SelectedExtra
+    | ((prev: SelectedExtra) => SelectedExtra)
   ) => void
   handleCheck?: (
     event: React.ChangeEvent<HTMLInputElement>

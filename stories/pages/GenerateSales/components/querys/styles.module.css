@@ -5,69 +5,169 @@
   border-radius: 8px;
   padding: 12px;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
+/* ── Tab bar ─────────────────────────────────────────────────── */
 .tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
 .tabBtn {
-  padding: 6px 10px;
-  border: 1px solid #eee;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid #e0e0e0;
   background: transparent;
-  border-radius: 6px;
+  border-radius: 20px;
   cursor: pointer;
   font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.tabBtn:hover {
+  border-color: #aaa;
+  background: #f5f5f5;
 }
 
 .tabActive {
-  background: #0b74de;
+  background: #e53935;
   color: #fff;
-  border-color: #0b74de;
+  border-color: #e53935;
 }
 
+.tabBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tabActive .tabBadge {
+  background: rgba(255,255,255,0.35);
+  color: #fff;
+}
+
+/* ── Groups grid ─────────────────────────────────────────────── */
 .groups {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .group {
   border: 1px solid #f2f4f7;
-  padding: 10px;
-  border-radius: 6px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fafafa;
 }
 
 .groupTitle {
-  margin: 0 0 8px 0;
-  font-size: 14px;
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
+/* ── Value lists ─────────────────────────────────────────────── */
 .valuesList {
   margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* WORD_CLOUD / WORD_CLOUD_SINGLE → pill layout (default, already handled by flex-wrap) */
+
+/* CHECKBOX → stack vertically */
+.displayType_CHECKBOX {
   flex-direction: column;
   gap: 6px;
 }
 
-.valueItem {
-  display: flex;
-  align-items: center;
+/* GRID → 2-column grid of pills */
+.displayType_GRID {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 8px;
+}
+
+/* SLIDER → keep as row (range inputs) */
+.displayType_SLIDER {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Value item (pill) ───────────────────────────────────────── */
+.valueItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  cursor: pointer;
   font-size: 13px;
+  color: #444;
+  background: #fff;
+  user-select: none;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  outline: none;
+}
+
+.valueItem:hover {
+  border-color: #bbb;
+  background: #f0f0f0;
+}
+
+.valueItem:focus-visible {
+  box-shadow: 0 0 0 2px #e5393580;
+}
+
+.valueItemSelected {
+  background: #fff3e0;
+  border-color: #e53935;
+  color: #e53935;
+  font-weight: 600;
+}
+
+/* Checkbox variant: full-width row */
+.displayType_CHECKBOX .valueItem {
+  border-radius: 6px;
+  width: 100%;
+  padding: 7px 10px;
+}
+
+/* Grid variant: fill cell */
+.displayType_GRID .valueItem {
+  width: 100%;
+  justify-content: center;
+  border-radius: 8px;
 }
 
 .valueImage {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   object-fit: cover;
   border-radius: 4px;
+  flex-shrink: 0;
 }
 
 .valueText {
@@ -76,23 +176,53 @@
 
 .valueBadge {
   background: #eef6ff;
+  color: #0b74de;
   padding: 2px 6px;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 11px;
+  font-weight: 600;
 }
 
-.noValues, .noGroups {
-  color: #7a7a7a;
+.valueItemSelected .valueBadge {
+  background: #ffe0b2;
+  color: #e53935;
+}
+
+/* ── Summary / status ────────────────────────────────────────── */
+.selectionSummary {
+  margin-top: 14px;
+  padding: 8px 12px;
+  background: #fff3e0;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #e53935;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ── States ──────────────────────────────────────────────────── */
+.noValues,
+.noGroups {
+  color: #9e9e9e;
   font-size: 13px;
+  padding: 4px 0;
 }
 
 .error {
   color: #b00020;
   margin-bottom: 8px;
+  font-size: 13px;
 }
 
 .retryBtn {
-  padding: 6px 10px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  font-size: 13px;
+}
+
+.retryBtn:hover {
+  background: #f5f5f5;
 }
