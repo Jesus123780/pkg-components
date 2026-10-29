@@ -50,7 +50,7 @@ const focusNextByTabIndex = (currentElement: HTMLElement): void => {
       return false
     }
     if (element.hidden ||
-            element.getAttribute('aria-hidden') === 'true') {
+      element.getAttribute('aria-hidden') === 'true') {
       return false
     }
     if (element.getClientRects()
@@ -58,7 +58,7 @@ const focusNextByTabIndex = (currentElement: HTMLElement): void => {
       return false
     }
     return (element.tabIndex >
-            currentTabIndex)
+      currentTabIndex)
   })
   focusableElements.sort((a, b) => a.tabIndex - b.tabIndex)
   const nextElement = focusableElements[0]
@@ -67,9 +67,9 @@ const focusNextByTabIndex = (currentElement: HTMLElement): void => {
   }
   nextElement.focus()
   if (nextElement instanceof
-        HTMLInputElement ||
-        nextElement instanceof
-            HTMLTextAreaElement) {
+    HTMLInputElement ||
+    nextElement instanceof
+    HTMLTextAreaElement) {
     try {
       const length = nextElement.value.length
       nextElement.setSelectionRange(length, length)
@@ -166,7 +166,7 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
     },
     range: {
       validate: (v: string) => range !== null &&
-                (Number((v ?? '').length) < Number(range?.min) || Number((v ?? '').length) > Number(range?.max)),
+        (Number((v ?? '').length) < Number(range?.min) || Number((v ?? '').length) > Number(range?.max)),
       message: `El rango de caracteres es de ${range?.min} a ${range?.max}`
     },
     letters: {
@@ -298,8 +298,8 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
       'Delete'
     ]
     if (navKeys.includes(e.key) &&
-            validateOn === 'change' &&
-            debounceMs === 0) {
+      validateOn === 'change' &&
+      debounceMs === 0) {
       const val = (e.target as HTMLInputElement | HTMLTextAreaElement).value
       const { valid, message: m } = validateInput(val)
       setErrors(!valid)
@@ -325,7 +325,7 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
          * cuando NO es textarea.
          */
     if (e.key === 'Enter' &&
-            as !== 'textarea') {
+      as !== 'textarea') {
       e.preventDefault()
       focusNextByTabIndex(e.currentTarget)
       onKeyDown(e)
@@ -369,56 +369,56 @@ export const InputHooks = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
   }, [])
   const Component = as === 'textarea' ? 'textarea' : 'input'
   return (<div ref={containerRef} style={containerStyle} className={styles.wrap_input}>
-      <Component {...(rest as any)} ref={setRef} autoFocus={autoFocus} tabIndex={tabIndex} data-required={Boolean(required)} disabled={Boolean(disabled)} data-required-step={step} name={name} max={typeof range?.max === 'number' ? range.max : undefined} min={typeof range?.min === 'number' ? range.min : undefined} onFocus={handleFocus} onChange={handleChange} onPaste={handlePaste} onBlur={handleBlur} placeholder={placeholder} autoComplete={autoComplete} value={value} aria-invalid={errors === true} onKeyDown={handleKeyDown as any} className={styles.input} type={type} style={inputStyle}/>
-      <button type="button" className={styles['label-input']} tabIndex={0} onClick={focusInput} onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          focusInput()
-        }
-      }} style={{
-        top: typeof value === 'string' && value.trim() !== '' ? '-8px' : '20px',
-        border: 'none',
-        padding: 0,
-        margin: 0,
-        width: 'auto',
-        textAlign: 'left',
-        cursor: 'pointer'
-      }}>
-        {title?.includes('*')
-          ? (<>
-              {title.replace('*', '')}
-              <span style={{
-                fontSize: getGlobalStyle('--font-size-xs'),
-                marginLeft: getGlobalStyle('--spacing-xs'),
-                color: getGlobalStyle('--color-neutral-gray-silver')
-              }}>
-                (Obligatorio)
-              </span>
-              <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>
-                *
-              </span>
-            </>)
-          : (<>{title}</>)}
-      </button>
-
-      {(errors === true || info !== '') && (<Row className={styles.wrap_tooltip} alignItems='center'>
-          <Icon icon='IconInfo' size={10} color={getGlobalStyle(errors === true ? '--color-icons-error' : '--color-icons-info')}/>
-          <span className={styles.tooltip} style={{ color: getGlobalStyle(errors === true ? '--color-text-error' : '--color-text-black') }}>
-            {errors === true ? message : info}
+    <Component {...(rest as any)} ref={setRef} autoFocus={autoFocus} tabIndex={tabIndex} data-required={Boolean(required)} disabled={Boolean(disabled)} data-required-step={step} name={name} max={typeof range?.max === 'number' ? range.max : undefined} min={typeof range?.min === 'number' ? range.min : undefined} onFocus={handleFocus} onChange={handleChange} onPaste={handlePaste} onBlur={handleBlur} placeholder={placeholder} autoComplete={autoComplete} value={value} aria-invalid={errors === true} onKeyDown={handleKeyDown as any} className={styles.input} type={type} style={inputStyle} />
+    <button type="button" className={styles['label-input']} tabIndex={0} onClick={focusInput} onKeyDown={(e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        focusInput()
+      }
+    }} style={{
+      top: typeof value === 'string' && value.trim() !== '' ? '-8px' : '20px',
+      border: 'none',
+      padding: 0,
+      margin: 0,
+      width: 'auto',
+      textAlign: 'left',
+      cursor: 'pointer'
+    }}>
+      {title?.includes('*')
+        ? (<>
+          {title.replace('*', '')}
+          <span style={{
+            fontSize: getGlobalStyle('--font-size-xs'),
+            marginLeft: getGlobalStyle('--spacing-xs'),
+            color: getGlobalStyle('--color-neutral-gray-silver')
+          }}>
+            (Obligatorio)
           </span>
-        </Row>)}
+          <span style={{ color: getGlobalStyle('--color-feedback-error-dark') }}>
+            *
+          </span>
+        </>)
+        : (<>{title}</>)}
+    </button>
 
-      {typeof range?.max !== 'undefined' && range?.max !== null && typeof value === 'string' && as === 'textarea' && (<Column className={styles.range_counter_container} alignItems='flex-end'>
-          <Text className={styles.range_counter_text} color='gray'>
-            <span style={{
-              marginRight: getGlobalStyle('--spacing-sm'),
-              color: (value.length > Number(range.max)) ? getGlobalStyle('--color-text-error') : undefined
-            }}>
-              {value.length}
-            </span>/ {range.max}
-          </Text>
-        </Column>)}
-    </div>)
+    {(errors === true || info !== '') && (<Row className={styles.wrap_tooltip} alignItems='center'>
+      <Icon icon='IconInfo' size={10} color={getGlobalStyle(errors === true ? '--color-icons-error' : '--color-icons-info')} />
+      <span className={styles.tooltip} style={{ color: getGlobalStyle(errors === true ? '--color-text-error' : '--color-text-black') }}>
+        {errors === true ? message : info}
+      </span>
+    </Row>)}
+
+    {typeof range?.max !== 'undefined' && range?.max !== null && typeof value === 'string' && as === 'textarea' && (<Column className={styles.range_counter_container} alignItems='flex-end'>
+      <Text className={styles.range_counter_text} color='gray'>
+        <span style={{
+          marginRight: getGlobalStyle('--spacing-sm'),
+          color: (value.length > Number(range.max)) ? getGlobalStyle('--color-text-error') : undefined
+        }}>
+          {value.length}
+        </span>/ {range.max}
+      </Text>
+    </Column>)}
+  </div>)
 })
 // memo for preventing unnecessary re-renders when props shallowly equal
 export default React.memo(InputHooks)
