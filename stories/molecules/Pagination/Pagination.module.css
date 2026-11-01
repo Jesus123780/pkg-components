@@ -43,7 +43,6 @@
 }
 
 .button:disabled {
-  background-color: var(--color-background-gray);
   cursor: not-allowed;
 }
 
@@ -189,4 +188,37 @@
 
 .goButton:hover {
   filter: brightness(0.92);
+}
+
+/* =========================================================
+   SKELETON LOADING
+   ========================================================= */
+
+.skeletonContainer {
+  justify-content: center;
+  align-items: center;
+}
+
+.skeletonItem {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.pageInputInvalid {
+  border-color: var(--color-text-error);
+}
+
+.inputError,
+.validationMessage {
+  color: var(--color-text-error);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.validationMessage {
+  margin: 0;
 }

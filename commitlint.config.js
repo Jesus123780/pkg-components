@@ -3,7 +3,6 @@ module.exports = {
   rules: {
     "type-enum": [2, "always", ["fix", "feat", "hotfix"]],
     'header-max-length': [2, 'always', 72],
-    'storybook/hierarchy-separator': [0],
   },
   
 };

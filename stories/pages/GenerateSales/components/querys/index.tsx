@@ -11,24 +11,25 @@ export type Sort = {
 
 interface QueryProps {
   sort: Sort
-  setSort: (v: { field: string; direction: 'asc' | 'desc' }) => void
+  setSort: (value: Sort) => void
   fields: SortOption[]
-  dataFilter?: any[]
-  /** Controlled selection passed down from parent */
+  dataFilter?: import('./FilterConfigsViewer').FilterTabDef[]
+  /** Controlled selection passed down from the parent. */
   selection?: FilterSelection
   onSelectionChange?: (selection: FilterSelection) => void
-  /** Flipping this to true resets all selections inside the viewer */
+  /** Resets the viewer selection when changed from false to true. */
   clearTrigger?: boolean
   loadingFilter?: boolean
   errorFilter?: Error | null
-  /** Runs the real product search with the current selection, then closes the modal. */
+  /** Applies the current selection and closes the filter modal. */
   onApplyFilters?: (selection: FilterSelection) => void
-  /** Clears every selected filter and reloads the full product list. */
+  /** Clears all selected filters and reloads the unfiltered product list. */
   onClearFilters?: () => void
-  /** Number of filters currently applied (for the Apply button label). */
+  /** Number of filters currently applied. */
   totalActiveFilters?: number
 }
 
+/** Filter modal content with a scrollable body and persistent action footer. */
 export const Query: React.FC<QueryProps> = ({
   dataFilter,
   selection = {},
@@ -39,62 +40,61 @@ export const Query: React.FC<QueryProps> = ({
   onApplyFilters,
   onClearFilters,
   totalActiveFilters = 0
-}) => {
-  return (
+}) => (
+  <Column
+    style={{
+      padding: getGlobalStyle('--spacing-md'),
+      height: '100%',
+      minHeight: 0
+    }}
+  >
     <Column
       style={{
-        padding: getGlobalStyle('--spacing-md'),
-        height: '100%'
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        flex: 1,
+        minHeight: 0
       }}
     >
-      <Column
-        style={{
-          overflowY: 'auto',
-          flex: 1,
-          minHeight: 0
-        }}
-      >
-        <FilterConfigsViewer
-          className=''
-          showEmptyMessage={false}
-          error={errorFilter}
-          loading={loadingFilter}
-          tabs={dataFilter ?? []}
-          selection={selection}
-          onSelectionChange={onSelectionChange}
-          clearTrigger={clearTrigger}
-        />
-      </Column>
-
-      {/* Footer de acciones */}
-      <Row
-        style={{
-          gap: getGlobalStyle('--spacing-md'),
-          paddingTop: getGlobalStyle('--spacing-md'),
-          borderTop: `1px solid ${getGlobalStyle('--color-neutral-gray-light')}`,
-          marginTop: getGlobalStyle('--spacing-md')
-        }}
-      >
-        <Button
-          type='button'
-          primary={false}
-          disabled={totalActiveFilters === 0}
-          onClick={() => onClearFilters?.()}
-          styles={{ flex: 1 }}
-        >
-          Limpiar
-        </Button>
-        <Button
-          type='button'
-          primary
-          onClick={() => onApplyFilters?.(selection)}
-          styles={{ flex: 2 }}
-        >
-          {totalActiveFilters > 0
-            ? `Aplicar filtros (${totalActiveFilters})`
-            : 'Aplicar filtros'}
-        </Button>
-      </Row>
+      <FilterConfigsViewer
+        showEmptyMessage={false}
+        error={errorFilter}
+        loading={loadingFilter}
+        tabs={dataFilter ?? []}
+        selection={selection}
+        onSelectionChange={onSelectionChange}
+        clearTrigger={clearTrigger}
+      />
     </Column>
-  )
-}
+
+    <Row
+      style={{
+        gap: getGlobalStyle('--spacing-md'),
+        paddingTop: getGlobalStyle('--spacing-md'),
+        marginTop: getGlobalStyle('--spacing-md'),
+        borderTop: `1px solid ${getGlobalStyle('--color-neutral-gray-light')}`,
+        flexShrink: 0
+      }}
+    >
+      <Button
+        type='button'
+        primary={false}
+        disabled={totalActiveFilters === 0}
+        onClick={() => onClearFilters?.()}
+        styles={{ flex: 1 }}
+      >
+        Limpiar
+      </Button>
+      <Button
+        type='button'
+        primary
+        onClick={() => onApplyFilters?.(selection)}
+        styles={{ flex: 2 }}
+      >
+        {totalActiveFilters > 0
+          ? `Aplicar filtros (${totalActiveFilters})`
+          : 'Aplicar filtros'}
+      </Button>
+    </Row>
+  </Column>
+)

@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { Icon } from '../Icon'
 import { getGlobalStyle } from '../../../helpers'
@@ -68,18 +67,4 @@ export const ActiveLink: React.FC<ActiveLinkProps> = ({
       </span>
     </Link>
   )
-}
-
-ActiveLink.defaultProps = {
-  className: '',
-  mIcon: -1,
-  currentPath: false,
-  icon: {}
-}
-
-ActiveLink.propTypes = {
-  activeClassName: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  name: PropTypes.string.isRequired
 }
