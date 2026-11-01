@@ -1107,7 +1107,7 @@ ProductsViewProps
                 renderProductCard
               }
             />
-            )
+          )
           : (
             <div
               className={
@@ -1189,7 +1189,7 @@ ProductsViewProps
                 }
               />
             </div>
-            )}
+          )}
       </div>
     </div>
   )

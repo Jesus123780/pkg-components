@@ -76,7 +76,7 @@ export const HorizontalScrollWrapper: React.FC<HorizontalScrollWrapperProps> = (
     // recalc inicial
     recalc()
 
-    const locked = false
+    let locked = false
     const onScroll = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
       rafRef.current = requestAnimationFrame(() => {

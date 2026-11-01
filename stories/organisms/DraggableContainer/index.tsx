@@ -69,7 +69,7 @@ export const DraggableContainer = ({
       const animation = modalRef.current.animate(
         [
           { transform: `translateY(${translateAmount}px)` },
-          { transform: 'translateY(0px)' }
+          { transform: `translateY(0px)` }
         ],
         {
           duration: 200
@@ -102,10 +102,9 @@ export const DraggableContainer = ({
   }
 
   return (
-    isOpen
-      ? (
+    isOpen ? (
       <>
-        <div className={styles.draggable__fullScreen} onClick={() => { return onClose() }} />
+        <div className={styles.draggable__fullScreen} onClick={() => {return onClose()}} />
         <div
           className={styles.draggable__container}
           onTouchStart={handleDragStart}
@@ -118,10 +117,9 @@ export const DraggableContainer = ({
           {children}
         </div>
       </>
-        )
-      : (
+    ) : (
       <div ref={modalRef} />
-        )
+    )
   )
 }
 
@@ -144,3 +142,4 @@ DraggableContainer.propTypes = {
   }),
   onClose: PropTypes.func
 }
+

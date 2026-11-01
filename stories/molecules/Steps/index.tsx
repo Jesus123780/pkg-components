@@ -1,34 +1,34 @@
 // File: Steps.tsx
-import React, { useCallback } from 'react'
-import styles from './styled.module.css'
-import { Icon } from '../../atoms'
-import { getGlobalStyle } from '../../../helpers'
+import React, { useCallback } from 'react';
+import styles from './styled.module.css';
+import { Icon } from '../../atoms';
+import { getGlobalStyle } from '../../../helpers';
 
-export type StepStatus = 'progress' | 'wait' | 'error' | 'finish'
-export type Orientation = 'horizontal' | 'vertical'
+export type StepStatus = 'progress' | 'wait' | 'error' | 'finish';
+export type Orientation = 'horizontal' | 'vertical';
 
 export interface StepsComponentProps {
-  current?: number // 0-based index
-  status?: StepStatus // status for the current step
-  titles?: string[]
-  orientation?: Orientation
-  size?: 'sm' | 'md' | 'lg'
-  clickable?: boolean
-  onChange?: (index: number) => void
+  current?: number; // 0-based index
+  status?: StepStatus; // status for the current step
+  titles?: string[];
+  orientation?: Orientation;
+  size?: 'sm' | 'md' | 'lg';
+  clickable?: boolean;
+  onChange?: (index: number) => void;
 }
 
 interface StepProps {
-  index: number
-  stepNumber: number
-  title: string
-  status: StepStatus
-  orientation: Orientation
-  size: 'sm' | 'md' | 'lg'
-  clickable: boolean
-  onClick?: (i: number) => void
+  index: number;
+  stepNumber: number;
+  title: string;
+  status: StepStatus;
+  orientation: Orientation;
+  size: 'sm' | 'md' | 'lg';
+  clickable: boolean;
+  onClick?: (i: number) => void;
 }
 
-const formatNumber = (n: number) => (n > 9 ? `${n}` : `0${n}`)
+const formatNumber = (n: number) => (n > 9 ? `${n}` : `0${n}`);
 
 export const StepsComponent = ({
   current = 0,
@@ -37,15 +37,15 @@ export const StepsComponent = ({
   orientation = 'horizontal',
   size = 'md',
   clickable = false,
-  onChange
+  onChange,
 }: StepsComponentProps) => {
   const handleChange = useCallback(
     (i: number) => {
-      if (!clickable || !onChange) return
-      onChange(i)
+      if (!clickable || !onChange) return;
+      onChange(i);
     },
     [clickable, onChange]
-  )
+  );
 
   return (
     <nav
@@ -54,10 +54,10 @@ export const StepsComponent = ({
     >
       <ol className={styles.list}>
         {titles.map((title, i) => {
-          let stepStatus: StepStatus
-          if (i < current) stepStatus = 'finish'
-          else if (i === current) stepStatus = status === 'finish' ? 'finish' : status
-          else stepStatus = status === 'finish' ? 'finish' : 'wait'
+          let stepStatus: StepStatus;
+          if (i < current) stepStatus = 'finish';
+          else if (i === current) stepStatus = status === 'finish' ? 'finish' : status;
+          else stepStatus = status === 'finish' ? 'finish' : 'wait';
 
           return (
             <li key={title || i} className={styles.stepWrapper}>
@@ -82,21 +82,21 @@ export const StepsComponent = ({
                 />
               )}
             </li>
-          )
+          );
         })}
       </ol>
     </nav>
-  )
-}
+  );
+};
 
 const Step = ({ index, stepNumber, title, status, orientation, size, clickable, onClick }: StepProps) => {
-  const isCurrent = status === 'progress'
-  const ariaCurrent = isCurrent ? 'step' : undefined
+  const isCurrent = status === 'progress';
+  const ariaCurrent = isCurrent ? 'step' : undefined;
 
   const handleKey = (e: React.KeyboardEvent) => {
-    if (!clickable || !onClick) return
-    if (e.key === 'Enter' || e.key === ' ') onClick(index)
-  }
+    if (!clickable || !onClick) return;
+    if (e.key === 'Enter' || e.key === ' ') onClick(index);
+  };
 
   return (
     <div className={`${styles.step} ${orientation === 'vertical' ? styles.stepVertical : ''}`}>
@@ -110,19 +110,15 @@ const Step = ({ index, stepNumber, title, status, orientation, size, clickable, 
           aria-label={`Paso ${stepNumber}: ${title}`}
           disabled={!clickable}
         >
-          {status === 'finish'
-            ? (
+          {status === 'finish' ? (
            <Icon icon="IconMiniCheck" size={20} color={getGlobalStyle('--color-icons-success')} />
-              )
-            : status === 'error'
-              ? (
+          ) : status === 'error' ? (
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden focusable={false}>
               <path fill="none" stroke="currentColor" strokeWidth="2" d="M12 7v6M12 17h.01" />
             </svg>
-                )
-              : (
+          ) : (
             <span className={styles.stepNumber}>{formatNumber(stepNumber)}</span>
-                )}
+          )}
         </button>
       </div>
 
@@ -130,10 +126,10 @@ const Step = ({ index, stepNumber, title, status, orientation, size, clickable, 
         <div className={styles.title}>{title}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default StepsComponent
+export default StepsComponent;
 
 /*
   File: styled.module.css

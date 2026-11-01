@@ -20,10 +20,10 @@ interface CardOptionsPanelProps {
 
 /**
  * 📂 CardOptionsPanel (Versión dinámica)
- *
+ * 
  * Panel lateral deslizable desde la derecha.
  * Recibe una lista de acciones configurables.
- *
+ * 
  * Ejemplo:
  * ```tsx
  * <CardOptionsPanel
@@ -45,7 +45,7 @@ export const CardOptionsPanel: React.FC<CardOptionsPanelProps> = ({
       {actions.map((action, index) => (
         <button
           key={index}
-          onClick={() => {
+          onClick={()=> {
             action.onClick?.()
           }}
           className={`${styles.optionItem} ${action.danger ? styles.danger : ''}`}

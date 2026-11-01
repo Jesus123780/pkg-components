@@ -26,8 +26,7 @@ const options = {
   }
 }
 
-export const LineChart = () => {
-  return (
+export const LineChart = () => {return (
   <>
     <div className='header'>
       <div className='links'>
@@ -36,5 +35,4 @@ export const LineChart = () => {
     </div>
     <Line data={data} options={options} />
   </>
-  )
-}
+)}

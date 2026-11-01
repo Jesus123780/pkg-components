@@ -11,21 +11,21 @@ const meta: Meta<typeof SwipeableCard> = {
   title: 'molecules/SwipeableCard',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    const swipeableCard = canvas.getByText('Swipe me!').parentElement!
+    const swipeableCard = canvas.getByText('Swipe me!').parentElement as HTMLElement
 
     // 1️⃣ Deslizar a la izquierda para mostrar acciones
     fireEvent.pointerDown(swipeableCard, { clientX: 200 })
     fireEvent.pointerMove(swipeableCard, { clientX: 80 })
     fireEvent.pointerUp(swipeableCard)
 
-    await waitFor(async () => await new Promise((r) => setTimeout(r, 400)))
+    await waitFor(() => new Promise((r) => setTimeout(r, 400)))
 
     // 2️⃣ Deslizar más a la izquierda para simular eliminación
     fireEvent.pointerDown(swipeableCard, { clientX: 200 })
     fireEvent.pointerMove(swipeableCard, { clientX: 0 }) // largo → deleteReady true
     fireEvent.pointerUp(swipeableCard)
 
-    await waitFor(async () => await new Promise((r) => setTimeout(r, 600)))
+    await waitFor(() => new Promise((r) => setTimeout(r, 600)))
 
     // 3️⃣ Reinsertar el swipe para probar el cierre automático (autoClose)
     fireEvent.pointerDown(swipeableCard, { clientX: 200 })
@@ -38,6 +38,7 @@ const meta: Meta<typeof SwipeableCard> = {
     fireEvent.pointerDown(swipeableCard, { clientX: 80 })
     fireEvent.pointerMove(swipeableCard, { clientX: 200 })
     fireEvent.pointerUp(swipeableCard)
+
   }
 }
 

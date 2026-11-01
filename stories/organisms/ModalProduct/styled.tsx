@@ -33,6 +33,7 @@ export const CardProductsContent = styled.div`
   }
 `
 
+
 export const DisRestaurant = styled.div`
   display: flex;
   flex-direction: column;

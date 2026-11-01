@@ -60,8 +60,8 @@ const computeSizeVariables = (
   size: SizeProp = 'medium'
 ): React.CSSProperties => {
   const presets: Record<
-  PredefinedSize,
-  React.CSSProperties
+    PredefinedSize,
+    React.CSSProperties
   > = {
     small: createSizeVariables(
       40,

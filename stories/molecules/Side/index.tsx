@@ -107,7 +107,7 @@ export const LateralModal: React.FC<LateralModalProps> = ({
   const transitionStyle: React.CSSProperties = {
     transition: `transform ${duration}ms cubic-bezier(.22,.9,.2,1)`,
     ...style,
-    height: style.height ?? 'calc(100vh - 85px)'
+    height: style.height ?? `calc(100vh - 85px)`
   }
 
   return (

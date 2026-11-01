@@ -14,7 +14,7 @@ describe('Image', () => {
   it('should render the image with correct attributes', () => {
     render(<Image {...defaultProps} />)
 
-    const img = screen.getByAltText('Test image')
+    const img = screen.getByAltText('Test image') as HTMLImageElement
 
     expect(img).toBeInTheDocument()
     expect(img.src).toBe(defaultProps.src)
@@ -27,7 +27,7 @@ describe('Image', () => {
   it('should render the image without optional props', () => {
     render(<Image src="https://example.com/image.jpg" />)
 
-    const img = screen.getByRole('img')
+    const img = screen.getByRole('img') as HTMLImageElement
     expect(img).toBeInTheDocument()
     expect(img.src).toBe('https://example.com/image.jpg')
     expect(img.alt).toBe('')

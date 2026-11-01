@@ -3,7 +3,7 @@
 import { Row } from '../../atoms'
 import styles from './Pulse.module.css'
 
-export function Pulse ({ active }: { readonly active: boolean }) {
+export function Pulse({ active }: { readonly active: boolean }) {
   return (
     <Row className={styles.wrapper} justifyContent='center'>
       <div

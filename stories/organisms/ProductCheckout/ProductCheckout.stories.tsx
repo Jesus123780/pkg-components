@@ -10,7 +10,7 @@ export default {
   }
 }
 
-const Template = (args) => { return <ProductCheckout {...args} /> }
+const Template = (args) => {return <ProductCheckout {...args} />}
 
 export const Default = Template.bind({})
 Default.args = {

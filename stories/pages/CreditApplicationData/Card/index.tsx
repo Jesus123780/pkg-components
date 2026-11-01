@@ -10,7 +10,7 @@ import styles from './Card.module.css'
 
 export const Card = () => {
   return (
-    <Column className={styles.card}>
+    <Column className={styles['card']}>
       <Icon icon='IconLogoCMFBlue' size={138} />
       <PaymentInfo paymentInfo={paymentInfo} />
       <Paragraph color='back' styles={{ marginTop: '10px' }}>

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import {
-  Button,
-  Loading,
-  RippleButton
+    Button,
+    Loading,
+    RippleButton
 } from '../../atoms'
 import { Section, Table } from '../Table'
 import { CreateProvider } from './Create'
@@ -14,17 +14,17 @@ export const Providers = ({
   errorForm = {},
   loading = false,
   show = false,
-  handleChange = () => { },
-  handleDeleteOneProvider = () => { },
-  handleForm = () => { },
-  handleGetOneProvider = () => { },
-  setDataValue = () => { },
-  setShow = () => { }
+  handleChange = () => { return },
+  handleDeleteOneProvider = () => { return },
+  handleForm = () => { return },
+  handleGetOneProvider = () => { return },
+  setDataValue = () => { return },
+  setShow = () => { return }
 }) => {
   if (error) return <>Error</>
   return (
     <div style={{ padding: '20px' }}>
-      <RippleButton onClick={() => { return setShow(!show) }}>Crear Proveedor</RippleButton>
+      <RippleButton onClick={() => {return setShow(!show)}}>Crear Proveedor</RippleButton>
       <CreateProvider
         dataForm={dataForm}
         errorForm={errorForm}
@@ -36,7 +36,7 @@ export const Providers = ({
       />
       {loading && <Loading />}
       <Table
-        data={(data.length > 0) ? data : []}
+        data={data.length ? data : []}
         labelBtn='Product'
         renderBody={(dataB, titles) => {
           return dataB?.map((client, i) => {

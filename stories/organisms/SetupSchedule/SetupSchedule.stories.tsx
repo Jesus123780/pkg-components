@@ -13,6 +13,6 @@ type Story = StoryObj<typeof SetupSchedule>
 
 export const Primary: Story = {
   args: {
-    days
+    days: days
   }
 }

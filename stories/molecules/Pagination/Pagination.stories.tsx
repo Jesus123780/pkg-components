@@ -40,11 +40,11 @@ const Template = (args: any) => {
   }
 
   const handlePrevPage = () => {
-    setCurrentPage((prev) => { return Math.max(prev - 1, 1) })
+    setCurrentPage((prev) => {return Math.max(prev - 1, 1)})
   }
 
   const handleNextPage = () => {
-    setCurrentPage((prev) => { return prev + 1 })
+    setCurrentPage((prev) => {return prev + 1})
   }
 
   return (

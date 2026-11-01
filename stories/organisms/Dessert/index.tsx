@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { RandomCode } from 'utils'
 
 const Dessert = () => {
+
   const data = [
     {
       title: null,
@@ -25,8 +26,8 @@ const Dessert = () => {
   const dragNode = useRef()
   const handleDragStart = (e, groupIndex, itemIndex) => {
     const params = {
-      groupIndex,
-      itemIndex
+      groupIndex: groupIndex,
+      itemIndex: itemIndex
     }
     dragItem.current = params
 
@@ -42,17 +43,18 @@ const Dessert = () => {
     (_a = dragNode.current) === null || _a === void 0 ? void 0 : _a.removeEventListener('dragend', handleDragEnd)
     dragItem.current = initialCoOrdinate
     dragNode.current = undefined
+
   }
   const handleDragEnter = (e, groupIndex, itemIndex) => {
     const params = {
-      groupIndex,
-      itemIndex
+      groupIndex: groupIndex,
+      itemIndex: itemIndex
     }
 
     const currentItem = dragItem.current
     if (e.target !== dragNode.current) {
       setList((oldList) => {
-        const newList = JSON.parse(JSON.stringify(oldList))
+        let newList = JSON.parse(JSON.stringify(oldList))
         newList[params.groupIndex].items.splice(params.itemIndex, 0, newList[currentItem.groupIndex].items.splice(currentItem.itemIndex, 1)[0])
         dragItem.current = params
         return newList
@@ -70,14 +72,14 @@ const Dessert = () => {
   const addCard = (groupIndex, itemIndex) => {
     const id = RandomCode(9)
     setList((oldList) => {
-      const newList = JSON.parse(JSON.stringify(oldList))
+      let newList = JSON.parse(JSON.stringify(oldList))
       newList[groupIndex].items.splice(itemIndex, 0, id)
       return newList
     })
   }
   const removeCard = (groupIndex, itemIndex) => {
     setList((oldList) => {
-      const newList = JSON.parse(JSON.stringify(oldList))
+      let newList = JSON.parse(JSON.stringify(oldList))
       newList[groupIndex].items.splice(itemIndex, 1)
       return newList
     })
@@ -85,14 +87,14 @@ const Dessert = () => {
   const duplicateCard = (groupIndex, itemIndex) => {
     const duplicate = list[groupIndex].items[itemIndex]
     setList((oldList) => {
-      const newList = JSON.parse(JSON.stringify(oldList))
+      let newList = JSON.parse(JSON.stringify(oldList))
       newList[groupIndex].items.splice(itemIndex, 0, duplicate)
       return newList
     })
   }
   const removeRow = (groupIndex) => {
     setList((oldList) => {
-      const newList = JSON.parse(JSON.stringify(oldList))
+      let newList = JSON.parse(JSON.stringify(oldList))
       newList.splice(groupIndex, 1)
       return newList
     })
@@ -100,11 +102,9 @@ const Dessert = () => {
   const addNewRow = () => {
     const id = RandomCode(9)
     setList((oldList) => {
-      const newList = JSON.parse(JSON.stringify(oldList))
+      let newList = JSON.parse(JSON.stringify(oldList))
       newList.push({
-        title: id,
-        id,
-        items: [
+        title: id, id: id, items: [
           {
             title: 'Elige tu salsa favorita'
           }
@@ -125,8 +125,8 @@ const Dessert = () => {
               onDragEnter={
                 dragging && !grp?.items?.length
                   ? (e) => {
-                      handleDragEnter(e, grpIdx, 0)
-                    }
+                    handleDragEnter(e, grpIdx, 0)
+                  }
                   : undefined
               }
             >

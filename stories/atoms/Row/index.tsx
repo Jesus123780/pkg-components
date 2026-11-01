@@ -15,11 +15,11 @@ interface RowProps {
 }
 
 const GAP_SIZES: Record<NonNullable<RowProps['gap']>, string> = {
-  xs: '4px', // Extra pequeño
-  sm: '8px', // Pequeño
-  md: '12px', // Mediano
-  lg: '16px', // Grande
-  xl: '24px' // Extra grande
+  xs: '4px',   // Extra pequeño
+  sm: '8px',   // Pequeño
+  md: '12px',  // Mediano
+  lg: '16px',  // Grande
+  xl: '24px',  // Extra grande
 }
 
 export const Row: React.FC<RowProps> = ({
@@ -30,7 +30,7 @@ export const Row: React.FC<RowProps> = ({
   className,
   as = 'div',
   onClick,
-  gap
+  gap,
 }) => {
   const Component = as
 

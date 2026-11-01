@@ -81,8 +81,8 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
                     <span className='card__des'>
                       {food?.ProDescuento > 0 ? `${numberFormat(food?.ProDescuento)}` : null}
                     </span>
-                    {showDiscount && food?.ProDescuento > 0 &&
-                      (
+                    {showDiscount && food?.ProDescuento > 0
+                      && (
                         <PercentBadge
                           baseValue={food?.ProDescuento}
                           compareValue={food?.ProPrice}

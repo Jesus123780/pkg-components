@@ -17,7 +17,7 @@ interface PaymentMethodsProps {
   payId?: string
   dispatch: React.Dispatch<any>
 }
-export const PaymentMethods: React.FC<PaymentMethodsProps> = ({
+export const PaymentMethods: React.FC<PaymentMethodsProps> = ({ 
   methods,
   payId = '',
   dispatch

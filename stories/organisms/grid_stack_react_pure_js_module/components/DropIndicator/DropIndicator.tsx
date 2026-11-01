@@ -4,20 +4,20 @@
  * Small component that shows a visual indicator where the drop will land.
  */
 
-import React, { useMemo } from 'react'
-import styles from './DropIndicator.module.css' // optional: you can fallback to inline style
-import { getGlobalStyle } from '../../../../../helpers'
-import { type GridItem } from '../../types/types'
+import React, { useMemo } from 'react';
+import styles from './DropIndicator.module.css'; // optional: you can fallback to inline style
+import { getGlobalStyle } from '../../../../../helpers';
+import { GridItem } from '../../types/types';
 
 interface DropIndicatorProps {
-  radio: number
-  target: GridItem | null
+  radio: number;
+  target: GridItem | null;
   pxHelpers: {
-    gridToPx: (value: number, isVertical: boolean) => number
-    widthPx: (w: number) => number
-    heightPx: (h: number) => number
-  } | null
-  animation?: { duration: number, easing: string }
+    gridToPx: (value: number, isVertical: boolean) => number;
+    widthPx: (w: number) => number;
+    heightPx: (h: number) => number;
+  } | null;
+  animation?: { duration: number; easing: string };
 }
 /**
  * DropIndicator
@@ -45,13 +45,13 @@ const DropIndicator: React.FC<DropIndicatorProps> = ({ radio, target, pxHelpers,
       borderRadius: radio,
       opacity: 0.7,
       transition: `all ${animation.duration}ms ${animation.easing}`,
-      pointerEvents: 'none'
-    }
-  }, [target, pxHelpers, animation])
+      pointerEvents: 'none',
+    };
+  }, [target, pxHelpers, animation]);
 
-  if (!target || !pxHelpers) return null
+  if (!target || !pxHelpers) return null;
 
-  return <div className={styles.dropIndicator} style={style} data-drop-indicator />
-}
+  return <div className={styles.dropIndicator} style={style} data-drop-indicator />;
+};
 
-export default DropIndicator
+export default DropIndicator;

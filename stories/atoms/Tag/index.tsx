@@ -1,6 +1,6 @@
 'use client'
 
-import React, { type JSX } from 'react'
+import React, { JSX } from 'react'
 import { classNames } from '../../../helpers'
 import styles from './styles.module.css'
 

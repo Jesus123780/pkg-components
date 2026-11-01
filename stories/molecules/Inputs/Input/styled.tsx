@@ -1,24 +1,26 @@
-import { type InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes } from 'react'
 import styled, { css } from 'styled-components'
 
+
 type InputVProps = InputHTMLAttributes<HTMLInputElement> & {
-  border?: string
-  size?: string
-  width?: string
-  radius?: string
-  paddingInput?: string
-  margin?: string
-  error?: string
-  minWidth?: string
+    border?: string;
+    size?: string;
+    width?: string;
+    radius?: string;
+    paddingInput?: string;
+    margin?: string;
+    error?: string;
+    minWidth?: string;
 }
 
 type LabelInputProps = InputHTMLAttributes<HTMLInputElement> & {
-  value?: string | number | readonly string[]
-  labelTop?: string
-  labelColor?: string
-  error?: string
-  type?: string
+    value?: string | number | readonly string[];
+    labelTop?: string;
+    labelColor?: string;
+    error?: string;
+    type?: string;
 }
+
 
 export const Tooltip = styled.div`
   display: block;

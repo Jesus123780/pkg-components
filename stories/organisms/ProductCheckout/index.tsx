@@ -23,10 +23,10 @@ export const ProductCheckout = ({
   url = '',
   nameStore,
   comment = '',
-  handleEditProduct = (product) => { return product },
+  handleEditProduct = (product) => { return product},
   numberFormat = (number) => { return number },
-  handleDeleteItemShopping = (product) => { return product },
-  sumProduct = (ProPrice, ValueDelivery, quantity) => { return ProPrice, ValueDelivery, quantity }
+  handleDeleteItemShopping = (product) => { return product},
+  sumProduct = (ProPrice, ValueDelivery, quantity ) => { return ProPrice, ValueDelivery, quantity }
 }) => {
   const salesExtProductFoodOptional = product?.salesExtProductFoodOptional
   return (
@@ -112,14 +112,12 @@ export const ProductCheckout = ({
           {salesExtProductFoodOptional?.map((productItem, idx) => {
             const subItems = productItem?.ExtProductFoodsSubOptionalAll
             const isLastItem = idx === subItems?.length - 1
-            return subItems?.map((subItem, index) => {
-              return (
+            return subItems?.map((subItem, index) => {return (
               <span key={index}>
                 {subItem?.OptionalSubProName ? `1x ${subItem?.OptionalSubProName}` : ''}
                 {isLastItem ? '' : ', '}
               </span>
-              )
-            })
+            )})
           })}
 
         </div>
@@ -185,10 +183,10 @@ export const ProductCheckout = ({
                 product.productFood?.ValueDelivery
               )}
             </Text>
-            )
+          )
           : (
             <Text color={APColor}>Gratis</Text>
-            )}
+          )}
       </div>
       <div className={styles.contentTotal}>
         <Text margin='0 0 0 10px'>Costo Final</Text>

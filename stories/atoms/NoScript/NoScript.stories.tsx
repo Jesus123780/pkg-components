@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import React from 'react'
-import { NoScript } from './index'
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import { NoScript } from './index';
 
 const meta: Meta = {
   title: 'atoms/NoScript',
@@ -8,16 +8,16 @@ const meta: Meta = {
   argTypes: {
   },
   args: {
-    children: <div>Some content</div>
-  }
-}
+    children: <div>Some content</div>,
+  },
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof NoScript>
+type Story = StoryObj<typeof NoScript>;
 
 export const Default: Story = {
-  args: {
-    children: <div>Some content</div>
-  }
-}
+    args: {
+      children: <div>Some content</div>,
+    },
+  };

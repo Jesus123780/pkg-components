@@ -21,6 +21,7 @@ describe('Column component', () => {
     expect(element.className).toMatch(/custom-class/)
   })
 
+
   it('renders with custom element tag using "as" prop', () => {
     render(<Column as="section">Section Element</Column>)
     const element = screen.getByText('Section Element')

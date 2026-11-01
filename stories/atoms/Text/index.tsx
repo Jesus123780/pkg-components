@@ -61,7 +61,7 @@ const LINE_HEIGHT_VALUES: Record<string, number | string> = {
  * React expects WebkitLineClamp, not -webkitLine-clamp or -webkit-line-clamp.
  * CSS custom properties (for example, --my-token) are kept unchanged.
  */
-function normalizeStyleKey (key: string): string {
+function normalizeStyleKey(key: string): string {
   if (key.startsWith('--')) return key
 
   const compactKey = key.replace(/^-/, '').toLowerCase()
@@ -80,7 +80,7 @@ function normalizeStyleKey (key: string): string {
   return normalizedKey
 }
 
-function normalizeInlineStyles (
+function normalizeInlineStyles(
   input?: CSSProperties | Record<string, unknown>
 ): CSSProperties {
   if (!input) return {}
@@ -93,11 +93,11 @@ function normalizeInlineStyles (
   return normalized as CSSProperties
 }
 
-function joinClassNames (values: Array<string | false | null | undefined>): string {
+function joinClassNames(values: Array<string | false | null | undefined>): string {
   return values.filter((value): value is string => Boolean(value)).join(' ')
 }
 
-function isCssColor (value: string): boolean {
+function isCssColor(value: string): boolean {
   return (
     value.startsWith('#') ||
     /^rgba?\(/i.test(value) ||
@@ -109,7 +109,7 @@ function isCssColor (value: string): boolean {
   )
 }
 
-export const Text = forwardRef<HTMLElement, TextProps>(function Text (
+export const Text = forwardRef<HTMLElement, TextProps>(function Text(
   {
     children,
     color = 'default',

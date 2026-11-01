@@ -1,12 +1,12 @@
-import React from 'react'
-import { type Meta } from '@storybook/react'
-import { SignedContract } from './index' // Asegúrate de tener la ruta correcta
+import React from 'react';
+import { Meta } from '@storybook/react';
+import { SignedContract } from './index'; // Asegúrate de tener la ruta correcta
 
 export default {
   title: 'pages/SignedContract',
-  component: SignedContract
-} as Meta
+  component: SignedContract,
+} as Meta;
 
-const Template: any = (args: any) => <SignedContract {...args} />
+const Template: any = (args: any) => <SignedContract {...args} />;
 
-export const HomeView = Template.bind({})
+export const HomeView = Template.bind({});

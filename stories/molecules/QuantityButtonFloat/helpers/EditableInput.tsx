@@ -1,4 +1,4 @@
-import React, { type KeyboardEvent } from 'react'
+import React, { KeyboardEvent } from 'react'
 import { Icon, Row } from '../../../atoms'
 import { getGlobalStyle } from '../../../../helpers'
 import styles from './styles.module.css'
@@ -7,7 +7,7 @@ export interface EditableInputProps {
   handleCancelUpdateQuantity?: () => void
   handleSuccessUpdateQuantity?: () => void
   handleChangeQuantity?: (event: {
-    target: { name: string, value: number }
+    target: { name: string; value: number }
   }) => void
   quantity?: string | number
 }

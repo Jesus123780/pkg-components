@@ -9,6 +9,7 @@ const ScaleModal = ({ show, children, size, title, height }) => {
   const [state, setState] = useState(show)
   const onBackdropHide = () => {
     setState(false)
+
   }
   return (
     <Container show={state}>
@@ -77,14 +78,12 @@ const Modal = styled.div`
     position: relative;
     border-radius: 5px;
      ${({ show }) => {
-    return show
-? css`
+    return show ? css`
      animation: ${zoomIn} .5s .1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
-     `
-      : css`
+     ` :
+      css`
     animation:  ${zoomOut}  .2s .1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
-    `
-}} 
+    `}} 
 `
 const Container = styled.div`
     position: fixed;
@@ -94,15 +93,13 @@ const Container = styled.div`
     right: 0;
     display: flex;
     ${({ show }) => {
-    return show
-? css`
+    return show ? css`
         z-index: 1000;
         opacity: 1;
-        `
-      : css`
+        ` :
+      css`
     z-index: -1000;
     opacity: 0;
 
-    `
-}} 
+    `}} 
 `

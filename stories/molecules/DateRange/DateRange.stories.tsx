@@ -6,7 +6,7 @@ export default {
   component: DateRange
 }
 
-const Template = (args) => { return <DateRange {...args} /> }
+const Template = (args) => {return <DateRange {...args} />}
 
 export const Default = Template.bind({})
 Default.args = {

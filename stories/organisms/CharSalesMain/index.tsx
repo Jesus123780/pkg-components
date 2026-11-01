@@ -1,5 +1,5 @@
-import React from 'react'
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts'
+import React from 'react';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
 const data = [
   { name: 'Jan', value: 100 },
@@ -8,8 +8,8 @@ const data = [
   { name: 'Apr', value: 200 },
   { name: 'May', value: 180 },
   { name: 'Jun', value: 170 },
-  { name: 'Jul', value: 160 }
-]
+  { name: 'Jul', value: 160 },
+];
 
 export const CharSalesMain = () => {
   return (
@@ -20,7 +20,7 @@ export const CharSalesMain = () => {
           height={300}
           data={data}
           style={{
-            backgroundColor: '#f5f5f5' // Light background
+            backgroundColor: '#f5f5f5', // Light background
           }}
         >
           <Line
@@ -38,7 +38,7 @@ export const CharSalesMain = () => {
               { value: 'Jan', label: 'January' },
               { value: 'Mar', label: 'March' },
               { value: 'May', label: 'May' },
-              { value: 'Jul', label: 'July' }
+              { value: 'Jul', label: 'July' },
             ]} // Custom axis labels
           />
           <YAxis
@@ -49,5 +49,5 @@ export const CharSalesMain = () => {
         </LineChart>
       </ResponsiveContainer>
     </div>
-  )
-}
+  );
+};

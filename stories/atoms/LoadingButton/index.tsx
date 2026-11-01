@@ -12,7 +12,7 @@ interface LoadingButtonProps {
 
 export const LoadingButton: React.FC<LoadingButtonProps> = ({
   color = '#1a73e8', // Google blue
-  size = 24
+  size = 24,
 }) => {
   return (
     <div

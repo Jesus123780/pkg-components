@@ -29,7 +29,7 @@ interface CustomLinkAsideProps {
  * while this component owns the visual behavior of an individual item.
  */
 export const CustomLinkAside: React.FC<
-PropsWithChildren<CustomLinkAsideProps>
+  PropsWithChildren<CustomLinkAsideProps>
 > = ({
   mPath = '',
   mIcon = '',

@@ -1,7 +1,9 @@
-import React, { type FC } from 'react'
+import React, { FC } from 'react'
 import { Row, Text } from '../../atoms'
 import styles from './DataDetail.module.css'
-type DataItem = Record<string, string>
+interface DataItem {
+  [key: string]: string
+}
 
 interface DataDataDetailProps {
   data: DataItem[]
@@ -11,7 +13,7 @@ export const DataDetail: FC<DataDataDetailProps> = ({ data }) => {
   return (
     <div>
       {data.map((item, index) => (
-        <div className={styles.detail_info_client} key={index}>
+        <div className={styles['detail_info_client']} key={index}>
           {Object.entries(item).map(([key, value]) => (
             <Row key={key}>
               <Text

@@ -46,7 +46,7 @@ export const Table = ({
 }) => {
   const initialState = { selectedIndex: 0 }
 
-  function reducer (state, action) {
+  function reducer(state, action) {
     switch (action.type) {
       case 'arrowUp':
         return {

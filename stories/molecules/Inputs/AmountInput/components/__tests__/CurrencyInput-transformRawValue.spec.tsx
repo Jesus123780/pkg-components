@@ -1,15 +1,15 @@
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { AmountInput } from '../index'
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { AmountInput } from '../index';
 
 describe('<AmountInput/> transformRawValue', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
   it('should transform the value', () => {
-    const onValueChangeSpy = jest.fn()
+    const onValueChangeSpy = jest.fn();
 
     render(
       <AmountInput
@@ -18,15 +18,15 @@ describe('<AmountInput/> transformRawValue', () => {
         onValueChange={onValueChangeSpy}
         decimalScale={2}
       />
-    )
+    );
 
-    userEvent.type(screen.getByRole('textbox'), '1234,5')
+    userEvent.type(screen.getByRole('textbox'), '1234,5');
     expect(onValueChangeSpy).toHaveBeenLastCalledWith('1234.5', undefined, {
       float: 1234.5,
       formatted: '$1,234.5',
-      value: '1234.5'
-    })
+      value: '1234.5',
+    });
 
-    expect(screen.getByRole('textbox')).toHaveValue('$1,234.5')
-  })
-})
+    expect(screen.getByRole('textbox')).toHaveValue('$1,234.5');
+  });
+});

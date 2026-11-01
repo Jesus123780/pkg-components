@@ -14,7 +14,7 @@ export const TagsInput = ({
   emailValidation
 }) => {
   const [value, setValue] = useState('')
-  const [tags, setTags] = useState(defaultTags || [])
+  const [tags, setTags] = useState(defaultTags ? defaultTags : [])
   const [isActive, setIsActive] = useState(false)
 
   const changeHandler = (e) => {
@@ -23,7 +23,7 @@ export const TagsInput = ({
   }
 
   const removeTag = (tag) => {
-    const arr = tags.filter((t) => { return t !== tag })
+    const arr = tags.filter((t) => {return t !== tag})
     setTags(arr)
     onChange(name, arr)
   }
@@ -95,31 +95,29 @@ export const TagsInput = ({
 
   return (
     <div className={!isActive ? 'tags-input' : 'tags-input active'}>
-      {label && <label htmlFor={id || name}>{label}</label>}
+      {label && <label htmlFor={id ? id : name}>{label}</label>}
       <div className='tags-input__wrapper'>
         <div className='tags-input__tags'>
-          {tags.map((tag) => {
-            return (
+          {tags.map((tag) => {return (
             <Tag
               className='tag'
               key={tag}
               label={tag}
             >
-              <span onClick={() => { return removeTag(tag) }}>
+              <span onClick={() => {return removeTag(tag)}}>
                 <i className='fas'>X</i>
               </span>
             </Tag>
-            )
-          })}
+          )})}
           <input
             autoComplete='off'
-            id={id || name}
+            id={id ? id : name}
             name={name}
             onBlur={blurHandler}
             onChange={changeHandler}
             onFocus={focusHandler}
-            onKeyDown={(e) => { return e.key === 'Enter' && e.preventDefault() }}
-            onKeyPress={(e) => { return e.key === 'Enter' && e.preventDefault() }}
+            onKeyDown={(e) => {return e.key === 'Enter' && e.preventDefault()}}
+            onKeyPress={(e) => {return e.key === 'Enter' && e.preventDefault()}}
             onKeyUp={updateTagsHandler}
             placeholder={placeholder}
             type='text'

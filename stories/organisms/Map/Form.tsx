@@ -15,19 +15,19 @@ export const Form = ({
   cities = [],
   errorForm = {},
   setModal = () => {
-
+    return
   },
   handleChangeSearch = () => {
-
+    return
   },
   handleChange = () => {
-
+    return
   },
   handleCheckChange = () => {
-
+    return
   },
   handleSave = () => {
-
+    return
   }
 }) => {
   const disabled = !dataForm?.uLocationKnow || !values?.ctId || !values?.dId || !values?.countryId || !values?.rId

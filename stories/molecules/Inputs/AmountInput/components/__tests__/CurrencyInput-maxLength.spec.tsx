@@ -43,7 +43,7 @@ describe('<AmountInput/> maxLength', () => {
     expect(onValueChangeSpy).toHaveBeenLastCalledWith('-125', undefined, {
       float: -125,
       formatted: '-£125',
-      value: '-125'
+      value: '-125',
     })
     expect(screen.getByRole('textbox')).toHaveValue('-£125')
   })

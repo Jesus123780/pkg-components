@@ -3,7 +3,7 @@ import { StatusBadge } from './index'
 
 const meta: Meta<typeof StatusBadge> = {
   title: 'atoms/StatusBadge',
-  component: StatusBadge
+  component: StatusBadge,
 }
 export default meta
 
@@ -12,8 +12,8 @@ type Story = StoryObj<typeof StatusBadge>
 export const Default: Story = {
   args: {
     id: '1',
-    status: 'approved'
-  }
+    status: 'approved',
+  },
 }
 
 export const AllSizes: Story = {
@@ -29,6 +29,6 @@ export const AllSizes: Story = {
 export const UnknownStatus: Story = {
   args: {
     id: '9',
-    status: 'mystery'
-  }
+    status: 'mystery',
+  },
 }

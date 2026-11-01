@@ -102,11 +102,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     // values are sanitized by casting to string
     // Note: keep inline minimal; visual theming should rely on tokens/variables in the app root.
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+    // @ts-ignore
     ['--sb-bg' as any]: backgroundColor || undefined,
-    // @ts-expect-error
+    // @ts-ignore
     ['--sb-border' as any]: border || undefined
-    // @ts-expect-error
+    // @ts-ignore
   }
 
   return (
@@ -144,3 +144,4 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     </form>
   )
 }
+

@@ -21,12 +21,12 @@ const exampleLineItems = {
 }
 
 // Funciones ficticias para simular la funcionalidad
-const handleLineChange = () => { return console.log('Line changed') }
-const handleFocusChange = () => { return console.log('Focused') }
-const handleRemove = () => { return console.log('Removed') }
-const onSubmitUpdate = () => { return console.log('Submitted') }
-const setModal = () => { return console.log('Modal set') }
-const CleanLines = () => { return console.log('Cleaned') }
+const handleLineChange = () => {return console.log('Line changed')}
+const handleFocusChange = () => {return console.log('Focused')}
+const handleRemove = () => {return console.log('Removed')}
+const onSubmitUpdate = () => {return console.log('Submitted')}
+const setModal = () => {return console.log('Modal set')}
+const CleanLines = () => {return console.log('Cleaned')}
 
 export default {
   title: 'Organisms/CreateExtra',
@@ -39,7 +39,7 @@ export default {
   }
 }
 
-const Template = (args) => { return <CreateExtra {...args} /> }
+const Template = (args) => {return <CreateExtra {...args} />}
 
 export const Default = Template.bind({})
 Default.args = {

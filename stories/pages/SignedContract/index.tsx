@@ -11,13 +11,13 @@ import ImageAsistan from '../../assets/public/Images/asistant.png'
 
 export const SignedContract = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles['container']}>
       <Column className={styles['col-1']}>
-        <div className={styles.container_icon}>
-          <Text className={styles.title} align='center' weight='semibold'>
+        <div className={styles['container_icon']}>
+          <Text className={styles['title']} align='center' weight='semibold'>
           El contrato ha sido firmado
           </Text>
-          <Text className={styles.title} align='center' weight='semibold'>
+          <Text className={styles['title']} align='center' weight='semibold'>
           Se ha finalizado el proceso
           </Text>
         </div>

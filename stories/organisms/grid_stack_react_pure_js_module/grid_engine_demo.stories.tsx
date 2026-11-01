@@ -18,27 +18,27 @@ interface PxConfig {
   containerPadding: [number, number]
 }
 
-function computeColWidth (config: PxConfig): number {
+function computeColWidth(config: PxConfig): number {
   const totalMargin = config.margin[0] * (config.cols - 1)
   const totalPadding = config.containerPadding[0] * 2
   return Math.max(40, (config.containerWidth - totalMargin - totalPadding) / config.cols)
 }
 
-function gridToPx (gridUnits: number, colWidth: number, margin: number, padding: number): number {
+function gridToPx(gridUnits: number, colWidth: number, margin: number, padding: number): number {
   return Math.round((colWidth + margin) * gridUnits + padding)
 }
 
-function widthPx (w: number, colWidth: number, marginX: number): number {
+function widthPx(w: number, colWidth: number, marginX: number): number {
   return Math.round(colWidth * w + marginX * (w - 1))
 }
 
-function heightPx (h: number, rowHeight: number, marginY: number): number {
+function heightPx(h: number, rowHeight: number, marginY: number): number {
   return Math.round(rowHeight * h + marginY * (h - 1))
 }
 
 // ─── Render counter badge (para demo visual) ────────────────────────────────
 
-function useRenderCount () {
+function useRenderCount() {
   const count = useRef(0)
   count.current += 1
   return count.current
@@ -55,17 +55,17 @@ interface ShellProps {
   onDragStart: (id: string, e: React.PointerEvent) => void
 }
 
-const GridItemShell = React.memo(function GridItemShell ({
+const GridItemShell = React.memo(function GridItemShell({
   id,
   store,
   pxConfig,
   isDragging,
   children,
-  onDragStart
+  onDragStart,
 }: ShellProps) {
   const position = useSyncExternalStore(
     (cb) => store.subscribeItem(id, cb),
-    () => store.getItemSnapshot(id)
+    () => store.getItemSnapshot(id),
   )
 
   const renderCount = useRenderCount()
@@ -89,7 +89,7 @@ const GridItemShell = React.memo(function GridItemShell ({
         opacity: isDragging ? 0.4 : 1,
         borderRadius: 12,
         overflow: 'hidden',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
+        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
       }}
       onPointerDown={(e) => onDragStart(id, e)}
     >
@@ -105,7 +105,7 @@ const GridItemShell = React.memo(function GridItemShell ({
         padding: '2px 6px',
         borderRadius: 8,
         zIndex: 10,
-        fontFamily: 'monospace'
+        fontFamily: 'monospace',
       }}>
         renders: {renderCount}
       </div>
@@ -122,7 +122,7 @@ interface ContentProps {
   title: string
 }
 
-const GridItemContent = React.memo(function GridItemContent ({ id, color, title }: ContentProps) {
+const GridItemContent = React.memo(function GridItemContent({ id, color, title }: ContentProps) {
   const renderCount = useRenderCount()
 
   return (
@@ -137,7 +137,7 @@ const GridItemContent = React.memo(function GridItemContent ({ id, color, title 
       color: '#fff',
       fontFamily: 'system-ui, sans-serif',
       cursor: 'grab',
-      userSelect: 'none'
+      userSelect: 'none',
     }}>
       <div style={{ fontWeight: 700, fontSize: 16 }}>{title}</div>
       <div style={{ fontSize: 11, opacity: 0.8, marginTop: 4 }}>
@@ -160,7 +160,7 @@ const INITIAL_ITEMS: GridPosition[] = [
   { i: 'c', x: 8, y: 0, w: 4, h: 2 },
   { i: 'd', x: 0, y: 2, w: 6, h: 3 },
   { i: 'e', x: 6, y: 2, w: 6, h: 3 },
-  { i: 'f', x: 0, y: 5, w: 12, h: 2 }
+  { i: 'f', x: 0, y: 5, w: 12, h: 2 },
 ]
 
 interface GridDemoProps {
@@ -171,18 +171,18 @@ interface GridDemoProps {
   showRenderCounts: boolean
 }
 
-function GridEngineDemo ({
+function GridEngineDemo({
   cols = 12,
   rowHeight = 80,
   margin = [12, 12],
   collisionMode = 'push',
-  showRenderCounts = true
+  showRenderCounts = true,
 }: Readonly<GridDemoProps>) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(900)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [layoutLog, setLayoutLog] = useState<string[]>([])
-  const dragStartRef = useRef<{ id: string, startX: number, startY: number, origX: number, origY: number } | null>(null)
+  const dragStartRef = useRef<{ id: string; startX: number; startY: number; origX: number; origY: number } | null>(null)
 
   // Create engine + store (stable across renders)
   const { engine, store } = useMemo(() => {
@@ -218,7 +218,7 @@ function GridEngineDemo ({
     rowHeight,
     margin,
     containerWidth,
-    containerPadding: [12, 12] as [number, number]
+    containerPadding: [12, 12] as [number, number],
   }), [cols, rowHeight, margin, containerWidth])
 
   // Drag handling
@@ -231,7 +231,7 @@ function GridEngineDemo ({
       startX: e.clientX,
       startY: e.clientY,
       origX: pos.x,
-      origY: pos.y
+      origY: pos.y,
     }
 
     const colWidth = computeColWidth(pxConfig)
@@ -256,7 +256,7 @@ function GridEngineDemo ({
       const layout = engine.getLayout()
       setLayoutLog((prev) => [
         `[${new Date().toLocaleTimeString()}] Layout commit: ${layout.map(i => `${i.i}(${i.x},${i.y})`).join(' ')}`,
-        ...prev.slice(0, 9)
+        ...prev.slice(0, 9),
       ])
     }
 
@@ -267,7 +267,7 @@ function GridEngineDemo ({
   // Grid height
   const layout = useSyncExternalStore(
     (cb) => store.subscribeCommitted(cb),
-    () => store.getCommittedSnapshot()
+    () => store.getCommittedSnapshot(),
   )
 
   const gridHeight = useMemo(() => {
@@ -295,7 +295,7 @@ function GridEngineDemo ({
           height: gridHeight,
           background: '#f1f5f9',
           borderRadius: 12,
-          border: '2px dashed #e2e8f0'
+          border: '2px dashed #e2e8f0',
         }}
       >
         {INITIAL_ITEMS.map((item, idx) => (
@@ -355,29 +355,29 @@ Esta demo muestra la nueva arquitectura de render isolation:
 2. Arrastra un item
 3. Solo el Shell del item arrastrado incrementa su contador
 4. Los "Content renders" de otros items **nunca** incrementan
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   argTypes: {
     cols: {
       control: { type: 'range', min: 4, max: 24, step: 1 },
-      description: 'Número de columnas del grid'
+      description: 'Número de columnas del grid',
     },
     rowHeight: {
       control: { type: 'range', min: 40, max: 200, step: 10 },
-      description: 'Altura de cada fila en pixels'
+      description: 'Altura de cada fila en pixels',
     },
     collisionMode: {
       control: { type: 'select' },
       options: ['push', 'swap', 'push-first', 'none'],
-      description: 'Estrategia de resolución de colisiones'
+      description: 'Estrategia de resolución de colisiones',
     },
     showRenderCounts: {
       control: 'boolean',
-      description: 'Mostrar contadores de render'
-    }
-  }
+      description: 'Mostrar contadores de render',
+    },
+  },
 } satisfies Meta<typeof GridEngineDemo>
 
 export default meta
@@ -389,8 +389,8 @@ export const Default: Story = {
     rowHeight: 80,
     margin: [12, 12],
     collisionMode: 'push',
-    showRenderCounts: true
-  }
+    showRenderCounts: true,
+  },
 }
 
 export const SwapMode: Story = {
@@ -399,8 +399,8 @@ export const SwapMode: Story = {
     rowHeight: 80,
     margin: [12, 12],
     collisionMode: 'swap',
-    showRenderCounts: true
-  }
+    showRenderCounts: true,
+  },
 }
 
 export const DenseGrid: Story = {
@@ -409,8 +409,8 @@ export const DenseGrid: Story = {
     rowHeight: 100,
     margin: [8, 8],
     collisionMode: 'push',
-    showRenderCounts: true
-  }
+    showRenderCounts: true,
+  },
 }
 
 export const NoCollision: Story = {
@@ -419,6 +419,6 @@ export const NoCollision: Story = {
     rowHeight: 80,
     margin: [12, 12],
     collisionMode: 'none',
-    showRenderCounts: true
-  }
+    showRenderCounts: true,
+  },
 }

@@ -260,10 +260,10 @@ export const TextContent = styled.div`
   display: flex;
   flex-direction: column;
   width: ${({ width }) => {
-    return width || '50%'
+    return width ? width : '50%'
   }};
   margin: ${({ margin }) => {
-    return margin || '0 20px'
+    return margin ? margin : '0 20px'
   }};
 
   @media (max-width: 767.98px) {
@@ -275,10 +275,10 @@ export const TextContent = styled.div`
 
 export const Text = styled.span`
   text-align: ${({ tAlign }) => {
-    return tAlign || 'left'
+    return tAlign ? tAlign : 'left'
   }};
   font-size: ${({ fSize }) => {
-    return fSize || '16px'
+    return fSize ? fSize : '16px'
   }};
   font-family: PFont-Regular;
   ${({ margin }) => {
@@ -297,7 +297,7 @@ export const Text = styled.span`
       tit &&
       css`
         font-weight: ${({ fontWeight }) => {
-        return fontWeight || '700'
+        return fontWeight ? fontWeight : '700'
       }};
       `
     )
@@ -307,7 +307,7 @@ export const Text = styled.span`
       aSelf &&
       css`
         align-self: ${({ alignS }) => {
-        return alignS || 'flex-end'
+        return alignS ? alignS : 'flex-end'
       }};
       `
     )

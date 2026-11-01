@@ -5,8 +5,9 @@ import { PColor } from '../../../assets/colors'
 
 export const Burger = ({
   status = '',
-  handleOpenMenu = () => { }
+  handleOpenMenu = () => { return }
 }) => {
+
   return (
     <ContainerBurger>
       <div

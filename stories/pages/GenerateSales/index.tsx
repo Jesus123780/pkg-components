@@ -34,11 +34,11 @@ interface IpropsSliderCategory {
   data: Root[]
   handleChangeCheck: (id: string) => void
   breakpoints: Record<
-  string,
-  {
-    slidesPerView: number | string
-    spaceBetween: number | string
-  }
+    string,
+    {
+      slidesPerView: number | string
+      spaceBetween: number | string
+    }
   >
 }
 interface Client {
@@ -182,7 +182,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   handlePersistPendingOrder = async () => false,
   searchPendingOrders = undefined,
   onApplyFilters = () => undefined,
-  onClearFilters = () => undefined
+  onClearFilters = () => undefined,
 }) => {
   const fields = [
     { key: 'name', label: 'Nombre', defaultDirection: 'asc' },

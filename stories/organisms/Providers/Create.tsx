@@ -7,10 +7,10 @@ export const CreateProvider = ({
   dataForm = {},
   errorForm = {},
   show = false,
-  handleForm = () => { },
-  setDataValue = () => { },
-  handleChange = () => { },
-  setShow = () => { }
+  handleForm = () => { return },
+  setDataValue = () => { return },
+  handleChange = () => { return },
+  setShow = () => { return }
 }) => {
   return (
     <AwesomeModal

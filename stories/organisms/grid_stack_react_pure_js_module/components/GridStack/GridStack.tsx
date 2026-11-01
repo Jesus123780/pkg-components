@@ -6,7 +6,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   memo,
-  type PointerEvent as ReactPointerEvent
+  type PointerEvent as ReactPointerEvent,
 } from 'react'
 
 import { useGrid } from '../../hooks/useGrid'
@@ -14,41 +14,41 @@ import DragLayer from '../DragLayer'
 import DropIndicator from '../DropIndicator/DropIndicator'
 import ResizeHandles from '../ResizeHandles/ResizeHandles'
 import {
-  type Corner,
+  Corner,
   corners,
-  InitialAnimationValue
+  InitialAnimationValue,
 } from '../../utils/constants'
 import {
-  type GridItem,
-  type GridStackProps,
-  type Overlay,
+  GridItem,
+  GridStackProps,
+  Overlay,
   PreviewMode,
-  type PreviewModeType
+  PreviewModeType,
 } from '../../types/types'
 import styles from './GridStack.module.css'
 import {
   collisionModeType,
   dragModeType,
   overlayAnchorType,
-  type PxHelpers
+  PxHelpers,
 } from '../../types/useGrid.types'
-import { type StyleResult } from '../../types/GridStack.types'
+import { StyleResult } from '../../types/GridStack.types'
 
-interface Rect {
+type Rect = {
   left: number
   top: number
   width: number
   height: number
 }
 
-interface MotionVector {
+type MotionVector = {
   x: number
   y: number
   speed: number
   timestamp: number
 }
 
-interface MotionProfile {
+type MotionProfile = {
   dx: number
   dy: number
   delay: number
@@ -61,7 +61,7 @@ interface MotionProfile {
 
 type CleanupEntry = (() => void) | number
 
-interface MotionDecision {
+type MotionDecision = {
   movementDistance: number
   overlapPenalty: number
   layoutShiftPenalty: number
@@ -79,7 +79,7 @@ const JITTER_THRESHOLD_PX = 3
 /**
  * Clamp a numeric value to a range.
  */
-function clamp (value: number, min: number, max: number) {
+function clamp(value: number, min: number, max: number) {
   if (!Number.isFinite(value)) return min
   return Math.min(max, Math.max(min, value))
 }
@@ -87,7 +87,7 @@ function clamp (value: number, min: number, max: number) {
 /**
  * Safely coerce a value to a finite number.
  */
-function safeNumber (value: unknown, fallback = 0): number {
+function safeNumber(value: unknown, fallback = 0): number {
   const n = typeof value === 'number' ? value : Number(value)
   return Number.isFinite(n) ? n : fallback
 }
@@ -95,7 +95,7 @@ function safeNumber (value: unknown, fallback = 0): number {
 /**
  * Create a stable layout signature for change detection.
  */
-function layoutSignature (layout: readonly GridItem[] | null | undefined): string {
+function layoutSignature(layout: ReadonlyArray<GridItem> | null | undefined): string {
   if (!layout || layout.length === 0) return ''
   return layout
     .map((n) => `${n.i}:${n.x},${n.y},${n.w},${n.h}${n.static ? ':s' : ''}`)
@@ -105,10 +105,10 @@ function layoutSignature (layout: readonly GridItem[] | null | undefined): strin
 /**
  * Compare two layouts at cell precision.
  */
-function layoutsAlmostEqual (
-  a: readonly GridItem[] | null | undefined,
-  b: readonly GridItem[] | null | undefined,
-  threshold = 0
+function layoutsAlmostEqual(
+  a: ReadonlyArray<GridItem> | null | undefined,
+  b: ReadonlyArray<GridItem> | null | undefined,
+  threshold = 0,
 ) {
   if (!a || !b) return false
   if (a.length !== b.length) return false
@@ -132,7 +132,7 @@ function layoutsAlmostEqual (
 /**
  * Merge and deduplicate ids from two layouts.
  */
-function unionIds (a: readonly GridItem[], b: readonly GridItem[]): string[] {
+function unionIds(a: ReadonlyArray<GridItem>, b: ReadonlyArray<GridItem>): string[] {
   const s = new Set<string>()
   a.forEach((n) => s.add(String(n.i)))
   b.forEach((n) => s.add(String(n.i)))
@@ -142,7 +142,7 @@ function unionIds (a: readonly GridItem[], b: readonly GridItem[]): string[] {
 /**
  * Compute axis-aligned rectangle intersection area.
  */
-function intersectionArea (a?: Rect | null, b?: Rect | null): number {
+function intersectionArea(a?: Rect | null, b?: Rect | null): number {
   if (!a || !b) return 0
   const left = Math.max(a.left, b.left)
   const top = Math.max(a.top, b.top)
@@ -156,7 +156,7 @@ function intersectionArea (a?: Rect | null, b?: Rect | null): number {
 /**
  * Distance between rectangle centers.
  */
-function rectDistance (a?: Rect | null, b?: Rect | null): number {
+function rectDistance(a?: Rect | null, b?: Rect | null): number {
   if (!a || !b) return 0
   const ax = a.left + a.width / 2
   const ay = a.top + a.height / 2
@@ -168,19 +168,19 @@ function rectDistance (a?: Rect | null, b?: Rect | null): number {
 /**
  * Convert a grid item into an approximate pixel rectangle.
  */
-function gridItemToRect (item: GridItem, px: PxHelpers): Rect {
+function gridItemToRect(item: GridItem, px: PxHelpers): Rect {
   return {
     left: Math.round(px.gridToPx(safeNumber(item.x))),
     top: Math.round(px.gridToPx(safeNumber(item.y), true)),
     width: Math.round(px.widthPx(safeNumber(item.w))),
-    height: Math.round(px.heightPx(safeNumber(item.h)))
+    height: Math.round(px.heightPx(safeNumber(item.h))),
   }
 }
 
 /**
  * Invalidate and execute cleanup entries.
  */
-function flushCleanup (store: Record<string, CleanupEntry>) {
+function flushCleanup(store: Record<string, CleanupEntry>) {
   Object.keys(store).forEach((key) => {
     const entry = store[key]
     try {
@@ -196,7 +196,7 @@ function flushCleanup (store: Record<string, CleanupEntry>) {
 /**
  * Get an item's layout entry by id.
  */
-function getLayoutEntry (layout: readonly GridItem[] | null | undefined, id: string | null | undefined) {
+function getLayoutEntry(layout: ReadonlyArray<GridItem> | null | undefined, id: string | null | undefined) {
   if (!layout || !id) return null
   return layout.find((n) => n.i === id) || null
 }
@@ -204,7 +204,7 @@ function getLayoutEntry (layout: readonly GridItem[] | null | undefined, id: str
 /**
  * Build a preview-aware lookup map.
  */
-function buildLayoutMap (layout: readonly GridItem[] | null | undefined) {
+function buildLayoutMap(layout: ReadonlyArray<GridItem> | null | undefined) {
   const map = new Map<string, GridItem>()
     ; (layout || []).forEach((item) => map.set(item.i, item))
   return map
@@ -213,11 +213,11 @@ function buildLayoutMap (layout: readonly GridItem[] | null | undefined) {
 /**
  * Estimate a dominant row height from a set of rectangles.
  */
-function estimateRowHeight (rects: Array<Rect | null | undefined>) {
+function estimateRowHeight(rects: Array<Rect | null | undefined>) {
   const heights = rects
     .map((r) => (r ? r.height : 0))
     .filter((h) => Number.isFinite(h) && h > 0)
-  if (heights.length === 0) return 40
+  if (!heights.length) return 40
   return heights.reduce((a, b) => a + b, 0) / heights.length
 }
 
@@ -229,9 +229,9 @@ const EMPTY_PROPS: Record<string, any> = {}
 // ─────────────────────────────────────────────────────────────────────────────
 // Performance: Memoized content wrapper prevents widget re-renders during drag
 // ─────────────────────────────────────────────────────────────────────────────
-const MemoizedContent = memo(function MemoizedContent ({
+const MemoizedContent = memo(function MemoizedContent({
   ItemComp,
-  componentProps
+  componentProps,
 }: {
   ItemComp: React.ComponentType<any> | null
   componentProps: Record<string, any>
@@ -269,7 +269,7 @@ interface GridItemNodeProps {
   itemInnerRefCb: (el: HTMLElement | null) => void
 }
 
-const GridItemNode = memo(function GridItemNode ({
+const GridItemNode = memo(function GridItemNode({
   nodeId,
   style,
   className,
@@ -282,14 +282,14 @@ const GridItemNode = memo(function GridItemNode ({
   componentProps,
   onPointerDown,
   onResizePointerDown,
-  itemInnerRefCb
+  itemInnerRefCb,
 }: GridItemNodeProps) {
   return (
     <div
       className={className}
       style={{
         ...style,
-        borderRadius: radio
+        borderRadius: radio,
       }}
       data-grid-id={nodeId}
     >
@@ -337,7 +337,7 @@ const GridItemNode = memo(function GridItemNode ({
 /**
  * GridStack: production-ready interactive grid layout surface.
  */
-export default function GridStack (props: Readonly<GridStackProps>) {
+export default function GridStack(props: Readonly<GridStackProps>) {
   const {
     items = [],
     cols = 12,
@@ -365,17 +365,17 @@ export default function GridStack (props: Readonly<GridStackProps>) {
     rollStagger = 30,
     sticky = false,
     radio = 15,
-    dragOverlayOffset = { x: 8, y: 8 }
+    dragOverlayOffset = { x: 8, y: 8 },
   } = props
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   const itemInnerRefs = useRef<Record<string, HTMLElement>>({})
   const animCleanupRef = useRef<Record<string, CleanupEntry>>({})
-  const dragSnapshotRef = useRef<GridItem[] | null>(null)
-  const lastCommittedLayoutRef = useRef<GridItem[] | null>(null)
+  const dragSnapshotRef = useRef<Array<GridItem> | null>(null)
+  const lastCommittedLayoutRef = useRef<Array<GridItem> | null>(null)
   const lastCommittedSignatureRef = useRef<string>('')
   const lastAppliedSignatureRef = useRef<string>('')
-  const lastPointerRef = useRef<{ x: number, y: number, time: number } | null>(null)
+  const lastPointerRef = useRef<{ x: number; y: number; time: number } | null>(null)
   const lastMotionVectorRef = useRef<MotionVector | null>(null)
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
   const pendingPreviewTimeoutRef = useRef<number | null>(null)
@@ -384,7 +384,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
   // Cache de pxHelpers — se actualiza en ResizeObserver, no en cada render
   const pxHelpersRef = useRef<PxHelpers | null>(null)
 
-  const [previewCommittedLayout, setPreviewCommittedLayout] = useState<GridItem[] | null>(null)
+  const [previewCommittedLayout, setPreviewCommittedLayout] = useState<Array<GridItem> | null>(null)
   const [previewMode, setPreviewMode] = useState<PreviewModeType | null>(null)
   const [lastDropId, setLastDropId] = useState<string | null>(null)
   const [containerVersion, setContainerVersion] = useState(0)
@@ -417,11 +417,11 @@ export default function GridStack (props: Readonly<GridStackProps>) {
       gridToPx: (gridX: number, isY = false) =>
         Math.round(
           (isY ? (safeNumber(rowHeight, 30) + marginY) : (colWidth + marginX)) * safeNumber(gridX) +
-          (isY ? padY : padX)
+          (isY ? padY : padX),
         ),
       widthPx: (w: number) => Math.round(colWidth * safeNumber(w) + marginX * Math.max(0, safeNumber(w) - 1)),
       heightPx: (h: number) => Math.round(safeNumber(rowHeight, 30) * safeNumber(h) + marginY * Math.max(0, safeNumber(h) - 1)),
-      containerRect: (containerRef.current?.getBoundingClientRect?.() || ({ left: 0, top: 0 } as DOMRect))
+      containerRect: (containerRef.current?.getBoundingClientRect?.() || ({ left: 0, top: 0 } as DOMRect)),
     }
   }, [cols, containerPadding, margin, rowHeight])
 
@@ -444,7 +444,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
     reflowDuringDrag: true,
     sticky,
     reflowMaxDepth: 20,
-    dragOverlayOffset: { x: 8, y: 8 }
+    dragOverlayOffset: { x: 8, y: 8 },
   })
 
   /**
@@ -475,7 +475,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         x: dx,
         y: dy,
         speed,
-        timestamp: now
+        timestamp: now,
       }
     }
     lastPointerRef.current = { x, y, time: now }
@@ -497,7 +497,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         left: r.left - containerRect.left,
         top: r.top - containerRect.top,
         width: r.width,
-        height: r.height
+        height: r.height,
       }
     }
     return rects
@@ -518,7 +518,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
       firstRect: Rect,
       lastRect: Rect,
       movingRect?: Rect | null,
-      velocity?: MotionVector | null
+      velocity?: MotionVector | null,
     ): MotionDecision => {
       const movementDistance = rectDistance(firstRect, lastRect)
 
@@ -553,10 +553,10 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           movementDistance +
           overlapPenalty * 1000 +
           layoutShiftPenalty * 24 +
-          directionPenalty * 40
+          directionPenalty * 40,
       }
     },
-    []
+    [],
   )
 
   /**
@@ -566,16 +566,16 @@ export default function GridStack (props: Readonly<GridStackProps>) {
     (
       firstRects: Record<string, Rect> = {},
       lastRects: Record<string, Rect> = {},
-      movingId: string | null = null
+      movingId: string | null = null,
     ) => {
       const out: Record<string, MotionProfile> = {}
       const ids = Object.keys(lastRects)
-      if (ids.length === 0) return out
+      if (!ids.length) return out
 
       const movingRect = movingId ? (lastRects[movingId] || firstRects[movingId] || null) : null
       const approxRow = estimateRowHeight([
         ...ids.map((id) => firstRects[id]),
-        ...ids.map((id) => lastRects[id])
+        ...ids.map((id) => lastRects[id]),
       ])
 
       const scored = ids
@@ -602,18 +602,18 @@ export default function GridStack (props: Readonly<GridStackProps>) {
             dx,
             dy,
             cost: decision.cost + depthBias * 8 - inertia * 2,
-            decision
+            decision,
           }
         })
         .filter(Boolean) as Array<{
-        id: string
-        first: Rect
-        last: Rect
-        dx: number
-        dy: number
-        cost: number
-        decision: MotionDecision
-      }>
+          id: string
+          first: Rect
+          last: Rect
+          dx: number
+          dy: number
+          cost: number
+          decision: MotionDecision
+        }>
 
       scored.sort((a, b) => a.cost - b.cost)
 
@@ -628,13 +628,13 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           clamp(
             i * rollStagger * 0.55 + (distance / Math.max(1, approxRow)) * 12 * (1 - inertiaInfluence),
             0,
-            360
-          )
+            360,
+          ),
         )
 
         const angleBase = clamp((entry.dy / Math.max(1, approxRow)) * 3.5, -8, 8)
         const angle = Math.round(
-          angleBase * (1 - 0.4 * directionInfluence) + (entry.dy > 0 ? 1 : -1) * overlapInfluence * 2
+          angleBase * (1 - 0.4 * directionInfluence) + (entry.dy > 0 ? 1 : -1) * overlapInfluence * 2,
         )
 
         const duration = durationFromCost(animation?.duration ?? DEFAULT_BASE_DURATION, entry.cost)
@@ -648,13 +648,13 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           scale,
           angle,
           distance,
-          cost: entry.cost
+          cost: entry.cost,
         }
       }
 
       return out
     },
-    [animation?.duration, computeMotionDecision, durationFromCost, rollStagger]
+    [animation?.duration, computeMotionDecision, durationFromCost, rollStagger],
   )
 
   /**
@@ -662,14 +662,14 @@ export default function GridStack (props: Readonly<GridStackProps>) {
    */
   const computeRollMap = useCallback(
     (
-      fromLayout: readonly GridItem[],
-      toLayout: readonly GridItem[],
-      movingId: string | null
-    ): Record<string, { deltaRows: number, angle: number, delay: number, axis: 'x' | 'y' }> => {
+      fromLayout: ReadonlyArray<GridItem>,
+      toLayout: ReadonlyArray<GridItem>,
+      movingId: string | null,
+    ): Record<string, { deltaRows: number; angle: number; delay: number; axis: 'x' | 'y' }> => {
       if (!enableRollOnPush || !fromLayout || !toLayout) return {}
       const byIdFrom = buildLayoutMap(fromLayout)
       const byIdTo = buildLayoutMap(toLayout)
-      const roll: Record<string, { deltaRows: number, angle: number, delay: number, axis: 'x' | 'y' }> = {}
+      const roll: Record<string, { deltaRows: number; angle: number; delay: number; axis: 'x' | 'y' }> = {}
       const movingFrom = movingId ? byIdFrom.get(movingId) || null : null
 
       const entries = Array.from(byIdTo.entries()).filter(([id]) => id !== movingId)
@@ -686,15 +686,15 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           return { id, fr, to, deltaRows, relX, relY, primaryAxis, cost }
         })
         .filter(Boolean) as Array<{
-        id: string
-        fr: GridItem
-        to: GridItem
-        deltaRows: number
-        relX: number
-        relY: number
-        primaryAxis: 'x' | 'y'
-        cost: number
-      }>
+          id: string
+          fr: GridItem
+          to: GridItem
+          deltaRows: number
+          relX: number
+          relY: number
+          primaryAxis: 'x' | 'y'
+          cost: number
+        }>
 
       scored.sort((a, b) => a.cost - b.cost)
 
@@ -716,13 +716,13 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           deltaRows: entry.deltaRows,
           angle,
           delay,
-          axis: entry.primaryAxis
+          axis: entry.primaryAxis,
         }
       })
 
       return roll
     },
-    [enableRollOnPush, rollAngleMax, rollStagger]
+    [enableRollOnPush, rollAngleMax, rollStagger],
   )
 
   /**
@@ -756,7 +756,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         duration?: number
         easing?: string
         delayMap?: Record<string, number>
-      } = {}
+      } = {},
     ) => {
       if (reducedMotion) {
         Object.keys(lastRects).forEach((id) => {
@@ -814,11 +814,11 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           sx: Number.isFinite(sx) ? sx : 1,
           sy: Number.isFinite(sy) ? sy : 1,
           dynDuration: dynamicDuration,
-          delay
+          delay,
         })
       })
 
-      if (entries.length === 0) return
+      if (!entries.length) return
 
       entries.forEach(({ el, dx, dy, sx, sy }) => {
         el.style.transition = 'none'
@@ -880,14 +880,14 @@ export default function GridStack (props: Readonly<GridStackProps>) {
 
       pendingRafRef.current.push(raf1)
     },
-    [animation?.duration, animation?.easing, computeMotionDecision, durationFromCost, reducedMotion]
+    [animation?.duration, animation?.easing, computeMotionDecision, durationFromCost, reducedMotion],
   )
 
   /**
    * Resolve the style of a grid item using the live preview layout when available.
    */
   const posToStyle = useCallback(
-    (node: GridItem, sourceLayout?: readonly GridItem[] | null): StyleResult => {
+    (node: GridItem, sourceLayout?: ReadonlyArray<GridItem> | null): StyleResult => {
       const px = getPxHelpers()
       const layoutSource = sourceLayout ?? (previewMode === PreviewMode.Live || previewMode === PreviewMode.Reverting ? previewCommittedLayout : null)
       const item = getLayoutEntry(layoutSource, node.i) || node
@@ -905,17 +905,17 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         transition: isDragged
           ? 'none'
           : `transform ${baseDuration}ms ${easing}, width ${baseDuration}ms ${easing}, height ${baseDuration}ms ${easing}, opacity ${Math.max(120, Math.round(baseDuration * 0.65))}ms ease`,
-        willChange: isDragged ? 'transform' : 'transform, width, height'
+        willChange: isDragged ? 'transform' : 'transform, width, height',
       }
     },
-    [animation?.duration, animation?.easing, getPxHelpers, grid.overlay?.i, previewCommittedLayout, previewMode]
+    [animation?.duration, animation?.easing, getPxHelpers, grid.overlay?.i, previewCommittedLayout, previewMode],
   )
 
   /**
    * Compute a preview style from a target layout.
    */
   const previewStyleFor = useCallback(
-    (node: GridItem, px: PxHelpers, sourceLayout: readonly GridItem[] | null): StyleResult => {
+    (node: GridItem, px: PxHelpers, sourceLayout: ReadonlyArray<GridItem> | null): StyleResult => {
       const found = getLayoutEntry(sourceLayout, node.i)
       if (!found) return posToStyle(node, sourceLayout)
       const rect = gridItemToRect(found, px)
@@ -926,10 +926,10 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         width: `${rect.width}px`,
         height: `${rect.height}px`,
         transition: `transform ${baseDuration}ms ${easing}, width ${baseDuration}ms ${easing}, height ${baseDuration}ms ${easing}`,
-        willChange: 'transform, width, height'
+        willChange: 'transform, width, height',
       }
     },
-    [animation?.duration, animation?.easing, posToStyle]
+    [animation?.duration, animation?.easing, posToStyle],
   )
 
   /**
@@ -952,7 +952,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
       const pxHelpers = getPxHelpers()
       grid.startDrag(e, node, pxHelpers)
     },
-    [clearMotionArtifacts, getPxHelpers, grid, isDraggable, saveDragSnapshot]
+    [clearMotionArtifacts, getPxHelpers, grid, isDraggable, saveDragSnapshot],
   )
 
   /**
@@ -975,7 +975,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
       const pxHelpers = getPxHelpers()
       grid.startResize(e, node, corner, pxHelpers)
     },
-    [clearMotionArtifacts, getPxHelpers, grid, isResizable, saveDragSnapshot]
+    [clearMotionArtifacts, getPxHelpers, grid, isResizable, saveDragSnapshot],
   )
 
   /**
@@ -986,7 +986,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
       updatePointerMotion(e)
       grid.onPointerMove(e)
     },
-    [grid, updatePointerMotion]
+    [grid, updatePointerMotion],
   )
 
   /**
@@ -1022,7 +1022,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
 
         playFLIP(firstRects, lastRects, {
           duration: animation?.duration ?? DEFAULT_BASE_DURATION,
-          easing: animation?.easing ?? DEFAULT_EASING
+          easing: animation?.easing ?? DEFAULT_EASING,
         })
 
         pendingPreviewTimeoutRef.current = window.setTimeout(() => {
@@ -1066,7 +1066,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
       lastCommittedLayoutRef.current = null
       clearMotionArtifacts()
     },
-    [animation?.duration, clearMotionArtifacts, grid]
+    [animation?.duration, clearMotionArtifacts, grid],
   )
 
   /**
@@ -1118,7 +1118,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
    */
   useLayoutEffect(() => {
     const committed = grid.overlay?.committedLayout ?? null
-    if (!committed?.length) return
+    if (!committed || !committed.length) return
 
     const committedSignature = layoutSignature(committed)
     if (committedSignature && committedSignature === lastAppliedSignatureRef.current) {
@@ -1153,7 +1153,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           return Math.hypot(a.left - b.left, a.top - b.top) >= JITTER_THRESHOLD_PX || Math.abs(a.width - b.width) >= 1 || Math.abs(a.height - b.height) >= 1
         })
 
-        if (stableIds.length > 0) {
+        if (stableIds.length) {
           const filteredFirst: Record<string, Rect> = {}
           const filteredLast: Record<string, Rect> = {}
           stableIds.forEach((id) => {
@@ -1170,7 +1170,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           playFLIP(filteredFirst, filteredLast, {
             duration: animation?.duration ?? DEFAULT_BASE_DURATION,
             easing: animation?.easing ?? DEFAULT_EASING,
-            delayMap
+            delayMap,
           })
 
           if (enableRollOnPush) {
@@ -1213,7 +1213,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
     grid.overlay?.committedLayout,
     grid.overlay?.i,
     measureRects,
-    playFLIP
+    playFLIP,
   ])
 
   /**
@@ -1254,10 +1254,10 @@ export default function GridStack (props: Readonly<GridStackProps>) {
   const draggedNodeId = grid.overlay?.i ?? null
   const draggedItemData = useMemo(
     () => items.find((it) => it.id === draggedNodeId) || null,
-    [draggedNodeId, items]
+    [draggedNodeId, items],
   )
 
-  const currentRollMap = useMemo<Record<string, { deltaRows: number, angle: number, delay: number, axis: 'x' | 'y' }>>(() => {
+  const currentRollMap = useMemo<Record<string, { deltaRows: number; angle: number; delay: number; axis: 'x' | 'y' }>>(() => {
     if (!enableRollOnPush || !previewCommittedLayout || !draggedNodeId) return {}
     return computeRollMap(grid.layout, previewCommittedLayout, String(draggedNodeId))
   }, [computeRollMap, draggedNodeId, enableRollOnPush, grid.layout, previewCommittedLayout])
@@ -1282,7 +1282,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         styles.gridItem,
         node.static ? styles.static : '',
         isBeingDragged ? styles.draggingItem : '',
-        lastDropId === node.i ? styles.dropSuccess : ''
+        lastDropId === node.i ? styles.dropSuccess : '',
       ]
 
       if (previewCommittedLayout && previewMode === PreviewMode.Live && !isBeingDragged) {
@@ -1298,7 +1298,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
           ...style,
           transform: `${style.transform} ${roll.axis === 'y' ? `rotateX(${roll.angle}deg)` : `rotateY(${roll.angle}deg)`}`,
           transition: `${style.transition}, transform ${rollDuration}ms cubic-bezier(.2,.9,.25,1) ${roll.delay}ms`,
-          willChange: 'transform, width, height'
+          willChange: 'transform, width, height',
         }
       }
 
@@ -1308,7 +1308,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         itemData,
         isBeingDragged,
         style,
-        className: classNames.filter(Boolean).join(' ')
+        className: classNames.filter(Boolean).join(' '),
       }
     })
   }, [
@@ -1323,7 +1323,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
     previewStyleFor,
     rollDuration,
     getPxHelpers,
-    grid.layout
+    grid.layout,
   ])
 
   // ─── Stable ref callback factory ──────────────────────────────────────────
@@ -1333,7 +1333,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
       if (el) itemInnerRefs.current[nodeId] = el
       else delete itemInnerRefs.current[nodeId]
     },
-    []
+    [],
   )
 
   // ─── Stable per-item ref callbacks (memoized map) ───────────────────────
@@ -1414,7 +1414,7 @@ export default function GridStack (props: Readonly<GridStackProps>) {
         />
       )}
 
-      <DragLayer overlay={grid.overlay} animation={animation}>
+      <DragLayer overlay={grid.overlay as Overlay} animation={animation}>
         {draggedNodeId && (() => {
           const Comp = componentMap[draggedNodeId] as React.ComponentType<any> | null || null
           const data = draggedItemData?.component || {}
@@ -1460,5 +1460,5 @@ GridStack.defaultProps = {
   enableRollOnPush: false,
   rollAngleMax: 20,
   rollDuration: 320,
-  rollStagger: 30
+  rollStagger: 30,
 }

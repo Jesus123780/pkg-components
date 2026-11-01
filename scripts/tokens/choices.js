@@ -238,8 +238,8 @@ export const darkChoices = {
     base: {
       ...choices.color.base,
       // surfaces: use deep/dark surfaces instead of bright whites
-      white: '#12151c', // main surface / background
-      black: '#FFFFFF' // text / foreground in dark theme (inverse naming kept for compatibility)
+      white: '#12151c',     // main surface / background
+      black: '#FFFFFF'      // text / foreground in dark theme (inverse naming kept for compatibility)
     },
     brand: {
       ...choices.color.brand,
@@ -308,6 +308,6 @@ export const darkChoices = {
       shimmer:
         'linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0) 81%)',
       skeleton: '-48px 78px 0 -48px #2a2f33, -51px 102px 0 -51px #2a2f33'
-    }
+    },
   }
 }

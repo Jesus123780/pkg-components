@@ -1,12 +1,12 @@
 import React from 'react'
-import { type Meta } from '@storybook/react'
+import { Meta } from '@storybook/react'
 import { TermsAndCondition } from './index'
 
 export default {
   title: 'pages/TermsAndCondition',
-  component: TermsAndCondition
-} as Meta
+  component: TermsAndCondition,
+} as Meta;
 
-const Template: any = (args: any) => <TermsAndCondition {...args} />
+const Template: any = (args: any) => <TermsAndCondition {...args} />;
 
-export const TermsAndConditionView = Template.bind({})
+export const TermsAndConditionView = Template.bind({});

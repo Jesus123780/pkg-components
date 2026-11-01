@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef } from 'react';
 
 /**
  * Hook that tracks the number of times a component renders.
@@ -12,10 +12,10 @@ import React, { useRef } from 'react'
  * }
  * ```
  */
-export function useRenderCount (): React.RefObject<number> {
-  const count = useRef(0)
-  count.current += 1
-  return count
+export function useRenderCount(): React.RefObject<number> {
+  const count = useRef(0);
+  count.current += 1;
+  return count;
 }
 
 /**
@@ -23,26 +23,26 @@ export function useRenderCount (): React.RefObject<number> {
  * Useful for asserting render counts in integration tests.
  */
 export class RenderTracker {
-  private readonly counts = new Map<string, number>()
+  private readonly counts: Map<string, number> = new Map();
 
-  increment (id: string): void {
-    this.counts.set(id, (this.counts.get(id) ?? 0) + 1)
+  increment(id: string): void {
+    this.counts.set(id, (this.counts.get(id) ?? 0) + 1);
   }
 
-  getCount (id: string): number {
-    return this.counts.get(id) ?? 0
+  getCount(id: string): number {
+    return this.counts.get(id) ?? 0;
   }
 
-  reset (): void {
-    this.counts.clear()
+  reset(): void {
+    this.counts.clear();
   }
 
-  getAllCounts (): Record<string, number> {
-    const result: Record<string, number> = {}
+  getAllCounts(): Record<string, number> {
+    const result: Record<string, number> = {};
     this.counts.forEach((value, key) => {
-      result[key] = value
-    })
-    return result
+      result[key] = value;
+    });
+    return result;
   }
 }
 
@@ -58,18 +58,18 @@ export class RenderTracker {
  * expect(tracker.getCount('widget-1')).toBe(1);
  * ```
  */
-export function withRenderTracking<P extends object> (
+export function withRenderTracking<P extends object>(
   WrappedComponent: React.ComponentType<P>,
   tracker: RenderTracker,
   id: string
 ): React.FC<P> {
   const TrackedComponent: React.FC<P> = (props) => {
-    tracker.increment(id)
-    return <WrappedComponent {...props} />
-  }
+    tracker.increment(id);
+    return <WrappedComponent {...props} />;
+  };
 
-  TrackedComponent.displayName = `Tracked(${id})`
-  return TrackedComponent
+  TrackedComponent.displayName = `Tracked(${id})`;
+  return TrackedComponent;
 }
 
 /**
@@ -91,17 +91,17 @@ export function withRenderTracking<P extends object> (
  * ```
  */
 export interface RenderSpyProps {
-  tracker: RenderTracker
-  id: string
-  children?: React.ReactNode
+  tracker: RenderTracker;
+  id: string;
+  children?: React.ReactNode;
 }
 
 export const RenderSpy: React.FC<RenderSpyProps> = ({ tracker, id, children }) => {
-  tracker.increment(id)
-  return <>{children}</>
-}
+  tracker.increment(id);
+  return <>{children}</>;
+};
 
-RenderSpy.displayName = 'RenderSpy'
+RenderSpy.displayName = 'RenderSpy';
 
 /**
  * Hook version of the render spy. Tracks renders via a tracker instance.
@@ -114,13 +114,13 @@ RenderSpy.displayName = 'RenderSpy'
  * }
  * ```
  */
-export function useRenderSpy (tracker: RenderTracker, id: string): void {
-  const isFirstRender = useRef(true)
+export function useRenderSpy(tracker: RenderTracker, id: string): void {
+  const isFirstRender = useRef(true);
 
   if (isFirstRender.current) {
-    isFirstRender.current = false
-    tracker.increment(id)
+    isFirstRender.current = false;
+    tracker.increment(id);
   } else {
-    tracker.increment(id)
+    tracker.increment(id);
   }
 }

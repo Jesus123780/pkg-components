@@ -57,14 +57,14 @@ export const ProfileInfo = ({
             </EditButton>
 
             <Label>Username</Label>
-            {editingProfile
-              ? <Input
+            {editingProfile ?
+              <Input
                 name='username'
                 onChange={onChange}
                 value={dataForm?.username || ''}
                 type='text'
-              />
-              : <ReadOnlyText>
+              /> :
+              <ReadOnlyText>
                 {dataForm?.username}
               </ReadOnlyText>
             }
@@ -99,40 +99,35 @@ export const ProfileInfo = ({
         </EditButton>
         <>
           <Label>Primer Nombre</Label>
-          {editingDataProfile
-            ? (
+          {editingDataProfile ? (
             <Input
               name='username'
               onChange={onChange}
               value={dataForm?.username || ''}
               type='text'
             />
-              )
-            : (
+          ) : (
             <ReadOnlyText>
               {dataForm?.username}
             </ReadOnlyText>
-              )}
+          )}
 
           <Label>Apellido</Label>
-          {editingDataProfile
-            ? (
+          {editingDataProfile ? (
             <Input
               name='lastName'
               onChange={onChange}
               type='text'
               value={dataForm?.lastName || ''}
             />
-              )
-            : (
+          ) : (
             <ReadOnlyText>
               {dataForm?.lastName}
             </ReadOnlyText>
-              )}
+          )}
 
           <Label>Teléfono</Label>
-          {editingDataProfile
-            ? (
+          {editingDataProfile ? (
             <Input
               type='tel'
               name='upPhone'
@@ -140,12 +135,11 @@ export const ProfileInfo = ({
               title='Número de Teléfono'
               value={dataForm?.upPhone || ''}
             />
-              )
-            : (
+          ) : (
             <ReadOnlyText>
               {dataForm?.upPhone}
             </ReadOnlyText>
-              )}
+          )}
 
           <Label>Email</Label>
           <ReadOnlyText>
@@ -165,8 +159,7 @@ export const ProfileInfo = ({
           </svg>
 
         </EditButton>
-        {editingAddress
-          ? (
+        {editingAddress ? (
           <>
             <Label>Dirección</Label>
             <Input
@@ -181,8 +174,7 @@ export const ProfileInfo = ({
             <Label>País</Label>
             <Input type='text' />
           </>
-            )
-          : (
+        ) : (
           <>
             <Label>Dirección</Label>
             <ReadOnlyText></ReadOnlyText>
@@ -191,7 +183,7 @@ export const ProfileInfo = ({
             <Label>País</Label>
             <ReadOnlyText>Colombia</ReadOnlyText>
           </>
-            )}
+        )}
       </ProfileSection>
     </div>
   )

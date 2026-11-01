@@ -20,17 +20,11 @@ module.exports = {
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module",
-        "warnOnUnsupportedTypeScriptVersion": false
+        "sourceType": "module"
     },
     "plugins": [
         "react"
     ],
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
-    },
     "rules": {
         'storybook/hierarchy-separator': 'off',
         "react/prop-types": "off",

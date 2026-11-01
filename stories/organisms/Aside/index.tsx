@@ -115,7 +115,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   const modulesArray = modules ?? []
 
   useEffect(() => {
-    function handleKeyDown (event: KeyboardEvent): void {
+    function handleKeyDown(event: KeyboardEvent): void {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault()
         setSalesOpen((prevState: boolean) => !prevState)
@@ -270,7 +270,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       {storeName}
                     </Text>
                   </Link>
-              )}
+                )}
 
               {uState === '1' && (
                 <Column>

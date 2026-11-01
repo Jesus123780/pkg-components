@@ -64,7 +64,7 @@ export const MapStore = ({
   handleLogout = () => { },
   setAlertBox = () => { },
   setLocationString = () => { },
-  setShowModal = () => { },
+  setShowModal = () => { } ,
   latitude,
   longitude,
   departments = [],
@@ -76,7 +76,7 @@ export const MapStore = ({
       cName: ''
     }
   },
-  useFormTools = () => { }
+  useFormTools = () => { return }
 }) => {
   const [modal, setModal] = useState(0)
   const circleRef = useRef()
@@ -96,12 +96,12 @@ export const MapStore = ({
   const [{ newLat, newLng }, setNewMarkers] = useState(center)
   const [map, setMap] = useState(null)
 
-  const onLoad = useCallback(function callback (map) {
+  const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds()
     map.fitBounds(bounds)
     setMap(map)
   }, [])
-  const onUnmount = React.useCallback(function callback () {
+  const onUnmount = React.useCallback(function callback() {
     setMap(null)
   }, [])
 
@@ -121,8 +121,8 @@ export const MapStore = ({
   const fetchData = useCallback(async () => {
     const API = `https://maps.googleapis.com/maps/api/geocode/json?address=${locationInfo} ${latitude} ${longitude}&key=${process.env.REACT_APP_API_KEY_GOOGLE_MAPS}`
     fetch(API)
-      .then(async (response) => {
-        return await response.json()
+      .then((response) => {
+        return response.json()
       })
       .then((response) => {
         if (response?.results) {
@@ -233,7 +233,7 @@ export const MapStore = ({
   }
 
   const handleDeleteUserLocations = () => {
-
+    return
   }
 
   const handleSelectLocation = (elem) => {
@@ -247,8 +247,8 @@ export const MapStore = ({
     localStorage.removeItem('location.data')
     const API = `https://maps.googleapis.com/maps/api/geocode/json?address=${latitude} ${longitude} &key=${process.env.REACT_APP_API_KEY_GOOGLE_MAPS}`
     fetch(API)
-      .then(async (response) => {
-        return await response.json()
+      .then((response) => {
+        return response.json()
       })
       .then((response) => {
         const data = {
@@ -256,6 +256,7 @@ export const MapStore = ({
         }
         const location = JSON.stringify(data)
         localStorage.setItem('location.data', location)
+
       })
       .catch(() => {
         return {}
@@ -265,6 +266,7 @@ export const MapStore = ({
     id: 'google-map-script',
     googleMapsApiKey: process.env.REACT_APP_API_KEY_GOOGLE_MAPS
   })
+
 
   const handleSelect = async ({ description }) => {
     const results = await getGeocode({ address: description })
@@ -281,6 +283,7 @@ export const MapStore = ({
       uLocationKnow: description || ''
     })
   }
+
 
   const showAddressLis = value?.length < 4
 
@@ -335,8 +338,8 @@ export const MapStore = ({
               </div>
               {showAddressLis && (
                 <ContainerTask
-                  onClick={async () => {
-                    return await handleMyLocation()
+                  onClick={() => {
+                    return handleMyLocation()
                   }}
                 >
                   <IconGoogleFullColor color={PColor} size={30} />
@@ -352,8 +355,8 @@ export const MapStore = ({
                   return (
                     <BtnAddressContainer
                       key={address.place_id}
-                      onClick={async () => {
-                        return await handleSelect(address)
+                      onClick={() => {
+                        return handleSelect(address)
                       }}
                       style={{ marginBottom: '10px', backgroundColor: 'transparent' }}
                       type='button'
@@ -470,8 +473,8 @@ export const MapStore = ({
           {isLoaded && <LoadScript googleMapsApiKey={process.env.REACT_APP_API_KEY_GOOGLE_MAPS}>
             <GoogleMap
               center={{
-                lat,
-                lng
+                lat: lat,
+                lng: lng
               }}
               mapContainerStyle={mapContainerStyle}
               onLoad={onLoad}

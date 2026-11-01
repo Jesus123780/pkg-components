@@ -170,6 +170,6 @@ export const Input = styled.input`
     border: 2px solid hsl(0, 0%, 100%);
   }
   width: ${({ width }) => {
-    return width || '100%'
+    return width ? width : '100%'
   }};
 `

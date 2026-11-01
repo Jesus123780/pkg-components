@@ -17,8 +17,7 @@ export const ButtonOption = styled.button`
             font-size: 14px;
             color: ${({ theme }) => { return `${theme.PColor}` }};
         }
-    `
-}}
+    `}}
     @media only screen and (min-width: 960px){
     }
     .notification_count {
@@ -55,8 +54,7 @@ export const FloatingBox = styled.div`
 
                 visibility: hidden;
                   transform: translateY(-50px);
-              `
-}}
+              `}}
     @media only screen and (min-width: 960px){
     }
 `

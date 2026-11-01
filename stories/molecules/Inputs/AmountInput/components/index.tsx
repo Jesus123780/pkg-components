@@ -120,8 +120,8 @@ const focusNextByTabIndex = (
 }
 
 export const AmountInput: FC<CurrencyInputProps> = forwardRef<
-HTMLInputElement,
-CurrencyInputProps
+  HTMLInputElement,
+  CurrencyInputProps
 >(
   (
     {
@@ -604,32 +604,32 @@ CurrencyInputProps
       onBlur && onBlur(event)
     }
 
-    const handleOnKeyDown = (
-      event: React.KeyboardEvent<HTMLInputElement>
-    ): void => {
-      const {
-        key,
-        currentTarget
-      } = event
+const handleOnKeyDown = (
+  event: React.KeyboardEvent<HTMLInputElement>
+): void => {
+  const {
+    key,
+    currentTarget
+  } = event
 
-      /**
+  /**
    * Guardamos la última tecla inmediatamente.
    */
-      lastKeyStrokeRef.current = key
+  lastKeyStrokeRef.current = key
 
-      /**
+  /**
    * =========================================================
    * TAB / SHIFT + TAB
    * =========================================================
    *
    * Completamente nativo.
    */
-      if (key === 'Tab') {
-        onKeyDown && onKeyDown(event)
-        return
-      }
+  if (key === 'Tab') {
+    onKeyDown && onKeyDown(event)
+    return
+  }
 
-      /**
+  /**
    * =========================================================
    * ENTER
    * =========================================================
@@ -644,25 +644,25 @@ CurrencyInputProps
    *      ↓ Enter
    * tabIndex=3
    */
-      if (key === 'Enter') {
-        event.preventDefault()
+  if (key === 'Enter') {
+    event.preventDefault()
 
-        focusNextByTabIndex(
-          currentTarget
-        )
+    focusNextByTabIndex(
+      currentTarget
+    )
 
-        onKeyDown && onKeyDown(event)
+    onKeyDown && onKeyDown(event)
 
-        return
-      }
+    return
+  }
 
-      /**
+  /**
    * =========================================================
    * K / M / B
    * =========================================================
    */
-      if (
-        !event.ctrlKey &&
+  if (
+    !event.ctrlKey &&
     !event.metaKey &&
     !event.altKey &&
     !event.isComposing &&
@@ -670,55 +670,55 @@ CurrencyInputProps
       key.toLowerCase()
     ) &&
     !disableAbbreviations
-      ) {
-        event.preventDefault()
+  ) {
+    event.preventDefault()
 
-        processAbbreviation(key)
+    processAbbreviation(key)
 
-        onKeyDown && onKeyDown(event)
+    onKeyDown && onKeyDown(event)
 
-        return
-      }
+    return
+  }
 
-      /**
+  /**
    * =========================================================
    * ARROW UP / ARROW DOWN
    * =========================================================
    */
-      if (
-        step &&
+  if (
+    step &&
     (
       key === 'ArrowUp' ||
       key === 'ArrowDown'
     )
-      ) {
-        event.preventDefault()
+  ) {
+    event.preventDefault()
 
-        setCursor(
-          stateValue.length
-        )
+    setCursor(
+      stateValue.length
+    )
 
-        const stringValue =
+    const stringValue =
       userValue != null
         ? String(userValue)
         : undefined
 
-        const stringValueWithoutSeparator =
+    const stringValueWithoutSeparator =
       decimalSeparator &&
       stringValue
         ? stringValue.replace(
-          new RegExp(
-            decimalSeparator.replace(
-              /[.*+?^${}()|[\]\\]/g,
-              '\\$&'
+            new RegExp(
+              decimalSeparator.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                '\\$&'
+              ),
+              'g'
             ),
-            'g'
-          ),
-          '.'
-        )
+            '.'
+          )
         : stringValue
 
-        const cleanedValue =
+    const cleanedValue =
       cleanValue({
         value:
           stringValueWithoutSeparator != null
@@ -727,86 +727,86 @@ CurrencyInputProps
         ...cleanValueOptions
       })
 
-        const normalizedCleanedValue =
+    const normalizedCleanedValue =
       decimalSeparator
         ? cleanedValue.replace(
-          new RegExp(
-            decimalSeparator.replace(
-              /[.*+?^${}()|[\]\\]/g,
-              '\\$&'
+            new RegExp(
+              decimalSeparator.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                '\\$&'
+              ),
+              'g'
             ),
-            'g'
-          ),
-          '.'
-        )
+            '.'
+          )
         : cleanedValue
 
-        const parsedValue =
+    const parsedValue =
       Number(
         normalizedCleanedValue
       )
 
-        const currentValue =
+    const currentValue =
       Number.isFinite(parsedValue)
         ? parsedValue
         : 0
 
-        const newValue =
+    const newValue =
       key === 'ArrowUp'
         ? currentValue + step
         : currentValue - step
 
-        if (
-          (min !== undefined &&
+    if (
+      (min !== undefined &&
         newValue < Number(min)) ||
       (!allowNegativeValue &&
         newValue < 0)
-        ) {
-          onKeyDown && onKeyDown(event)
-          return
-        }
+    ) {
+      onKeyDown && onKeyDown(event)
+      return
+    }
 
-        if (
-          max !== undefined &&
+    if (
+      max !== undefined &&
       newValue > Number(max)
-        ) {
-          onKeyDown && onKeyDown(event)
-          return
-        }
+    ) {
+      onKeyDown && onKeyDown(event)
+      return
+    }
 
-        const fixedLength =
+    const fixedLength =
       String(step).includes('.')
         ? Number(
-          String(step).split('.')[1].length
-        )
+            String(step).split('.')[1].length
+          )
         : undefined
 
-        const nextValue =
+    const nextValue =
       String(
         fixedLength !== undefined
           ? newValue.toFixed(
-            fixedLength
-          )
+              fixedLength
+            )
           : newValue
       ).replace(
         '.',
         decimalSeparator
       )
 
-        processChange(nextValue)
+    processChange(nextValue)
 
-        onKeyDown && onKeyDown(event)
+    onKeyDown && onKeyDown(event)
 
-        return
-      }
+    return
+  }
 
-      /**
+  /**
    * =========================================================
    * RESTO
    * =========================================================
    */
-      onKeyDown && onKeyDown(event)
-    }
+  onKeyDown && onKeyDown(event)
+}
 
     /**
      * Handle key up event
@@ -1009,12 +1009,12 @@ CurrencyInputProps
                     *
                   </span>
                 </>
-                )
+              )
               : (
                 <>
                   {label}
                 </>
-                )}
+              )}
           </label>
         )}
 

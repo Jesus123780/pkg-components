@@ -39,7 +39,7 @@ InputHookProducts.propTypes = {
   type: PropTypes.string,
   value: PropTypes.string
 }
-
+  
 const Input = styled.input`
     width: 100%;
     box-shadow: 0 0 0 1px rgb(0 0 0 / 25%);
@@ -52,8 +52,7 @@ const Input = styled.input`
     return props.card && css`
     padding: 25px;
     border: 2px solid ${PColor};
-    `
-}}
+    `}}
     ${props => {
     return props.inputText && css`
         font-weight: 500;
@@ -65,8 +64,7 @@ const Input = styled.input`
         outline: none;
         /* padding: 5px; */
         border: 2px solid transparent;
-    `
-}}
+    `}}
     ${props => {
     return props.inputText && css`
         overflow: visible;
@@ -76,16 +74,14 @@ const Input = styled.input`
         outline: none;
         padding: 5px;
         border: 2px solid transparent;
-    `
-}}
+    `}}
     ${props => {
     return props.checkbox && css`
         cursor: inherit;
         zoom: inherit;
         margin: 0;
         z-index: 2;
-    `
-}}
+    `}}
     &&::after {
         border-width: 6px;
         visibility: visible;

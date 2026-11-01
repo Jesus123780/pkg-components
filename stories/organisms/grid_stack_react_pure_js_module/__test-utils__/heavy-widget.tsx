@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 /**
  * Simulated heavy widget that renders exactly 500 DOM nodes.
@@ -11,13 +11,13 @@ import React from 'react'
  * Validates: Requirement 10.6 — Performance benchmarks shall be automated as test cases
  */
 
-const SECTION_COUNT = 20
-const ITEMS_PER_SECTION = 24 // 20 sections × 25 nodes each (1 div + 24 spans) = 500
+const SECTION_COUNT = 20;
+const ITEMS_PER_SECTION = 24; // 20 sections × 25 nodes each (1 div + 24 spans) = 500
 
 export interface HeavyWidgetProps {
-  id?: string
+  id?: string;
   /** Called on each render for tracking purposes */
-  onRender?: () => void
+  onRender?: () => void;
 }
 
 /**
@@ -37,7 +37,7 @@ export interface HeavyWidgetProps {
  */
 export const HeavyWidget: React.FC<HeavyWidgetProps> = React.memo(({ id, onRender }) => {
   if (onRender) {
-    onRender()
+    onRender();
   }
 
   return (
@@ -60,24 +60,24 @@ export const HeavyWidget: React.FC<HeavyWidgetProps> = React.memo(({ id, onRende
         ))}
       </div>
     </div>
-  )
-})
+  );
+});
 
-HeavyWidget.displayName = 'HeavyWidget'
+HeavyWidget.displayName = 'HeavyWidget';
 
 /**
  * Utility to count all DOM nodes in an element's subtree (inclusive).
  * Used in tests to verify the heavy widget produces exactly 500 nodes.
  */
-export function countDomNodes (element: Element): number {
-  let count = 1 // count the element itself
+export function countDomNodes(element: Element): number {
+  let count = 1; // count the element itself
   const walker = document.createTreeWalker(
     element,
     NodeFilter.SHOW_ELEMENT,
     null
-  )
+  );
   while (walker.nextNode()) {
-    count++
+    count++;
   }
-  return count
+  return count;
 }

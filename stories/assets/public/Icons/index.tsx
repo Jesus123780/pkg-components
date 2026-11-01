@@ -538,7 +538,7 @@ export const IconUpTrend: React.FC<IconProps> = ({
     <path
       d="M21 6h-4a1 1 0 0 0 0 2h1.59l-5.09 5.09-2.59-2.59a2 2 0 0 0-2.82 0l-5.8 5.79a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.79-5.8 2.59 2.59a2 2 0 0 0 2.82 0L20 9.41V11a1 1 0 0 0 2 0V7a1 1 0 0 0-1-1Z"
       style={{
-        fill: color ?? getGlobalStyle('--color-icons-success')
+        fill: color ?? getGlobalStyle('--color-icons-success'),
       }}
     />
   </svg>

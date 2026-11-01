@@ -56,8 +56,8 @@ export const Tabs: React.FC<TabsProps> = ({ children, tabBreak, width }) => {
       </TabList>
 
       <Content>
-        {React.Children.map(children, async (comp, index) => {
-          return selectedTab === index ? await comp : null
+        {React.Children.map(children, (comp, index) => {
+          return selectedTab === index ? comp : null
         })}
       </Content>
     </TabsWrapper>

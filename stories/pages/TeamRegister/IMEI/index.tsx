@@ -8,7 +8,7 @@ interface ImeiProps {
 }
 export const Imei = ({ onChange }: ImeiProps) => {
   return (
-    <Column className={styles.container_imei}>
+    <Column className={styles['container_imei']}>
     <Row>
       <Input onChange={onChange} placeholder="Ingresa aquí" labelButton='Registrar' />
     </Row>
