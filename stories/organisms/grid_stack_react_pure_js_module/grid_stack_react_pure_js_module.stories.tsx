@@ -27,7 +27,7 @@ const Card: React.FC<CardProps> = ({
     fontSize: 14,
     color: '#fff',
     fontFamily: 'system-ui, -apple-system, sans-serif, PFont-regular',
-    cursor: 'grab',
+    cursor: 'grab'
   }}>
     <div style={{ textAlign: 'center' }}>
       <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{title}</div>
@@ -37,7 +37,7 @@ const Card: React.FC<CardProps> = ({
 )
 
 // Utilidad para ajustar brillo de color
-function adjustBrightness(color: string, amount: number): string {
+function adjustBrightness (color: string, amount: number): string {
   const num = parseInt(color.replace('#', ''), 16)
   const r = Math.max(0, Math.min(255, (num >> 16) + amount))
   const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount))
@@ -53,7 +53,7 @@ const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   d: (props: any) => <Card {...props} color="#f59e0b" />,
   f: (props: any) => <Card {...props} color="#10b981" />,
   g: (props: any) => <Card {...props} color="#3b82f6" />,
-  h: (props: any) => <Card {...props} color="#8b5cf6" />,
+  h: (props: any) => <Card {...props} color="#8b5cf6" />
 }
 
 // Items de ejemplo
@@ -64,7 +64,7 @@ const SAMPLE_ITEMS: GridItem[] = [
   { i: 'd', id: 'd', x: 0, y: 2, w: 6, h: 3, title: 'Widget D', component: { title: 'Widget D', children: 'I am bigger!' } },
   { i: 'f', id: 'f', x: 6, y: 2, w: 6, h: 3, title: 'Widget F', component: { title: 'Widget F', children: 'I am bigger!' } },
   { i: 'g', id: 'g', x: 0, y: 5, w: 12, h: 2, title: 'Widget G', component: { title: 'Widget G', children: 'I am wide!' } },
-  { i: 'h', id: 'h', x: 0, y: 7, w: 12, h: 2, title: 'Widget H', component: { title: 'Widget H', children: 'I am wide!' } },
+  { i: 'h', id: 'h', x: 0, y: 7, w: 12, h: 2, title: 'Widget H', component: { title: 'Widget H', children: 'I am wide!' } }
 ]
 
 const meta = {
@@ -73,28 +73,28 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: 'GridStack — grid interactivo con drag/resize, animaciones FLIP y overlay drag.',
-      },
-    },
+        component: 'GridStack — grid interactivo con drag/resize, animaciones FLIP y overlay drag.'
+      }
+    }
   },
   argTypes: {
     dragMode: {
       control: { type: 'select' },
       options: ['overlay', 'move', 'ghost'],
       description: 'Modo de drag',
-      table: { defaultValue: { summary: 'overlay' } },
+      table: { defaultValue: { summary: 'overlay' } }
     },
     collisionMode: {
       control: { type: 'select' },
       options: ['push', 'none'],
       description: 'Estrategia de colisión',
-      table: { defaultValue: { summary: 'push' } },
+      table: { defaultValue: { summary: 'push' } }
     },
     items: {
       control: 'object',
-      description: 'Items del grid',
-    },
-  },
+      description: 'Items del grid'
+    }
+  }
 } satisfies Meta<typeof GridStack>
 
 export default meta
@@ -153,8 +153,8 @@ export const Primary: Story = {
     sticky: false,
     animation: { duration: 380, easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.28)' },
     softDisplacementStrength: 0.94,
-    enableHitOnPush: true,
-  },
+    enableHitOnPush: true
+  }
 }
 
 export const SecondarySticky: Story = {
@@ -199,8 +199,8 @@ export const SecondarySticky: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.10, // Bump más visible con sticky
     hitDuration: 180,
-    hitThresholdPx: 8,
-  },
+    hitThresholdPx: 8
+  }
 }
 
 /**
@@ -245,8 +245,8 @@ export const UltraSmooth: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.12, // Máximo recomendado
     hitDuration: 200,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -280,8 +280,8 @@ export const CollisionSwap: Story = {
     animation: { duration: 320, easing: 'cubic-bezier(0.25, 1, 0.5, 1)' },
     softDisplacementStrength: 0.92,
     enableRollOnPush: false,
-    enableHitOnPush: false,
-  },
+    enableHitOnPush: false
+  }
 }
 
 /**
@@ -310,8 +310,8 @@ export const CollisionNone: Story = {
 
     animation: { duration: 280, easing: 'ease-out' },
     enableRollOnPush: false,
-    enableHitOnPush: false,
-  },
+    enableHitOnPush: false
+  }
 }
 
 /**
@@ -347,8 +347,8 @@ export const DragModeReal: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.06,
     hitDuration: 160,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 /**
@@ -378,8 +378,8 @@ export const DragModePreview: Story = {
     animation: { duration: 380, easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.28)' },
     softDisplacementStrength: 0.94,
     enableRollOnPush: false,
-    enableHitOnPush: false,
-  },
+    enableHitOnPush: false
+  }
 }
 
 /**
@@ -415,8 +415,8 @@ export const OverlayAnchorPointer: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.06,
     hitDuration: 160,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 /**
@@ -449,8 +449,8 @@ export const OverlayAnchorCenter: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.08,
     hitDuration: 160,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 /**
@@ -461,7 +461,7 @@ const STATIC_ITEMS: GridItem[] = [
   { i: 'b', id: 'b', x: 0, y: 2, w: 4, h: 3, title: 'Widget B', component: { title: 'Widget B', children: 'Drag me!' } },
   { i: 'c', id: 'c', x: 4, y: 2, w: 4, h: 3, title: 'Widget C', component: { title: 'Widget C', children: 'Resize me!' } },
   { i: 'd', id: 'd', x: 8, y: 2, w: 4, h: 3, title: 'Widget D', component: { title: 'Widget D', children: 'Interact!' } },
-  { i: 'f', id: 'f', x: 0, y: 5, w: 12, h: 2, title: 'Footer (static)', static: true, component: { title: '🔒 Footer', children: 'No me puedes mover' } },
+  { i: 'f', id: 'f', x: 0, y: 5, w: 12, h: 2, title: 'Footer (static)', static: true, component: { title: '🔒 Footer', children: 'No me puedes mover' } }
 ]
 
 export const StaticItems: Story = {
@@ -494,8 +494,8 @@ export const StaticItems: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.06,
     hitDuration: 160,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 /**
@@ -517,8 +517,8 @@ export const ReadOnly: Story = {
 
     dragMode: 'overlay',
     collisionMode: 'push',
-    animation: { duration: 300, easing: 'ease' },
-  },
+    animation: { duration: 300, easing: 'ease' }
+  }
 }
 
 /**
@@ -537,23 +537,23 @@ const DENSE_ITEMS: GridItem[] = [
   { i: '10', id: '10', x: 4, y: 4, w: 4, h: 2, component: { title: '10' } },
   { i: '11', id: '11', x: 8, y: 4, w: 4, h: 2, component: { title: '11' } },
   { i: '12', id: '12', x: 0, y: 6, w: 6, h: 2, component: { title: '12' } },
-  { i: '13', id: '13', x: 6, y: 6, w: 6, h: 2, component: { title: '13' } },
+  { i: '13', id: '13', x: 6, y: 6, w: 6, h: 2, component: { title: '13' } }
 ]
 
 const DENSE_COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
-  '1': (p: any) => <Card {...p} color="#6366f1" />,
-  '2': (p: any) => <Card {...p} color="#ec4899" />,
-  '3': (p: any) => <Card {...p} color="#14b8a6" />,
-  '4': (p: any) => <Card {...p} color="#f59e0b" />,
-  '5': (p: any) => <Card {...p} color="#10b981" />,
-  '6': (p: any) => <Card {...p} color="#3b82f6" />,
-  '7': (p: any) => <Card {...p} color="#8b5cf6" />,
-  '8': (p: any) => <Card {...p} color="#ef4444" />,
-  '9': (p: any) => <Card {...p} color="#06b6d4" />,
-  '10': (p: any) => <Card {...p} color="#84cc16" />,
-  '11': (p: any) => <Card {...p} color="#f97316" />,
-  '12': (p: any) => <Card {...p} color="#a855f7" />,
-  '13': (p: any) => <Card {...p} color="#64748b" />,
+  1: (p: any) => <Card {...p} color="#6366f1" />,
+  2: (p: any) => <Card {...p} color="#ec4899" />,
+  3: (p: any) => <Card {...p} color="#14b8a6" />,
+  4: (p: any) => <Card {...p} color="#f59e0b" />,
+  5: (p: any) => <Card {...p} color="#10b981" />,
+  6: (p: any) => <Card {...p} color="#3b82f6" />,
+  7: (p: any) => <Card {...p} color="#8b5cf6" />,
+  8: (p: any) => <Card {...p} color="#ef4444" />,
+  9: (p: any) => <Card {...p} color="#06b6d4" />,
+  10: (p: any) => <Card {...p} color="#84cc16" />,
+  11: (p: any) => <Card {...p} color="#f97316" />,
+  12: (p: any) => <Card {...p} color="#a855f7" />,
+  13: (p: any) => <Card {...p} color="#64748b" />
 }
 
 export const DenseGrid: Story = {
@@ -586,8 +586,8 @@ export const DenseGrid: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.05,
     hitDuration: 140,
-    hitThresholdPx: 4,
-  },
+    hitThresholdPx: 4
+  }
 }
 
 /**
@@ -617,8 +617,8 @@ export const NoAnimations: Story = {
     animation: { duration: 0, easing: 'linear' },
     softDisplacementStrength: 0,
     enableRollOnPush: false,
-    enableHitOnPush: false,
-  },
+    enableHitOnPush: false
+  }
 }
 
 /**
@@ -632,7 +632,7 @@ export const SixColumns: Story = {
       { i: 'b', id: 'b', x: 3, y: 0, w: 3, h: 2, title: 'B', component: { title: 'B', children: '3 cols' } },
       { i: 'c', id: 'c', x: 0, y: 2, w: 2, h: 3, title: 'C', component: { title: 'C', children: '2 cols' } },
       { i: 'd', id: 'd', x: 2, y: 2, w: 4, h: 3, title: 'D', component: { title: 'D', children: '4 cols' } },
-      { i: 'f', id: 'f', x: 0, y: 5, w: 6, h: 2, title: 'F', component: { title: 'F', children: 'Full width' } },
+      { i: 'f', id: 'f', x: 0, y: 5, w: 6, h: 2, title: 'F', component: { title: 'F', children: 'Full width' } }
     ],
     cols: 6,
     rowHeight: 100,
@@ -660,8 +660,8 @@ export const SixColumns: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.06,
     hitDuration: 160,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 /**
@@ -694,8 +694,8 @@ export const LargeMargins: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.08,
     hitDuration: 180,
-    hitThresholdPx: 8,
-  },
+    hitThresholdPx: 8
+  }
 }
 
 /**
@@ -725,8 +725,8 @@ export const ZeroMargins: Story = {
     animation: { duration: 320, easing: 'ease-in-out' },
     softDisplacementStrength: 0.90,
     enableRollOnPush: false,
-    enableHitOnPush: false,
-  },
+    enableHitOnPush: false
+  }
 }
 
 /**
@@ -758,8 +758,8 @@ export const ResizeOnly: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.06,
     hitDuration: 160,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 /**
@@ -795,8 +795,8 @@ export const CollisionPushFirst: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.06,
     hitDuration: 160,
-    hitThresholdPx: 6,
-  },
+    hitThresholdPx: 6
+  }
 }
 
 /**
@@ -806,7 +806,7 @@ export const SingleWidget: Story = {
   render: (args) => <GridStack {...args} componentMap={COMPONENT_MAP} />,
   args: {
     items: [
-      { i: 'a', id: 'a', x: 2, y: 1, w: 8, h: 4, title: 'Solo Widget', component: { title: 'Solo Widget', children: 'Soy el único aquí' } },
+      { i: 'a', id: 'a', x: 2, y: 1, w: 8, h: 4, title: 'Solo Widget', component: { title: 'Solo Widget', children: 'Soy el único aquí' } }
     ],
     cols: 12,
     rowHeight: 90,
@@ -825,8 +825,8 @@ export const SingleWidget: Story = {
     snapThreshold: 12,
     sticky: false,
 
-    animation: { duration: 380, easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.28)' },
-  },
+    animation: { duration: 380, easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.28)' }
+  }
 }
 
 /**
@@ -857,8 +857,8 @@ export const AllowOverlap: Story = {
     animation: { duration: 360, easing: 'cubic-bezier(0.25, 1, 0.5, 1)' },
     softDisplacementStrength: 0.92,
     enableRollOnPush: false,
-    enableHitOnPush: false,
-  },
+    enableHitOnPush: false
+  }
 }
 
 /**
@@ -871,7 +871,7 @@ export const TallRows: Story = {
       { i: 'a', id: 'a', x: 0, y: 0, w: 6, h: 1, title: 'Chart A', component: { title: 'Chart A', children: 'Tall row' } },
       { i: 'b', id: 'b', x: 6, y: 0, w: 6, h: 1, title: 'Chart B', component: { title: 'Chart B', children: 'Tall row' } },
       { i: 'c', id: 'c', x: 0, y: 1, w: 4, h: 2, title: 'Chart C', component: { title: 'Chart C', children: 'Extra tall' } },
-      { i: 'd', id: 'd', x: 4, y: 1, w: 8, h: 2, title: 'Chart D', component: { title: 'Chart D', children: 'Extra tall' } },
+      { i: 'd', id: 'd', x: 4, y: 1, w: 8, h: 2, title: 'Chart D', component: { title: 'Chart D', children: 'Extra tall' } }
     ],
     cols: 12,
     rowHeight: 180,
@@ -899,6 +899,6 @@ export const TallRows: Story = {
     enableHitOnPush: true,
     hitMultiplier: 1.08,
     hitDuration: 180,
-    hitThresholdPx: 8,
-  },
+    hitThresholdPx: 8
+  }
 }

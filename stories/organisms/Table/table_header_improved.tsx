@@ -16,7 +16,7 @@
  *   of this file as a comment.
  */
 
-import React, { JSX, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { type JSX, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './styles.module.css'
 import { getGlobalStyle } from '../../../helpers'
 import { orderColumn as defaultOrderColumn } from './orderColumn'
@@ -70,7 +70,7 @@ export interface TableProps {
  * @param props.row row index (0-based)
  * @param props.col column index (0-based)
  */
-export const TableCell: React.FC<React.PropsWithChildren<{ row: number; col: number }>> = ({ children, row, col }) => {
+export const TableCell: React.FC<React.PropsWithChildren<{ row: number, col: number }>> = ({ children, row, col }) => {
   return (
     <div
       role="gridcell"
@@ -213,18 +213,18 @@ export const Table: React.FC<TableProps> = ({
     startPointerX: number
     startOffsetWithinHeader: number
     headerRowLeft: number
-    headerRects: { left: number; width: number; center: number }[]
+    headerRects: Array<{ left: number, width: number, center: number }>
     draggedWidth: number
   } | null
 
   const dragInfoRef = useRef<DragInfoRef>(null)
 
-  const [liveDrag, setLiveDrag] = useState<{ draggingIndex: number | null; currentX: number; targetIndex: number | null }>(
+  const [liveDrag, setLiveDrag] = useState<{ draggingIndex: number | null, currentX: number, targetIndex: number | null }>(
     { draggingIndex: null, currentX: 0, targetIndex: null }
   )
 
   // resizing
-  const resizingRef = useRef<{ index: number; startX: number; startWidth: number } | null>(null)
+  const resizingRef = useRef<{ index: number, startX: number, startWidth: number } | null>(null)
   const resizingPointer = useRef(false)
 
   const handleResizePointerDown = useCallback((ev: React.PointerEvent, index: number) => {
@@ -418,7 +418,7 @@ export const Table: React.FC<TableProps> = ({
     } else {
       if ((ev.altKey || ev.ctrlKey) && (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight')) {
         const headerEl = document.activeElement as HTMLElement
-        if (headerEl && headerEl.dataset && headerEl.dataset.tableHeaderIndex) {
+        if (headerEl?.dataset?.tableHeaderIndex) {
           const idx = Number(headerEl.dataset.tableHeaderIndex)
           handleHeaderKeyDown(ev as unknown as React.KeyboardEvent, idx)
         }

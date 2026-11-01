@@ -19,7 +19,7 @@ export const ScheduleMobile: React.FC<ScheduleMobileProps> = ({
   showTiming,
   style,
   handleClick,
-  handleHourPmAM = (string: string) => string,
+  handleHourPmAM = (string: string) => string
 }) => {
   return (
     <div className={styles.scheduleHeader} style={isMobile ? { ...style } : { margin: 'auto', width: '95%', ...style }}>

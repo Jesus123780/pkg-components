@@ -3,11 +3,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface FlipCardProps {
-  backChild?: React.ReactNode;
-  flipped?: boolean;
-  frontChild?: React.ReactNode;
-  onClick?: () => void;
-  setFlipped?: (boolean: boolean) => void;
+  backChild?: React.ReactNode
+  flipped?: boolean
+  frontChild?: React.ReactNode
+  onClick?: () => void
+  setFlipped?: (boolean: boolean) => void
 }
 
 export const FlipCard: React.FC<FlipCardProps> = ({

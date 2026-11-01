@@ -4,7 +4,7 @@ import {
   Row,
   Text
 } from '../../../../atoms'
-import { PaymentInfoProps } from './helpers'
+import { type PaymentInfoProps } from './helpers'
 
 interface IPaymentInfoProps {
   paymentInfo?: PaymentInfoProps[]
@@ -29,8 +29,9 @@ export const PaymentInfo: React.FC<IPaymentInfoProps> = ({ paymentInfo = [] }) =
                 </Text>
               ))}
             </Column>
-          )})}
+            )
+          })}
         </Row>
       ))}
     </div>
-  );
+)

@@ -3,10 +3,10 @@ import React from 'react'
 import styles from './styles.module.css'
 
 interface CustomHTMLAttributes extends React.HTMLAttributes<HTMLDivElement> {
-  '--active'?: number;
-  '--offset'?: number;
-  '--direction'?: number;
-  '--abs-offset'?: number;
+  '--active'?: number
+  '--offset'?: number
+  '--direction'?: number
+  '--abs-offset'?: number
 }
 
 interface Carrusel3DProps {
@@ -29,8 +29,9 @@ export const Carrusel3D: React.FC<Carrusel3DProps> = (props) => {
   const count = React.Children.count(children)
   return (
     <>
-      <div className={styles['carousel']}>
-        {React.Children.map(children, (child, i) => {return (
+      <div className={styles.carousel}>
+        {React.Children.map(children, (child, i) => {
+          return (
           <div
             className={styles['card-container']}
             style={{
@@ -47,7 +48,8 @@ export const Carrusel3D: React.FC<Carrusel3DProps> = (props) => {
           >
             {child}
           </div>
-        )})}
+          )
+        })}
       </div>
       <div>
         <div>

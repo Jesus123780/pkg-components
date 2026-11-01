@@ -51,7 +51,7 @@ export const Content = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
-` 
+`
 const Input = styled.input`
     width: 60px;
     height: 50px;

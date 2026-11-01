@@ -13,7 +13,7 @@ const Template = (args) => {
 export const Default = Template.bind({})
 Default.args = {
   active: 0,
-  hover: true, 
-  overActive: 0, 
+  hover: true,
+  overActive: 0,
   steps: ['Detalles', 'Adicionales', 'Complementos', 'Disponibilidad']
 }

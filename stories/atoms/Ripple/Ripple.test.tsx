@@ -6,7 +6,7 @@ import '@testing-library/jest-dom'
 import { RippleButton } from './index'
 
 jest.mock('../../../assets', () => ({
-  IconLoading: ({ color, size }: { color: string; size: number }) => (
+  IconLoading: ({ color, size }: { color: string, size: number }) => (
     <svg data-testid="icon-loading" data-color={color} data-size={size} />
   )
 }))

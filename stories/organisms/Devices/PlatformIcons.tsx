@@ -27,7 +27,7 @@ const defaultIcon = (
   ></path></svg>
 )
 export const platformIcons = {
-  'win32': (
+  win32: (
     <svg
       fill='none'
       height='24'
@@ -61,7 +61,7 @@ export const platformIcons = {
       strokeWidth='1.5'
     ></path></svg>
   ),
-  'Tablet': defaultIcon,
-  'Mobile': defaultIcon,
-  'Unknown': defaultIcon
+  Tablet: defaultIcon,
+  Mobile: defaultIcon,
+  Unknown: defaultIcon
 }

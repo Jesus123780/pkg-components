@@ -2462,8 +2462,8 @@ export const Table: React.FC<TableProps> = ({
 
         const orderedChildren = currentColumnIds
           .map(
-            id =>
-              childArray[
+            async id =>
+              await childArray[
                 originalIndexById.get(id) ?? -1
               ]
           )

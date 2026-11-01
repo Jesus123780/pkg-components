@@ -101,9 +101,7 @@ interface RuntimeToastItem extends ToastItem {
 /**
  * CSS custom properties used by the component.
  */
-type ToastCSSProperties = React.CSSProperties & {
-  [key: `--${string}`]: string | number
-}
+type ToastCSSProperties = React.CSSProperties & Record<`--${string}`, string | number>
 
 /**
  * Toast component configuration.
@@ -377,7 +375,7 @@ export const Toast: React.FC<ToastProps> = ({
   stackHoverLift = false,
   stackHoverScale = DEFAULT_STACK_HOVER_SCALE,
   stackTransitionDuration =
-    DEFAULT_STACK_TRANSITION_DURATION,
+  DEFAULT_STACK_TRANSITION_DURATION,
   toastWidth = 'min(560px, calc(100vw - 24px))'
 }) => {
   const [list, setList] = useState<RuntimeToastItem[]>([])
@@ -392,13 +390,13 @@ export const Toast: React.FC<ToastProps> = ({
    * Stores metadata across prop updates.
    */
   const metadataRef = useRef<
-    Map<
-      string,
-      {
-        sequence: number
-        createdAt: number
-      }
-    >
+  Map<
+  string,
+  {
+    sequence: number
+    createdAt: number
+  }
+  >
   >(new Map())
 
   /**
@@ -415,37 +413,37 @@ export const Toast: React.FC<ToastProps> = ({
    * Auto-delete timers.
    */
   const autoDeleteTimersRef = useRef<
-    Record<
-      string,
-      ReturnType<typeof setTimeout>
-    >
+  Record<
+  string,
+  ReturnType<typeof setTimeout>
+  >
   >({})
 
   /**
    * Absolute auto-delete deadlines.
    */
   const autoDeleteDeadlinesRef = useRef<
-    Record<string, number>
+  Record<string, number>
   >({})
 
   /**
    * Remaining duration while a toast is paused.
    */
   const pausedRemainingRef = useRef<
-    Record<string, number>
+  Record<string, number>
   >({})
 
   /**
    * Persistent progress offsets.
    */
   const progressDelayRef = useRef<
-    Record<
-      string,
-      {
-        signature: string
-        delay: number
-      }
-    >
+  Record<
+  string,
+  {
+    signature: string
+    delay: number
+  }
+  >
   >({})
 
   /**
@@ -464,27 +462,27 @@ export const Toast: React.FC<ToastProps> = ({
    * Finish-animation timers.
    */
   const exitFinishTimersRef = useRef<
-    Record<
-      string,
-      ReturnType<typeof setTimeout>
-    >
+  Record<
+  string,
+  ReturnType<typeof setTimeout>
+  >
   >({})
 
   /**
    * Gap timer between consecutive exits.
    */
   const exitGapTimerRef = useRef<
-    ReturnType<typeof setTimeout> | null
+  ReturnType<typeof setTimeout> | null
   >(null)
 
   /**
    * Hover resume timers.
    */
   const hoverResumeTimersRef = useRef<
-    Record<
-      string,
-      ReturnType<typeof setTimeout>
-    >
+  Record<
+  string,
+  ReturnType<typeof setTimeout>
+  >
   >({})
 
   /**
@@ -520,8 +518,7 @@ export const Toast: React.FC<ToastProps> = ({
     }
 
     if (
-      typeof document === 'undefined' ||
-      !document.body
+      !document?.body
     ) {
       return
     }
@@ -1484,7 +1481,7 @@ export const Toast: React.FC<ToastProps> = ({
                       />
                     </button>
                   </div>
-                )
+                  )
             }
           >
             <div
@@ -1609,7 +1606,7 @@ export const Toast: React.FC<ToastProps> = ({
                       }}
                     />
                   </div>
-                )}
+              )}
             </div>
           </SwipeableCard>
         )
@@ -1683,7 +1680,7 @@ export const Toast: React.FC<ToastProps> = ({
             : offset
 
         const cardStyle:
-          ToastCSSProperties = {
+        ToastCSSProperties = {
           '--toast-sequence':
             toast.sequence,
           '--toast-direction':
@@ -1812,7 +1809,7 @@ export const Toast: React.FC<ToastProps> = ({
                 >
                   +{counter}
                 </div>
-              )}
+            )}
           </div>
         )
       },
@@ -1877,8 +1874,8 @@ export const Toast: React.FC<ToastProps> = ({
       const stackVisible =
         isStacked
           ? orderedList.slice(
-              -maxVisible
-            )
+            -maxVisible
+          )
           : orderedList
 
       const hiddenCount =
@@ -2020,7 +2017,7 @@ export const Toast: React.FC<ToastProps> = ({
    * Determines groups.
    */
   const renderedGroups =
-    useMemo(() => {
+    useMemo(async () => {
       const hasItemPositions =
         list.some(
           (toast) =>
@@ -2048,7 +2045,7 @@ export const Toast: React.FC<ToastProps> = ({
         ]
 
         return positions.map(
-          (groupPosition) => {
+          async (groupPosition) => {
             const groupList =
               list.filter(
                 (toast) =>
@@ -2059,7 +2056,7 @@ export const Toast: React.FC<ToastProps> = ({
                   groupPosition
               )
 
-            return renderGroup(
+            return await renderGroup(
               groupPosition,
               groupList
             )
@@ -2067,7 +2064,7 @@ export const Toast: React.FC<ToastProps> = ({
         )
       }
 
-      return renderGroup(
+      return await renderGroup(
         position,
         list
       )

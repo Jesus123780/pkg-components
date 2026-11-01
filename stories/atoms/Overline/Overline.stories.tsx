@@ -14,6 +14,6 @@ export default {
   }
 }
 
-const Template = (args: any) => {return <Overline {...args} />}
+const Template = (args: any) => { return <Overline {...args} /> }
 
 export const OverLine = Template.bind({})

@@ -53,8 +53,8 @@ describe('InputColor', () => {
   test('copies the hex value', () => {
     Object.assign(navigator, {
       clipboard: {
-        writeText: jest.fn(),
-      },
+        writeText: jest.fn()
+      }
     })
 
     render(<InputColor value="#ff0000" />)

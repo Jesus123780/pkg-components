@@ -1,5 +1,5 @@
 import { QuantityButton } from './index'
-import { QuantityButtonProps } from './types'
+import { type QuantityButtonProps } from './types'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

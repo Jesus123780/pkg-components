@@ -33,7 +33,7 @@ export const SCColor = '#1FB4D2'
 export const EColor = '#EA1D2C'
 export const WColor = '#ff9800'
 export const ESFColor = '#F22020'
-//Table
+// Table
 export const TBGVColor = '#f8f9fa'
 export const TBGBColor = '#b8daff'
 export const TBGSColor = '#d6d8db'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 import { LayoutSwitcher } from './index'
 
 const meta: Meta<typeof LayoutSwitcher> = {
@@ -11,17 +11,17 @@ const meta: Meta<typeof LayoutSwitcher> = {
     initialLayout: {
       control: { type: 'radio' },
       options: ['list', 'grid', 'columns'],
-      description: 'Diseño inicial mostrado por el LayoutSwitcher',
+      description: 'Diseño inicial mostrado por el LayoutSwitcher'
     },
     // Si tienes una función callback para cambios de layout
     onLayoutChange: {
       action: 'layoutChanged',
-      description: 'Evento cuando cambia el layout',
-    },
+      description: 'Evento cuando cambia el layout'
+    }
   },
   args: {
-    initialLayout: 'list',
-  },
+    initialLayout: 'list'
+  }
 }
 
 export default meta
@@ -31,22 +31,22 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     // estos args se van a pasar al componente
-    initialLayout: 'list',
+    initialLayout: 'list'
   },
   render: (args) => {
     // Aquí puedes pasar args a tu componente
     return <LayoutSwitcher {...args} />
-  },
+  }
 }
 
 export const StartGrid: Story = {
   args: {
-    initialLayout: 'grid',
-  },
+    initialLayout: 'grid'
+  }
 }
 
 export const StartColumns: Story = {
   args: {
-    initialLayout: 'columns',
-  },
+    initialLayout: 'columns'
+  }
 }

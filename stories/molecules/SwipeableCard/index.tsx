@@ -29,7 +29,7 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
   style = {},
   delay = 0,
   onDelete = () => { },
-  onSwipeUp = () => { },
+  onSwipeUp = () => { }
 }) => {
   const [offsetX, setOffsetX] = useState(0)
   const [offsetY, setOffsetY] = useState(0)
@@ -218,12 +218,11 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {showActions ? rightActions : null}
       </div>
 
-
       <div
         className={styles.frontContent}
         style={{
           transform: `translate(${offsetX}px, ${offsetY}px)`,
-          transition: isSwiping ? 'none' : transition,
+          transition: isSwiping ? 'none' : transition
         }}
       >
         {children}

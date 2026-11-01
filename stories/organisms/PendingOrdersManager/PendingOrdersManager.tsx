@@ -254,7 +254,8 @@ export const PendingOrdersManager: React.FC<PendingOrdersManagerProps> = ({
           </div>
         )}
 
-        {filteredOrders.length === 0 ? (
+        {filteredOrders.length === 0
+          ? (
           <div className={styles.emptyState}>
             <strong>{search ? 'No encontramos coincidencias' : 'No hay órdenes en espera'}</strong>
             <p>
@@ -263,7 +264,8 @@ export const PendingOrdersManager: React.FC<PendingOrdersManagerProps> = ({
                 : 'Cuando envíes una venta a espera, aparecerá aquí para retomarla después.'}
             </p>
           </div>
-        ) : (
+            )
+          : (
           <div className={styles.orderList}>
             {filteredOrders.map((order) => {
               const totalUnits = order.products.reduce(
@@ -374,7 +376,7 @@ export const PendingOrdersManager: React.FC<PendingOrdersManagerProps> = ({
               )
             })}
           </div>
-        )}
+            )}
 
         <div className={styles.footerActions}>
           <button

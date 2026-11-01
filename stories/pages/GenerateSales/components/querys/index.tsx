@@ -4,7 +4,7 @@ import { Button, Column, Row } from '../../../../atoms'
 import { getGlobalStyle } from '../../../../../helpers'
 import { FilterConfigsViewer, type FilterSelection } from './FilterConfigsViewer'
 
-export type Sort = {
+export interface Sort {
   field: string
   direction: 'asc' | 'desc'
 }
@@ -13,7 +13,7 @@ interface QueryProps {
   sort: Sort
   setSort: (value: Sort) => void
   fields: SortOption[]
-  dataFilter?: import('./FilterConfigsViewer').FilterTabDef[]
+  dataFilter?: Array<import('./FilterConfigsViewer').FilterTabDef>
   /** Controlled selection passed down from the parent. */
   selection?: FilterSelection
   onSelectionChange?: (selection: FilterSelection) => void

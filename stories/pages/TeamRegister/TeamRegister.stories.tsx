@@ -1,11 +1,11 @@
 import React from 'react'
-import { Meta } from '@storybook/react'
+import { type Meta } from '@storybook/react'
 import { TeamRegister } from './index'
 
 export default {
   title: 'pages/TeamRegister',
-  component: TeamRegister,
-} as Meta;
+  component: TeamRegister
+} as Meta
 
 const Template: any = (args: any) => <TeamRegister {...args} />
 

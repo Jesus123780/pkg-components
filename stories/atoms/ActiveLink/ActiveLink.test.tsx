@@ -30,12 +30,11 @@ describe('ActiveLink', () => {
     expect(getByText('Home')).toBeInTheDocument()
   })
 
-
   it('renders with icon when mIcon is provided', () => {
     const { getByTestId } = render(
       <ActiveLink
         {...defaultProps}
-        icon={{ '2': 'mock-icon' }}
+        icon={{ 2: 'mock-icon' }}
         mIcon={2}
       />
     )

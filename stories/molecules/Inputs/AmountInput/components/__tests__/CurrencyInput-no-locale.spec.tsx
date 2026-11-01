@@ -4,7 +4,7 @@ import { getLocaleConfig } from '../utils'
 import { AmountInput } from '../index'
 
 jest.mock('../utils/getLocaleConfig', () => ({
-  getLocaleConfig: jest.fn().mockReturnValue({ groupSeparator: ',', decimalSeparator: '.' }),
+  getLocaleConfig: jest.fn().mockReturnValue({ groupSeparator: ',', decimalSeparator: '.' })
 }))
 
 describe('<AmountInput/> no locale', () => {

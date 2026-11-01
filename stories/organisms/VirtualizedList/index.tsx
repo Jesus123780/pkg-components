@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import { findIndexByScroll } from './helpers/find-index-by-scroll'
 import { buildPrefix } from './helpers/build-orefix.helper'
-import { VirtualizedListProps } from './types/index'
+import { type VirtualizedListProps } from './types/index'
 
 /**
  * VirtualizedList - Grid + List virtualization with smooth non-overlapping transitions.
@@ -105,7 +105,7 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
         scheduled = false
         const w = Math.max(0, Math.floor(el.clientWidth))
         const h =
-          viewHeight === 'auto' ? Math.max(0, Math.floor(el.clientHeight)) : (viewHeight as number)
+          viewHeight === 'auto' ? Math.max(0, Math.floor(el.clientHeight)) : (viewHeight)
         setContainerWidth(w)
         setContainerHeight(h)
       })
@@ -165,11 +165,11 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
       if (items.length === 0) return { columns: 1, itemWidth: 0, rowHeight: 0, totalHeight: 0, startIndex: 0, endIndex: -1, topOffset: 0 }
 
       if (isFixed) {
-        const h = itemHeight as number
+        const h = itemHeight
         // Add a small safety gap to avoid visual overlap during layout changes
         const stackSafety = Math.min(12, Math.max(2, Math.floor(h * 0.04)))
         const stride = h + itemGap + stackSafety
-        const effectiveViewHeight = viewHeight === 'auto' ? containerHeight : (viewHeight as number)
+        const effectiveViewHeight = viewHeight === 'auto' ? containerHeight : (viewHeight)
         const rawStart = Math.floor(scrollTop / stride)
         const start = Math.max(0, rawStart - overscan)
         const visibleCount = Math.ceil(effectiveViewHeight / stride) + overscan * 2
@@ -180,7 +180,7 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
       }
 
       // variable heights list
-      const effectiveViewHeight = viewHeight === 'auto' ? containerHeight : (viewHeight as number)
+      const effectiveViewHeight = viewHeight === 'auto' ? containerHeight : (viewHeight)
       const start = Math.max(0, findIndexByScroll(prefix!, scrollTop) - overscan)
       const end = Math.min(items.length - 1, findIndexByScroll(prefix!, scrollTop + effectiveViewHeight) + overscan)
       const offset = prefix![start]
@@ -231,13 +231,13 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
     const effectiveItemWidth = Math.max(1, itemW - horizontalSafety)
 
     // vertical stride (row height) with stackSafety to avoid overlap during transitions
-    const stackSafety = Math.min(12, Math.max(2, Math.floor((itemHeight as number) * 0.04)))
-    const rowH = (itemHeight as number) + itemGap + stackSafety
+    const stackSafety = Math.min(12, Math.max(2, Math.floor((itemHeight) * 0.04)))
+    const rowH = (itemHeight) + itemGap + stackSafety
 
     const totalRows = Math.max(1, Math.ceil(items.length / colCountClamped))
     const totalH = totalRows * rowH - itemGap - stackSafety
 
-    const effectiveViewHeight = viewHeight === 'auto' ? containerHeight : (viewHeight as number)
+    const effectiveViewHeight = viewHeight === 'auto' ? containerHeight : (viewHeight)
     const rawStartRow = Math.floor(scrollTop / rowH)
     const startRow = Math.max(0, rawStartRow - overscan)
     const visibleRows = Math.ceil(effectiveViewHeight / rowH) + overscan * 2
@@ -298,7 +298,7 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
       const transition = `transform ${ANIM_DURATION_MS}ms ${ANIM_EASING}, opacity ${ANIM_DURATION_MS / 2}ms ease`
 
       if (!grid || !isFixed) {
-        const top = isFixed ? index * ((itemHeight as number) + itemGap) : (prefix ? prefix[index] : 0)
+        const top = isFixed ? index * ((itemHeight) + itemGap) : (prefix ? prefix[index] : 0)
         return {
           position: 'absolute',
           top: 0,
@@ -338,11 +338,13 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
     width: '100%'
   }
 
-  const emptyStyle = emptyComponent && items.length === 0 ? {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  } : {}
+  const emptyStyle = emptyComponent && items.length === 0
+    ? {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }
+    : {}
 
   return (
     <Container
@@ -353,17 +355,18 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
         WebkitOverflowScrolling: 'touch',
         position: 'relative',
         ...style,
-        ...emptyStyle,
+        ...emptyStyle
       }}
       className={className}
       role='list'
       aria-label='virtualized-list'
     >
       <div style={innerStyle}>
-        {slice.length > 0 ? slice.map((item, idx) => {
-          const realIndex = startIndex + idx
-          const key = itemKey ? itemKey(item, realIndex) : realIndex
-          return (
+        {slice.length > 0
+          ? slice.map((item, idx) => {
+            const realIndex = startIndex + idx
+            const key = itemKey ? itemKey(item, realIndex) : realIndex
+            return (
             <div
               key={key}
               ref={(el) => itemRefs.current.set(realIndex, el) as any}
@@ -373,8 +376,8 @@ export const VirtualizedList = <T,>(props: VirtualizedListProps<T>) => {
             >
               {render(item, realIndex)}
             </div>
-          )
-        })
+            )
+          })
           : emptyComponent
         }
       </div>

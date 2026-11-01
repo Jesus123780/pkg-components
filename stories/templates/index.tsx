@@ -1,9 +1,9 @@
 // export * from './PdfSalesInvoice'
 
 export const PdfSalesInvoice = () => {
-    return (
+  return (
         <div>
             <h1>PDF Sales Invoice</h1>
         </div>
-    )
+  )
 }

@@ -27,7 +27,7 @@ export const CustomPagination = ({ isLoadingPage, ...propsNavigation }) => {
           if (ignoreKeys.includes(key)) return null
           return `${key}=${value}`
         })
-        .filter((item) => {return item !== null})
+        .filter((item) => { return item !== null })
         .join('&')
     )
   // eslint-disable-next-line react-hooks/exhaustive-deps

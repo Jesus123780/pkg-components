@@ -1,6 +1,6 @@
 /** Binary search on prefix sums */
 export const findIndexByScroll = (prefix: number[], value: number) => {
-  let low = 0;
+  let low = 0
   let high = prefix.length - 1
   while (low < high) {
     const mid = (low + high) >> 1

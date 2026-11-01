@@ -25,7 +25,7 @@ export default {
     handleOverActive: (index: any) => console.log(index),
     removeFav: (idStore: any, fState: any) => console.log(idStore, fState),
     addFav: (idStore: any) => console.log(idStore)
-  
+
   }
 }
 

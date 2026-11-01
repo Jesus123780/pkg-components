@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import styled, { keyframes } from 'styled-components'
@@ -53,4 +52,3 @@ export const ComingSoon = () => {
     </Container>
   )
 }
-

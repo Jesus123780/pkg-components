@@ -31,7 +31,7 @@ describe('<AmountInput/> negative value', () => {
     expect(onValueChangeSpy).toHaveBeenLastCalledWith('-1234', undefined, {
       float: -1234,
       formatted: '-$1,234',
-      value: '-1234',
+      value: '-1234'
     })
 
     expect(screen.getByRole('textbox')).toHaveValue('-$1,234')
@@ -55,7 +55,7 @@ describe('<AmountInput/> negative value', () => {
     expect(onValueChangeSpy).toHaveBeenLastCalledWith(undefined, undefined, {
       float: null,
       formatted: '',
-      value: '',
+      value: ''
     })
 
     expect(screen.getByRole('textbox')).toHaveValue('-')
@@ -83,7 +83,7 @@ describe('<AmountInput/> negative value', () => {
     expect(onValueChangeSpy).toHaveBeenLastCalledWith(undefined, undefined, {
       float: null,
       formatted: '',
-      value: '',
+      value: ''
     })
 
     fireEvent.focusOut(screen.getByRole('textbox'))
@@ -108,7 +108,7 @@ describe('<AmountInput/> negative value', () => {
     expect(onValueChangeSpy).toHaveBeenLastCalledWith('1234', undefined, {
       float: 1234,
       formatted: '$1,234',
-      value: '1234',
+      value: '1234'
     })
 
     expect(screen.getByRole('textbox')).toHaveValue('$1,234')

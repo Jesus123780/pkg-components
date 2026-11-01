@@ -17,4 +17,3 @@ ButtonHeader.propTypes = {
   onClick: PropTypes.any,
   primary: PropTypes.any
 }
-

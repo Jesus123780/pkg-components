@@ -156,7 +156,7 @@ const Tick = styled.li`
   height: ${THUMB_LENGTH / 2}px;
   width: ${THUMB_LENGTH / 2}px;
   border-radius: ${THUMB_LENGTH / 4}px;
-  background: ${props => {return (props.highlight ? '#0687df' : '#d4d4d4')}};
+  background: ${props => { return (props.highlight ? '#0687df' : '#d4d4d4') }};
   list-style: none;
 `
 
@@ -187,7 +187,7 @@ export const InputCustomRange = ({
         <output>
           <SliderLabel>
             <span>
-              {description ? description : null} {fraction}
+              {description || null} {fraction}
             </span>
           </SliderLabel>
         </output>
@@ -236,4 +236,3 @@ InputCustomRange.propTypes = {
   style: PropTypes.object,
   value: PropTypes.number.isRequired
 }
-

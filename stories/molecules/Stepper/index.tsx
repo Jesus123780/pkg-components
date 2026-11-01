@@ -1,4 +1,4 @@
-import { JSX, useState } from 'react'
+import { type JSX, useState } from 'react'
 import stylesInitial from './styles.module.css'
 import stylesSimple from './simpleStyles.module.css'
 import stylesLine from './stylesLine.module.css'
@@ -37,8 +37,8 @@ export const Stepper: React.FC<StepperProps> = ({
   return (
     <div
       className={styles.container}
-      style={{ 
-        ...style, 
+      style={{
+        ...style,
         '--step-count': String(stepCount),
         borderBottom: mode === 'line' ? '2px solid #f5f0eb' : undefined
       } as React.CSSProperties}
@@ -49,8 +49,8 @@ export const Stepper: React.FC<StepperProps> = ({
           className={`${styles.tabs} ${index === active ? 'active' : ''}`}
           role="button"
           onClick={() => onClick(index)}
-          onMouseEnter={() => onOver && setHoverIndex(index)}    /* <-- */
-          onMouseLeave={() => onOver && setHoverIndex(null)}     /* <-- */
+          onMouseEnter={() => onOver && setHoverIndex(index)} /* <-- */
+          onMouseLeave={() => onOver && setHoverIndex(null)} /* <-- */
         >
           <span
             className={`${styles.text} ${currentIndex === index ? styles.activeText : ''}`}

@@ -35,7 +35,7 @@ export interface StatusMeta {
 export const DEFAULT_STATUS_META: Record<string, StatusMeta> = {
   approved: { label: 'Approved', dotColor: '#22c55e', labelColor: '#15803d' },
   awaiting: { label: 'Awaiting Approval', dotColor: '#fbbf24', labelColor: '#b45309' },
-  rejected: { label: 'Rejected', dotColor: '#ef4444', labelColor: '#b91c1c' },
+  rejected: { label: 'Rejected', dotColor: '#ef4444', labelColor: '#b91c1c' }
 }
 
 /**
@@ -62,7 +62,7 @@ export interface StatusBadgeProps {
 const SIZE_MAP = {
   sm: { dot: 6, font: 11, height: 20 },
   md: { dot: 8, font: 13, height: 40 },
-  lg: { dot: 10, font: 15, height: 60 },
+  lg: { dot: 10, font: 15, height: 60 }
 }
 
 /**
@@ -83,7 +83,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   statusMeta = {},
   size = 'md',
   onInvalid,
-  statusOrder = null,
+  statusOrder = null
 }) => {
   // Ensure there is some source of status info
   if (!status && !statusOrder) {
@@ -118,7 +118,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
           paddingRight: 8,
           borderRadius: 5,
           height: sizeCfg.height,
-          width: 'fit-content',
+          width: 'fit-content'
 
         }}
       >
@@ -144,10 +144,10 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
 
   // Legacy path: use status + statusMeta + DEFAULT_STATUS_META
   const merged = { ...DEFAULT_STATUS_META, ...statusMeta }
-  const meta = merged[status as string] ?? {
+  const meta = merged[status!] ?? {
     label: label ?? String(status),
     dotColor: '#9ca3af',
-    labelColor: '#6b7280',
+    labelColor: '#6b7280'
   }
 
   return (

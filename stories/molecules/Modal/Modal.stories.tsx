@@ -1,42 +1,42 @@
-import React from 'react';
-import { Story, Meta } from '@storybook/react';
-import { AwesomeModal, AwesomeModalProps } from './index';
+import React from 'react'
+import { type Story, type Meta } from '@storybook/react'
+import { AwesomeModal, type AwesomeModalProps } from './index'
 
 export default {
   title: 'molecules/Modal',
-  component: AwesomeModal,
-} as Meta;
+  component: AwesomeModal
+} as Meta
 
-const Template: Story<AwesomeModalProps> = (args) => <AwesomeModal {...args} />;
+const Template: Story<AwesomeModalProps> = (args) => <AwesomeModal {...args} />
 
-export const Primary = Template.bind({});
+export const Primary = Template.bind({})
 Primary.args = {
   children: 'Initial AwesomeModal',
-  show: true, // Make sure to include the 'show' prop here
-};
+  show: true // Make sure to include the 'show' prop here
+}
 
-export const ModalMedium = Template.bind({});
+export const ModalMedium = Template.bind({})
 ModalMedium.args = {
   children: 'Medium AwesomeModal',
   size: 'medium',
-  show: true,
-};
+  show: true
+}
 
-export const ModalLarge = Template.bind({});
+export const ModalLarge = Template.bind({})
 ModalLarge.args = {
   children: 'Large AwesomeModal',
   size: 'large',
-  show: true,
-};
+  show: true
+}
 
-export const ModalSmall = Template.bind({});
+export const ModalSmall = Template.bind({})
 ModalSmall.args = {
   children: 'Small AwesomeModal',
   size: 'small',
-  show: true,
-};
+  show: true
+}
 
-export const ModalCamera = Template.bind({});
+export const ModalCamera = Template.bind({})
 ModalCamera.args = {
   children: '',
   show: true,
@@ -50,5 +50,5 @@ ModalCamera.args = {
   size: '961px',
   headerColor: 'var(--color-primary-green2)',
   iconColor: 'var(--color-icons-white)',
-  justifyButtons: 'end',
-};
+  justifyButtons: 'end'
+}

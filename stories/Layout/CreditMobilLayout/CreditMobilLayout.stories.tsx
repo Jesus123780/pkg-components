@@ -1,14 +1,14 @@
-import React from 'react';
-import { Meta } from '@storybook/react';
-import { CreditMobilLayout } from './index';
+import React from 'react'
+import { type Meta } from '@storybook/react'
+import { CreditMobilLayout } from './index'
 
 export default {
   title: 'layout/CreditMobilLayout',
-  component: CreditMobilLayout,
-} as Meta;
+  component: CreditMobilLayout
+} as Meta
 
 const Template = (args: any) => <CreditMobilLayout {...args} >
   Children
-</CreditMobilLayout>;
+</CreditMobilLayout>
 
 export const Default = Template.bind({})

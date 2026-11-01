@@ -32,7 +32,7 @@ export const SetupSchedule: React.FC<SetupScheduleProps> = ({
       name,
       day
     }
-  },
+  }
 }) => {
   const disabled = Boolean(Number(totalHours) < 10)
 

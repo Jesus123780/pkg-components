@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta } from '@storybook/react'
+import { type Meta } from '@storybook/react'
 import { CheckboxCube } from './index'
 
 export default {
@@ -7,19 +7,19 @@ export default {
   component: CheckboxCube,
   argTypes: {
     checked: {
-      control: 'boolean',
+      control: 'boolean'
     },
     disabled: {
-      control: 'boolean',
+      control: 'boolean'
     },
     indeterminate: {
-      control: 'boolean',
+      control: 'boolean'
     },
     label: {
-      control: 'text',
+      control: 'text'
     },
-    onChange: { action: 'CheckboxCube Changed' },
-  },
+    onChange: { action: 'CheckboxCube Changed' }
+  }
 } as Meta
 
 export const Default = (args: any) => (

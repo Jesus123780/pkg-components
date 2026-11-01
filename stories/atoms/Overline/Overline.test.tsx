@@ -16,6 +16,5 @@ describe('Overline', () => {
     const overlineElement = container.firstChild
 
     expect(overlineElement).toBeTruthy()
-
   })
 })

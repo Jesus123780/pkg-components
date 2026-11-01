@@ -9,7 +9,7 @@ export default {
   }
 }
 
-const Template = (args) => {return <Orders {...args} />}
+const Template = (args) => { return <Orders {...args} /> }
 
 export const Default = Template.bind({})
 Default.args = {

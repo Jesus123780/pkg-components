@@ -9,7 +9,7 @@ import '@testing-library/jest-dom'
 
 // Mock de un ícono registrado
 jest.mock('../../../assets', () => ({
-  IconHome: ({ size }: { size?: number }) => <svg data-testid="icon-home" width={size} />,
+  IconHome: ({ size }: { size?: number }) => <svg data-testid="icon-home" width={size} />
 }))
 
 describe('Icon', () => {

@@ -19,5 +19,4 @@ describe('ToggleSwitch', () => {
     )
     expect(getByTestId('toggle-switch-label')).toHaveTextContent(label)
   })
-
 })

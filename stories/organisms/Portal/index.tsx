@@ -26,4 +26,3 @@ export const Portal = ({ children, selector = 'portal' }) => {
   }
   return null
 }
-

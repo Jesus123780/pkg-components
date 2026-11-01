@@ -6,7 +6,7 @@ import styles from './Sorter.module.css'
 /**
  * One sortable field option
  */
-export type SortOption = {
+export interface SortOption {
   /** field name used on backend / DB */
   key: string
   /** human friendly label */
@@ -18,7 +18,7 @@ export type SortOption = {
 /**
  * Sort value shape
  */
-export type SortValue = {
+export interface SortValue {
   field: string
   direction: 'asc' | 'desc'
 }
@@ -91,7 +91,7 @@ export const Sorter: React.FC<SorterProps> = ({
 
   // derive initial uncontrolled value (prioritize defaultValue, else options[0])
   const initial = useMemo<SortValue>(() => {
-    if (defaultValue && defaultValue.field) return defaultValue
+    if (defaultValue?.field) return defaultValue
     const first = options[0]
     return { field: first.key, direction: first.defaultDirection ?? 'asc' }
   }, [defaultValue, options])
@@ -113,7 +113,7 @@ export const Sorter: React.FC<SorterProps> = ({
     const newField = e.target.value
     // find defaultDirection of chosen field
     const opt = options.find((o) => o.key === newField)
-    const newDirection = (opt && opt.defaultDirection) ? opt.defaultDirection : 'asc'
+    const newDirection = (opt?.defaultDirection) ? opt.defaultDirection : 'asc'
     const next: SortValue = { field: newField, direction: newDirection }
     if (!isControlled) setInternal(next)
     onChange(next)

@@ -95,7 +95,6 @@ export const CardOrderView: React.FC<any> = (props) => {
               ))}
             </Row>
 
-
           </div>
           <Column>
             <Row justifyContent='space-between'>

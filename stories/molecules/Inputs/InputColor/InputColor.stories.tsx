@@ -1,31 +1,31 @@
-export * from './index';
-import type { Meta, StoryObj } from '@storybook/react';
-import { InputColor } from './index';
+import type { Meta, StoryObj } from '@storybook/react'
+import { InputColor } from './index'
+export * from './index'
 
 const meta: Meta<typeof InputColor> = {
-    component: InputColor,
-    title: 'molecules/InputColor',
-    parameters: { layout: 'centered' },
-};
+  component: InputColor,
+  title: 'molecules/InputColor',
+  parameters: { layout: 'centered' }
+}
 
-export default meta;
+export default meta
 
 export const Default: StoryObj<typeof InputColor> = {
-    args: {
-        label: 'Select Color',
-        value: '#ff0000'
-    }
+  args: {
+    label: 'Select Color',
+    value: '#ff0000'
+  }
 }
 
 export const WithoutLabel: StoryObj<typeof InputColor> = {
-    args: {
-        value: '#00ff00'
-    }
+  args: {
+    value: '#00ff00'
+  }
 }
 
 export const WithOnChange: StoryObj<typeof InputColor> = {
-    args: {
-        label: 'Pick a Color',
-        onChange: (hex: string) => alert(`Selected color: ${hex}`)
-    },
+  args: {
+    label: 'Pick a Color',
+    onChange: (hex: string) => alert(`Selected color: ${hex}`)
+  }
 }

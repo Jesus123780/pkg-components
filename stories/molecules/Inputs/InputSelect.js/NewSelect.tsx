@@ -146,7 +146,7 @@ const legacyGetOptionLabel = <
   }
 
   let source:
-    | SelectRecord =
+  | SelectRecord =
     option
 
   if (accessor) {
@@ -627,19 +627,19 @@ export interface NewSelectProps<
 
   handleClean?: (
     dataForm?: Record<
-      string,
-      unknown
+    string,
+    unknown
     >
   ) => void
 
   dataForm?: Record<
-    string,
-    unknown
+  string,
+  unknown
   >
 
   optionName?:
-    | string
-    | string[]
+  | string
+  | string[]
 
   accessor?: string
 
@@ -694,9 +694,9 @@ export function NewSelect<
   placeholder = 'Buscar',
   loading = false,
   loadingMessage =
-    'Cargando...',
+  'Cargando...',
   emptyMessage =
-    'No hay resultados.',
+  'No hay resultados.',
   clearable,
   canDelete = false,
   onChange = NOOP,
@@ -762,7 +762,7 @@ export function NewSelect<
 
   const optionRefs =
     useRef<
-      Array<HTMLDivElement | null>
+    Array<HTMLDivElement | null>
     >([])
 
   const userInteractedRef =
@@ -999,7 +999,7 @@ export function NewSelect<
 
       for (
         const option of
-          safeOptions
+        safeOptions
       ) {
         /**
          * An empty query means that the user has just opened/focused
@@ -1011,14 +1011,14 @@ export function NewSelect<
             ? true
             : filterOption
               ? filterOption(
-                  option,
-                  normalizedQuery
-                )
+                option,
+                normalizedQuery
+              )
               : normalizeText(
-                  getLabel(option)
-                ).includes(
-                  normalizedQuery
-                )
+                getLabel(option)
+              ).includes(
+                normalizedQuery
+              )
 
         if (!matches) {
           continue
@@ -1073,8 +1073,8 @@ export function NewSelect<
     highlightedIndex <
       filtered.length
       ? filtered[
-          highlightedIndex
-        ]
+        highlightedIndex
+      ]
       : null
 
   const activeOptionId =
@@ -1358,8 +1358,8 @@ export function NewSelect<
     const nextValue =
       first >= 0
         ? getValue(
-            filtered[first]
-          )
+          filtered[first]
+        )
         : null
 
     highlightedValueRef.current =
@@ -1419,8 +1419,8 @@ export function NewSelect<
         option =>
           defaultOptionKey
             ? option[
-                defaultOptionKey
-              ] === true
+              defaultOptionKey
+            ] === true
             : option.default === true
       )
 
@@ -1812,7 +1812,7 @@ export function NewSelect<
     useCallback(
       (
         event:
-          React.ChangeEvent<HTMLInputElement>
+        React.ChangeEvent<HTMLInputElement>
       ) => {
         if (disabled) {
           return
@@ -1923,7 +1923,7 @@ export function NewSelect<
     useCallback(
       (
         event:
-          React.KeyboardEvent<HTMLInputElement>
+        React.KeyboardEvent<HTMLInputElement>
       ) => {
         if (disabled) {
           return
@@ -2194,12 +2194,9 @@ export function NewSelect<
              */
             restoreOrCommitInput()
             closeDropdown()
-
-            return
           }
 
           default:
-            return
         }
       },
       [
@@ -2270,7 +2267,7 @@ export function NewSelect<
     useCallback(
       (
         event:
-          React.MouseEvent<HTMLDivElement>
+        React.MouseEvent<HTMLDivElement>
       ) => {
         if (disabled) {
           return
@@ -2309,7 +2306,7 @@ export function NewSelect<
     useCallback(
       (
         event:
-          React.FocusEvent<HTMLDivElement>
+        React.FocusEvent<HTMLDivElement>
       ) => {
         const relatedTarget =
           event.relatedTarget
@@ -2450,14 +2447,14 @@ export function NewSelect<
               >
                 {renderOption
                   ? renderOption(
-                      option,
-                      {
-                        selected:
+                    option,
+                    {
+                      selected:
                           optionSelected,
-                        highlighted:
+                      highlighted:
                           optionHighlighted
-                      }
-                    )
+                    }
+                  )
                   : (
                     <>
                       <span
@@ -2485,7 +2482,7 @@ export function NewSelect<
                         sideLabel
                       }
                     </>
-                  )}
+                    )}
               </div>
             )
           }
@@ -2672,7 +2669,7 @@ export function NewSelect<
                   )}
                 />
               </button>
-            )}
+          )}
 
           {icon && (
             <button
@@ -2698,7 +2695,7 @@ export function NewSelect<
               {loading
                 ? (
                   <LoadingButton />
-                )
+                  )
                 : (
                   <Icon
                     color={getGlobalStyle(
@@ -2711,7 +2708,7 @@ export function NewSelect<
                     }
                     size={20}
                   />
-                )}
+                  )}
             </button>
           )}
         </div>
@@ -2809,17 +2806,17 @@ export function NewSelect<
                 {actionLoading
                   ? (
                     <LoadingButton />
-                  )
+                    )
                   : (
                     <Icon
                       icon="IconPlus"
                     />
-                  )}
+                    )}
 
                 {actionLabel
                   ? actionLabel(
-                      trimmedInputValue
-                    )
+                    trimmedInputValue
+                  )
                   : `Agregar ${trimmedInputValue}`}
               </button>
             </div>

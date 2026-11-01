@@ -1,47 +1,47 @@
-import React from 'react';
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { AmountInput } from '../index';
+import React from 'react'
+import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { AmountInput } from '../index'
 
 describe('<AmountInput/> suffix', () => {
-  const onValueChangeSpy = jest.fn();
+  const onValueChangeSpy = jest.fn()
 
   beforeEach(() => {
-    jest.clearAllMocks();
-  });
+    jest.clearAllMocks()
+  })
 
   it('should handle custom suffix', () => {
-    render(<AmountInput onValueChange={onValueChangeSpy} suffix=" €" defaultValue="1234" />);
+    render(<AmountInput onValueChange={onValueChangeSpy} suffix=" €" defaultValue="1234" />)
 
-    expect(screen.getByRole('textbox')).toHaveValue('1,234 €');
+    expect(screen.getByRole('textbox')).toHaveValue('1,234 €')
 
-    userEvent.type(screen.getByRole('textbox'), '56');
+    userEvent.type(screen.getByRole('textbox'), '56')
 
-    expect(screen.getByRole('textbox')).toHaveValue('123,456 €');
+    expect(screen.getByRole('textbox')).toHaveValue('123,456 €')
 
-    userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}{backspace}');
+    userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}{backspace}')
 
-    expect(screen.getByRole('textbox')).toHaveValue('123 €');
-  });
+    expect(screen.getByRole('textbox')).toHaveValue('123 €')
+  })
 
   it('should handle custom prefix and suffix', () => {
     render(
       <AmountInput onValueChange={onValueChangeSpy} prefix="$" suffix=" %" defaultValue="1234" />
-    );
+    )
 
-    expect(screen.getByRole('textbox')).toHaveValue('$1,234 %');
+    expect(screen.getByRole('textbox')).toHaveValue('$1,234 %')
 
-    userEvent.type(screen.getByRole('textbox'), '56');
+    userEvent.type(screen.getByRole('textbox'), '56')
 
-    expect(screen.getByRole('textbox')).toHaveValue('$123,456 %');
+    expect(screen.getByRole('textbox')).toHaveValue('$123,456 %')
 
-    userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}');
+    userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}')
 
-    expect(screen.getByRole('textbox')).toHaveValue('$1,234 %');
+    expect(screen.getByRole('textbox')).toHaveValue('$1,234 %')
 
-    userEvent.type(screen.getByRole('textbox'), '.9');
+    userEvent.type(screen.getByRole('textbox'), '.9')
 
-    expect(screen.getByRole('textbox')).toHaveValue('$1,234.9 %');
-  });
-});
+    expect(screen.getByRole('textbox')).toHaveValue('$1,234.9 %')
+  })
+})

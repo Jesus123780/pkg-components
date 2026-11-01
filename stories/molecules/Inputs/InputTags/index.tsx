@@ -181,109 +181,109 @@ export interface InputTagsProps {
 }
 
 export const InputTags:
-  React.FC<InputTagsProps> = ({
-    disabled = false,
-    update = false,
-    loading = false,
-    repeatTag = true,
-    tags,
-    width,
-    tabIndex,
-    setTags,
-    registerTags,
-    sendNotification = () => {},
-    ...props
-  }) => {
-    const refBox =
+React.FC<InputTagsProps> = ({
+  disabled = false,
+  update = false,
+  loading = false,
+  repeatTag = true,
+  tags,
+  width,
+  tabIndex,
+  setTags,
+  registerTags,
+  sendNotification = () => {},
+  ...props
+}) => {
+  const refBox =
       useRef<HTMLInputElement>(
         null
       )
 
-    const [
-      inputValue,
-      setInputValue
-    ] = useState('')
+  const [
+    inputValue,
+    setInputValue
+  ] = useState('')
 
-    const removeTags = (
-      indexToRemove: number
-    ): boolean => {
-      setTags(
-        tags.filter(
-          (_, index) =>
-            index !==
+  const removeTags = (
+    indexToRemove: number
+  ): boolean => {
+    setTags(
+      tags.filter(
+        (_, index) =>
+          index !==
             indexToRemove
-        )
       )
+    )
 
-      return true
-    }
+    return true
+  }
 
-    const tryAddTag = (
-      value: string
-    ): void => {
-      const trimmed =
+  const tryAddTag = (
+    value: string
+  ): void => {
+    const trimmed =
         value.trim()
 
-      if (
-        trimmed === ''
-      ) {
-        return
-      }
+    if (
+      trimmed === ''
+    ) {
+      return
+    }
 
-      const tagExists =
+    const tagExists =
         tags.includes(
           trimmed
         )
 
-      if (
-        !repeatTag &&
+    if (
+      !repeatTag &&
         tagExists
-      ) {
-        sendNotification({
-          description:
+    ) {
+      sendNotification({
+        description:
             `  El Tag "${trimmed}" ya existe.`,
-          title: 'Error',
-          backgroundColor:
+        title: 'Error',
+        backgroundColor:
             'warning'
-        })
+      })
 
-        return
-      }
-
-      const newTags = [
-        ...tags,
-        trimmed
-      ]
-
-      setTags(
-        newTags
-      )
-
-      if (
-        typeof props?.selectedTags ===
-        'function'
-      ) {
-        props.selectedTags(
-          newTags
-        )
-      }
-
-      setInputValue(
-        ''
-      )
-
-      if (
-        refBox.current
-      ) {
-        refBox.current.value =
-          ''
-      }
+      return
     }
 
-    const handleKeyDown = (
-      event: React.KeyboardEvent<HTMLInputElement>
-    ): void => {
-      /**
+    const newTags = [
+      ...tags,
+      trimmed
+    ]
+
+    setTags(
+      newTags
+    )
+
+    if (
+      typeof props?.selectedTags ===
+        'function'
+    ) {
+      props.selectedTags(
+        newTags
+      )
+    }
+
+    setInputValue(
+      ''
+    )
+
+    if (
+      refBox.current
+    ) {
+      refBox.current.value =
+          ''
+    }
+  }
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    /**
        * ==========================================
        * ENTER
        * ==========================================
@@ -295,44 +295,44 @@ export const InputTags:
        * 3. If tabIndex exists, move focus to
        *    the next element.
        */
+    if (
+      event.key === 'Enter'
+    ) {
+      event.preventDefault()
+
+      tryAddTag(
+        inputValue
+      )
+
       if (
-        event.key === 'Enter'
-      ) {
-        event.preventDefault()
-
-        tryAddTag(
-          inputValue
-        )
-
-        if (
-          typeof registerTags ===
+        typeof registerTags ===
             'function' &&
           update
-        ) {
-          registerTags()
-        }
+      ) {
+        registerTags()
+      }
 
-        /**
+      /**
          * Give React/browser an opportunity to
          * process the current event before changing
          * focus.
          */
-        if (
-          tabIndex !== undefined
-        ) {
-          window.requestAnimationFrame(
-            () => {
-              focusNextByTabIndex(
-                event.currentTarget
-              )
-            }
-          )
-        }
-
-        return
+      if (
+        tabIndex !== undefined
+      ) {
+        window.requestAnimationFrame(
+          () => {
+            focusNextByTabIndex(
+              event.currentTarget
+            )
+          }
+        )
       }
 
-      /**
+      return
+    }
+
+    /**
        * ==========================================
        * TAB
        * ==========================================
@@ -342,24 +342,24 @@ export const InputTags:
        * We intentionally do not call
        * preventDefault().
        */
-      if (
-        event.key === 'Tab'
-      ) {
-        return
-      }
-    }
-
     if (
-      !Array.isArray(tags)
+      event.key === 'Tab'
     ) {
-      return <></>
-    }
 
-    const emptyValue =
+    }
+  }
+
+  if (
+    !Array.isArray(tags)
+  ) {
+    return <></>
+  }
+
+  const emptyValue =
       inputValue.trim().length ===
       0
 
-    return (
+  return (
       <>
         <Row
           style={{
@@ -499,5 +499,5 @@ export const InputTags:
           )}
         />
       </>
-    )
-  }
+  )
+}

@@ -1,11 +1,11 @@
 import link from 'next/link'
 import styled, { css } from 'styled-components'
 import {
-    BColor,
-    BGColor,
-    PColor,
-    PLVColor,
-    SFVColor
+  BColor,
+  BGColor,
+  PColor,
+  PLVColor,
+  SFVColor
 } from '../../../assets/colors'
 
 export const CtnAnchor = styled(link)`
@@ -30,7 +30,7 @@ export const CtnAnchor = styled(link)`
     border-bottom: 1px solid #edf2f932;
 `
 interface LeftNavProps {
-    show: boolean
+  show: boolean
 }
 export const LeftNav = styled.div<LeftNavProps>`
     display: grid;

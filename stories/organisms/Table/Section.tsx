@@ -42,7 +42,7 @@ export const Section = forwardRef<HTMLDivElement, SectionProps>(({
 
   return (
     <div
-      className={`${styles.section} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles.sectionHover} ${(styles as any)[bgClass] ?? ''}`}
+      className={`${styles.section} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles.sectionHover} ${(styles)[bgClass] ?? ''}`}
       ref={ref}
       {...res}
       style={combinedStyles}

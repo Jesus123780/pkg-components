@@ -15,7 +15,7 @@ describe('CopyToClipboard', () => {
     const writeText = jest.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'clipboard', {
       value: { writeText },
-      configurable: true,
+      configurable: true
     })
 
     render(<CopyToClipboard text="Hello" />)
@@ -41,7 +41,7 @@ describe('CopyToClipboard', () => {
     document.execCommand = jest.fn().mockReturnValue(true)
     Object.defineProperty(navigator, 'clipboard', {
       value: null,
-      configurable: true,
+      configurable: true
     })
 
     render(<CopyToClipboard text="Fallback" />)
@@ -67,7 +67,7 @@ describe('CopyToClipboard', () => {
     const writeText = jest.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'clipboard', {
       value: { writeText },
-      configurable: true,
+      configurable: true
     })
 
     render(<CopyToClipboard text="Secret" label="Press" copiedMessage="Done" />)
@@ -92,7 +92,7 @@ describe('CopyToClipboard', () => {
 
     Object.defineProperty(navigator, 'clipboard', {
       value: { writeText },
-      configurable: true,
+      configurable: true
     })
 
     render(<CopyToClipboard text="Hello" errorMessage="Failed" />)

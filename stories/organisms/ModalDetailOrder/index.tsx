@@ -7,7 +7,6 @@ export const MemoModalDetailOrder: React.FC<TypeModalDetailOrder> = ({
   open,
   onHide
 }) => {
-
   return (
     <AwesomeModal
       title='Detalle de la orden'
