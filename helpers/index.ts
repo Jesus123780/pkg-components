@@ -20,11 +20,24 @@ export const numberFormat = (value: string | number): string | number => {
     return value
   }
 
-  // Convierte el valor a string y elimina puntos.
-  const stringValue = `${value}`.replace(/\./g, '')
+  // Convierte a número sin destruir los decimales:
+  // - Un número se usa tal cual (140618.43 -> 140618.43, no 14061843).
+  // - Un string se interpreta como es-CO: '.' miles y ',' decimal; un string
+  //   "14.061.843" (grupos de 3) se trata como miles; "140618.43" como decimal.
+  let numberValue: number
+  if (typeof value === 'number') {
+    numberValue = value
+  } else {
+    const raw = `${value}`.trim()
+    if (raw.includes(',')) {
+      numberValue = parseFloat(raw.replace(/\./g, '').replace(',', '.'))
+    } else if (/^\d{1,3}(\.\d{3})+$/.test(raw)) {
+      numberValue = parseFloat(raw.replace(/\./g, ''))
+    } else {
+      numberValue = parseFloat(raw)
+    }
+  }
 
-  // Intenta convertir a número y formatear si es posible.
-  const numberValue = parseFloat(stringValue)
   if (!isNaN(numberValue)) {
     return new Intl.NumberFormat('es-CO', {
       minimumFractionDigits: 2,

@@ -35,10 +35,10 @@ type SupportedCurrency = 'COP' | 'USD' | 'EUR';
 export const numberFormat = (
   value: number | string | null | undefined,
   options: {
-    currency: SupportedCurrency,
+    currency?: SupportedCurrency,
     minimumFractionDigits?: number,
     maximumFractionDigits?: number,
-    style?: 'currency',
+    style?: 'currency' | 'decimal' | 'percent',
     notation?: 'standard' | 'scientific' | 'engineering' | 'compact'
   } = {
       currency: 'COP',
@@ -66,11 +66,18 @@ export const numberFormat = (
   }
 
   if (!Number.isNaN(numericValue)) {
+    // Respeta el estilo recibido; solo usa 'currency' por defecto.
+    const style = options.style ?? 'currency';
+    const currency = options.currency ?? 'COP';
+
     const settings = {
       ...options,
-      style: 'currency'
+      style,
+      // 'currency' solo es válido (y requerido) cuando el estilo es moneda.
+      ...(style === 'currency' ? { currency } : {})
     } as Intl.NumberFormatOptions;
-    const currencyLocale = locale[options.currency] ?? locale['COP'];
+
+    const currencyLocale = locale[currency] ?? locale['COP'];
     return new Intl.NumberFormat(currencyLocale, settings).format(numericValue);
   }
 

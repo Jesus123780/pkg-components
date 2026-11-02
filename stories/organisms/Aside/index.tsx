@@ -247,7 +247,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                     color='black'
                     iconName='IconSales'
                     iconPosition='right'
-                    onClick={() => setSalesOpen(salesOpen ?? false)}
+                    onClick={() => setSalesOpen((prevState: boolean) => !prevState)}
                   >
                     Ventas
                   </Button>
