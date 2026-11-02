@@ -45,6 +45,7 @@ interface MemoAsideProps {
   dataStore?: any
   handleClick?: any
   handleOpenDeliveryTime?: any
+  handleOpenGoal?: any
   isMobile?: boolean
   loading?: boolean
   salesOpen?: boolean
@@ -81,6 +82,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   modules = [],
   handleClick = (state: boolean) => state,
   handleOpenDeliveryTime = () => {},
+  handleOpenGoal = () => {},
   setSalesOpen = () => {},
   handleCollapsedMenu = () => null,
   setShowComponentModal = () => {},
@@ -138,7 +140,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   const handleClickAction = (path: string): void => {
     const action: Record<string, () => void> = {
       '?time=true': handleOpenDeliveryTime,
-      '?goals=true': handleOpenDeliveryTime
+      '?goals=true': handleOpenGoal
     }
 
     action[path]?.()

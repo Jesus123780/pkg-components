@@ -10,9 +10,11 @@ import {
   Tag
 } from '../../atoms'
 import {
+  AlertInfo,
   AmountInput,
   InputHooks,
-  QuantityButton
+  QuantityButton,
+  ToggleSwitch
 } from '../../molecules'
 import clsx from 'clsx'
 import styles from './styles.module.css'
@@ -26,6 +28,8 @@ interface ICreateExtra {
       extraPrice?: number | string
       forEdit?: boolean
       exState?: boolean
+      manageStock?: boolean
+      stock?: number
     }>
   }
   loading?: boolean
@@ -41,7 +45,7 @@ interface ICreateExtra {
   handleEdit?: (i: number, item: any) => void
   handleFocusChange?: (i: number) => void
   handleSelect?: (item: any, index: number) => void
-  handleLineChange?: (i: number, extraName: string, value: string | number) => void
+  handleLineChange?: (i: number, field: string, value: string | number | boolean | React.ChangeEvent<HTMLInputElement>) => void
   handleRemove?: (i: number, exPid: any) => void
   onSubmitUpdate?: ({ pId }: { pId: any }) => void
   setModal?: () => void
@@ -146,6 +150,41 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
                       placeholder='Precio'
                       defaultValue={price}
                     />
+                    <ToggleSwitch
+                      checked={Boolean(extra?.manageStock)}
+                      id={`manageStock-${i}`}
+                      name='manageStock'
+                      disabled={forEdit && !isSelect}
+                      label='Controlar disponibilidad por stock'
+                      onChange={() => {
+                        const next = !extra?.manageStock
+                        handleLineChange(i, 'manageStock', next)
+                        if (next && (!extra?.stock || Number(extra?.stock) < 1)) {
+                          handleLineChange(i, 'stock', 1)
+                        }
+                      }}
+                      style={{ marginTop: getGlobalStyle('--spacing-m') }}
+                      successColor='green'
+                    />
+                    {Boolean(extra?.manageStock) && (
+                      <>
+                        <AlertInfo
+                          message='Define la cantidad disponible del complemento para controlar sus existencias.'
+                          type='warning'
+                        />
+                        <QuantityButton
+                          handleDecrement={() => {
+                            const current = Number(extra?.stock) || 1
+                            return handleLineChange(i, 'stock', current > 1 ? current - 1 : 1)
+                          }}
+                          handleIncrement={() => {
+                            const current = Number(extra?.stock) || 0
+                            return handleLineChange(i, 'stock', current + 1)
+                          }}
+                          quantity={Number(extra?.stock) || 1}
+                        />
+                      </>
+                    )}
                     <Row justifyContent='space-between' alignItems='center' className={styles['contain-item-actions']}>
                       <Column alignItems='center'
                         style={{
