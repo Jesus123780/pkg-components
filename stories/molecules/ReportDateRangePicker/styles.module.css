@@ -1,0 +1,141 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: 100%;
+  max-width: 360px;
+}
+
+.label {
+  color: var(--color-neutral-gray-dark);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-neutral-gray-light);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.trigger:hover {
+  border-color: var(--color-icons-primary);
+}
+
+.trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.triggerError {
+  border-color: var(--color-icons-error);
+}
+
+.triggerText {
+  flex: 1;
+  text-align: left;
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+.error {
+  color: var(--color-text-error);
+  font-size: 12px;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  display: flex;
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-neutral-gray-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-2xs);
+  overflow: hidden;
+}
+
+.presets {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-sm);
+  border-right: 1px solid var(--color-neutral-gray-light);
+  min-width: 150px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.presetButton {
+  text-align: left;
+  padding: 8px 10px;
+  border: none;
+  background: transparent;
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.presetButton:hover {
+  background-color: var(--color-background-gray-light);
+}
+
+.presetActive {
+  background-color: var(--color-background-primary-light);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--spacing-sm);
+  border-top: 1px solid var(--color-neutral-gray-light);
+}
+
+.applyButton {
+  padding: 8px 18px;
+  background-color: var(--color-background-primary);
+  color: var(--color-text-white);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .popover {
+    flex-direction: column;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 94vw;
+  }
+
+  .presets {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: none;
+    border-bottom: 1px solid var(--color-neutral-gray-light);
+    max-height: none;
+    min-width: auto;
+  }
+}
