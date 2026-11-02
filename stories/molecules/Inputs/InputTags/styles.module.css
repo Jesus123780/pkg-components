@@ -1,17 +1,27 @@
 .box {
-  border: 1px solid var(--color-neutral-gray-silver);
-  border-radius: 5px;
+  width: 100%;
+  border: var(--border-width-xs, 1px) solid var(--color-neutral-gray-silver);
+  border-radius: var(--border-radius-xs, 6px);
+  background-color: var(--color-base-white);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.box:focus-within {
+  border-color: var(--color-icons-primary);
+  box-shadow: var(--box-shadow-red-rose);
 }
 
 .boxDisabled {
   cursor: no-drop;
+  opacity: var(--opacity-75, 0.75);
 }
 
 .tagsContainer {
   display: flex;
-  padding: 5px;
+  padding: var(--spacing-md, 8px);
+  gap: var(--spacing-sm, 4px);
   flex-wrap: wrap;
-  line-height: 20px;
+  line-height: var(--line-height-md, 1.192rem);
   flex-direction: row;
   cursor: text;
   align-items: center;
@@ -19,11 +29,12 @@
 
 .tags {
   align-items: center;
-  border-radius: 20px;
-  border: 0.5px solid var(--color-neutral-gray-dark); /* define este color en :root si no existe */
+  border-radius: var(--border-radius-full, 999px);
+  border: var(--border-width-xs, 1px) solid var(--color-neutral-gray-dark);
+  background-color: var(--color-neutral-gray-light);
   display: flex;
-  margin: 0px 2px;
-  padding: var(--spacing-xs) var(--spacing-sm);
+  gap: var(--spacing-xs, 2px);
+  padding: var(--spacing-xs, 2px) var(--spacing-md, 8px);
   place-content: center;
   vertical-align: middle;
   width: fit-content;
@@ -34,13 +45,18 @@
   box-shadow: none;
   outline: none;
   background-color: transparent;
-  padding: 0 2px;
+  padding: 0 var(--spacing-xs, 2px);
   width: fit-content;
   max-width: inherit;
   display: inline-block;
-  max-height: 20px;
-  font-size: var(--font-size-base);
+  min-height: var(--spacing-2xl, 24px);
+  font-size: var(--font-size-md, 0.875rem);
   color: var(--color-text-black);
+  flex: 1 1 auto;
+}
+
+.input::placeholder {
+  color: var(--color-text-inactive);
 }
 
 .input:disabled {
