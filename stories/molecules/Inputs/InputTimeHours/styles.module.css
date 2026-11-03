@@ -1,37 +1,187 @@
 .container {
-    position: relative;
-    display: inline-block;
-  }
-  
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  background-color: #fff;
+  color: #111827;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  box-sizing: border-box;
+
+  outline: none;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+.input:hover:not(:disabled) {
+  border-color: #9ca3af;
+}
+
+.input:focus {
+  border-color: #6366f1;
+
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 12%);
+}
+
+.input:disabled {
+  background-color: #f9fafb;
+  color: #9ca3af;
+
+  cursor: not-allowed;
+}
+
+/* =========================================
+   SUGGESTIONS
+========================================= */
+
+.suggestions {
+  position: absolute;
+
+  top: calc(100% + 6px);
+  left: 0;
+
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-height: 200px;
+
+  padding: 4px;
+  margin: 0;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  list-style: none;
+
+  background-color: #fff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 5%),
+    0 10px 24px -4px rgb(0 0 0 / 10%);
+
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+.suggestions li {
+  display: flex;
+  align-items: center;
+
+  min-height: 36px;
+
+  padding: 8px 12px;
+
+  border-radius: 6px;
+
+  color: #374151;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+
+  box-sizing: border-box;
+}
+
+.suggestions li:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.suggestions li:active {
+  background-color: #e5e7eb;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.suggestions::-webkit-scrollbar {
+  width: 5px;
+}
+
+.suggestions::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.suggestions::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 10px;
+}
+
+.suggestions::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 480px) {
   .input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    height: 42px;
+    padding: 0 10px;
+    font-size: 14px;
   }
-  
+
   .suggestions {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 0;
-    height: 170px;
-    overflow: hidden auto;
-    z-index: 1;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 180px;
   }
-  
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input,
   .suggestions li {
-    padding: 8px 12px;
-    cursor: pointer;
+    transition: none;
   }
-  
-  .suggestions li:hover {
-    background-color: #f0f0f0;
-  }
-  
+}

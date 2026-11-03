@@ -35,8 +35,8 @@ interface Props {
   }) => void
   setSelectedExtra?: (
     args:
-    | SelectedExtra
-    | ((prev: SelectedExtra) => SelectedExtra)
+      | SelectedExtra
+      | ((prev: SelectedExtra) => SelectedExtra)
   ) => void
   handleCheck?: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -155,19 +155,17 @@ export const FormExtra: React.FC<Props> = ({
         />
 
         <ChoicesHeader
-          description={`El cliente podrá escoger hasta ${
-            isEdit
+          description={`El cliente podrá escoger hasta ${isEdit
               ? selectedExtra.numberLimit
               : numberLimit || 0
-          } opción${
-            Number(
+            } opción${Number(
               isEdit
                 ? selectedExtra.numberLimit
                 : numberLimit
             ) === 1
               ? ''
               : 'es'
-          }.`}
+            }.`}
           title={finalTitle}
           label={
             isEdit
@@ -302,16 +300,11 @@ export const FormExtra: React.FC<Props> = ({
           />
 
           <AlertInfo
-            type='warning'
+            type="warning"
             message={
-              `Límite de selección: el cliente podrá elegir hasta ${
-                quantity || 1
-              } opción${
-                quantity === 1
-                  ? ''
-                  : 'es'
+              `El cliente podrá seleccionar hasta ${quantity || 1} ${quantity === 1 ? 'opción' : 'opciones'
               } de esta lista. ` +
-              'Ejemplo: si defines 2 en “Toppings”, podrá seleccionar hasta 2 toppings.'
+              `Por ejemplo, si configuras 2 opciones para “Toppings”, podrá elegir hasta 2 toppings.`
             }
           />
 

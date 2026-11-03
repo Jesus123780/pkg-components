@@ -33,6 +33,7 @@ interface IOptionalExtraProducts {
   title: string
   dataListIds: string[]
   data: any
+  pId?: string 
   loadingEditSubOptional: any
   selectedItem: any
   selectedExtra: any

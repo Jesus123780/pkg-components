@@ -212,7 +212,7 @@ export const AwesomeModal: React.FC<IPropsAwesomeModal> = ({
               borderRadius,
               display,
               padding,
-              height: customHeight !== '' ? customHeight : 'calc(100vh - 50px)'
+              height: customHeight !== '' ? customHeight : 'calc(100vh - 80px)'
             }}
           >
             {children}

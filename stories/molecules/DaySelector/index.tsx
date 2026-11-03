@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { CircleDay } from './styled'
 import { InputTimeHours } from '../Inputs'
 import {
@@ -6,16 +7,24 @@ import {
   Text,
   Row
 } from '../../atoms'
-import styles from './styles.module.css'
+
 import { DAYS_STRINGS } from '../../../utils'
+import styles from './styles.module.css'
 
 interface DaySelectorProps {
   days: Array<{ day: number, name: string }>
   timeSuggestions: string[]
   selectedDays: number[]
-  dayConfigs: Record<number, { startTime: string, endTime: string }>
+  dayConfigs: Record<number, {
+    startTime: string
+    endTime: string
+  }>
   handleDaySelection: (day: number) => void
-  handleChange: (day: number, field: 'startTime' | 'endTime', value: string) => void
+  handleChange: (
+    day: number,
+    field: 'startTime' | 'endTime',
+    value: string
+  ) => void
 }
 
 export const DaySelector: React.FC<DaySelectorProps> = ({
@@ -23,57 +32,104 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
   timeSuggestions = [],
   selectedDays = [],
   dayConfigs = {},
-  handleDaySelection = () => { },
-  handleChange = () => { }
+  handleDaySelection = () => {},
+  handleChange = () => {}
 }) => {
   return (
-    <>
-      <Row>
-        {days.map((day) => (
-          <Column key={day.day} style={{ alignItems: 'center', width: 'min-content' }}>
-          <CircleDay
-            onClick={() => handleDaySelection(day.day)}
-            pulse={selectedDays.includes(day.day)}
-          >
-            {day.name}
-          </CircleDay>
-          <Text>
-            {DAYS_STRINGS[day.name]}
-          </Text>
-          </Column>
-        ))}
+    <section className={styles.container}>
+      {/* Selector de días */}
+      <Row className={styles.daysContainer}>
+        {days.map((day) => {
+          const isSelected = selectedDays.includes(day.day)
+
+          return (
+            <Column
+              key={day.day}
+              className={styles.dayItem}
+            >
+              <CircleDay
+                className={styles.dayCircle}
+                onClick={() => handleDaySelection(day.day)}
+                pulse={isSelected}
+              >
+                {day.name}
+              </CircleDay>
+
+              <Text>
+                {DAYS_STRINGS[day.name]}
+              </Text>
+            </Column>
+          )
+        })}
       </Row>
-      <Column className={styles['day-config-container']}>
-        {selectedDays.map((day) => (
-          <div key={`config-${day}`} style={{ marginTop: '1rem' }}>
-            <Text weight='semibold' font='regular'>
-              {DAYS_STRINGS[days.find((d) => d.day === day)?.name ?? '']}
-            </Text>
-            <div style={{ display: 'flex', gap: '1rem', width: 'min-content' }}>
-              <div>
-                <Text>Hora inicial</Text>
-                <InputTimeHours
-                  onSelected={(time) => handleChange(day, 'startTime', time)}
-                  times={timeSuggestions}
-                  value={typeof dayConfigs[day]?.startTime === 'string' && dayConfigs[day]?.startTime !== '' ? dayConfigs[day]?.startTime : ''}
-                  width="200px"
-                  placeholder='00:00'
-                />
+
+      {/* Configuración de horarios */}
+      <Column className={styles.dayConfigContainer}>
+        {selectedDays.map((day) => {
+          const dayName =
+            days.find((item) => item.day === day)?.name ?? ''
+
+          const config = dayConfigs[day]
+
+          return (
+            <section
+              key={`config-${day}`}
+              className={styles.dayConfig}
+            >
+              <header className={styles.dayConfigHeader}>
+                <Text
+                  weight='semibold'
+                  font='regular'
+                >
+                  {DAYS_STRINGS[dayName]}
+                </Text>
+              </header>
+
+              <div className={styles.timeFields}>
+                <div className={styles.timeField}>
+                  <Text>
+                    Hora inicial
+                  </Text>
+
+                  <InputTimeHours
+                    onSelected={(time) =>
+                      handleChange(day, 'startTime', time)
+                    }
+                    times={timeSuggestions}
+                    value={
+                      typeof config?.startTime === 'string'
+                        ? config.startTime
+                        : ''
+                    }
+                    width='100%'
+                    placeholder='00:00'
+                  />
+                </div>
+
+                <div className={styles.timeField}>
+                  <Text>
+                    Hora final
+                  </Text>
+
+                  <InputTimeHours
+                    onSelected={(time) =>
+                      handleChange(day, 'endTime', time)
+                    }
+                    times={timeSuggestions}
+                    value={
+                      typeof config?.endTime === 'string'
+                        ? config.endTime
+                        : ''
+                    }
+                    width='100%'
+                    placeholder='23:59'
+                  />
+                </div>
               </div>
-              <div>
-                <Text>Hora final</Text>
-                <InputTimeHours
-                  onSelected={(time) => handleChange(day, 'endTime', time)}
-                  times={timeSuggestions}
-                  value={typeof dayConfigs[day]?.endTime === 'string' && dayConfigs[day]?.endTime !== '' ? dayConfigs[day]?.endTime : ''}
-                  width="200px"
-                  placeholder='23:59'
-                />
-              </div>
-            </div>
-          </div>
-        ))}
+            </section>
+          )
+        })}
       </Column>
-    </>
+    </section>
   )
 }
