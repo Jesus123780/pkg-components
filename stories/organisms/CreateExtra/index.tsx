@@ -1,6 +1,11 @@
 import React, { useRef } from 'react'
+import clsx from 'clsx'
+
 import { AwesomeModal } from '..'
+import { MODAL_SIZES } from '../AwesomeModal/constanst'
+
 import { getGlobalStyle } from '../../../utils'
+
 import {
   Button,
   Checkbox,
@@ -9,16 +14,15 @@ import {
   Row,
   Tag
 } from '../../atoms'
+
 import {
-  AlertInfo,
   AmountInput,
   InputHooks,
   QuantityButton,
   ToggleSwitch
 } from '../../molecules'
-import clsx from 'clsx'
+
 import styles from './styles.module.css'
-import { MODAL_SIZES } from '../AwesomeModal/constanst'
 
 interface ICreateExtra {
   LineItems?: {
@@ -30,6 +34,10 @@ interface ICreateExtra {
       exState?: boolean
       manageStock?: boolean
       stock?: number
+      error?: boolean
+      errorName?: boolean
+      errorPrice?: boolean
+      messageError?: string
     }>
   }
   loading?: boolean
@@ -40,16 +48,25 @@ interface ICreateExtra {
     loading: boolean
     exPid: any
   }
-  CleanLines?: () => void
+  handleCleanLines?: () => void
   handleAdd?: () => void
   handleEdit?: (i: number, item: any) => void
   handleFocusChange?: (i: number) => void
   handleSelect?: (item: any, index: number) => void
-  handleLineChange?: (i: number, field: string, value: string | number | boolean | React.ChangeEvent<HTMLInputElement>) => void
+  handleLineChange?: (
+    i: number,
+    field: string,
+    value:
+      | string
+      | number
+      | boolean
+      | React.ChangeEvent<HTMLInputElement>
+  ) => void
   handleRemove?: (i: number, exPid: any) => void
   onSubmitUpdate?: ({ pId }: { pId: any }) => void
   setModal?: () => void
 }
+
 export const CreateExtra: React.FC<ICreateExtra> = ({
   LineItems = {
     Lines: []
@@ -62,24 +79,100 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
     loading: false,
     exPid: null
   },
-  CleanLines = () => { },
+  handleCleanLines = () => { },
   handleAdd = () => { },
   handleEdit = (i, item) => { return { i, item } },
   handleFocusChange = (i) => { return i },
   handleSelect = (item, index) => { return { item, index } },
-  handleLineChange = (i, extraName, value) => { return { i, extraName, value } },
+  handleLineChange = (i, field, value) => { return { i, field, value } },
   handleRemove = (i, exPid) => { return { i, exPid } },
   onSubmitUpdate = ({ pId }) => { return pId },
   setModal = () => { }
 }) => {
+  const endOfListRef = useRef<HTMLDivElement | null>(null)
+
+  const lines = LineItems?.Lines ?? []
+
   const disabled = false
-  const endOfListRef = useRef({
-    scrollIntoView: (args: any) => { return args },
-    current: null
+
+  const disabledButtonSave =
+    loading ||
+    lines.length === 0 ||
+    !lines.some(
+      item =>
+        item?.exPid === undefined ||
+        item?.exPid === null
+    )
+
+  /**
+   * Calcula una cantidad válida para el control de stock.
+   */
+  const getStock = (value?: number) => {
+    const stock = Number(value)
+
+    return Number.isFinite(stock) && stock >= 1
+      ? stock
+      : 1
+  }
+
+  /**
+   * Controla los cambios de cantidad.
+   */
+  const handleStockChange = (
+    index: number,
+    currentStock: number,
+    operation: 'increment' | 'decrement'
+  ) => {
+    const nextStock = operation === 'increment'
+      ? currentStock + 1
+      : Math.max(1, currentStock - 1)
+
+    handleLineChange(index, 'stock', nextStock)
+  }
+
+  /**
+   * Elimina la última línea que aún no está guardada en base de datos.
+   *
+   * Un complemento se considera "sin guardar" cuando no tiene `exPid`. Al
+   * decrementar el contador del footer solo se retira esa última fila local,
+   * nunca una que ya exista en el backend.
+   */
+  const handleRemoveLastUnsaved = () => {
+    for (let index = lines.length - 1; index >= 0; index--) {
+      const exPid = lines[index]?.exPid
+
+      if (exPid === undefined || exPid === null || exPid === '') {
+        handleRemove(index, exPid ?? null)
+        return
+      }
+    }
+  }
+
+  const hasUnsavedLine = lines.some(item => {
+    const exPid = item?.exPid
+    return exPid === undefined || exPid === null || exPid === ''
   })
-  const disabledButtonSave = loading ||
-    !LineItems?.Lines?.some((item) => item?.exPid === undefined || item?.exPid === null) ||
-    LineItems?.Lines?.length === 0
+
+  /**
+   * Controla la activación del stock.
+   */
+  const handleStockToggle = (
+    index: number,
+    extra: (typeof lines)[number]
+  ) => {
+    const next = !extra.manageStock
+
+    handleLineChange(index, 'manageStock', next)
+
+    if (next) {
+      const stock = Number(extra.stock)
+
+      if (!Number.isFinite(stock) || stock < 1) {
+        handleLineChange(index, 'stock', 1)
+      }
+    }
+  }
+
   return (
     <AwesomeModal
       borderRadius={getGlobalStyle('--border-radius-xs')}
@@ -89,8 +182,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
       footer={false}
       header={true}
       height='60vh'
-      onCancel={() => { setModal() }}
-      onHide={() => { setModal() }}
+      onHide={setModal}
       padding={0}
       question={false}
       show={modal}
@@ -99,164 +191,291 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
       zIndex={getGlobalStyle('--z-index-99999')}
     >
       <Column className={styles['create-extra_container']}>
+
+        {/* =====================================================
+            CONTENT
+        ===================================================== */}
+
         <div className={styles['content-create-extra']}>
-          {LineItems?.Lines?.length > 0
-            ? LineItems?.Lines?.map((extra, i) => {
-              const price = extra?.extraPrice
-              const exPid = extra?.exPid ?? null
-              const forEdit = (Boolean((extra?.forEdit))) || false
-              const isSelect = selected.exPid === exPid
-              const isLoading = selected.loading || loading
-              return (
-                <div key={extra?.exPid || i}
-                  className={clsx(
-                    styles['contain-item'] as string,
-                    isLoading && (styles.loading as string)
-                  )}
-                >
-                  <div className={styles['contain-item-content']}>
-                    <InputHooks
-                      name={extra?.extraName}
-                      onChange={e => {
-                        const value = e.target.value
-                        return handleLineChange(i, 'extraName', `${value}`)
-                      }}
-                      required={true}
-                      disabled={forEdit && !isSelect}
-                      title='Nombre'
-                      onFocus={() => {
-                        if (selected?.exPid === exPid) return null
-                        return handleFocusChange(i)
-                      }}
-                      max={180}
-                      reference={inputRefs?.current[i]}
-                      value={extra?.extraName}
-                    />
-                    <AmountInput
-                      allowDecimals={true}
-                      decimalSeparator=','
-                      decimalsLimit={2}
-                      groupSeparator='.'
-                      label='Precio'
-                      disabled={forEdit && !isSelect}
-                      name={extra?.extraPrice ?? 'extraPrice'}
-                      onValueChange={(value) => {
-                        return handleLineChange(i, 'extraPrice', value)
-                      }}
-                      onFocus={() => {
-                        if (selected?.exPid === exPid) return null
-                        return handleFocusChange(i)
-                      }}
-                      placeholder='Precio'
-                      defaultValue={price}
-                    />
-                    <ToggleSwitch
-                      checked={Boolean(extra?.manageStock)}
-                      id={`manageStock-${i}`}
-                      name='manageStock'
-                      disabled={forEdit && !isSelect}
-                      label='Controlar disponibilidad por stock'
-                      onChange={() => {
-                        const next = !extra?.manageStock
-                        handleLineChange(i, 'manageStock', next)
-                        if (next && (!extra?.stock || Number(extra?.stock) < 1)) {
-                          handleLineChange(i, 'stock', 1)
-                        }
-                      }}
-                      style={{ marginTop: getGlobalStyle('--spacing-m') }}
-                      successColor='green'
-                    />
-                    {Boolean(extra?.manageStock) && (
-                      <>
-                        <AlertInfo
-                          message='Define la cantidad disponible del complemento para controlar sus existencias.'
-                          type='warning'
-                        />
-                        <QuantityButton
-                          handleDecrement={() => {
-                            const current = Number(extra?.stock) || 1
-                            return handleLineChange(i, 'stock', current > 1 ? current - 1 : 1)
-                          }}
-                          handleIncrement={() => {
-                            const current = Number(extra?.stock) || 0
-                            return handleLineChange(i, 'stock', current + 1)
-                          }}
-                          quantity={Number(extra?.stock) || 1}
-                        />
-                      </>
-                    )}
-                    <Row justifyContent='space-between' alignItems='center' className={styles['contain-item-actions']}>
-                      <Column alignItems='center'
-                        style={{
-                          width: 'min-content'
+
+          {lines.map((extra, i) => {
+            const exPid = extra?.exPid ?? null
+            const price = extra?.extraPrice
+
+            const forEdit = Boolean(extra?.forEdit)
+            const manageStock = Boolean(extra?.manageStock)
+
+            const isSelect = selected.exPid === exPid
+            const isLoading = selected.loading || loading
+            const isDeleting = selected.loading && selected.exPid === exPid
+
+            const errorName = Boolean(extra?.errorName)
+            const errorPrice = Boolean(extra?.errorPrice)
+
+            const stock = getStock(extra?.stock)
+
+            return (
+              <div
+                key={extra?.exPid ?? i}
+                className={clsx(
+                  styles['contain-item'],
+                  isLoading && styles.loading
+                )}
+              >
+                <div className={styles['contain-item-content']}>
+
+                  {/* =====================================================
+                      NAME AND PRICE
+                  ===================================================== */}
+
+                  <div className={styles['field-row']}>
+
+                    <div className={styles['field-name']}>
+                      <InputHooks
+                        name={extra?.extraName}
+                        onChange={e => {
+                          handleLineChange(
+                            i,
+                            'extraName',
+                            e.target.value
+                          )
                         }}
-                      >
-                        <Checkbox
-                          checked={extra?.exState}
-                          id={i}
-                          label='Obligatorio'
-                          name={extra?.exState}
-                          onChange={value => { return handleLineChange(i, 'exState', value) }}
-                        />
-                      </Column>
-                      <Button
-                        disabled={disabled}
-                        onClick={() => { return handleRemove(i, exPid) }}
-                        type='button'
-                        className={styles['button-action']}
-                      >
-                        <Icon
-                          color={getGlobalStyle('--color-icons-primary')}
-                          icon='IconDelete'
-                          size={25}
-                        />
-                      </Button>
-                      {forEdit
-                        ? <>
-                          <Button
+                        required={true}
+                        error={errorName}
+                        messageError={extra?.messageError || 'Este campo es obligatorio'}
+                        disabled={forEdit && !isSelect}
+                        title='Nombre'
+                        onFocus={() => {
+                          if (isSelect) return null
+
+                          handleFocusChange(i)
+                        }}
+                        max={180}
+                        reference={inputRefs?.current[i]}
+                        value={extra?.extraName}
+                      />
+                    </div>
+
+                    <div
+                      className={clsx(
+                        styles['field-price'],
+                        errorPrice && styles['field-price--error']
+                      )}
+                    >
+                      <AmountInput
+                        allowDecimals={true}
+                        decimalSeparator=','
+                        decimalsLimit={2}
+                        groupSeparator='.'
+                        label='Precio'
+                        disabled={forEdit && !isSelect}
+                        name={extra?.extraPrice ?? 'extraPrice'}
+                        onValueChange={value => {
+                          handleLineChange(
+                            i,
+                            'extraPrice',
+                            value
+                          )
+                        }}
+                        onFocus={() => {
+                          if (isSelect) return null
+
+                          handleFocusChange(i)
+                        }}
+                        placeholder='Precio'
+                        defaultValue={price}
+                      />
+                      {errorPrice && (
+                        <span className={styles['field-price-error']}>
+                          Este campo es obligatorio
+                        </span>
+                      )}
+                    </div>
+
+                  </div>
+
+                  {/* =====================================================
+                      STOCK CONTROL
+
+                      El selector siempre permanece montado.
+                      Solo cambia su visibilidad.
+                  ===================================================== */}
+
+                  <div className={styles['stock-control']}>
+
+                    {/* TOGGLE */}
+
+                    <div className={styles['stock-control-toggle']}>
+                      <ToggleSwitch
+                        checked={manageStock}
+                        id={`manageStock-${i}`}
+                        name='manageStock'
+                        disabled={forEdit && !isSelect}
+                        label='Controlar disponibilidad por stock'
+                        onChange={() => {
+                          handleStockToggle(i, extra)
+                        }}
+                        successColor='green'
+                      />
+                    </div>
+
+                    {/* QUANTITY */}
+
+                    <div
+                      className={clsx(
+                        styles['stock-control-body'],
+                        !manageStock &&
+                        styles['stock-control-body--hidden']
+                      )}
+                      title={
+                        manageStock
+                          ? 'Define la cantidad disponible del complemento para controlar sus existencias.'
+                          : undefined
+                      }
+                      aria-hidden={!manageStock}
+                    >
+                      <QuantityButton
+                        handleDecrement={() => {
+                          handleStockChange(i, stock, 'decrement')
+                        }}
+                        handleIncrement={() => {
+                          handleStockChange(i, stock, 'increment')
+                        }}
+                        quantity={stock}
+                      />
+                    </div>
+
+                  </div>
+
+                  {/* =====================================================
+                      ACTIONS
+                  ===================================================== */}
+
+                  <Row
+                    justifyContent='space-between'
+                    alignItems='center'
+                    as='div'
+                    className={styles['contain-item-actions']}
+                  >
+
+                    <Column
+                      alignItems='center'
+                      style={{
+                        width: 'min-content'
+                      }}
+                    >
+                      <Checkbox
+                        checked={extra?.exState}
+                        id={i}
+                        label='Obligatorio'
+                        name={extra?.exState}
+                        onChange={value => {
+                          handleLineChange(i, 'exState', value)
+                        }}
+                      />
+                    </Column>
+
+                    {/* DELETE */}
+
+                    <button
+                      disabled={disabled || isDeleting}
+                      onClick={() => {
+                        handleRemove(i, exPid)
+                      }}
+                      type='button'
+                      className={styles['button-action']}
+                    >
+                      <Icon
+                        color={getGlobalStyle('--color-icons-primary')}
+                        icon='IconDelete'
+                        size={20}
+                      />
+                    </button>
+
+                    {/* EDIT / SAVE */}
+
+                    {forEdit
+                      ? (
+                        <>
+                          <button
                             disabled={disabled}
                             onClick={() => {
-                              if (isSelect) return handleEdit(i, exPid)
+                              if (isSelect) {
+                                return handleEdit(i, exPid)
+                              }
+
                               return handleSelect(extra, i)
                             }}
                             type='button'
                             className={styles['button-action']}
                           >
                             <Icon
-                              color={getGlobalStyle(selected?.exPid === exPid ? '--color-icons-primary' : '--color-icons-gray-light')}
-                              icon={selected?.exPid === exPid ? 'IconMiniCheck' : 'IconEdit'}
+                              size={20}
+                              color={getGlobalStyle(
+                                isSelect
+                                  ? '--color-icons-primary'
+                                  : '--color-icons-primary'
+                              )}
+                              icon={
+                                isSelect
+                                  ? 'IconMiniCheck'
+                                  : 'IconEdit'
+                              }
                             />
-                          </Button>
-                          <span style={{ marginLeft: '15px' }}>
-                            <Tag label='Guardado' backgroundColor='green' />
+                          </button>
+
+                          <span className={styles['saved-tag']}>
+                            <Tag
+                              label='Guardado'
+                              backgroundColor='green'
+                            />
                           </span>
                         </>
-                        : <>
+                      )
+                      : (
+                        <>
                           <Button
                             disabled={disabled}
                             type='button'
                             className={styles['button-action']}
+                            styles={{
+                              padding: 0
+                            }}
                           >
                             <Icon
                               icon='IconEdit'
-                              color={getGlobalStyle('--color-icons-gray-light')}
+                              color={getGlobalStyle('--color-icons-primary')}
                               size={25}
                             />
                           </Button>
+
                           <Tag label='Sin guardar' />
                         </>
-                      }
-                    </Row>
-                  </div>
+                      )}
+
+                  </Row>
+
                 </div>
-              )
-            })
-            : null}
+              </div>
+            )
+          })}
+
           <div ref={endOfListRef} />
+
         </div>
-        <Row justifyContent='space-between' alignItems='center' className={styles['action-buttons']}>
+
+        {/* =====================================================
+            FOOTER ACTIONS
+        ===================================================== */}
+
+        <Row
+          justifyContent='space-between'
+          alignItems='center'
+          className={styles['action-buttons']}
+        >
+
           <Button
-            onClick={CleanLines}
+            onClick={handleCleanLines}
             padding='17px'
             type='button'
             primary={false}
@@ -265,19 +484,24 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
               height: '100%'
             }}
           >
-            Eliminar
+            Vaciar lista
           </Button>
+
           <QuantityButton
             handleIncrement={() => {
-              if (endOfListRef?.current !== null) {
-                endOfListRef.current.scrollIntoView({ behavior: 'smooth' })
-              }
+              endOfListRef.current?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end'
+              })
+
               handleAdd()
             }}
-            quantity={typeof LineItems?.Lines?.length === 'number' && !isNaN(LineItems.Lines.length) ? LineItems.Lines.length : 0}
+            handleDecrement={handleRemoveLastUnsaved}
+            showNegativeButton={!hasUnsavedLine}
+            quantity={lines.length}
             disabled={false}
-            validationOne={true}
           />
+
           <Button
             padding={getGlobalStyle('--spacing-xl')}
             styles={{
@@ -287,13 +511,15 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
             disabled={disabledButtonSave}
             primary={true}
             loading={loading}
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault()
-              return onSubmitUpdate({ pId })
+
+              onSubmitUpdate({ pId })
             }}
           >
             Guardar
           </Button>
+
         </Row>
       </Column>
     </AwesomeModal>

@@ -1,3 +1,7 @@
+/* =========================================================
+   CONTAINER
+========================================================= */
+
 .create-extra_container {
   width: 100%;
   height: 100%;
@@ -6,7 +10,6 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: space-between;
 
   background-color: var(--color-base-white);
 }
@@ -17,20 +20,17 @@
 
 .content-create-extra {
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
   min-height: 0;
 
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 
   overflow-x: hidden;
   overflow-y: auto;
 
-  padding: var(--spacing-lg) var(--spacing-xl);
-
-  font-size: 16px;
-  line-height: 1.15;
+  padding: var(--spacing-md) var(--spacing-lg);
 
   box-sizing: border-box;
 
@@ -41,7 +41,7 @@
 }
 
 .content-create-extra::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .content-create-extra::-webkit-scrollbar-track {
@@ -51,10 +51,6 @@
 .content-create-extra::-webkit-scrollbar-thumb {
   background-color: var(--color-neutral-gray-silver);
   border-radius: 999px;
-}
-
-.content-create-extra::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-text-inactive);
 }
 
 /* =========================================================
@@ -77,17 +73,14 @@
   overflow: hidden;
 
   transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    transform 220ms ease,
-    background-color 220ms ease;
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .contain-item:hover {
   border-color: var(--color-text-inactive);
 
-  box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.045);
 }
 
 /* =========================================================
@@ -98,23 +91,183 @@
   position: relative;
 
   width: 100%;
+  min-height: 64px;
 
   display: grid;
 
   grid-template-columns:
-    minmax(220px, 1fr)
-    minmax(160px, 220px)
-    auto;
+    minmax(0, 1fr)
+    max-content
+    max-content;
 
-  align-items: end;
+  align-items: center;
 
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 
-  padding: var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+
+  box-sizing: border-box;
+}
+
+.contain-item-content > * {
+  min-width: 0;
+}
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.field-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(120px, 1fr)
+    minmax(100px, 125px);
+
+  align-items: center;
+
+  min-width: 0;
+
+  gap: var(--spacing-sm);
+}
+
+.field-name,
+.field-price {
+  width: 100%;
+  min-width: 0;
+}
+
+.field-name > *,
+.field-price > * {
+  width: 100%;
+  min-width: 0;
+}
+
+/* =========================================================
+   PRICE REQUIRED ERROR
+========================================================= */
+
+.field-price--error input {
+  border-color: var(--color-primary-red, #ea1d2c) !important;
+}
+
+.field-price-error {
+  display: block;
+
+  margin-top: var(--spacing-3xs, 4px);
+
+  color: var(--color-primary-red, #ea1d2c);
+
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.field-row input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   STOCK CONTROL
+========================================================= */
+
+.stock-control {
+  display: grid;
+
+  /*
+   * La segunda columna siempre reserva el espacio
+   * real del QuantityButton.
+   */
+  grid-template-columns:
+    max-content
+    max-content;
+
+  align-items: center;
+  justify-content: start;
+
+  column-gap: var(--spacing-md);
+
+  width: max-content;
+  min-width: 0;
+
+  position: relative;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   STOCK TOGGLE
+========================================================= */
+
+.stock-control-toggle {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: max-content;
+  min-width: max-content;
+
+  flex: 0 0 auto;
 
   box-sizing: border-box;
 
-  border: 0;
+  z-index: 1;
+}
+
+/* =========================================================
+   STOCK QUANTITY
+========================================================= */
+
+.stock-control-body {
+  position: relative;
+
+  /*
+   * IMPORTANTE:
+   * No se usa display: none ni renderizado condicional.
+   * El componente siempre conserva sus dimensiones.
+   */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: max-content;
+  min-width: max-content;
+
+  flex: 0 0 auto;
+
+  box-sizing: border-box;
+
+  transform-origin: left center;
+
+  opacity: 1;
+  visibility: visible;
+
+  transform: translateX(0) scale(1);
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+/* =========================================================
+   HIDDEN QUANTITY
+========================================================= */
+
+.stock-control-body--hidden {
+  /*
+   * visibility conserva el espacio en el layout.
+   * opacity y transform controlan la apariencia.
+   */
+
+  opacity: 0;
+  visibility: hidden;
+
+  transform: translateX(-5px) scale(0.97);
+
+  pointer-events: none;
 }
 
 /* =========================================================
@@ -122,14 +275,18 @@
 ========================================================= */
 
 .contain-item-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: max-content;
   min-width: max-content;
 
-  display: flex;
-  align-items: center;
+  flex: 0 0 auto;
 
-  gap: var(--spacing-xs);
+  gap: 2px;
 
-  padding: var(--spacing-xs);
+  padding: 3px;
 
   height: auto;
 
@@ -138,7 +295,27 @@
 
   background-color: var(--color-base-white);
 
-  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.contain-item-actions > * {
+  flex-shrink: 0;
+}
+
+.contain-item-actions span {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* =========================================================
+   SAVED TAG
+========================================================= */
+
+.saved-tag {
+  display: inline-flex;
+  align-items: center;
+
+  margin-left: var(--spacing-xs);
 }
 
 /* =========================================================
@@ -148,11 +325,11 @@
 .button-action {
   position: relative;
 
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
 
-  min-width: 38px;
-  min-height: 38px;
+  min-width: 34px;
+  min-height: 34px;
 
   padding: 0;
 
@@ -160,41 +337,28 @@
   align-items: center;
   justify-content: center;
 
-  background-color: var(--color-base-transparent);
+  background-color: var(--color-primary-pink-light);
 
-  border: var(--border-width-none);
-
+  border: 0;
   border-radius: var(--border-radius-xs);
 
   transition:
-    background-color 180ms ease,
-    transform 180ms ease,
-    opacity 180ms ease;
+    background-color 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease;
 }
 
 .button-action:hover:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.05);
-
-  transform: translateY(-1px);
+  background-color: rgba(0, 0, 0, 0.055);
 }
 
 .button-action:active:not(:disabled) {
-  transform: translateY(0) scale(0.96);
+  transform: scale(0.94);
 }
 
 .button-action:disabled {
   opacity: 0.45;
-
   cursor: not-allowed;
-}
-
-/* =========================================================
-   SAVED TAG
-========================================================= */
-
-.contain-item-actions span {
-  display: inline-flex;
-  align-items: center;
 }
 
 /* =========================================================
@@ -204,8 +368,7 @@
 .loading {
   border-color: var(--color-background-primary);
 
-  box-shadow:
-    0 0 0 3px rgba(234, 29, 44, 0.08);
+  box-shadow: 0 0 0 2px rgba(234, 29, 44, 0.07);
 }
 
 .contain-item::before,
@@ -227,10 +390,8 @@
 
   transition:
     opacity 180ms ease,
-    transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform 220ms ease;
 }
-
-/* Top/right corner */
 
 .contain-item::before {
   border-top: 2px solid #ea1d2c;
@@ -238,11 +399,8 @@
 
   border-top-right-radius: var(--border-radius-xs);
 
-  transform:
-    translate(5px, -5px);
+  transform: translate(4px, -4px);
 }
-
-/* Bottom/left corner */
 
 .contain-item::after {
   border-bottom: 2px solid #ea1d2c;
@@ -250,55 +408,41 @@
 
   border-bottom-left-radius: var(--border-radius-xs);
 
-  transform:
-    translate(-5px, 5px);
+  transform: translate(-4px, 4px);
 }
 
 .loading::before,
 .loading::after {
   opacity: 1;
 
-  transform:
-    translate(0, 0);
+  transform: translate(0, 0);
 }
 
 /* =========================================================
-   NO BORDER
-========================================================= */
-
-.noBorder {
-  border: 0;
-  box-shadow: none;
-}
-
-/* =========================================================
-   FOOTER / ACTIONS
+   FOOTER
 ========================================================= */
 
 .action-buttons {
   position: relative;
 
   width: 100%;
-  min-height: 72px;
+  min-height: 64px;
 
-  flex-shrink: 0;
+  flex: 0 0 auto;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 
-  padding:
-    var(--spacing-md)
-    var(--spacing-xl);
+  padding: var(--spacing-sm) var(--spacing-lg);
 
   background-color: var(--color-base-white);
 
   border-top: 1px solid var(--color-neutral-gray-silver);
 
-  box-shadow:
-    0 -4px 14px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.035);
 
   box-sizing: border-box;
 
@@ -306,113 +450,85 @@
 }
 
 /* =========================================================
-   LEGACY ACTION
-========================================================= */
-
-.action {
-  width: 100%;
-  height: 80px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: var(--spacing-lg);
-
-  gap: var(--spacing-lg);
-
-  background-color: var(--color-base-white);
-
-  border-top:
-    1px solid var(--color-neutral-gray-silver);
-
-  box-sizing: border-box;
-}
-
-/* =========================================================
-   INPUTS
-========================================================= */
-
-.contain-item-content > * {
-  min-width: 0;
-}
-
-.contain-item-content
-  input {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* =========================================================
-   MOBILE
+   RESPONSIVE
 ========================================================= */
 
 @media (max-width: 900px) {
   .content-create-extra {
-    padding:
-      var(--spacing-md)
-      var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .contain-item {
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .contain-item-content {
+    min-width: 760px;
+
     grid-template-columns:
-      minmax(0, 1fr)
-      minmax(150px, 200px);
+      minmax(220px, 1fr)
+      max-content
+      max-content;
 
-    gap: var(--spacing-md);
-  }
-
-  .contain-item-actions {
-    grid-column: 1 / -1;
-
-    justify-content: flex-end;
+    gap: var(--spacing-sm);
   }
 
   .action-buttons {
-    padding:
-      var(--spacing-md)
-      var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 }
 
 @media (max-width: 600px) {
   .content-create-extra {
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
 
     padding:
-      var(--spacing-sm)
-      var(--spacing-md);
+      var(--spacing-xs)
+      var(--spacing-sm);
   }
 
   .contain-item-content {
-    grid-template-columns: 1fr;
+    min-width: 720px;
 
-    gap: var(--spacing-sm);
-
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
   }
 
-  .contain-item-actions {
-    width: 100%;
-
-    justify-content: flex-end;
+  .field-row {
+    grid-template-columns:
+      minmax(120px, 1fr)
+      minmax(100px, 120px);
   }
 
   .button-action {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
 
-    min-width: 36px;
-    min-height: 36px;
+    min-width: 32px;
+    min-height: 32px;
   }
 
   .action-buttons {
-    min-height: 64px;
+    min-height: 58px;
 
     gap: var(--spacing-sm);
 
     padding:
-      var(--spacing-sm)
-      var(--spacing-md);
+      var(--spacing-xs)
+      var(--spacing-sm);
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .contain-item,
+  .button-action,
+  .contain-item::before,
+  .contain-item::after,
+  .stock-control-body {
+    transition: none;
   }
 }

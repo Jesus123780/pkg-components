@@ -28,6 +28,7 @@ import { FormExtra } from './FormExtra'
 import { BodyDnd } from './styled'
 import { getGlobalStyle } from '../../../helpers'
 import { type NotificationProps } from '../../../types/global'
+import { MODAL_SIZES } from '../AwesomeModal/constanst'
 
 interface IOptionalExtraProducts {
   title: string
@@ -486,12 +487,13 @@ React.FC<IOptionalExtraProducts> = ({
           show={
             openModalEditExtra
           }
-          size='600px'
+          size={MODAL_SIZES.small}
           zIndex={getGlobalStyle(
             '--z-index-9999'
           )}
         >
           <FormExtra
+            showInformation={false}
             handleAddList={
               handleAddList
             }

@@ -9,6 +9,7 @@ import {
 import { numberFormat } from '../../../utils'
 import {
   Checkbox,
+  Divider,
   Overline,
   RippleButton,
   Tag,
@@ -22,6 +23,7 @@ import {
   GarnishChoicesHeader
 } from './styled'
 import styles from './ModalProduct.module.css'
+import { getGlobalStyle } from '../../../helpers'
 
 /**
  * Represents a modal displaying product information and options.
@@ -182,7 +184,6 @@ export const ModalProduct = ({
               <a>
                 <Text
                   className='dish-restaurant__header'
-                  margin='12px 0'
                   size='14px'
                 >
                   {' '}
@@ -194,6 +195,7 @@ export const ModalProduct = ({
             <label className='dish-observation-form__label'>
               ¿Algún comentario?
             </label>
+            <Divider marginTop={getGlobalStyle('--spacing-2xl')} />
           </DisRestaurant>
           <InputHooks
             name='comments'
@@ -223,7 +225,7 @@ export const ModalProduct = ({
                   <div>
                     <h3 className='title_card'>{extra.extraName}</h3>
                     <h3
-                     className={`price ${!contentPrice ? 'price' : ''}`.trim()}
+                      className={`price ${!contentPrice ? 'price' : ''}`.trim()}
                     >
                       {' '}
                       {!contentPrice

@@ -25,6 +25,7 @@ interface SetCheck {
 
 interface Props {
   isEdit?: boolean
+  showInformation?: boolean
   numberLimit?: string
   selectedExtra?: SelectedExtra
   setCheck?: SetCheck
@@ -63,6 +64,7 @@ interface Props {
  */
 export const FormExtra: React.FC<Props> = ({
   isEdit = false,
+  showInformation = true,
   numberLimit = '',
   selectedExtra = {
     numberLimit: 0,
@@ -145,19 +147,23 @@ export const FormExtra: React.FC<Props> = ({
           marginTop={getGlobalStyle('--spacing-2xl')}
         />
 
-        <AlertInfo
-          type='warning'
-          message={
-            'Las listas te permiten agrupar productos que el cliente puede elegir al personalizar su pedido. ' +
-            'Por ejemplo: “Salsas”, “Toppings” o “Acompañamientos”. ' +
-            'Define cuántas opciones puede seleccionar y si la elección será obligatoria.'
-          }
+        {showInformation
+          &&
+          <AlertInfo
+            type='warning'
+            message={
+              'Las listas te permiten agrupar productos que el cliente puede elegir al personalizar su pedido. ' +
+              'Por ejemplo: “Salsas”, “Toppings” o “Acompañamientos”. ' +
+              'Define cuántas opciones puede seleccionar y si la elección será obligatoria.'
+            }
+          />}
+        <Divider
+          marginTop={getGlobalStyle('--spacing-2xl')}
         />
-
         <ChoicesHeader
           description={`El cliente podrá escoger hasta ${isEdit
-              ? selectedExtra.numberLimit
-              : numberLimit || 0
+            ? selectedExtra.numberLimit
+            : numberLimit || 0
             } opción${Number(
               isEdit
                 ? selectedExtra.numberLimit
@@ -213,7 +219,9 @@ export const FormExtra: React.FC<Props> = ({
           }
           info='Usa un nombre claro que indique qué opciones encontrará el cliente.'
         />
-
+        <Divider
+          marginTop={getGlobalStyle('--spacing-3xl')}
+        />
         <div>
           <ContentCheckbox>
             <Checkbox
@@ -299,14 +307,15 @@ export const FormExtra: React.FC<Props> = ({
             showNegativeButton={showNegativeButton}
           />
 
-          <AlertInfo
-            type="warning"
-            message={
-              `El cliente podrá seleccionar hasta ${quantity || 1} ${quantity === 1 ? 'opción' : 'opciones'
-              } de esta lista. ` +
-              `Por ejemplo, si configuras 2 opciones para “Toppings”, podrá elegir hasta 2 toppings.`
-            }
-          />
+          {showInformation &&
+            <AlertInfo
+              type="warning"
+              message={
+                `El cliente podrá seleccionar hasta ${quantity || 1} ${quantity === 1 ? 'opción' : 'opciones'
+                } de esta lista. ` +
+                `Por ejemplo, si configuras 2 opciones para “Toppings”, podrá elegir hasta 2 toppings.`
+              }
+            />}
 
           {!isEdit && (
             <>

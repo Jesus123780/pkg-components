@@ -26,7 +26,7 @@ const handleFocusChange = () => {return console.log('Focused')}
 const handleRemove = () => {return console.log('Removed')}
 const onSubmitUpdate = () => {return console.log('Submitted')}
 const setModal = () => {return console.log('Modal set')}
-const CleanLines = () => {return console.log('Cleaned')}
+const handleCleanLines = () => {return console.log('Cleaned')}
 
 export default {
   title: 'Organisms/CreateExtra',
@@ -47,7 +47,7 @@ Default.args = {
   loading: false,
   modal: true,
   pId: 'examplePid',
-  CleanLines,
+  handleCleanLines,
   handleAdd: () => {},
   handleFocusChange,
   handleLineChange,
@@ -57,7 +57,7 @@ Default.args = {
 }
 
 Default.propTypes = {
-  CleanLines: PropTypes.func,
+  handleCleanLines: PropTypes.func,
   LineItems: PropTypes.object,
   handleAdd: PropTypes.func,
   handleFocusChange: PropTypes.func,

@@ -1,90 +1,206 @@
 .column-container {
-  height: calc(100vh - 100px);
+  --resize-accent: var(--color-primary-red, #e5484d);
+  --resize-handle-width: 18px;
+
   position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: flex-start;
+  display: block;
+  width: 100%;
+  height: calc(100vh - 100px);
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  box-sizing: border-box;
+  isolation: isolate;
+  border-radius: 0;
 }
 
-.no-select {
-  user-select: none;
-}
-
+.column-container,
 .column-container *,
 .column-container *::before,
-.column-container::after {
-  box-sizing: inherit;
+.column-container *::after {
+  box-sizing: border-box;
 }
 
-.column-container .swiper-button-next {
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 50%;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 4px;
-  color: var(--color-text-white);
-  font-weight: 600;
-  padding: 25px;
-  transition: all 0.3s ease 0s;
+.column-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.column-container .swiper-button-next:hover {
-  background-color: rgb(39, 39, 39);
+.column-container::-webkit-scrollbar-thumb {
+  background: rgba(60, 65, 75, 0.24);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
 }
 
-.column-container .swiper-button-prev:hover {
-  background-color: rgb(39, 39, 39);
+.column-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 65, 75, 0.42);
+  background-clip: padding-box;
 }
 
-.column-container .swiper-button-prev {
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 50%;
-  box-shadow: rgba(0, 0, 0, 0.4) 0rem 0rem 0.25rem;
-  color: var(--color-text-white);
-  font-weight: 600;
-  padding: 1.5625rem;
-  transition: all 0.3s ease 0s;
+.column-container::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.swiper-button-next:after,
-.swiper-button-prev:after {
-  font-size: 1.2rem !important;
-}
-
-.column-container .column {
-  text-align: center;
-  background: #ffffff;
-  padding: 1.25rem 1.25rem 0 20px;
-  display: inline-block;
+.column-track {
   position: relative;
+  display: flex;
+  align-items: stretch;
+  /* The track stays viewport-sized; min-width on each pane creates the
+     horizontal overflow when there is not enough room for every pane. */
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
 }
 
-.column-container .column-controler {
+.column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 1.25rem 1.25rem 0 20px;
+  background: #ffffff;
+  text-align: center;
+  box-sizing: border-box;
+  transition:
+    flex-basis 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+  will-change: flex-basis;
+}
+
+.column-track:not(.is-resizing) .column:hover {
+  background-color: #fefefe;
+}
+
+.column-track.is-resizing,
+.column-track.is-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.column-track.is-resizing .column {
+  transition: none;
+  will-change: auto;
+}
+
+.column-controler {
   position: absolute;
-  border: 2.5px solid var(--color-primary-red);
-  height: 100%;
-  z-index: 1;
-  opacity: 0.2;
+  z-index: 5;
   top: 0;
   right: 0;
-  cursor: ew-resize;
-  width: min-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--resize-handle-width);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--resize-accent);
+  opacity: 0.38;
+  cursor: col-resize;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    opacity 180ms ease,
+    background-color 180ms ease;
 }
 
-.column-container .column-controler:hover {
+.column-controler::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 42px;
+  border-radius: 999px;
+  background: var(--resize-accent);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85), 0 1px 5px rgba(0, 0, 0, 0.18);
+  transition:
+    height 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.column-controler::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 17px;
+  border-radius: 999px;
+  opacity: 0;
+  background-image: radial-gradient(circle, #ffffff 1px, transparent 1.2px);
+  background-position: center;
+  background-size: 4px 5px;
+  transition: opacity 180ms ease;
+}
+
+.column-controler:hover,
+.column-controler:focus-visible,
+.column-controler.is-active {
+  opacity: 1;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(229, 72, 77, 0.07) 50%,
+    transparent 100%
+  );
+}
+
+.column-controler:hover::before,
+.column-controler:focus-visible::before,
+.column-controler.is-active::before {
+  width: 4px;
+  height: 58px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.95), 0 2px 9px rgba(0, 0, 0, 0.2);
+}
+
+.column-controler:hover::after,
+.column-controler:focus-visible::after,
+.column-controler.is-active::after {
   opacity: 1;
 }
 
-.column-controler__icon {
-  position: absolute;
-  left: -20px;
-  width: 30px;
-  background-color: #ff000066;
-  border-radius: 100%;
-  height: 30px;
-  display: flex;
-  place-content: center;
-  align-items: center;
-  top: 0;
-  bottom: 0;
-  z-index: 99;
-  margin: auto;
+.column-controler:focus-visible {
+  outline: 2px solid var(--resize-accent);
+  outline-offset: -2px;
+}
+
+.column-controler:active::before {
+  height: 72px;
+}
+
+.column-controler:disabled {
+  opacity: 0.16;
+  cursor: not-allowed;
+}
+
+.column-controler:disabled::before {
+  background: #9ca3af;
+  box-shadow: none;
+}
+
+/* Kept as a utility class for any existing styles that reference it. */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .column,
+  .column-controler,
+  .column-controler::before,
+  .column-controler::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
