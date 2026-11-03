@@ -52,6 +52,7 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
   onTargetClick = () => { },
   handleEdit = () => { }
 }) => {
+  console.log(ProDescuento)
   // HANDLERS
   const handleDown = (event?: React.MouseEvent<HTMLButtonElement>): void => {
     if (event != null) handleDecrement(event)

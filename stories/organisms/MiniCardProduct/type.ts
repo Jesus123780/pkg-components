@@ -48,6 +48,7 @@ export interface MiniCardProductProps extends ProductFood {
   }
   plainPrice?: number | string
   height?: number
+  showDiscount?: boolean
   handleDecrement?: () => void
   handleComment?: () => void
   handleDelete?: () => void

@@ -51,6 +51,7 @@ const MiniCardProductComponent: React.FC<MiniCardProductProps> = ({
   withStock = false,
   canDelete = false,
   manageStock = false,
+  showDiscount = true,
   ProQuantity = 0,
   plainPrice = 0,
   ProDescuento = 0,
@@ -76,7 +77,7 @@ const MiniCardProductComponent: React.FC<MiniCardProductProps> = ({
 }) => {
   // memoize computed values so re-render cost is minimal
   const urlImage = useMemo(() => ProImage || defaultImage, [ProImage])
-  const hasDiscount = Boolean(ProDescuento)
+  const hasDiscount = showDiscount && Boolean(ProDescuento)
   const formattedDiscount = useMemo(() => discount, [discount])
 
   const extrasText = useMemo(() => {

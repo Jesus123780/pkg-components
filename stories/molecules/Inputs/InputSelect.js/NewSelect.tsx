@@ -72,9 +72,9 @@ const toValueString = (
 const legacyGetOptionValue = <
   T extends SelectRecord
 >(
-    option: T,
-    preferredKey?: string
-  ): SelectValue => {
+  option: T,
+  preferredKey?: string
+): SelectValue => {
   if (
     preferredKey &&
     Object.prototype.hasOwnProperty.call(
@@ -134,13 +134,13 @@ const legacyGetOptionValue = <
 const legacyGetOptionLabel = <
   T extends SelectRecord
 >(
-    option: T,
-    optionName:
+  option: T,
+  optionName:
     | string
     | string[]
     | undefined,
-    accessor?: string
-  ): string => {
+  accessor?: string
+): string => {
   if (!optionName) {
     return ''
   }
@@ -155,30 +155,28 @@ const legacyGetOptionLabel = <
         .split('.')
         .filter(Boolean)
         .reduce<unknown>(
-        (
-          current,
-          key
-        ) => {
-          if (
-            current === null ||
+          (
+            current,
+            key
+          ) => {
+            if (
+              current === null ||
               current === undefined ||
-              typeof current !==
-                'object'
-          ) {
-            return undefined
-          }
+              typeof current !== 'object'
+            ) {
+              return undefined
+            }
 
-          return (
-            current as SelectRecord
-          )[key]
-        },
-        option
-      )
+            return (
+              current as SelectRecord
+            )[key]
+          },
+          option
+        )
 
     if (
       nested &&
-      typeof nested ===
-        'object'
+      typeof nested === 'object'
     ) {
       source =
         nested as SelectRecord
@@ -186,9 +184,7 @@ const legacyGetOptionLabel = <
   }
 
   if (
-    Array.isArray(
-      optionName
-    )
+    Array.isArray(optionName)
   ) {
     return optionName
       .map(key =>
@@ -238,12 +234,12 @@ const valueEquals = (
 const findOption = <
   T extends SelectRecord
 >(
-    options: T[],
-    value: SelectValue,
-    getValue: (
-      option: T
-    ) => SelectValue
-  ): T | null => {
+  options: T[],
+  value: SelectValue,
+  getValue: (
+    option: T
+  ) => SelectValue
+): T | null => {
   if (
     value === null ||
     value === undefined
@@ -265,12 +261,12 @@ const findOption = <
 const findOptionIndex = <
   T extends SelectRecord
 >(
-    options: T[],
-    value: SelectValue,
-    getValue: (
-      option: T
-    ) => SelectValue
-  ): number => {
+  options: T[],
+  value: SelectValue,
+  getValue: (
+    option: T
+  ) => SelectValue
+): number => {
   if (
     value === null ||
     value === undefined
@@ -290,11 +286,11 @@ const findOptionIndex = <
 const firstEnabledIndex = <
   T extends SelectRecord
 >(
-    options: T[],
-    isDisabled: (
-      option: T
-    ) => boolean
-  ): number => {
+  options: T[],
+  isDisabled: (
+    option: T
+  ) => boolean
+): number => {
   for (
     let index = 0;
     index < options.length;
@@ -315,11 +311,11 @@ const firstEnabledIndex = <
 const lastEnabledIndex = <
   T extends SelectRecord
 >(
-    options: T[],
-    isDisabled: (
-      option: T
-    ) => boolean
-  ): number => {
+  options: T[],
+  isDisabled: (
+    option: T
+  ) => boolean
+): number => {
   for (
     let index =
       options.length - 1;
@@ -341,13 +337,13 @@ const lastEnabledIndex = <
 const nextEnabledIndex = <
   T extends SelectRecord
 >(
-    options: T[],
-    currentIndex: number,
-    delta: number,
-    isDisabled: (
-      option: T
-    ) => boolean
-  ): number => {
+  options: T[],
+  currentIndex: number,
+  delta: number,
+  isDisabled: (
+    option: T
+  ) => boolean
+): number => {
   const total =
     options.length
 
@@ -573,6 +569,11 @@ export interface NewSelectProps<
 
   placeholder?: string
 
+  /**
+   * Browser autocomplete behavior.
+   */
+  autoComplete?: string
+
   loading?: boolean
   loadingMessage?: React.ReactNode
   emptyMessage?: React.ReactNode
@@ -668,7 +669,7 @@ export interface NewSelectProps<
 
 export function NewSelect<
   TOption extends SelectRecord
-> ({
+>({
   options = [],
   value,
   defaultValue,
@@ -692,6 +693,7 @@ export function NewSelect<
   error = false,
   errorMessage = null,
   placeholder = 'Buscar',
+  autoComplete = 'off',
   loading = false,
   loadingMessage =
     'Cargando...',
@@ -724,10 +726,6 @@ export function NewSelect<
   icon = true,
   defaultOptionKey,
   step,
-
-  /**
-   * NUEVO
-   */
   tabIndex
 }: NewSelectProps<TOption>) {
   const generatedId =
@@ -2084,10 +2082,6 @@ export function NewSelect<
 
           case 'Enter': {
             /**
-             * ==================================================
-             * NUEVO COMPORTAMIENTO
-             * ==================================================
-             *
              * Si el select tiene tabIndex y está cerrado,
              * Enter avanza al siguiente elemento.
              *
@@ -2114,10 +2108,6 @@ export function NewSelect<
             }
 
             /**
-             * ==================================================
-             * COMPORTAMIENTO EXISTENTE
-             * ==================================================
-             *
              * Si el dropdown está abierto, Enter continúa
              * funcionando como selector.
              */
@@ -2177,11 +2167,6 @@ export function NewSelect<
 
             closeDropdown()
 
-            /**
-             * The input is already focused here. Re-focusing it would
-             * trigger handleFocus again and immediately reopen the
-             * dropdown with an empty query.
-             */
             return
           }
 
@@ -2572,14 +2557,7 @@ export function NewSelect<
           ref={inputRef}
           id={inputId}
           name={name}
-
-          /**
-           * NUEVO
-           *
-           * El tabIndex llega directamente al input real.
-           */
           tabIndex={tabIndex}
-
           value={inputValue}
           disabled={disabled}
           placeholder={
@@ -2587,7 +2565,7 @@ export function NewSelect<
               ? ''
               : placeholder
           }
-          autoComplete="off"
+          autoComplete={autoComplete}
           autoCorrect="off"
           autoCapitalize="none"
           spellCheck={false}
@@ -2619,6 +2597,9 @@ export function NewSelect<
             required
           }
           aria-busy={loading}
+          required={required}
+          data-required={Boolean(required)}
+          data-required-step={step}
           data-step={step}
           className={
             styles[

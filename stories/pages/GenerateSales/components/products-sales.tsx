@@ -123,6 +123,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 editing={product.editing}
                                 editable={true}
                                 canDelete={true}
+                                showDiscount={false}
                                 height={300}
                                 handleDelete={() => {
                                   dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })

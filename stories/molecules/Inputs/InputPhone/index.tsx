@@ -49,6 +49,16 @@ export interface PhoneInputProps {
   /** Shows the validation helper text after the input has been blurred. */
   showValidationMessage?: boolean
   autoComplete?: string
+
+  /**
+   * Orden de navegación por teclado.
+   *
+   * Enter -> siguiente elemento con tabIndex superior.
+   */
+  tabIndex?: number
+
+  /** Callback para eventos de teclado del campo telefónico. */
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 interface ParsedPhoneValue {
@@ -79,6 +89,7 @@ const getMinLength = (country: PhoneCountry) => country.minLength ?? 7
 
 const getCountry = (countryValue: string, list: PhoneCountry[]) => {
   const normalized = countryValue.trim().toUpperCase()
+
   return list.find(
     (country) =>
       country.code.toUpperCase() === normalized ||
@@ -86,37 +97,119 @@ const getCountry = (countryValue: string, list: PhoneCountry[]) => {
   )
 }
 
+/**
+ * Busca y enfoca el siguiente elemento según su tabIndex.
+ *
+ * La navegación especial se utiliza al presionar Enter.
+ * El orden nativo de Tab no se modifica.
+ */
+const focusNextByTabIndex = (currentElement: HTMLElement): void => {
+  const currentTabIndex = currentElement.tabIndex
+
+  if (currentTabIndex < 0) {
+    return
+  }
+
+  const focusableElements = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      [
+        'input:not([disabled])',
+        'textarea:not([disabled])',
+        'button:not([disabled])',
+        'select:not([disabled])',
+        'a[href]',
+        '[tabindex]:not([tabindex="-1"])',
+        '[contenteditable="true"]'
+      ].join(',')
+    )
+  ).filter((element) => {
+    if (element === currentElement) {
+      return false
+    }
+
+    if (
+      element.hidden ||
+      element.getAttribute('aria-hidden') === 'true'
+    ) {
+      return false
+    }
+
+    if (element.getClientRects().length === 0) {
+      return false
+    }
+
+    return element.tabIndex > currentTabIndex
+  })
+
+  focusableElements.sort((a, b) => a.tabIndex - b.tabIndex)
+
+  const nextElement = focusableElements[0]
+
+  if (!nextElement) {
+    return
+  }
+
+  nextElement.focus()
+
+  if (
+    nextElement instanceof HTMLInputElement ||
+    nextElement instanceof HTMLTextAreaElement
+  ) {
+    try {
+      const length = nextElement.value.length
+      nextElement.setSelectionRange(length, length)
+    } catch {
+      // No todos los inputs soportan selection range.
+    }
+  }
+}
+
 const formatNationalNumber = (
   value: string,
   country: PhoneCountry,
   enabled: boolean
 ) => {
-  if (!enabled || !country.formatGroups?.length || !value) return value
+  if (!enabled || !country.formatGroups?.length || !value) {
+    return value
+  }
 
   const parts: string[] = []
   let offset = 0
 
   for (const groupSize of country.formatGroups) {
     if (offset >= value.length) break
+
     parts.push(value.slice(offset, offset + groupSize))
     offset += groupSize
   }
 
-  if (offset < value.length) parts.push(value.slice(offset))
+  if (offset < value.length) {
+    parts.push(value.slice(offset))
+  }
+
   return parts.join(' ')
 }
 
-const parsePhoneValue = (value: string | undefined, list: PhoneCountry[]): ParsedPhoneValue => {
-  if (!value?.trim()) return { nationalNumber: '' }
+const parsePhoneValue = (
+  value: string | undefined,
+  list: PhoneCountry[]
+): ParsedPhoneValue => {
+  if (!value?.trim()) {
+    return { nationalNumber: '' }
+  }
 
   const trimmed = value.trim()
   const isInternational = trimmed.startsWith('+') || trimmed.startsWith('00')
 
   if (isInternational) {
-    const internationalDigits = onlyDigits(trimmed.startsWith('00') ? trimmed.slice(2) : trimmed.slice(1))
+    const internationalDigits = onlyDigits(
+      trimmed.startsWith('00') ? trimmed.slice(2) : trimmed.slice(1)
+    )
+
     const orderedCountries = [...list].sort(
       (a, b) => onlyDigits(b.dialCode).length - onlyDigits(a.dialCode).length
     )
+
     const country = orderedCountries.find((item) =>
       internationalDigits.startsWith(onlyDigits(item.dialCode))
     )
@@ -162,19 +255,29 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   onCountryChange,
   onChangeDetails,
   showValidationMessage = true,
-  autoComplete = 'tel-national'
+  autoComplete = 'tel-national',
+  tabIndex,
+  onKeyDown = () => undefined
 }) => {
   const generatedId = React.useId()
   const inputId = id ?? `phone-input-${generatedId}`
   const listId = `${inputId}-country-list`
+
   const rootRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
 
   const initialParsedValue = parsePhoneValue(value, countryOptions)
+
   const [selectedCountryCode, setSelectedCountryCode] = useState(
-    initialParsedValue.country?.code ?? getCountry(defaultCountry, countryOptions)?.code ?? 'CO'
+    initialParsedValue.country?.code ??
+      getCountry(defaultCountry, countryOptions)?.code ??
+      'CO'
   )
-  const [nationalNumber, setNationalNumber] = useState(initialParsedValue.nationalNumber)
+
+  const [nationalNumber, setNationalNumber] = useState(
+    initialParsedValue.nationalNumber
+  )
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [isTouched, setIsTouched] = useState(false)
@@ -189,15 +292,22 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
     if (value === undefined) return
 
     const parsed = parsePhoneValue(value, countryOptions)
+
     setNationalNumber(parsed.nationalNumber)
-    if (parsed.country) setSelectedCountryCode(parsed.country.code)
+
+    if (parsed.country) {
+      setSelectedCountryCode(parsed.country.code)
+    }
   }, [value, countryOptions])
 
   useEffect(() => {
     if (!isDropdownOpen) return
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
+      if (
+        rootRef.current &&
+        !rootRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false)
         setSearchQuery('')
       }
@@ -220,22 +330,36 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   }, [isDropdownOpen])
 
   useEffect(() => {
-    if (isDropdownOpen && showSearch) searchRef.current?.focus()
+    if (isDropdownOpen && showSearch) {
+      searchRef.current?.focus()
+    }
   }, [isDropdownOpen, showSearch])
 
-  const formattedNumber = formatNationalNumber(nationalNumber, selectedCountry, autoFormat)
+  const formattedNumber = formatNationalNumber(
+    nationalNumber,
+    selectedCountry,
+    autoFormat
+  )
+
   const hasNumber = nationalNumber.length > 0
+
   const isValidPhoneNumber = hasNumber
     ? nationalNumber.length >= getMinLength(selectedCountry) &&
       nationalNumber.length <= getMaxLength(selectedCountry)
     : !required
+
   const showInvalid =
-    (isTouched && required && !hasNumber) || (isTouched && hasNumber && !isValidPhoneNumber)
+    (isTouched && required && !hasNumber) ||
+    (isTouched && hasNumber && !isValidPhoneNumber)
 
   const emitChange = (digits: string, country: PhoneCountry) => {
     const formatted = formatNationalNumber(digits, country, autoFormat)
     const international = digits ? `${country.dialCode}${digits}` : ''
-    onChange(outputFormat === 'international' ? international : formatted)
+
+    onChange(
+      outputFormat === 'international' ? international : formatted
+    )
+
     onChangeDetails?.({
       country,
       nationalNumber: digits,
@@ -244,18 +368,28 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       isValid:
         digits.length === 0
           ? !required
-          : digits.length >= getMinLength(country) && digits.length <= getMaxLength(country)
+          : digits.length >= getMinLength(country) &&
+            digits.length <= getMaxLength(country)
     })
   }
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const inputValue = event.target.value.trim()
-    const hasInternationalPrefix = inputValue.startsWith('+') || inputValue.startsWith('00')
+
+    const hasInternationalPrefix =
+      inputValue.startsWith('+') || inputValue.startsWith('00')
 
     if (hasInternationalPrefix) {
       const parsed = parsePhoneValue(inputValue, countryOptions)
+
       if (parsed.country) {
-        const nextDigits = parsed.nationalNumber.slice(0, getMaxLength(parsed.country))
+        const nextDigits = parsed.nationalNumber.slice(
+          0,
+          getMaxLength(parsed.country)
+        )
+
         setSelectedCountryCode(parsed.country.code)
         setNationalNumber(nextDigits)
         emitChange(nextDigits, parsed.country)
@@ -264,12 +398,46 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
         setNationalNumber('')
         emitChange('', selectedCountry)
       }
+
       return
     }
 
-    const nextDigits = onlyDigits(inputValue).slice(0, getMaxLength(selectedCountry))
+    const nextDigits = onlyDigits(inputValue).slice(
+      0,
+      getMaxLength(selectedCountry)
+    )
+
     setNationalNumber(nextDigits)
     emitChange(nextDigits, selectedCountry)
+  }
+
+  /**
+   * Navegación por teclado:
+   *
+   * Tab:
+   * - Conserva el comportamiento nativo del navegador.
+   *
+   * Enter:
+   * - Evita el comportamiento predeterminado.
+   * - Busca el siguiente elemento con un tabIndex superior.
+   * - Enfoca el siguiente elemento disponible.
+   */
+  const handleInputKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === 'Tab') {
+      onKeyDown(event)
+      return
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      focusNextByTabIndex(event.currentTarget)
+      onKeyDown(event)
+      return
+    }
+
+    onKeyDown(event)
   }
 
   const handleCountrySelection = (country: PhoneCountry) => {
@@ -277,17 +445,24 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
     setIsDropdownOpen(false)
     setSearchQuery('')
     setIsTouched(false)
+
     onCountryChange?.(country)
 
     const nextDigits = nationalNumber.slice(0, getMaxLength(country))
+
     setNationalNumber(nextDigits)
-    if (nextDigits) emitChange(nextDigits, country)
+
+    if (nextDigits) {
+      emitChange(nextDigits, country)
+    }
   }
 
   const filteredCountries = useMemo(() => {
     const query = normalizeSearch(searchQuery)
+
     const matching = countryOptions.filter((country) => {
       if (!query) return true
+
       return (
         normalizeSearch(country.name).includes(query) ||
         normalizeSearch(country.code).includes(query) ||
@@ -299,29 +474,49 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
     if (query) return matching
 
     const preferred = preferredCountries
-      .map((code) => matching.find((country) => country.code.toUpperCase() === code.toUpperCase()))
+      .map((code) =>
+        matching.find(
+          (country) => country.code.toUpperCase() === code.toUpperCase()
+        )
+      )
       .filter((country): country is PhoneCountry => Boolean(country))
-    const preferredCodes = new Set(preferred.map((country) => country.code))
-    return [...preferred, ...matching.filter((country) => !preferredCodes.has(country.code))]
+
+    const preferredCodes = new Set(
+      preferred.map((country) => country.code)
+    )
+
+    return [
+      ...preferred,
+      ...matching.filter(
+        (country) => !preferredCodes.has(country.code)
+      )
+    ]
   }, [countryOptions, preferredCountries, searchQuery])
 
   const preferredVisibleCountries = searchQuery
     ? []
     : filteredCountries.filter((country) =>
-      preferredCountries.some((code) => code.toUpperCase() === country.code.toUpperCase())
-    )
+        preferredCountries.some(
+          (code) => code.toUpperCase() === country.code.toUpperCase()
+        )
+      )
+
   const otherVisibleCountries = searchQuery
     ? filteredCountries
     : filteredCountries.filter(
-      (country) =>
-        !preferredCountries.some((code) => code.toUpperCase() === country.code.toUpperCase())
-    )
+        (country) =>
+          !preferredCountries.some(
+            (code) => code.toUpperCase() === country.code.toUpperCase()
+          )
+      )
 
   const renderCountryOption = (country: PhoneCountry) => (
     <button
       aria-selected={country.code === selectedCountry.code}
       className={`${styles.countryOption} ${
-        country.code === selectedCountry.code ? styles.countryOptionSelected : ''
+        country.code === selectedCountry.code
+          ? styles.countryOptionSelected
+          : ''
       }`}
       key={country.code}
       onClick={() => handleCountrySelection(country)}
@@ -331,8 +526,14 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       <span aria-hidden="true" className={styles.countryFlag}>
         {getFlag(country)}
       </span>
-      <span className={styles.countryName}>{country.name}</span>
-      <span className={styles.countryDialCode}>{country.dialCode}</span>
+
+      <span className={styles.countryName}>
+        {country.name}
+      </span>
+
+      <span className={styles.countryDialCode}>
+        {country.dialCode}
+      </span>
     </button>
   )
 
@@ -368,15 +569,27 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
         <span aria-hidden="true" className={styles.selectedFlag}>
           {getFlag(selectedCountry)}
         </span>
-        <span className={styles.selectedDialCode}>{selectedCountry.dialCode}</span>
+
+        <span className={styles.selectedDialCode}>
+          {selectedCountry.dialCode}
+        </span>
+
         {allowCountrySelection && (
           <svg
             aria-hidden="true"
-            className={`${styles.chevron} ${isDropdownOpen ? styles.chevronOpen : ''}`}
+            className={`${styles.chevron} ${
+              isDropdownOpen ? styles.chevronOpen : ''
+            }`}
             fill="none"
             viewBox="0 0 20 20"
           >
-            <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+            <path
+              d="m5 7.5 5 5 5-5"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.8"
+            />
           </svg>
         )}
       </button>
@@ -384,20 +597,29 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       <span aria-hidden="true" className={styles.inputDivider} />
 
       <input
-        aria-describedby={showInvalid && showValidationMessage ? `${inputId}-error` : undefined}
+        aria-describedby={
+          showInvalid && showValidationMessage
+            ? `${inputId}-error`
+            : undefined
+        }
         aria-invalid={showInvalid}
         autoComplete={autoComplete}
         className={styles.phoneInput}
         disabled={disabled}
         id={inputId}
         inputMode="tel"
-        maxLength={Math.max(1, getMaxLength(selectedCountry) + (autoFormat ? 4 : 0))}
+        maxLength={Math.max(
+          1,
+          getMaxLength(selectedCountry) + (autoFormat ? 4 : 0)
+        )}
         name={name}
         onBlur={() => setIsTouched(true)}
         onChange={handleInputChange}
+        onKeyDown={handleInputKeyDown}
         placeholder={placeholder}
         readOnly={readOnly}
         required={required}
+        tabIndex={tabIndex}
         type="tel"
         value={formattedNumber}
       />
@@ -406,10 +628,28 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
         <div className={styles.countryDropdown}>
           {showSearch && (
             <div className={styles.searchContainer}>
-              <svg aria-hidden="true" className={styles.searchIcon} fill="none" viewBox="0 0 24 24">
-                <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" strokeWidth="1.7" />
-                <path d="m16 16 4.3 4.3" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" />
+              <svg
+                aria-hidden="true"
+                className={styles.searchIcon}
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  cx="10.8"
+                  cy="10.8"
+                  r="6.8"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                />
+
+                <path
+                  d="m16 16 4.3 4.3"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.7"
+                />
               </svg>
+
               <input
                 aria-label="Buscar país o código telefónico"
                 className={styles.searchInput}
@@ -419,6 +659,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
                 type="search"
                 value={searchQuery}
               />
+
               {searchQuery && (
                 <button
                   aria-label="Limpiar búsqueda"
@@ -432,10 +673,18 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
             </div>
           )}
 
-          <div aria-label="Países disponibles" className={styles.countryList} id={listId} role="listbox">
+          <div
+            aria-label="Países disponibles"
+            className={styles.countryList}
+            id={listId}
+            role="listbox"
+          >
             {preferredVisibleCountries.length > 0 && (
               <>
-                <p className={styles.groupLabel}>Frecuentes</p>
+                <p className={styles.groupLabel}>
+                  Frecuentes
+                </p>
+
                 {preferredVisibleCountries.map(renderCountryOption)}
               </>
             )}
@@ -443,22 +692,37 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
             {otherVisibleCountries.length > 0 && (
               <>
                 {!searchQuery && preferredVisibleCountries.length > 0 && (
-                  <div aria-hidden="true" className={styles.listDivider} />
+                  <div
+                    aria-hidden="true"
+                    className={styles.listDivider}
+                  />
                 )}
-                {!searchQuery && <p className={styles.groupLabel}>Todos los países</p>}
+
+                {!searchQuery && (
+                  <p className={styles.groupLabel}>
+                    Todos los países
+                  </p>
+                )}
+
                 {otherVisibleCountries.map(renderCountryOption)}
               </>
             )}
 
             {filteredCountries.length === 0 && (
-              <div className={styles.emptyState}>No encontramos ese país o código.</div>
+              <div className={styles.emptyState}>
+                No encontramos ese país o código.
+              </div>
             )}
           </div>
         </div>
       )}
 
       {showInvalid && showValidationMessage && (
-        <span className={styles.validationMessage} id={`${inputId}-error`} role="alert">
+        <span
+          className={styles.validationMessage}
+          id={`${inputId}-error`}
+          role="alert"
+        >
           {!hasNumber
             ? 'Este campo es obligatorio.'
             : `Revisa el número de ${selectedCountry.name}. Debe tener entre ${getMinLength(

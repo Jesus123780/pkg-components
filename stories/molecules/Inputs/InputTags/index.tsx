@@ -173,7 +173,25 @@ export interface InputTagsProps {
     tags: string[]
   ) => void
 
-  registerTags?: () => void
+  /**
+   * Persists a tag.
+   *
+   * When `update` is true the component works in "create & persist"
+   * mode: a single Enter (or click on "+") creates and persists the tag
+   * immediately.
+   *
+   * The current input value is always passed as the argument so the
+   * consumer never depends on React state that has not been flushed yet
+   * (this is what caused the "double Enter" / lost tags bug).
+   *
+   * It may return a boolean (or a promise resolving to a boolean) to tell
+   * the input whether the operation succeeded. When it resolves to
+   * `false` the input keeps the typed value so the user can retry without
+   * retyping.
+   */
+  registerTags?: (
+    value?: string
+  ) => void | boolean | Promise<void | boolean>
 
   sendNotification?: (
     notification: NotificationProps
@@ -218,7 +236,13 @@ export const InputTags:
       return true
     }
 
-    const tryAddTag = (
+    /**
+     * Local-only add (legacy behavior, used when `update` is false).
+     *
+     * Adds the tag to the chip list held in `tags` and clears the input.
+     * No persistence happens here.
+     */
+    const addToLocalState = (
       value: string
     ): void => {
       const trimmed =
@@ -241,7 +265,7 @@ export const InputTags:
       ) {
         sendNotification({
           description:
-            `  El Tag "${trimmed}" ya existe.`,
+            `El Tag "${trimmed}" ya existe.`,
           title: 'Error',
           backgroundColor:
             'warning'
@@ -268,16 +292,68 @@ export const InputTags:
         )
       }
 
-      setInputValue(
-        ''
+      clearInput()
+    }
+
+    /**
+     * Clears the input value (state + uncontrolled ref).
+     */
+    const clearInput = (): void => {
+      setInputValue('')
+
+      if (refBox.current) {
+        refBox.current.value = ''
+      }
+    }
+
+    /**
+     * Single entry point used by BOTH Enter and the "+" button.
+     *
+     * Behavior:
+     * - Reads the CURRENT input value (never stale React state).
+     * - Ignores empty values.
+     * - In `update` mode it delegates persistence to `registerTags`,
+     *   passing the value explicitly so the consumer does not depend on
+     *   an async `setTags`. The input is cleared only when the operation
+     *   is accepted (so errors are recoverable).
+     * - Without `update` it keeps the legacy local-only add.
+     *
+     * @param {string} rawValue - Current input value.
+     * @returns {Promise<boolean>} Whether a tag was handled/persisted.
+     */
+    const createAndPersist = async (
+      rawValue: string
+    ): Promise<boolean> => {
+      const trimmed = (rawValue ?? '').trim()
+
+      if (trimmed === '') {
+        return false
+      }
+
+      // Legacy / local-only mode.
+      if (
+        !update ||
+        typeof registerTags !== 'function'
+      ) {
+        addToLocalState(trimmed)
+
+        return true
+      }
+
+      // Create & persist mode: do NOT rely on setTags being flushed.
+      const result = await Promise.resolve(
+        registerTags(trimmed)
       )
 
-      if (
-        refBox.current
-      ) {
-        refBox.current.value =
-          ''
+      // `undefined` (void) is treated as success for backward
+      // compatibility; only an explicit `false` keeps the value.
+      const succeeded = result !== false
+
+      if (succeeded) {
+        clearInput()
       }
+
+      return succeeded
     }
 
     const handleKeyDown = (
@@ -288,46 +364,37 @@ export const InputTags:
        * ENTER
        * ==========================================
        *
-       * Preserve current behavior:
+       * A single Enter creates and persists the tag.
        *
-       * 1. Add tag.
-       * 2. Register tags when update=true.
-       * 3. If tabIndex exists, move focus to
-       *    the next element.
+       * We always preventDefault so Enter never submits the
+       * surrounding product form by accident.
        */
       if (
         event.key === 'Enter'
       ) {
         event.preventDefault()
+        event.stopPropagation()
 
-        tryAddTag(
-          inputValue
-        )
+        const target = event.currentTarget
 
-        if (
-          typeof registerTags ===
-            'function' &&
-          update
-        ) {
-          registerTags()
-        }
-
-        /**
-         * Give React/browser an opportunity to
-         * process the current event before changing
-         * focus.
-         */
-        if (
-          tabIndex !== undefined
-        ) {
-          window.requestAnimationFrame(
-            () => {
-              focusNextByTabIndex(
-                event.currentTarget
+        void createAndPersist(inputValue).then(
+          (succeeded) => {
+            /**
+             * Only move focus forward when the tag was handled and a
+             * tabIndex exists. Give the browser a frame to settle.
+             */
+            if (
+              succeeded &&
+              tabIndex !== undefined
+            ) {
+              window.requestAnimationFrame(
+                () => {
+                  focusNextByTabIndex(target)
+                }
               )
             }
-          )
-        }
+          }
+        )
 
         return
       }
@@ -457,23 +524,16 @@ export const InputTags:
         </Row>
 
         <Button
+          type="button"
           disabled={
             disabled ||
             emptyValue ||
             loading
           }
           onClick={() => {
-            tryAddTag(
+            void createAndPersist(
               inputValue
             )
-
-            if (
-              typeof registerTags ===
-                'function' &&
-              update
-            ) {
-              registerTags()
-            }
           }}
           borderRadius={getGlobalStyle(
             '--border-radius-xs'
