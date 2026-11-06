@@ -1,45 +1,110 @@
+
 .container {
   display: flex;
   flex-direction: column;
   gap: 16px;
 
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+
   box-sizing: border-box;
 }
 
-.emptyRow,
+/* Empty and status states */
+
+.emptyState,
 .statusRow {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 8px;
+
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+.emptyContent,
+.statusContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  flex: 1 1 180px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.emptyText {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  overflow-wrap: anywhere;
 }
 
 .statusRow {
   padding: 8px 12px;
   border-radius: 10px;
+
   background-color: var(--color-neutral-gray-white, #f9f9f9);
 }
 
-.daysGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-  width: 100%;
+/* Icons */
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
   min-width: 0;
 }
+
+/* Responsive grid */
+
+.daysGrid {
+  display: grid;
+
+  /*
+   * The minimum column width adapts to the actual parent width.
+   * This prevents overflow inside narrow flex/grid containers.
+   */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 220px), 1fr)
+  );
+
+  gap: 12px;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+/* Day cards */
 
 .dayCard {
   display: flex;
   flex-direction: column;
   gap: 10px;
 
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   padding: 14px;
+
   border: 1px solid var(--color-neutral-gray, #e5e5e5);
   border-radius: 12px;
 
   background-color: var(--color-neutral-white, #ffffff);
+
   box-sizing: border-box;
 
   transition:
@@ -49,51 +114,122 @@
 
 .dayCardToday {
   border-color: var(--color-feedback-success-light, #16803c);
-  box-shadow: 0 0 0 1px var(--color-feedback-success-light, #16803c) inset;
+
+  box-shadow:
+    0 0 0 1px var(--color-feedback-success-light, #16803c) inset;
 }
+
+/* Day header */
 
 .dayHeader {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
+
   width: 100%;
+  min-width: 0;
+}
+
+.dayName {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  overflow-wrap: anywhere;
 }
 
 .todayBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
   margin-left: auto;
   padding: 2px 8px;
 
   font-size: 11px;
   line-height: 1.4;
   font-weight: 600;
+  white-space: nowrap;
 
   color: var(--color-neutral-white, #ffffff);
   background-color: var(--color-feedback-success-light, #16803c);
+
   border-radius: 999px;
 }
+
+/* Time ranges */
 
 .rangeList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .rangeRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
+
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
-@media (max-width: 480px) {
-  .daysGrid {
-    grid-template-columns: minmax(0, 1fr);
-  }
+.rangeTime {
+  display: block;
+
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
+
+/* Edit button */
+
+.editButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  flex: 0 0 auto;
+  padding: 4px 10px;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  background-color: transparent;
+  border: 1px solid var(--color-neutral-gray, #e5e5e5);
+  border-radius: 999px;
+
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.editButton:hover {
+  border-color: var(--color-primary-pink-light, #e39aa6);
+  background-color: var(--color-neutral-gray-white, #f9f9f9);
+}
+
+.editButton:focus-visible {
+  outline: 2px solid var(--color-primary-pink-light, #e39aa6);
+  outline-offset: 3px;
+}
+
+/* Reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
-  .dayCard {
+  .dayCard,
+  .editButton {
     transition: none;
   }
 }

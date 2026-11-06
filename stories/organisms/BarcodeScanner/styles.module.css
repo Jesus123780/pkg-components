@@ -1,35 +1,856 @@
+
+/* ==========================================
+   WRAPPER
+========================================== */
+
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    padding: var(--spacing-xl);
+    gap: var(--spacing-xl);
+
+    color: var(--color-text-primary);
+    font-family: var(--font-family-sans), sans-serif;
 }
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    max-width: 680px;
+    gap: var(--spacing-lg);
+}
+
+.heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+
+    min-width: 0;
+}
+
+.title {
+    margin: 0;
+
+    color: var(--color-text-primary);
+
+    font-family: var(--font-family-medium), sans-serif;
+    font-size: var(--font-size-titles-md);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-2xl);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.subtitle {
+    margin: 0;
+
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-lg);
+}
+
+/* ==========================================
+   CAMERA STATUS
+========================================== */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    gap: var(--spacing-md);
+
+    padding: var(--spacing-md) var(--spacing-lg);
+
+    border: var(--border-width-xs) solid var(--color-neutral-border);
+    border-radius: var(--border-radius-full);
+
+    background: var(--color-neutral-surface);
+
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+}
+
+.statusDot {
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: var(--border-radius-full);
+    background: var(--color-primary-disabled);
+}
+
+.status--ready {
+    background: var(--color-feedback-success-bg);
+    border-color: rgba(0, 200, 120, 0.22);
+    color: var(--color-feedback-success-dark);
+}
+
+.status--ready .statusDot {
+    background: var(--color-feedback-success-light);
+    box-shadow: 0 0 0 3px rgba(0, 200, 120, 0.12);
+}
+
+.status--initializing {
+    background: var(--color-neutral-gray-light);
+    color: var(--color-text-secondary);
+}
+
+.status--initializing .statusDot {
+    background: var(--color-feedback-warning-light);
+    animation: statusPulse 1.4s ease-in-out infinite;
+}
+
+.status--error {
+    background: var(--color-primary-red-bg);
+    border-color: rgba(230, 0, 35, 0.16);
+    color: var(--color-feedback-error-dark);
+}
+
+.status--error .statusDot {
+    background: var(--color-feedback-error-light);
+}
+
+/* ==========================================
+   SCANNER VIEWPORT
+========================================== */
 
 .scanner {
-  width: 100%;
-  max-width: 600px;
-  height: 300px;
-  border: 2px dashed #ccc;
-  margin: 1rem 0;
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    max-width: 680px;
+
+    aspect-ratio: 4 / 3;
+    min-height: 240px;
+    max-height: 440px;
+
+    overflow: hidden;
+
+    background: var(--color-base-black);
+
+    border: var(--border-width-xs) solid var(--color-neutral-border);
+    border-radius: var(--border-radius-lg);
+
+    box-shadow: var(--box-shadow-md);
 }
 
-.resultList {
-  width: 100%;
-  max-width: 600px;
-  margin-top: 1rem;
+/*
+ * Quagga dynamically inserts video and canvas elements.
+ * Keep them aligned inside the camera viewport.
+ */
+
+.scanner :global(video),
+.scanner :global(canvas) {
+    position: absolute !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: none !important;
 }
 
-.imei {
-  background: #f1f1f1;
-  padding: 8px;
-  margin: 4px 0;
-  border-radius: 6px;
-  font-family: monospace;
+.scanner :global(video) {
+    z-index: 0;
+    object-fit: cover;
 }
+
+.scanner :global(canvas) {
+    z-index: 1;
+    object-fit: fill;
+    pointer-events: none;
+}
+
+/* ==========================================
+   SCANNING GUIDE
+========================================== */
+
+.scanGuide {
+    position: absolute;
+    inset: 0;
+
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+}
+
+/*
+ * The dark area around the frame makes
+ * the barcode scanning region easier to identify.
+ */
+
+.scanFrame {
+    position: relative;
+
+    width: 82%;
+    height: 34%;
+
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: var(--border-radius-xs);
+
+    box-shadow:
+        0 0 0 999px rgba(0, 0, 0, 0.28),
+        0 0 20px rgba(255, 255, 255, 0.06);
+}
+
+.scanFrame::before {
+    content: '';
+
+    position: absolute;
+    inset: -2px;
+
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-xs);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--color-primary-red),
+            #FF6074
+        ) border-box;
+
+    mask:
+        linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.scanLine {
+    position: absolute;
+
+    top: 0;
+    left: 2%;
+    right: 2%;
+
+    height: 2px;
+
+    border-radius: var(--border-radius-full);
+
+    background: var(--color-primary-red-header);
+
+    box-shadow:
+        0 0 8px rgba(230, 0, 35, 0.8),
+        0 0 18px rgba(230, 0, 35, 0.35);
+
+    animation: scanAnimation 2.4s ease-in-out infinite;
+}
+
+.guideText {
+    margin: var(--spacing-3xl) var(--spacing-lg) 0;
+
+    padding: var(--spacing-md) var(--spacing-lg);
+
+    border-radius: var(--border-radius-full);
+
+    background: rgba(20, 22, 27, 0.72);
+
+    color: var(--color-base-white);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    line-height: var(--line-height-md);
+}
+
+/* ==========================================
+   CAMERA INITIALIZATION / ERROR
+========================================== */
+
+.cameraState {
+    position: absolute;
+    inset: 0;
+
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--spacing-2xl);
+
+    background: rgba(25, 26, 31, 0.82);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.cameraMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    max-width: 340px;
+
+    gap: var(--spacing-md);
+
+    color: var(--color-base-white);
+    text-align: center;
+}
+
+.cameraMessage strong {
+    font-family: var(--font-family-medium), sans-serif;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.cameraMessage p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.76);
+
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-xl);
+}
+
+.loader {
+    width: 36px;
+    height: 36px;
+
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--color-primary-red);
+
+    border-radius: var(--border-radius-full);
+
+    animation: rotate 850ms linear infinite;
+}
+
+.errorIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius-full);
+
+    background: rgba(230, 0, 35, 0.16);
+
+    color: #FF8292;
+
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+}
+
+.retryButton {
+    min-height: 40px;
+
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-2xl);
+
+    border: none;
+    border-radius: var(--border-radius-full);
+
+    background: var(--color-primary-red);
+
+    color: var(--color-base-white);
+
+    font-family: var(--font-family-medium), sans-serif;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+
+    cursor: pointer;
+
+    transition:
+        background-color 180ms ease,
+        transform 180ms ease;
+}
+
+.retryButton:hover {
+    background: var(--color-primary-red2);
+}
+
+.retryButton:active {
+    transform: scale(0.97);
+}
+
+.retryButton:focus-visible {
+    outline: 2px solid var(--color-base-white);
+    outline-offset: 3px;
+}
+
+/* ==========================================
+   INSTRUCTIONS
+========================================== */
+
+.instructions {
+    display: flex;
+    align-items: flex-start;
+
+    width: 100%;
+    max-width: 680px;
+
+    gap: var(--spacing-md);
+
+    padding: var(--spacing-lg);
+
+    border: var(--border-width-xs) solid var(--color-neutral-border);
+    border-radius: var(--border-radius-md);
+
+    background: var(--color-neutral-gray-white);
+}
+
+.instructionsIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 19px;
+    height: 19px;
+
+    flex-shrink: 0;
+
+    border-radius: var(--border-radius-full);
+
+    background: var(--color-secondary-blue-bg);
+
+    color: var(--color-secondary-blue);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+.instructions p {
+    margin: 0;
+
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-lg);
+}
+
+/* ==========================================
+   RESULTS
+========================================== */
+
+.results {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    max-width: 680px;
+
+    gap: var(--spacing-lg);
+}
+
+.resultsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: var(--spacing-md);
+}
+
+.resultsHeader > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.resultsTitle {
+    margin: 0;
+
+    color: var(--color-text-primary);
+
+    font-family: var(--font-family-medium), sans-serif;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.resultsSubtitle {
+    margin: 0;
+
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-md);
+}
+
+.clearButton {
+    flex-shrink: 0;
+
+    padding: var(--spacing-sm) var(--spacing-md);
+
+    border: none;
+    border-radius: var(--border-radius-xs);
+
+    background: transparent;
+
+    color: var(--color-text-link);
+
+    font-family: var(--font-family-medium), sans-serif;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+
+    cursor: pointer;
+
+    transition: background-color 160ms ease;
+}
+
+.clearButton:hover {
+    background: var(--color-primary-red-bg);
+}
+
+.clearButton:focus-visible {
+    outline: 2px solid var(--color-primary-red);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   HISTORY COUNTER
+========================================== */
+
+.historyCounter {
+    align-self: flex-start;
+
+    padding: var(--spacing-xs) var(--spacing-md);
+
+    border-radius: var(--border-radius-full);
+
+    background: var(--color-primary-red-bg);
+
+    color: var(--color-primary-red-dark);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 164px;
+
+    padding: var(--spacing-2xl);
+
+    border: 1px dashed var(--color-neutral-border-strong);
+    border-radius: var(--border-radius-md);
+
+    background: var(--color-neutral-gray-white);
+
+    text-align: center;
+}
+
+.emptyIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    margin-bottom: var(--spacing-md);
+
+    border-radius: var(--border-radius-md);
+
+    background: var(--color-primary-red-bg);
+
+    color: var(--color-primary-red);
+
+    font-size: 27px;
+}
+
+.emptyState strong {
+    color: var(--color-text-primary);
+
+    font-family: var(--font-family-medium), sans-serif;
+    font-size: var(--font-size-md);
+}
+
+.emptyState p {
+    margin: var(--spacing-sm) 0 0;
+
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-sm);
+}
+
+/* ==========================================
+   CODE LIST
+========================================== */
+
+.codeList {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 0;
+
+    gap: var(--spacing-md);
+
+    list-style: none;
+}
+
+.codeItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-width: 0;
+
+    padding: var(--spacing-lg);
+
+    border: var(--border-width-xs) solid var(--color-neutral-border);
+    border-radius: var(--border-radius-md);
+
+    background: var(--color-neutral-surface);
+
+    box-shadow: var(--box-shadow-2xs);
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.codeItem:hover {
+    border-color: var(--color-neutral-border-strong);
+    box-shadow: var(--box-shadow-xs);
+}
+
+.codeInformation {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+
+    gap: var(--spacing-md);
+}
+
+.barcodeIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border-radius: var(--border-radius-sm);
+
+    background: var(--color-primary-red-bg);
+
+    color: var(--color-primary-red);
+
+    font-size: 25px;
+}
+
+.codeDetails {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    gap: var(--spacing-xs);
+}
+
+.codeValue {
+    overflow: hidden;
+
+    color: var(--color-text-primary);
+
+    font-family: monospace;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.045em;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.codeFormat {
+    color: var(--color-text-tertiary);
+
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wider);
+}
+
+/* ==========================================
+   QUANTITY
+========================================== */
+
+.quantityBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    min-width: 40px;
+
+    padding: var(--spacing-sm) var(--spacing-md);
+
+    border-radius: var(--border-radius-full);
+
+    background: var(--color-feedback-success-bg);
+
+    color: var(--color-feedback-success-dark);
+
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* ==========================================
+   TOAST
+========================================== */
 
 .toast {
-  padding: 1rem;
-  border-radius: 8px;
-  min-width: 250px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 680px;
+
+    animation: toastEnter 220ms ease-out;
+}
+
+/* ==========================================
+   ANIMATIONS
+========================================== */
+
+@keyframes scanAnimation {
+    0% {
+        top: 5%;
+        opacity: 0;
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    88% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 95%;
+        opacity: 0;
+    }
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes statusPulse {
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@keyframes toastEnter {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 600px) {
+    .wrapper {
+        padding: var(--spacing-md);
+        gap: var(--spacing-lg);
+    }
+
+    .header {
+        align-items: flex-start;
+    }
+
+    .title {
+        font-size: var(--font-size-lg);
+    }
+
+    .status {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-2xs);
+    }
+
+    .scanner {
+        min-height: 220px;
+        border-radius: var(--border-radius-md);
+    }
+
+    .scanFrame {
+        width: 88%;
+        height: 32%;
+    }
+
+    .guideText {
+        margin-top: var(--spacing-2xl);
+        max-width: 85%;
+    }
+
+    .instructions {
+        padding: var(--spacing-md);
+    }
+
+    .codeItem {
+        padding: var(--spacing-md);
+    }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .scanLine,
+    .loader,
+    .statusDot {
+        animation: none;
+    }
+
+    .toast {
+        animation: none;
+    }
+
+    .codeItem,
+    .retryButton,
+    .clearButton {
+        transition: none;
+    }
 }
