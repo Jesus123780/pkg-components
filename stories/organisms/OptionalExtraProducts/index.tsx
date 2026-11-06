@@ -34,7 +34,7 @@ interface IOptionalExtraProducts {
   title: string
   dataListIds: string[]
   data: any
-  pId?: string 
+  pId?: string
   loadingEditSubOptional: any
   selectedItem: any
   selectedExtra: any
@@ -84,29 +84,29 @@ React.FC<IOptionalExtraProducts> = ({
     return boolean
   },
 
-  handleCheck = () => {},
+  handleCheck = () => { },
 
-  editOneItem = () => {},
+  editOneItem = () => { },
 
-  handleRemoveList = () => {},
+  handleRemoveList = () => { },
 
-  setTitle = () => {},
+  setTitle = () => { },
 
   setCheck = {},
 
-  handleChangeItems = () => {},
+  handleChangeItems = () => { },
 
-  handleAdd = () => {},
+  handleAdd = () => { },
 
-  removeOneItem = () => {},
+  removeOneItem = () => { },
 
-  handleAddList = () => {},
+  handleAddList = () => { },
 
-  setData = () => {},
+  setData = () => { },
 
-  editOneExtra = () => {},
+  editOneExtra = () => { },
 
-  sendNotification = () => {}
+  sendNotification = () => { }
 }) => {
   const [
     numberLimit,
@@ -114,14 +114,14 @@ React.FC<IOptionalExtraProducts> = ({
   ] = useState<number>(1)
 
   /**
-     * Valida el value del input.
-     *
-     * Considera vacío:
-     * ''
-     * '   '
-     * null
-     * undefined
-     */
+       * Valida el value del input.
+       *
+       * Considera vacío:
+       * ''
+       * '   '
+       * null
+       * undefined
+       */
   const isValueEmpty = (
     value: unknown
   ): boolean => {
@@ -131,9 +131,9 @@ React.FC<IOptionalExtraProducts> = ({
   }
 
   /**
-     * Notificación centralizada para no repetir
-     * el mismo objeto en diferentes eventos.
-     */
+       * Notificación centralizada para no repetir
+       * el mismo objeto en diferentes eventos.
+       */
   const notifyEmptyValue = (): void => {
     sendNotification({
       description:
@@ -185,22 +185,20 @@ React.FC<IOptionalExtraProducts> = ({
                   )
 
                 const messageLimit =
-                  `${numberLimit} ${
-                    Number(
-                      numberLimit
-                    ) > 1
-                      ? 'opciones'
-                      : 'opción'
+                  `${numberLimit} ${Number(
+                    numberLimit
+                  ) > 1
+                    ? 'opciones'
+                    : 'opción'
                   }`
 
                 return (
                   <Column
                     style={{
                       border:
-                        `2px solid ${
-                          incompleteList
-                            ? NorthTexasGreen
-                            : 'transparent'
+                        `2px solid ${incompleteList
+                          ? NorthTexasGreen
+                          : 'transparent'
                         }`,
                       height:
                         'min-content'
@@ -216,7 +214,7 @@ React.FC<IOptionalExtraProducts> = ({
                       }
                       label={
                         list?.required ===
-                        1
+                          1
                           ? 'Requerido'
                           : ''
                       }
@@ -252,8 +250,9 @@ React.FC<IOptionalExtraProducts> = ({
 
                       {incompleteList && (
                         <Icon
-                          icon='IconMiniCheck'
+                          icon={incompleteList ? 'IconInfo' : 'IconMiniCheck'}
                           size={15}
+                          color={getGlobalStyle(incompleteList ? '--color-icons-primary' : '--color-icons-success')}
                         />
                       )}
                     </div>
@@ -285,148 +284,117 @@ React.FC<IOptionalExtraProducts> = ({
                       }
                     />
 
-                    <InputHooks
-                      range={{
-                        max: 255,
-                        min: 3
-                      }}
-                      tabIndex={
-                        index
-                      }
-                      autoFocus={
-                        true
-                      }
-                      name='list_value'
-                      onChange={(
-                        value
-                      ) => {
-                        return handleChangeItems({
-                          listID,
-                          id: list.id,
-                          value,
-                          name: 'list_value'
-                        })
-                      }}
-                      onKeyDown={(
-                        e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-                      ) => {
-                        if (
-                          e.key !== 'Enter'
-                        ) {
-                          return
-                        }
+                    <>
+                      {!incompleteList && (
 
-                        const value =
-                          String(
-                            list?.value ??
-                              ''
-                          ).trim()
-
-                        if (
-                          isValueEmpty(
+                        <><InputHooks
+                          range={{
+                            max: 255,
+                            min: 3
+                          }}
+                          tabIndex={index}
+                          autoFocus={true}
+                          name='list_value'
+                          onChange={(
                             value
-                          )
-                        ) {
-                          e.preventDefault()
+                          ) => {
+                            return handleChangeItems({
+                              listID,
+                              id: list.id,
+                              value,
+                              name: 'list_value'
+                            })
+                          }}
+                          onKeyDown={(
+                            e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+                          ) => {
+                            if (e.key !== 'Enter') {
+                              return
+                            }
 
-                          notifyEmptyValue()
-
-                          return
-                        }
-
-                        if (
-                          !incompleteList
-                        ) {
-                          handleAdd({
-                            listId:
-                              listID
-                          })
-                        }
-                      }}
-                      title='Agrega un subproducto'
-                      value={
-                        list?.value
-                      }
-                    />
-
-                    <RippleButton
-                      tabIndex={
-                        index + 1
-                      }
-                      loading={
-                        loadingCreateSubDessert
-                      }
-                      disabled={
-                        incompleteList
-                      }
-                      margin='16px 0 auto'
-                      onClick={() => {
-                        const value =
-                          String(
-                            list?.value ??
+                            const value = String(
+                              list?.value ??
                               ''
-                          ).trim()
+                            ).trim()
 
-                        if (
-                          isValueEmpty(
-                            value
-                          )
-                        ) {
-                          notifyEmptyValue()
-                          return
-                        }
+                            if (isValueEmpty(
+                              value
+                            )) {
+                              e.preventDefault()
 
-                        if (
-                          incompleteList
-                        ) {
-                          return null
-                        }
+                              notifyEmptyValue()
 
-                        return handleAdd({
-                          listId:
-                            listID
-                        })
-                      }}
-                      onKeyPress={(
-                        e: React.KeyboardEvent<HTMLButtonElement>
-                      ) => {
-                        if (
-                          e.key !==
-                          'Enter'
-                        ) {
-                          return
-                        }
+                              return
+                            }
 
-                        const value =
-                          String(
-                            list?.value ??
-                              ''
-                          ).trim()
+                            if (!incompleteList) {
+                              handleAdd({
+                                listId: listID
+                              })
+                            }
+                          }}
+                          title='Agrega un subproducto'
+                          value={list?.value} /><RippleButton
+                            tabIndex={index + 1}
+                            loading={loadingCreateSubDessert}
+                            disabled={incompleteList}
+                            margin='16px 0 auto'
+                            onClick={() => {
+                              const value = String(
+                                list?.value ??
+                                ''
+                              ).trim()
 
-                        if (
-                          isValueEmpty(
-                            value
-                          )
-                        ) {
-                          e.preventDefault()
+                              if (isValueEmpty(
+                                value
+                              )) {
+                                notifyEmptyValue()
+                                return
+                              }
 
-                          notifyEmptyValue()
+                              if (incompleteList) {
+                                return null
+                              }
 
-                          return
-                        }
+                              return handleAdd({
+                                listId: listID
+                              })
+                            }}
+                            onKeyPress={(
+                              e: React.KeyboardEvent<HTMLButtonElement>
+                            ) => {
+                              if (e.key !==
+                                'Enter') {
+                                return
+                              }
 
-                        if (
-                          !incompleteList
-                        ) {
-                          handleAdd({
-                            listId:
-                              listID
-                          })
-                        }
-                      }}
-                    >
-                      Agregar
-                    </RippleButton>
+                              const value = String(
+                                list?.value ??
+                                ''
+                              ).trim()
+
+                              if (isValueEmpty(
+                                value
+                              )) {
+                                e.preventDefault()
+
+                                notifyEmptyValue()
+
+                                return
+                              }
+
+                              if (!incompleteList) {
+                                handleAdd({
+                                  listId: listID
+                                })
+                              }
+                            }}
+                          >
+                            Agregar
+                          </RippleButton></>
+                      )}
+                    </>
+
                   </Column>
                 )
               }

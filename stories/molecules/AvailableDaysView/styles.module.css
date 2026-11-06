@@ -1,0 +1,99 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.emptyRow,
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.statusRow {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background-color: var(--color-neutral-gray-white, #f9f9f9);
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.dayCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 14px;
+  border: 1px solid var(--color-neutral-gray, #e5e5e5);
+  border-radius: 12px;
+
+  background-color: var(--color-neutral-white, #ffffff);
+  box-sizing: border-box;
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.dayCardToday {
+  border-color: var(--color-feedback-success-light, #16803c);
+  box-shadow: 0 0 0 1px var(--color-feedback-success-light, #16803c) inset;
+}
+
+.dayHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.todayBadge {
+  margin-left: auto;
+  padding: 2px 8px;
+
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 600;
+
+  color: var(--color-neutral-white, #ffffff);
+  background-color: var(--color-feedback-success-light, #16803c);
+  border-radius: 999px;
+}
+
+.rangeList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.rangeRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .daysGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dayCard {
+    transition: none;
+  }
+}

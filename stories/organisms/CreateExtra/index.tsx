@@ -242,7 +242,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
                         }}
                         required={true}
                         error={errorName}
-                        messageError={extra?.messageError || 'Este campo es obligatorio'}
+                        messageError={extra?.messageError}
                         disabled={forEdit && !isSelect}
                         title='Nombre'
                         onFocus={() => {
@@ -476,7 +476,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
 
           <Button
             onClick={handleCleanLines}
-            padding='17px'
+            padding='17px' // 
             type='button'
             primary={false}
             styles={{
@@ -484,7 +484,7 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
               height: '100%'
             }}
           >
-            Vaciar lista
+            Limpiar
           </Button>
 
           <QuantityButton
@@ -513,8 +513,8 @@ export const CreateExtra: React.FC<ICreateExtra> = ({
             loading={loading}
             onClick={e => {
               e.preventDefault()
-
               onSubmitUpdate({ pId })
+              setModal()
             }}
           >
             Guardar

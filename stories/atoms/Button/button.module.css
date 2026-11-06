@@ -65,6 +65,28 @@
     padding: 0;
     color: var(--color-text-black);
 }
+
+/* Small */
+.button--small {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-sm);
+    min-height: 32px;
+}
+
+/* Medium */
+.button--medium {
+    padding: var(--spacing-lg) var(--spacing-2xl);
+    font-size: var(--font-size-md);
+    min-height: 40px;
+}
+
+/* Large */
+.button--large {
+    padding: var(--spacing-xl) var(--spacing-3xl);
+    font-size: var(--font-size-lg);
+    min-height: 48px;
+}
+
 @keyframes rotate {
     0% {
         transform: rotate(0deg);

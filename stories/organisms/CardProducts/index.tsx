@@ -3,8 +3,14 @@ import React from 'react'
 import { PColor } from './../../../assets/colors/index'
 import { CardProductsContent, CtnBox, TooltipCardProduct, WrapperCard } from './styled'
 import { IconEdit, IconDelete } from '../../../assets'
-import { numberFormat } from '../../../utils'
+import {
+  getGlobalStyle,
+  hasAvailabilitySchedule,
+  isProductAvailableNow,
+  numberFormat
+} from '../../../utils'
 import { type ProductFood } from '../../pages/GenerateSales/types'
+import { Icon } from '../../atoms'
 import { PercentBadge } from '../../molecules'
 import styles from './styles.module.css'
 
@@ -15,6 +21,8 @@ interface CardProductsProps {
   setRef?: any
   isEdit?: boolean
   showDiscount?: boolean
+  /** Show the "available today / not available today" indicator. */
+  showAvailability?: boolean
   loading?: boolean
   onClick?: () => void
   redirect?: () => void
@@ -34,6 +42,7 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
   setRef = null,
   isEdit = true,
   showDiscount = true,
+  showAvailability = true,
   loading = false,
   onClick = () => {
 
@@ -45,6 +54,14 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
     return food
   }
 }) => {
+  // Availability indicator: reads the product weekly schedule (if any) and
+  // reflects whether it is available right now. Falls back to either field
+  // name used across queries (`product_availables` / `getAllAvailableProduct`).
+  const availabilityRecords =
+    food?.product_availables ?? food?.getAllAvailableProduct ?? []
+  const hasSchedule = hasAvailabilitySchedule(availabilityRecords)
+  const availableToday = isProductAvailableNow(availabilityRecords)
+
   return (
     <div ref={setRef} >
       {
@@ -68,6 +85,32 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
             </>
           )}
           <CardProductsContent onClick={onClick}>
+            {showAvailability && isVisible && (
+              <span
+                className={styles.availability_badge}
+                data-available={availableToday ? 'true' : 'false'}
+                title={
+                  availableToday
+                    ? 'Disponible hoy'
+                    : 'No disponible hoy'
+                }
+              >
+                <Icon
+                  icon={availableToday ? 'IconSuccess' : 'time'}
+                  size={14}
+                  color={
+                    availableToday
+                      ? getGlobalStyle('--color-feedback-success-light')
+                      : getGlobalStyle('--color-neutral-gray-dark')
+                  }
+                />
+                <span className={styles.availability_badge_text}>
+                  {availableToday
+                    ? 'Hoy'
+                    : (hasSchedule ? 'Hoy no' : 'Hoy')}
+                </span>
+              </span>
+            )}
             <CtnBox>
               {isVisible && (
                 <>
@@ -81,8 +124,8 @@ export const CardProductsComponent: React.FC<CardProductsProps> = ({
                     <span className='card__des'>
                       {food?.ProDescuento > 0 ? `${numberFormat(food?.ProDescuento)}` : null}
                     </span>
-                    {showDiscount && food?.ProDescuento > 0
-                      && (
+                    {showDiscount && food?.ProDescuento > 0 &&
+                      (
                         <PercentBadge
                           baseValue={food?.ProDescuento}
                           compareValue={food?.ProPrice}

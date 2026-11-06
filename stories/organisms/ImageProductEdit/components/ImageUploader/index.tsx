@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import React, { type DragEvent, useState } from 'react'
@@ -134,40 +133,42 @@ export const ImageUploader: React.FC<IImageUploaderProps> = ({
             : undefined
         }}
       >
-        {showPreviewImage ? (
-          <div className={styles.placeholder}>
-            <img
-              src={preview}
-              alt='Vista previa del producto'
-              className={styles.preview}
-            />
-          </div>
-        ) : (
-          <div className={styles.placeholder}>
-            <img
-              alt='Imagen de referencia'
-              className={styles.placeholderImage}
-              src='/images/dish-image-placeholder.png'
-            />
-
-            <div className={styles.emptyState}>
-              <Text
-                as='p'
-                className={styles.emptyTitle}
-                weight={600}
-              >
-                Arrastra tu imagen aquí
-              </Text>
-
-              <Text
-                as='p'
-                className={styles.emptyDescription}
-              >
-                o selecciona un archivo desde tu dispositivo
-              </Text>
+        {showPreviewImage
+          ? (
+            <div className={styles.placeholder}>
+              <img
+                src={preview}
+                alt='Vista previa del producto'
+                className={styles.preview}
+              />
             </div>
-          </div>
-        )}
+          )
+          : (
+            <div className={styles.placeholder}>
+              <img
+                alt='Imagen de referencia'
+                className={styles.placeholderImage}
+                src='/images/dish-image-placeholder.png'
+              />
+
+              <div className={styles.emptyState}>
+                <Text
+                  as='p'
+                  className={styles.emptyTitle}
+                  weight={600}
+                >
+                  Arrastra tu imagen aquí
+                </Text>
+
+                <Text
+                  as='p'
+                  className={styles.emptyDescription}
+                >
+                  o selecciona un archivo desde tu dispositivo
+                </Text>
+              </div>
+            </div>
+          )}
 
         <div className={styles.actions}>
           {showPreviewImage && (
@@ -181,33 +182,35 @@ export const ImageUploader: React.FC<IImageUploaderProps> = ({
             </Button>
           )}
 
-          {showPreviewImage ? (
-            <Button
-              iconName='IconDelete'
-              iconPosition='left'
-              primary={false}
-              className={styles.button_overlay}
-              disabled={loading}
-              onClick={handleRemoveClick}
-            >
-              Eliminar imagen
-            </Button>
-          ) : (
-            <Button
-              primary={true}
-              className={styles.button_overlay}
-              disabled={loading}
-              onClick={handleSelectClick}
-            >
-              Seleccionar imagen
-            </Button>
-          )}
+          {showPreviewImage
+            ? (
+              <Button
+                iconName='IconDelete'
+                iconPosition='left'
+                primary={false}
+                className={styles.button_overlay}
+                disabled={loading}
+                onClick={handleRemoveClick}
+              >
+                Eliminar imagen
+              </Button>
+            )
+            : (
+              <Button
+                primary={true}
+                className={styles.button_overlay}
+                disabled={loading}
+                onClick={handleSelectClick}
+              >
+                Seleccionar imagen
+              </Button>
+            )}
         </div>
 
         <input
           ref={inputRef}
           type='file'
-          accept='image/jpeg,image/jpg,image/png'
+          accept='image/jpeg,image/jpg,image/png,image/gif'
           hidden
           disabled={loading}
           onChange={async (e) => {

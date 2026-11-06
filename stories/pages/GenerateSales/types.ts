@@ -50,7 +50,23 @@ export interface ProductFood {
   dataOptional?: ExtProductFoodOptional[]
   createdAt?: string
   stock?: number
+  /** Weekly availability records (days + time ranges). */
+  product_availables?: ProductAvailableRecord[] | null
+  /** Alias used by the product detail query. */
+  getAllAvailableProduct?: ProductAvailableRecord[] | null
 
+}
+
+/** Raw availability record (day + optional time range) for a product. */
+export interface ProductAvailableRecord {
+  availableProductId?: string | null
+  idStore?: string | null
+  pId?: string | null
+  /** 0 = Sunday ... 6 = Saturday. */
+  dayAvailable?: number | null
+  startDate?: string | null
+  endDate?: string | null
+  state?: number | null
 }
 
 interface ExtProductFood {

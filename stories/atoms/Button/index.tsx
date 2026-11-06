@@ -19,10 +19,11 @@ export const Button: React.FC<ButtonProps> = ({
   primary = false,
   loading = false,
   iconSize,
+  size,
   styles = {},
-  className = '', // Default vacío
+  className = '',
   type = '',
-  onClick = () => { },
+  onClick = () => {},
   iconPosition = 'left',
   iconName,
   title = '',
@@ -30,34 +31,58 @@ export const Button: React.FC<ButtonProps> = ({
   ...res
 }) => {
   const buttonStyle = {
-    padding: padding ?? '10px 20px',
+    padding: padding ?? (size ? undefined : '10px 20px'),
     borderRadius: borderRadius ?? '',
     cursor: 'pointer',
     outline: 'none',
     width,
     fontSize,
-    color: primary ? 'white' : getGlobalStyle('--color-primary-red'),
+    color: primary
+      ? 'white'
+      : getGlobalStyle('--color-primary-red'),
     ...styles
   }
 
-  const renderIcon = typeof iconName === 'string' && iconName.trim() !== '' && !loading
-    ? (
-      <Column
-        justifyContent='center'
-        alignItems='center'
-        style={{
-          width: 'min-content',
-          margin: iconPosition === 'left' ? '0 8px 0 0' : '0 0 0 8px'
-        }}>
-        <Icon
-          icon={iconName}
-          size={iconSize ?? 18}
-          color={primary ? '#fff' : getGlobalStyle('--color-primary-red')}
+  const defaultIconSize = {
+    small: 20,
+    medium: 30,
+    large: 40
+  }
 
-        />
-      </Column>
-      )
-    : null
+  const renderIcon =
+    typeof iconName === 'string' &&
+    iconName.trim() !== '' &&
+    !loading
+      ? (
+        <Column
+          justifyContent='center'
+          alignItems='center'
+          style={{
+            width: 'min-content',
+            margin:
+              iconPosition === 'left'
+                ? '0 8px 0 0'
+                : '0 0 0 8px'
+          }}
+        >
+          <Icon
+            icon={iconName}
+            size={
+              iconSize ??
+              (size
+                ? defaultIconSize[size]
+                : 18)
+            }
+            color={
+              primary
+                ? '#fff'
+                : getGlobalStyle('--color-primary-red')
+            }
+          />
+        </Column>
+        )
+      : null
+
   return (
     <button
       tabIndex={tabIndex}
@@ -66,29 +91,50 @@ export const Button: React.FC<ButtonProps> = ({
       type={type as 'submit' | 'reset' | 'button'}
       disabled={disabled}
       className={classNames(
-        style.button as string,
+        style.button,
         {
-          [style[`button--${border}`]]: border !== undefined,
-          [style[`button--${color}`]]: border !== undefined,
-          [style['button--primary']]: primary,
-          [style[`button--border-${border}`]]: border !== undefined,
-          [style['button--secondary']]: !primary
+          [style[`button--${border}`]]:
+            border !== undefined,
+
+          [style[`button--${color}`]]:
+            border !== undefined,
+
+          [style['button--primary']]:
+            primary,
+
+          [style[`button--border-${border}`]]:
+            border !== undefined,
+
+          [style['button--secondary']]:
+            !primary,
+
+          [style[`button--${size}`]]:
+            size !== undefined
         },
-        className // Se añade aquí el className externo
+        className
       )}
       style={buttonStyle}
       onClick={onClick}
       {...res}
     >
       {loading && (
-        <div className={style.loadingWrapper} id='loading'>
+        <div
+          className={style.loadingWrapper}
+          id='loading'
+        >
           <Icon
             icon='IconLoading'
-            size={30}
-            color={getGlobalStyle('--color-base-white')}
+              size={
+              iconSize ??
+              (size
+                ? defaultIconSize[size]
+                : 30)
+            }
+            color={getGlobalStyle(primary ? '--color-base-white' : '--color-icons-primary')}
           />
         </div>
       )}
+
       <span
         style={
           loading
@@ -102,7 +148,9 @@ export const Button: React.FC<ButtonProps> = ({
         }
       >
         {iconPosition === 'left' && renderIcon}
+
         {children}
+
         {iconPosition === 'right' && renderIcon}
       </span>
     </button>

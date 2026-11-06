@@ -2,3 +2,37 @@
         position: absolute;
     bottom: 15px;
 }
+
+.availability_badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: var(--z-index-50, 50);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 3px 8px;
+  border-radius: 999px;
+
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+
+  background-color: var(--color-neutral-gray-white, #f9f9f9);
+  border: 1px solid var(--color-neutral-gray, #e5e5e5);
+}
+
+.availability_badge[data-available='true'] {
+  color: var(--color-feedback-success-light, #16803c);
+  border-color: var(--color-feedback-success-light, #16803c);
+}
+
+.availability_badge[data-available='false'] {
+  color: var(--color-neutral-gray-dark, #666666);
+}
+
+.availability_badge_text {
+  pointer-events: none;
+}

@@ -32,12 +32,11 @@
 
   padding: var(--spacing-md) var(--spacing-lg);
 
-  box-sizing: border-box;
+
 
   scrollbar-width: thin;
   scrollbar-color:
-    var(--color-neutral-gray-silver)
-    transparent;
+    var(--color-neutral-gray-silver) transparent;
 }
 
 .content-create-extra::-webkit-scrollbar {
@@ -63,7 +62,7 @@
   width: 100%;
   flex: 0 0 auto;
 
-  box-sizing: border-box;
+
 
   background-color: var(--color-base-white);
 
@@ -96,9 +95,7 @@
   display: grid;
 
   grid-template-columns:
-    minmax(0, 1fr)
-    max-content
-    max-content;
+    minmax(0, 1fr) max-content max-content;
 
   align-items: center;
 
@@ -106,10 +103,10 @@
 
   padding: var(--spacing-sm) var(--spacing-md);
 
-  box-sizing: border-box;
+
 }
 
-.contain-item-content > * {
+.contain-item-content>* {
   min-width: 0;
 }
 
@@ -120,9 +117,7 @@
 .field-row {
   display: grid;
 
-  grid-template-columns:
-    minmax(120px, 1fr)
-    minmax(100px, 125px);
+  grid-template-columns: minmax(100px, 1fr) minmax(90px, 170px);
 
   align-items: center;
 
@@ -135,10 +130,11 @@
 .field-price {
   width: 100%;
   min-width: 0;
+  position: relative;
 }
 
-.field-name > *,
-.field-price > * {
+.field-name>*,
+.field-price>* {
   width: 100%;
   min-width: 0;
 }
@@ -153,18 +149,16 @@
 
 .field-price-error {
   display: block;
-
   margin-top: var(--spacing-3xs, 4px);
-
   color: var(--color-primary-red, #ea1d2c);
-
   font-size: 12px;
-  line-height: 1.2;
+  position: absolute;
+  bottom: -5px;
 }
 
 .field-row input {
   width: 100%;
-  box-sizing: border-box;
+
 }
 
 /* =========================================================
@@ -179,8 +173,7 @@
    * real del QuantityButton.
    */
   grid-template-columns:
-    max-content
-    max-content;
+    max-content max-content;
 
   align-items: center;
   justify-content: start;
@@ -192,7 +185,7 @@
 
   position: relative;
 
-  box-sizing: border-box;
+
 }
 
 /* =========================================================
@@ -211,7 +204,7 @@
 
   flex: 0 0 auto;
 
-  box-sizing: border-box;
+
 
   z-index: 1;
 }
@@ -238,7 +231,7 @@
 
   flex: 0 0 auto;
 
-  box-sizing: border-box;
+
 
   transform-origin: left center;
 
@@ -298,7 +291,7 @@
   white-space: nowrap;
 }
 
-.contain-item-actions > * {
+.contain-item-actions>* {
   flex-shrink: 0;
 }
 
@@ -384,7 +377,7 @@
 
   pointer-events: none;
 
-  box-sizing: border-box;
+
 
   opacity: 0;
 
@@ -444,7 +437,7 @@
 
   box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.035);
 
-  box-sizing: border-box;
+
 
   z-index: 5;
 }
@@ -467,9 +460,7 @@
     min-width: 760px;
 
     grid-template-columns:
-      minmax(220px, 1fr)
-      max-content
-      max-content;
+      minmax(220px, 1fr) max-content max-content;
 
     gap: var(--spacing-sm);
   }
@@ -484,8 +475,7 @@
     gap: var(--spacing-xs);
 
     padding:
-      var(--spacing-xs)
-      var(--spacing-sm);
+      var(--spacing-xs) var(--spacing-sm);
   }
 
   .contain-item-content {
@@ -496,8 +486,7 @@
 
   .field-row {
     grid-template-columns:
-      minmax(120px, 1fr)
-      minmax(100px, 120px);
+      minmax(120px, 1fr) minmax(100px, 120px);
   }
 
   .button-action {
@@ -514,8 +503,7 @@
     gap: var(--spacing-sm);
 
     padding:
-      var(--spacing-xs)
-      var(--spacing-sm);
+      var(--spacing-xs) var(--spacing-sm);
   }
 }
 
@@ -524,6 +512,7 @@
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   .contain-item,
   .button-action,
   .contain-item::before,

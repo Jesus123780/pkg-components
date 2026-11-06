@@ -1,71 +1,266 @@
 .contentCard {
   position: relative;
   display: flex;
-  -webkit-flex-direction: space-between;
-  -ms-flex-direction: space-between;
-  flex-direction: space-between;
-  border-radius: 8px;
-  border: 1px solid transparent;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xl);
+
+  box-sizing: border-box;
   width: 100%;
-  min-height: 40px;
-  padding: 15px;
+  min-height: 56px;
+  padding: 10px 14px;
+
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-neutral-gray);
+  border-radius: var(--border-radius-sm);
+
+  box-shadow: var(--box-shadow-2xs);
+
   overflow: hidden;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  height: auto;
-  opacity: 1;
-  cursor: pointer;
-  box-shadow: 0px 4px 10px rgb(0 0 0 / 5%), 0px 4px 16px rgb(0 0 0 / 8%);
-}
-.contentCard__input {
-  padding: 10px;
-  width: 65%;
+  isolation: isolate;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    background-color 180ms ease;
 }
 
-.contentCard:hover .contentCard__actions {
-  right: -20px;
+/* Área del título */
+.contentCard > :first-child {
+  flex: 1;
+  min-width: 0;
+  padding-right: 76px;
 }
 
-.contentCard__button {
-  background-color: transparent;
-  cursor: pointer;
+/* Interacción de la tarjeta */
+.contentCard:hover {
+  border-color: var(--color-primary-pink-light);
+  box-shadow: var(--box-shadow-sm);
+  transform: translateY(-1px);
 }
 
-.contentCard__actions {
-  transition: 0.1s;
-
-  margin: auto;
-  position: absolute;
-  right: -60px;
-  top: 20px;
-  width: 100px;
+.contentCard:focus-within {
+  border-color: var(--color-primary-red);
+  box-shadow: var(--box-shadow-red-rose);
 }
 
-.contentCard-flex {
-  display: flex;
-}
-
+/* Título */
 .title_card {
-  word-break: break-word;
-  font-family: 'PFont-Light';
-  color: var(--color-neutral-black);
   margin: 0;
-  font-size: 1rem;
-  padding: 10px;
-  line-height: 1.25em;
-  font-weight: 500;
+  padding: 0;
+
+  color: var(--color-text-black);
+  font-family: var(--font-family-regular);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-xl);
+
+  overflow-wrap: anywhere;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
+/* Input de edición */
+.contentCard__input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+
+  padding: 9px 11px;
+
+  color: var(--color-text-black);
+  background-color: var(--color-background-white);
+
+  font-family: var(--font-family-regular);
+  font-size: var(--font-size-md);
+
+  border: 1px solid var(--color-neutral-gray-silver);
+  border-radius: var(--border-radius-xs);
+  outline: none;
+
+  animation: inputEnter 220ms ease both;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.contentCard__input:hover {
+  border-color: var(--color-neutral-gray-dark);
+}
+
+.contentCard__input:focus {
+  border-color: var(--color-primary-red);
+  box-shadow: 0 0 0 3px var(--color-primary-red-bg);
+}
+
+/* Acciones */
+.contentCard__actions {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  width: auto;
+  margin: 0;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translate(10px, -50%);
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    visibility 180ms ease;
+}
+
+/* Mostrar acciones */
+.contentCard:hover .contentCard__actions,
+.contentCard:focus-within .contentCard__actions,
+.contentCardEditing .contentCard__actions {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform: translate(0, -50%);
+}
+
+/* Botones */
+.contentCard__button {
+  display: grid;
+  place-items: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  background-color: transparent;
+  border: none;
+  border-radius: var(--border-radius-full);
+
+  cursor: pointer;
+
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.contentCard__button:hover:not(:disabled) {
+  background-color: var(--color-neutral-gray-light);
+  transform: scale(1.08);
+}
+
+.contentCard__button:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.contentCard__button:focus-visible {
+  outline: 2px solid var(--color-primary-red);
+  outline-offset: 2px;
+}
+
+.contentCard__button:disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-50);
+}
+
+/* Animación al entrar en edición */
+.contentCardEditing {
+  border-color: var(--color-primary-pink-light);
+  background-color: var(--color-primary-red-bg);
+}
+
+/* Animación al eliminar */
+.contentCardRemoving {
+  pointer-events: none;
+  animation: cardRemove 220ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* Animaciones */
+@keyframes inputEnter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardRemove {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+
+  60% {
+    opacity: 0.5;
+    transform: translateX(12px) scale(0.98);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(28px) scale(0.95);
+    filter: blur(2px);
+  }
+}
+
+/* Precio, por si se utiliza en otros elementos */
 .price {
-  word-break: break-word;
-  font-family: 'PFont-Light';
-  color: red;
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.25em;
-  font-weight: 600;
+
+  color: var(--color-primary-red);
+  font-family: var(--font-family-medium);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-xl);
+
+  overflow-wrap: anywhere;
 }
 
+.contentCard-flex,
 .contentCardFlex {
   display: flex;
+  align-items: center;
+}
+
+/* Dispositivos táctiles: mostrar acciones sin depender del hover */
+@media (hover: none) {
+  .contentCard__actions {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(0, -50%);
+  }
+}
+
+/* Accesibilidad: respetar la preferencia de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .contentCard,
+  .contentCard__actions,
+  .contentCard__button,
+  .contentCard__input {
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+  }
+
+  .contentCardRemoving {
+    animation-duration: 0.01ms;
+  }
 }

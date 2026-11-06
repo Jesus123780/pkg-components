@@ -4,15 +4,15 @@ export * from './constanst'
 export * from './test/linkRedirect'
 
 // GridStack utilities
-export { GridEventEmitter, EventEmitter, type GridStackEventMap, type GridStackEventType } from './eventSystem';
-export { GridStackUtils } from './gridstackUtils';
-export { GridLayoutUtils, type GridNode, type GridRect, type CollisionResult } from './gridLayout';
-export { DDUtils, type DDPosition, type DDSize, type DDEvent, type DragTransform } from './dragDropHelpers';
+export { GridEventEmitter, EventEmitter, type GridStackEventMap, type GridStackEventType } from './eventSystem'
+export { GridStackUtils } from './gridstackUtils'
+export { GridLayoutUtils, type GridNode, type GridRect, type CollisionResult } from './gridLayout'
+export { DDUtils, type DDPosition, type DDSize, type DDEvent, type DragTransform } from './dragDropHelpers'
 
 // Re-export as namespace
-export * as EventUtils from './eventSystem';
-export * as LayoutUtils from './gridLayout';
-export * as DragDropUtils from './dragDropHelpers';
+export * as EventUtils from './eventSystem'
+export * as LayoutUtils from './gridLayout'
+export * as DragDropUtils from './dragDropHelpers'
 
 export const getGlobalStyle = (token: string) => {
   return `var(${token})`
@@ -23,32 +23,31 @@ export const validateEmail = (email: string) => {
   return re.test(email)
 }
 
-
 /**
  * Format a number or string into currency using Intl.NumberFormat
  * @param {number|string|null|undefined} value - The value to format
  * @param {Object} options - Formatting options
  * @returns {string|number|null|undefined}
  */
-type SupportedCurrency = 'COP' | 'USD' | 'EUR';
+type SupportedCurrency = 'COP' | 'USD' | 'EUR'
 
 export const numberFormat = (
   value: number | string | null | undefined,
   options: {
-    currency?: SupportedCurrency,
-    minimumFractionDigits?: number,
-    maximumFractionDigits?: number,
-    style?: 'currency' | 'decimal' | 'percent',
+    currency?: SupportedCurrency
+    minimumFractionDigits?: number
+    maximumFractionDigits?: number
+    style?: 'currency' | 'decimal' | 'percent'
     notation?: 'standard' | 'scientific' | 'engineering' | 'compact'
   } = {
-      currency: 'COP',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-      style: 'currency',
-      notation: 'standard'
-    }
+    currency: 'COP',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    style: 'currency',
+    notation: 'standard'
+  }
 ) => {
-  if (value === null || value === undefined) return value;
+  if (value === null || value === undefined) return value
 
   const locale: Record<SupportedCurrency, string> = {
     COP: 'es-CO',
@@ -56,32 +55,32 @@ export const numberFormat = (
     EUR: 'de-DE'
   }
 
-  let numericValue: number;
+  let numericValue: number
 
   if (typeof value === 'string') {
     // Reemplaza miles (.) y decimales (,) para convertirlo en número JS válido
-    numericValue = Number(value.replace(/\./g, '').replace(',', '.'));
+    numericValue = Number(value.replace(/\./g, '').replace(',', '.'))
   } else {
-    numericValue = value;
+    numericValue = value
   }
 
   if (!Number.isNaN(numericValue)) {
     // Respeta el estilo recibido; solo usa 'currency' por defecto.
-    const style = options.style ?? 'currency';
-    const currency = options.currency ?? 'COP';
+    const style = options.style ?? 'currency'
+    const currency = options.currency ?? 'COP'
 
     const settings = {
       ...options,
       style,
       // 'currency' solo es válido (y requerido) cuando el estilo es moneda.
       ...(style === 'currency' ? { currency } : {})
-    } as Intl.NumberFormatOptions;
+    } as Intl.NumberFormatOptions
 
-    const currencyLocale = locale[currency] ?? locale['COP'];
-    return new Intl.NumberFormat(currencyLocale, settings).format(numericValue);
+    const currencyLocale = locale[currency] ?? locale.COP
+    return new Intl.NumberFormat(currencyLocale, settings).format(numericValue)
   }
 
-  return value;
+  return value
 }
 
 /**
@@ -121,13 +120,13 @@ export const valNit = (nit: string) => {
   let nd: RegExpExecArray | null; let add = 0
   // eslint-disable-next-line no-cond-assign
   if ((nd = /^(\d+)-(\d|k)$/i.exec(nit)) != null) {
-    const checkDigit = nd[2].toLowerCase() === 'k' ? 10 : Number.parseInt(nd[2], 10);
+    const checkDigit = nd[2].toLowerCase() === 'k' ? 10 : Number.parseInt(nd[2], 10)
     for (let i = 0; i < nd[1].length; i++) {
-      add += ((((i - nd[1].length) * -1) + 1) * Number(nd[1][i]));
+      add += ((((i - nd[1].length) * -1) + 1) * Number(nd[1][i]))
     }
-    return ((11 - (add % 11)) % 11) === checkDigit;
+    return ((11 - (add % 11)) % 11) === checkDigit
   }
-  return false;
+  return false
 }
 export const onlyLetters = (dato: string) => {
   const validar = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/g
@@ -184,3 +183,86 @@ export const ROUTES = Object.freeze({
   merchant: '/merchant',
   login: '/login'
 })
+
+/* =========================================
+   PRODUCT AVAILABILITY (read-only helpers)
+   dayAvailable follows Date.getDay(): 0 = Sunday ... 6 = Saturday.
+   startDate / endDate are 24h "HH:mm" strings.
+========================================= */
+
+export interface AvailabilityRecordLike {
+  dayAvailable?: number | null
+  startDate?: string | null
+  endDate?: string | null
+  state?: number | null
+}
+
+const AVAILABILITY_TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/
+
+/** Converts "HH:mm" into minutes since midnight, or null when invalid. */
+const availabilityTimeToMinutes = (time?: string | null): number | null => {
+  if (time === null || time === undefined || time === '') return null
+  if (!AVAILABILITY_TIME_PATTERN.test(time)) return null
+  const [hours, minutes] = time.split(':').map(Number)
+  return hours * 60 + minutes
+}
+
+/**
+ * Returns true when the product is available at `now`.
+ * Rules:
+ *  - No records            -> available (treated as "available all week").
+ *  - Records but none today -> NOT available.
+ *  - A range today covering `now` -> available (supports overnight ranges).
+ */
+export const isProductAvailableNow = (
+  records?: AvailabilityRecordLike[] | null,
+  now: Date = new Date()
+): boolean => {
+  if (!Array.isArray(records) || records.length === 0) {
+    return true
+  }
+
+  const active = records.filter((record) => {
+    return record?.state === undefined || record?.state === null || record.state === 1
+  })
+
+  if (active.length === 0) {
+    return true
+  }
+
+  const today = now.getDay()
+  const todayRecords = active.filter((record) => Number(record?.dayAvailable) === today)
+
+  if (todayRecords.length === 0) {
+    return false
+  }
+
+  const current = now.getHours() * 60 + now.getMinutes()
+
+  return todayRecords.some((record) => {
+    const start = availabilityTimeToMinutes(record?.startDate)
+    const end = availabilityTimeToMinutes(record?.endDate)
+
+    // Missing/invalid bounds mean "all day".
+    if (start === null || end === null) return true
+
+    // Same-day range.
+    if (start <= end) return current >= start && current <= end
+
+    // Overnight range (e.g. 22:00 - 02:00).
+    return current >= start || current <= end
+  })
+}
+
+/**
+ * Whether the product has an explicit weekly schedule (at least one active
+ * availability record). When false the product is considered always available.
+ */
+export const hasAvailabilitySchedule = (
+  records?: AvailabilityRecordLike[] | null
+): boolean => {
+  if (!Array.isArray(records)) return false
+  return records.some((record) => {
+    return record?.state === undefined || record?.state === null || record.state === 1
+  })
+}
