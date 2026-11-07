@@ -1,30 +1,208 @@
 .alert {
-    border-radius: 0.625rem;
-    border-left: 5px solid;
-    padding: 0.625rem;
-    margin-bottom: 0.625rem;
-    align-items: center;
-    display: grid;
-    position: relative;
-    overflow: hidden;
-    grid-template-columns: 1fr 90%;
+  --alert-color: var(--color-icons-gray);
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 0.625rem 0.75rem;
+  margin-bottom: var(--spacing-lg);
+
+  border: var(--border-width-xs) solid var(--color-neutral-gray);
+  border-left: 4px solid var(--alert-color);
+  border-radius: var(--border-radius-sm);
+
+  color: var(--color-text-black);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* ==========================================
+   TYPES
+========================================== */
+
+.warning {
+  --alert-color: var(--color-campaigns-yellow);
+
+  background-color: color-mix(
+    in srgb,
+    var(--color-campaigns-yellow) 14%,
+    var(--color-neutral-white)
+  );
+}
+
+.error {
+  --alert-color: var(--color-primary-red);
+
+  background-color: var(--color-primary-red-bg);
+}
+
+.info {
+  --alert-color: var(--color-secondary-blue);
+
+  background-color: var(--color-secondary-blue-bg);
+}
+
+/* ==========================================
+   SIZES
+========================================== */
+
+.sm {
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius-xs);
+}
+
+.sm .message {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+}
+
+.sm .title {
+  font-size: var(--font-size-sm);
+}
+
+.md {
+  gap: var(--spacing-lg);
+  padding: 0.625rem 0.75rem;
+}
+
+.md .message {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-lg);
+}
+
+.md .title {
+  font-size: var(--font-size-md);
+}
+
+.lg {
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  border-radius: var(--border-radius-md);
+}
+
+.lg .message {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-xl);
+}
+
+.lg .title {
+  font-size: var(--font-size-lg);
+}
+
+/* ==========================================
+   ICON
+========================================== */
+
+.icon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 0;
+  margin-top: 1px;
+}
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+
+  min-width: 0;
+  gap: var(--spacing-xs);
+}
+
+.title {
+  display: block;
+  margin: 0;
+
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-md);
+  color: var(--color-text-black);
+}
+
+.message {
+  display: block;
+  margin: 0;
+
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-lg);
+  font-weight: var(--font-weight-normal);
+
+  color: var(--color-text-black);
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   CLOSE BUTTON
+========================================== */
+
+.close {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+
+  width: 26px;
+  height: 26px;
+  padding: 0;
+
+  border: none;
+  border-radius: var(--border-radius-full);
+
+  background: transparent;
+  color: var(--color-neutral-gray-dark);
+
+  font-family: inherit;
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.close:hover {
+  background-color: var(--color-background-selection);
+  color: var(--color-neutral-black);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--color-secondary-blue);
+  outline-offset: 2px;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 480px) {
+  .alert {
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
   }
-  .dot {
-    width: 15px;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
+
+  .lg {
+    padding: var(--spacing-lg);
   }
-  .icon {
-    font-weight: bold;
-    margin-right: 10px;
-    text-align: center;
+
+  .close {
+    width: 24px;
+    height: 24px;
   }
-  
-  .message {
-    display: inline-block;
-    vertical-align: middle;
-    font-size: var(--font-size-base);
-  }
-  
+}

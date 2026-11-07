@@ -1,0 +1,60 @@
+/**
+ * Resalta la tarjeta del producto recién escaneado en el carrito con una
+ * animación "pop" (escala + glow). Se activa al aplicar la clase `.pop` sobre
+ * el contenedor del item cuyo `pId` coincide con `highlightedPid`. El padre
+ * limpia el highlight tras ~1.2s, permitiendo re-disparar la animación al
+ * escanear de nuevo el mismo producto.
+ */
+.item {
+    border-radius: var(--border-radius-md, 8px);
+    transition: box-shadow 160ms ease;
+}
+
+.pop {
+    animation: product-pop 650ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+@keyframes product-pop {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0
+            var(--color-feedback-success-dark, rgba(28, 160, 83, 0.6));
+    }
+
+    35% {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 6px
+            var(--color-feedback-success-light, rgba(28, 160, 83, 0.25));
+    }
+
+    70% {
+        transform: scale(0.985);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+/**
+ * Respeta la preferencia del usuario de reducir el movimiento: en ese caso
+ * sólo deja un breve destello del borde, sin escalado.
+ */
+@media (prefers-reduced-motion: reduce) {
+    .pop {
+        animation: product-pop-flash 650ms ease;
+    }
+
+    @keyframes product-pop-flash {
+        0% {
+            box-shadow: 0 0 0 0
+                var(--color-feedback-success-dark, rgba(28, 160, 83, 0.6));
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+    }
+}

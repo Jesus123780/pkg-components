@@ -5,9 +5,6 @@
   gap: var(--spacing-lg);
 
   min-width: 0;
-  box-sizing: border-box;
-
-  margin: var(--spacing-xl);
   padding: var(--spacing-xl);
 
   color: var(--color-text-black);

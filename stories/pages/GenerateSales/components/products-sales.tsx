@@ -5,6 +5,7 @@ import { Column, Icon } from '../../../atoms'
 import { EmptyData } from '../../../molecules'
 import { SwipeableCard } from '../../../molecules/SwipeableCard'
 import { MiniCardProduct } from '../../../organisms'
+import styles from './products-sales.module.css'
 
 interface ProductsSalesProps {
   isLoading: boolean
@@ -16,6 +17,12 @@ interface ProductsSalesProps {
   handleDecrement: (product: any) => void
   handleFreeProducts: (product: any) => void
   numberFormat: (value: string | number) => string | number
+  /**
+   * `pId` del producto que debe resaltarse con la animación "pop" (p. ej. el
+   * recién agregado por escaneo). Cuando coincide con el `pId` de un item del
+   * carrito, se le aplica la clase de animación. Vacío = sin resaltado.
+   */
+  highlightedPid?: string
 }
 
 export const ProductsSales: React.FC<ProductsSalesProps> = ({
@@ -27,7 +34,8 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
   handleDecrement,
   handleFreeProducts,
   handleAddProduct,
-  numberFormat
+  numberFormat,
+  highlightedPid = ''
 }) => {
   return <>
 
@@ -39,9 +47,15 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                 }
                 const ProQuantity = product?.ProQuantity ?? 0
                 const ProPrice = product.ProPrice
+                const isHighlighted =
+                  Boolean(highlightedPid) &&
+                  String(product.pId) === String(highlightedPid)
                 return (
+                    <div
+                        key={product.pId}
+                        className={`${styles.item} ${isHighlighted ? styles.pop : ''}`}
+                    >
                         <SwipeableCard
-                            key={product.pId}
                             swipeWidth={30}
                             autoClose={true}
                             sticky={false}
@@ -195,6 +209,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 tag={product?.getOneTags?.nameTag !== null && tag}
                             />
                         </SwipeableCard>
+                    </div>
                 )
               })
             )

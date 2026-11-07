@@ -158,6 +158,39 @@ export const IconQrCode: React.FC<IconProps> = ({
   </svg>
 )
 
+export const IconBarcode: React.FC<IconProps> = ({
+  style = {},
+  size = 24,
+  color
+}: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    style={style}
+    aria-hidden="true"
+  >
+    <g fill={color ?? getGlobalStyle('--color-icons-black')}>
+      <rect x="2" y="5" width="1.6" height="14" />
+      <rect x="4.6" y="5" width="1" height="14" />
+      <rect x="6.6" y="5" width="2" height="14" />
+      <rect x="9.6" y="5" width="1" height="14" />
+      <rect x="11.6" y="5" width="1.8" height="14" />
+      <rect x="14.4" y="5" width="1" height="14" />
+      <rect x="16.4" y="5" width="2.2" height="14" />
+      <rect x="19.6" y="5" width="1" height="14" />
+      <rect x="21.6" y="5" width="0.8" height="14" />
+    </g>
+  </svg>
+)
+
+IconBarcode.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.any,
+  style: PropTypes.object
+}
+
 export const IconLogoCMFBlue: React.FC<IconProps> = ({
   width = 138.426,
   height = 35.559,

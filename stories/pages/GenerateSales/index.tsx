@@ -103,6 +103,11 @@ interface GenerateSalesProps {
   onApplyFilters?: (selection: Record<string, Set<string>>) => void
   /** Clears every applied filter and reloads the full product list. */
   onClearFilters?: () => void
+  /**
+   * `pId` del producto del carrito que debe resaltarse con una animación
+   * "pop" (p. ej. el recién agregado por escaneo). Vacío = sin resaltado.
+   */
+  highlightedPid?: string
 }
 export const GenerateSales: React.FC<GenerateSalesProps> = ({
   productsFood = [],
@@ -183,6 +188,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   searchPendingOrders = undefined,
   onApplyFilters = () => undefined,
   onClearFilters = () => undefined,
+  highlightedPid = '',
 }) => {
   const fields = [
     { key: 'name', label: 'Nombre', defaultDirection: 'asc' },
@@ -384,6 +390,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             handleFreeProducts={handleFreeProducts}
             numberFormat={numberFormat}
             handleAddProduct={handleAddProduct}
+            highlightedPid={highlightedPid}
           />
 
           <button

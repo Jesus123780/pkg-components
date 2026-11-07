@@ -20,3 +20,22 @@
   background-color: var(--color-neutral-gray-white);
   transform: scale(1.05);
 }
+
+.fab:focus-visible {
+  outline: 2px solid var(--color-primary-red, #e01e5a);
+  outline-offset: 2px;
+}
+
+.fab:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab {
+    transition: none;
+  }
+  .fab:hover,
+  .fab:active {
+    transform: none;
+  }
+}

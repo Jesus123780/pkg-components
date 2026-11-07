@@ -6,6 +6,7 @@ import {
   type IconProps,
   IconMiniCheck,
   IconQrCode,
+  IconBarcode,
   IconClose,
   IconStrokeLogo,
   IconDragHandle,
@@ -140,6 +141,7 @@ interface IconPropsComponent {
 export const Icons: IconMap = {
   MiniCheck: IconMiniCheck,
   IconQrCode,
+  IconBarcode,
   time: IconTime,
   home: IconHome,
   IconBuys,
