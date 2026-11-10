@@ -1,10 +1,10 @@
 import type { ProductFood } from '../../pages/GenerateSales/types'
 
 export enum EOrderQueryParams {
-    PENDING = 'PENDING',
-    COMPLETED = 'COMPLETED',
-    ALL = 'ALL',
-    CODE = 'CODE',
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  ALL = 'ALL',
+  CODE = 'CODE',
 }
 
 export interface TypeModalDetailOrder {

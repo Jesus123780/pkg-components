@@ -80,5 +80,3 @@ export const calculateRemainingTime = (pDatCre: string, timeDelivery: number) =>
     entregaText: `Entregar a las ${hourEntrega12}:${minutesEntrega < 10 ? '0' : ''}${minutesEntrega} ${period}`
   }
 }
-
-

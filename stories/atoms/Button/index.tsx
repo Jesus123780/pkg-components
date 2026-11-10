@@ -142,7 +142,7 @@ export const Button: React.FC<ButtonProps> = ({
             : {
                 width: '100%',
                 alignItems: 'center',
-                justifyContent: 'space-around',
+                justifyContent: styles.justifyContent ?? 'space-around',
                 display: 'flex'
               }
         }

@@ -345,7 +345,7 @@
     margin: 0;
 
     padding:
-        18px
+        5px
         var(--ns-actions-width)
         7px
         var(--ns-horizontal-padding);
@@ -1111,7 +1111,7 @@
             var(--ns-height);
 
         padding:
-            16px
+            5px
             var(--ns-actions-width)
             6px
             var(--ns-horizontal-padding);
@@ -1146,7 +1146,7 @@
 
     .input-wrapper_content_input {
         padding:
-            16px
+            5px
             var(--ns-actions-width)
             6px
             var(--ns-horizontal-padding);

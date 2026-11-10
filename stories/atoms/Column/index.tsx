@@ -3,7 +3,7 @@
 
 import clsx from 'clsx'
 import styles from './styles.module.css'
-import { JSX } from 'react'
+import { type JSX } from 'react'
 
 /**
  * Props for the Column component
@@ -12,7 +12,7 @@ interface ColumnProps {
   /** Align items vertically */
   alignItems?: 'center' | 'flex-start' | 'flex-end'
   /** Justify content horizontally */
-  justifyContent?: 'center' | 'flex-start' | 'flex-end'
+  justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between'
   /** Children to be rendered inside the column */
   children: React.ReactNode
   /** Optional width */
@@ -32,11 +32,11 @@ interface ColumnProps {
 }
 
 const GAP_SIZES: Record<NonNullable<ColumnProps['gap']>, string> = {
-  xs: '4px',   // Extra pequeño
-  sm: '8px',   // Pequeño
-  md: '12px',  // Mediano
-  lg: '16px',  // Grande
-  xl: '24px',  // Extra grande
+  xs: '4px', // Extra pequeño
+  sm: '8px', // Pequeño
+  md: '12px', // Mediano
+  lg: '16px', // Grande
+  xl: '24px' // Extra grande
 }
 
 /**

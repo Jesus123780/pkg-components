@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useEffect, useId, useMemo, useRef, useState, type FC } from 'react'
-import PropTypes from 'prop-types'
 import { choices } from '../../../scripts/tokens/choices'
 import hStyles from './horizontalBarChart.module.css'
-import { createChart, LineStyle, CrosshairMode, type LineWidth } from 'lightweight-charts'
+import { createChart, LineStyle, CrosshairMode } from 'lightweight-charts'
 import { ChartComponent } from '../ChartComponentLightWeight'
 import {
   Doughnut,
@@ -18,15 +17,10 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
-  RadialBarChart,
-  Text as TextChart,
-  PolarAngleAxis,
-  RadialBar
+  Legend
 } from 'recharts'
 import { Text } from '../../atoms'
-import { areaConfig, newAreaConfig } from '../ChartComponentLightWeight/chartConfig'
-import { fi } from 'date-fns/locale'
+import { areaConfig } from '../ChartComponentLightWeight/chartConfig'
 import { getGlobalStyle } from '../../../helpers'
 
 interface ChartData {
@@ -406,7 +400,6 @@ export const HorizontalBarChart: FC<SvgHorizontalBarChartProps> = ({
   color
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-
   const generatedId = useId().replace(/:/g, '')
   const gradientId = `hbcFill-${generatedId}`
   const revealId = `hbcReveal-${generatedId}`
@@ -682,13 +675,6 @@ export const HorizontalBarChart: FC<SvgHorizontalBarChartProps> = ({
   )
 }
 
-HorizontalBarChart.propTypes = {
-  data: PropTypes.any,
-  options: PropTypes.any,
-  seriesLabel: PropTypes.string,
-  color: PropTypes.string
-}
-
 export const HorizontalBarChartJs: FC<HorizontalBarChartProps> = ({ data, options }) => {
   return (
     <div className='header' style={{ width: '100%', height: '400px' }}>
@@ -731,11 +717,6 @@ export const Circle: FC<CircleProps> = ({ data, options }) => {
   )
 }
 
-Circle.propTypes = {
-  data: PropTypes.any,
-  options: PropTypes.any
-}
-
 interface DoughnutCharProps {
   data?: ChartData
   options?: ChartOptions
@@ -748,16 +729,6 @@ export const DoughnutChar: FC<DoughnutCharProps> = ({ data, options }) => {
       <Doughnut data={data ?? dataTest} options={options ?? optionsTest} />
     </div>
   )
-}
-
-DoughnutChar.propTypes = {
-  data: PropTypes.any,
-  options: PropTypes.any
-}
-
-interface BarChatProps {
-  data?: ChartData
-  options?: ChartOptions
 }
 
 /* =========================================================
@@ -1086,14 +1057,6 @@ export const BarChat: FC<SvgBarChartProps> = ({
     </div>
   )
 }
-
-BarChat.propTypes = {
-  data: PropTypes.any,
-  options: PropTypes.any,
-  seriesLabel: PropTypes.string,
-  color: PropTypes.string
-}
-
 export const LightweightChartComponent = () => {
   const chartRef = useRef(null)
 

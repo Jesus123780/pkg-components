@@ -93,6 +93,10 @@ export interface Data {
   priceRange: number
   counter: number
   totalAmount: number
+  /** Active discount type from the sales reducer ('PERCENT' | 'AMOUNT'). */
+  discountType?: 'PERCENT' | 'AMOUNT'
+  /** Percent value when discountType is 'PERCENT'. */
+  discountPercent?: number
   discountAmount: number
   payId: string
   dataOptional?: ExtProductFoodOptional[]

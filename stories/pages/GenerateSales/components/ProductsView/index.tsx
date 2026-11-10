@@ -919,9 +919,7 @@ ProductsViewProps
                 } al carrito`}
               >
                 <Image
-                  src={
-                    product.ProImage
-                  }
+                  src={`/api/images/${product.ProImage}`}
                   className={
                     styles.product__image
                   }

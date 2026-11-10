@@ -18,6 +18,8 @@ enum DiscountTypes {
   AMOUNT = 'AMOUNT'
 }
 
+const PREDEFINED_PERCENTS = [1, 2, 5, 10, 15]
+
 export interface OrderDiscountChange {
   type: DiscountType
   value: number
@@ -33,6 +35,14 @@ export interface OrderDiscountProps {
   onChange?: (payload: OrderDiscountChange) => void
 
   /**
+   * Active discount type coming from the global sales state. This is the single
+   * source of truth to decide whether the panel shows the PERCENT or the AMOUNT
+   * selection. It MUST be used instead of inferring the mode from
+   * `discountAmount`, because a PERCENT discount also produces a positive
+   * `discountAmount` (the money actually discounted).
+   */
+  discountType?: DiscountType
+  /**
    * Initial percentage discount.
    */
   discountPercent?: number
@@ -44,15 +54,40 @@ export interface OrderDiscountProps {
 }
 
 /**
+ * Resolve the active mode from the props provided by the global sales state.
+ *
+ * Priority:
+ *  1. Explicit `discountType` (authoritative — set by the reducer).
+ *  2. Fallback heuristic for legacy callers that don't pass `discountType`:
+ *     only treat it as AMOUNT when there is an amount but no percent.
+ */
+const resolveMode = (
+  discountType: DiscountType | undefined,
+  discountPercent: number,
+  discountAmount: number
+): DiscountType => {
+  if (discountType === DiscountTypes.AMOUNT) return DiscountTypes.AMOUNT
+  if (discountType === DiscountTypes.PERCENT) return DiscountTypes.PERCENT
+  // Legacy fallback: percent wins when present, so a predefined button that was
+  // selected keeps its highlight even though a money amount was also stored.
+  if (discountPercent > 0) return DiscountTypes.PERCENT
+  if (discountAmount > 0) return DiscountTypes.AMOUNT
+  return DiscountTypes.PERCENT
+}
+
+/**
  * OrderDiscount Component
  * - Memoized child components
  * - Stable callbacks
  * - Emits only when value actually changes
+ * - Restores its full visual state from props (global sales state) so it never
+ *   loses the active selection when the lateral panel is closed and reopened.
  *
  * NOTE: JSDoc is in English and validation is strict.
  */
 export const OrderDiscount: React.FC<OrderDiscountProps> = ({
   onChange,
+  discountType,
   discountPercent = 0,
   discountAmount = 0,
   tabIndex = 0
@@ -65,36 +100,65 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
       : tabIndex + offset
   }
 
-  const predefinedPercents = useMemo(() => [1, 2, 5, 10, 15], [])
-  const [mode, setMode] = useState<DiscountType>(
-    discountAmount > 0 ? DiscountTypes.AMOUNT : DiscountTypes.PERCENT
+  const predefinedPercents = useMemo(() => PREDEFINED_PERCENTS, [])
+
+  const initialMode = resolveMode(discountType, discountPercent, discountAmount)
+  const [mode, setMode] = useState<DiscountType>(initialMode)
+  const [percent, setPercent] = useState<number>(
+    initialMode === DiscountTypes.PERCENT ? discountPercent : 0
   )
-  const [percent, setPercent] = useState<number>(discountPercent)
-  // If the initial discountPercent matches a predefined button, the input field
-  // stays empty — the active button is the visual indicator, not the text field.
+  // If the active percentage matches a predefined button, the input field stays
+  // empty — the active button is the visual indicator, not the text field.
   const [percentInput, setPercentInput] = useState<string>(() => {
-    if (discountPercent <= 0) return ''
-    const predefined = [1, 2, 5, 10, 15]
-    return predefined.includes(discountPercent) ? '' : String(discountPercent)
+    if (initialMode !== DiscountTypes.PERCENT || discountPercent <= 0) return ''
+    return PREDEFINED_PERCENTS.includes(discountPercent) ? '' : String(discountPercent)
   })
   const [valueInput, setValueInput] = useState<string>(
-    discountAmount > 0 ? String(discountAmount) : ''
+    initialMode === DiscountTypes.AMOUNT && discountAmount > 0 ? String(discountAmount) : ''
   )
 
   // avoid emitting identical payloads repeatedly
   const lastEmitRef = useRef<OrderDiscountChange | null>(null)
 
-  // When the parent resets both discount values to 0 (e.g. REMOVE_ALL_PRODUCTS),
-  // clear the local display state so the inputs don't show stale values.
+  // Keep the local display state in sync with the global sales state. The
+  // lateral panel unmounts this component when it closes, so on every remount
+  // (and on any external change, e.g. retrieving a pending order) we rebuild
+  // the visual state from the authoritative props. This is what guarantees the
+  // discount selection (predefined button check, typed values) is never lost
+  // when the panel is closed and reopened.
   useEffect(() => {
+    const nextMode = resolveMode(discountType, discountPercent, discountAmount)
+
     if (discountPercent === 0 && discountAmount === 0) {
+      // Parent cleared everything (e.g. REMOVE_ALL_PRODUCTS / no discount).
       setMode(DiscountTypes.PERCENT)
       setPercent(0)
       setPercentInput('')
       setValueInput('')
       lastEmitRef.current = null
+      return
     }
-  }, [discountPercent, discountAmount])
+
+    setMode(nextMode)
+
+    if (nextMode === DiscountTypes.PERCENT) {
+      setPercent(discountPercent)
+      setPercentInput(
+        discountPercent > 0 && !PREDEFINED_PERCENTS.includes(discountPercent)
+          ? String(discountPercent)
+          : ''
+      )
+      setValueInput('')
+    } else {
+      setPercent(0)
+      setPercentInput('')
+      setValueInput(discountAmount > 0 ? String(discountAmount) : '')
+    }
+    // Reflect the committed value so we don't immediately re-emit it.
+    lastEmitRef.current = nextMode === DiscountTypes.PERCENT
+      ? { type: DiscountTypes.PERCENT, value: discountPercent }
+      : { type: DiscountTypes.AMOUNT, value: discountAmount }
+  }, [discountType, discountPercent, discountAmount])
 
   const safeEmit = useCallback((payload: OrderDiscountChange) => {
     const last = lastEmitRef.current
@@ -111,10 +175,16 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
   }
 
   /**
-   * Validate amount input: digits only (no separators)
+   * Fixed-amount discounts are whole pesos only. The POS operates in Colombian
+   * pesos WITHOUT cents and the backend `DiscountInput.value` is an integer, so
+   * we never keep decimals here (a "50,20" entry would be truncated downstream
+   * and desync the UI from what is actually charged/accounted). We normalize to
+   * a non-negative integer.
    */
-  const isValidAmountInput = (raw: string) => {
-    return raw === '' || /^\d*$/.test(raw)
+  const normalizeAmount = (raw: number | undefined | null): string => {
+    if (raw == null || !Number.isFinite(raw)) return ''
+    const int = Math.max(0, Math.trunc(raw))
+    return int > 0 ? String(int) : ''
   }
 
   const handleSelectPercent = useCallback((value: number) => {
@@ -137,12 +207,15 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
     // No emit here — the user must click "Aplicar porcentaje" to commit
   }, [])
 
-  const handleValueChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.trim()
-    if (!isValidAmountInput(raw)) return
-
+  /**
+   * Receives the already-parsed numeric value from AmountInput's onValueChange
+   * (not the raw string event), so grouping separators and formatting are
+   * handled by the input and we only deal with a clean number. We store the
+   * integer part (whole pesos).
+   */
+  const handleValueChange = useCallback((value: number | undefined) => {
     setMode(DiscountTypes.AMOUNT)
-    setValueInput(raw)
+    setValueInput(normalizeAmount(value))
     setPercent(0)
     setPercentInput('')
     // No emit here — the user must click "Agregar descuento" to commit
@@ -228,17 +301,28 @@ export const OrderDiscount: React.FC<OrderDiscountProps> = ({
         <AmountInput
           type='text'
           label='Valor fijo ($), Ej: 10000'
+          // Whole pesos only: the POS has no cents and the backend expects an
+          // integer discount, so decimals are disabled by design.
+          allowDecimals={false}
+          decimalsLimit={0}
+          allowNegativeValue={false}
+          groupSeparator='.'
+          prefix='$'
+          placeholder='$ 0'
           value={valueInput !== '' ? valueInput : undefined}
           defaultValue={discountAmount > 0 ? discountAmount : undefined}
-          onChange={handleValueChange}
+          onValueChange={(value) => handleValueChange(value != null ? Number(value) : undefined)}
           tabIndex={getInternalTabIndex(1)}
         />
       </div>
 
-      <Text as='p' size='md'>
-        Descuento actual:{' '}
-        <strong>{displayedDiscount}</strong>
-      </Text>
+      <Row>
+        <Text as='p' size='md'>
+          Descuento actual:{' '}
+          <strong>{displayedDiscount}</strong>
+        </Text>
+        <Icon icon='IconPromo' size={20} color={getGlobalStyle('--color-icons-primary')} />
+      </Row>
 
       {valueInput !== '' && (
         <Button primary onClick={handleAddAmount}>

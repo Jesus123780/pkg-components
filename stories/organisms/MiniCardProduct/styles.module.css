@@ -17,6 +17,7 @@
   flex-direction: column;
   gap: var(--spacing-sm);
   height: inherit;
+  min-width: 0;
   text-decoration: none;
   z-index: var(--z-index-5);
 }
@@ -82,23 +83,117 @@
 .product-card__price-container {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  gap: var(--spacing-xs);
+  width: 100%;
+  justify-content: space-between;
+}
+
+/*
+ * Price and "Gratis" badge layout:
+ * - They stay on the same line when there is enough space.
+ * - The badge moves to the next line when the price needs the available width.
+ * - min-width: 0 and overflow-wrap prevent long prices from overlapping the tag.
+ */
+.product-card__price-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: var(--spacing-xs);
+  row-gap: var(--spacing-xs);
+  width: 100%;
+  min-width: 0;
+}
+
+.product-card__price-value {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  width: max-content;
+}
+
+.product-card_action_free {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  width: auto;
+  max-width: 100%;
+  margin-left: auto;
 }
 
 .stock_container {
-  align-items: center;
-  background: var(--color-base-white);
-  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
-  border: var(--border-width-xs) solid var(--color-neutral-gray);
-  display: flex;
-  height: 25px;
-  justify-content: center;
-  left: 49.1%;
   position: absolute;
   top: 85px;
+  left: 50%;
   transform: translateX(-50%);
-  transition: transform .2s, opacity .2s, box-shadow .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 87%;
+  min-height: 32px;
+  padding: 3px 8px;
+  width: 89%;
+  left: 49%;
+  background: var(--color-base-white);
+  border: var(--border-width-xs) solid var(--color-neutral-gray);
+  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
   z-index: var(--z-index-50);
+}
+
+.stock_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
+  width: 100%;
+  min-width: 0;
+}
+
+.stock_label {
+  overflow: hidden;
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-black);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product_edit_link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 7px;
+  border: 1px solid var(--color-neutral-gray);
+  border-radius: var(--border-radius-xs);
+  background: var(--color-background-gray);
+  color: var(--color-text-gray-light);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color .2s ease,
+    border-color .2s ease,
+    color .2s ease;
+}
+
+.product_edit_link:hover {
+  background: var(--color-primary-pink-light);
+  border-color: var(--color-primary-pink-light);
+  color: var(--color-neutral-black);
+}
+
+.product_edit_link:focus-visible {
+  outline: 2px solid var(--color-primary-pink-light);
+  outline-offset: 2px;
 }
 
 .quantity_container {

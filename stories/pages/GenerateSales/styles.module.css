@@ -1,18 +1,40 @@
+
 /* =========================================================
    MAIN LAYOUT
-   ========================================================= */
+========================================================= */
 
 .container {
-    display: grid;
+    display: flex;
 
     width: 100%;
     height: 100%;
 
-    max-width: 100%;
-    max-height: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/*
+ * ResisesColumnsMemo controla el ancho de los paneles.
+ */
+.sales_resizer {
+    width: 100%;
+    height: 100%;
 
     min-width: 0;
     min-height: 0;
+}
+
+
+/* =========================================================
+   RESIZABLE PANELS
+========================================================= */
+
+.products-pane,
+.cart-pane {
+    display: grid;
 
     grid-template-rows:
         minmax(50px, auto)
@@ -20,40 +42,43 @@
         minmax(0, 1fr)
         minmax(176px, auto);
 
-    grid-template-columns:
-        2fr 1fr;
+    width: 100%;
+    height: 100%;
 
+    min-width: 0;
+    min-height: 0;
+
+    box-sizing: border-box;
+
+    background-color:
+        var(--color-base-white, #ffffff);
+}
+
+/*
+ * Evita que el contenido de los paneles
+ * fuerce el ancho de las columnas.
+ */
+.products-pane > *,
+.cart-pane > * {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   LEFT PANEL — CATALOG
+========================================================= */
+
+.products-pane {
     grid-template-areas:
-        "header header-info"
-        "header-query header-info"
-        "product scroll"
-        "action_product action";
-
-    gap: 0;
+        "header"
+        "header-query"
+        "product"
+        "pagination";
 
     overflow: hidden;
+
+    container-type: inline-size;
 }
-
-
-/* =========================================================
-   SHARED PANEL BORDER
-   ========================================================= */
-
-.header,
-.header-info,
-.filter,
-.content__action,
-.content__action_product,
-.content__categorie__aside,
-.content__scrolling {
-    border: 1px solid
-        var(--color-neutral-gray-light);
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
 
 .header {
     grid-area: header;
@@ -64,87 +89,28 @@
 
     position: relative;
 
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   HEADER INFO
-   ========================================================= */
-
-.header-info {
-    grid-area: header-info;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 8px 20px;
-
-    border-radius: 4px;
-}
-
-.header-info_content {
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    width: auto;
+    width: 100%;
     min-width: 0;
-}
+    min-height: 50px;
 
+    border: 1px solid
+        var(--color-neutral-gray-light);
 
-/* =========================================================
-   CLIENT INFO / PAYMENT
-   ========================================================= */
-
-.header-info__client-info_payment {
-    display: flex;
-    align-items: center;
-
-    padding: 8px 12px;
-
-    border: 0;
-    border-radius: 200px;
-
-    background-color:
-        var(--color-background-primary-light);
-
-    cursor: pointer;
-
-    transition:
-        background-color 300ms ease-in-out;
-
-    -webkit-tap-highlight-color:
-        transparent;
-}
-
-
-/* =========================================================
-   CLIENT NAME
-   ========================================================= */
-
-.header-info__client-name {
-    display: block;
-
-    max-width: 100%;
-
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.2;
-
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+}
 
-    cursor: pointer;
+/*
+ * Categories container.
+ */
+.header > * {
+    min-width: 0;
+    max-width: 100%;
 }
 
 
 /* =========================================================
-   HEADER QUERY
-   ========================================================= */
+   HEADER QUERY — SEARCH / FILTERS
+========================================================= */
 
 .header-query {
     grid-area: header-query;
@@ -152,7 +118,7 @@
     display: grid;
 
     grid-template-columns:
-        minmax(240px, 1fr)
+        minmax(180px, 1fr)
         auto
         auto
         auto;
@@ -163,16 +129,18 @@
 
     width: 100%;
     min-width: 0;
+    min-height: 50px;
 
     margin: 0;
+    padding: 6px 10px;
+
+    box-sizing: border-box;
+
+    border: 1px solid
+        var(--color-neutral-gray-light);
 
     overflow: visible;
 }
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
 
 .header-query__search {
     width: 100%;
@@ -187,7 +155,7 @@
 
 /* =========================================================
    HEADER ACTIONS
-   ========================================================= */
+========================================================= */
 
 .header-query__action,
 .header-query__action--clear {
@@ -200,12 +168,12 @@
     flex: 0 0 auto;
 
     width: auto;
-    min-width: 112px;
+    min-width: 100px;
     min-height: 40px;
     height: 40px;
 
     margin: 0;
-    padding: 0 16px;
+    padding: 0 14px;
 
     gap: 8px;
 
@@ -242,25 +210,18 @@
         border-color 160ms ease,
         color 160ms ease,
         box-shadow 160ms ease,
-        transform 120ms cubic-bezier(
-            0.22,
-            1,
-            0.36,
-            1
-        );
+        transform 120ms ease;
+
+    box-sizing: border-box;
 }
 
-
-/* =========================================================
-   FILTER
-   ========================================================= */
+/* Filter */
 
 .header-query__action {
     background:
         var(--color-primary-pink-bg, #fcebea);
 
-    border-color:
-        transparent;
+    border-color: transparent;
 }
 
 .header-query__action:hover {
@@ -285,10 +246,7 @@
         0 0 0 3px rgba(220, 53, 69, 0.08);
 }
 
-
-/* =========================================================
-   CLEAR
-   ========================================================= */
+/* Clear */
 
 .header-query__action--clear {
     background:
@@ -315,10 +273,7 @@
         0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-
-/* =========================================================
-   HEADER ACTION CONTENT
-   ========================================================= */
+/* Action content */
 
 .header-query__action > * {
     flex: 0 0 auto;
@@ -326,32 +281,21 @@
 
 .header-query__action svg {
     transition:
-        transform 180ms cubic-bezier(
-            0.22,
-            1,
-            0.36,
-            1
-        );
+        transform 180ms ease;
 }
 
 .header-query__action:hover svg {
     transform: scale(1.06);
 }
 
-
-/* =========================================================
-   ACTIVE / PRESS
-   ========================================================= */
+/* Active */
 
 .header-query__action:active,
 .header-query__action--clear:active {
     transform: scale(0.97);
 }
 
-
-/* =========================================================
-   FOCUS
-   ========================================================= */
+/* Focus */
 
 .header-query__action:focus-visible,
 .header-query__action--clear:focus-visible {
@@ -359,20 +303,13 @@
         2px solid var(--color-secondary-blue);
 
     outline-offset: 2px;
-
-    box-shadow:
-        0 0 0 4px rgba(43, 124, 255, 0.12);
 }
 
-
-/* =========================================================
-   DISABLED
-   ========================================================= */
+/* Disabled */
 
 .header-query__action:disabled,
 .header-query__action--clear:disabled {
     cursor: not-allowed;
-
     opacity: var(--opacity-50);
 
     box-shadow: none;
@@ -381,8 +318,8 @@
 
 
 /* =========================================================
-   LAYOUT SWITCHER WRAPPER
-   ========================================================= */
+   LAYOUT SWITCHER
+========================================================= */
 
 .header-query__layout {
     display: flex;
@@ -402,11 +339,281 @@
 
 
 /* =========================================================
-   RIGHT SCROLLING AREA
-   ========================================================= */
+   PRODUCTS VIEW
+========================================================= */
+
+.products-view {
+    grid-area: product;
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    overscroll-behavior: contain;
+
+    box-sizing: border-box;
+}
+
+/*
+ * ProductsView must respect the resizable width.
+ */
+.products-view > * {
+    min-width: 0;
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.products-pagination {
+    grid-area: pagination;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    padding: 8px 12px;
+
+    box-sizing: border-box;
+
+    border: 1px solid
+        var(--color-neutral-gray-light);
+
+    overflow: hidden;
+}
+
+.products-pagination > * {
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   RIGHT PANEL — CART
+========================================================= */
+
+.cart-pane {
+    grid-template-areas:
+        "header-info"
+        "header-info"
+        "scroll"
+        "action";
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   HEADER INFO
+   Spans the first two rows, like the original layout.
+========================================================= */
+
+.cart-header-info {
+    grid-area: header-info;
+
+    display: flex;
+    align-items: stretch;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 100px;
+
+    box-sizing: border-box;
+
+    border: 1px solid
+        var(--color-neutral-gray-light);
+
+    overflow: hidden;
+}
+
+.cart-header-info > * {
+    width: 100%;
+    min-width: 0;
+}
+
+/*
+ * Existing HeaderInfo styles.
+ */
+.header-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+
+    padding: 8px 20px;
+
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.header-info_content {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: auto;
+    min-width: 0;
+}
+
+
+/* =========================================================
+   CLIENT INFO / PAYMENT
+========================================================= */
+
+.header-info__client-info_payment {
+    display: flex;
+    align-items: center;
+
+    padding: 8px 12px;
+
+    border: 0;
+    border-radius: 200px;
+
+    background-color:
+        var(--color-background-primary-light);
+
+    cursor: pointer;
+
+    transition:
+        background-color 300ms ease-in-out;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   CLIENT NAME
+========================================================= */
+
+.header-info__client-name {
+    display: block;
+
+    max-width: 100%;
+
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   CLIENT META
+========================================================= */
+
+.header-info__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 3px;
+}
+
+.header-info__meta-item {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    color:
+        var(--color-neutral-gray-dark, #555);
+
+    white-space: nowrap;
+}
+
+.header-info__meta-item--highlight {
+    font-weight: 600;
+
+    color:
+        var(--color-text-black, #111);
+}
+
+
+/* =========================================================
+   HEADER INFO — DISCOUNT
+========================================================= */
+
+.header-info__discount {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 4px;
+}
+
+.header-info__discount-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 3px;
+
+    padding: 2px 8px;
+
+    border-radius: 10px;
+
+    background-color:
+        var(--color-primary-red, #e02020);
+
+    color:
+        var(--color-text-white, #fff);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.header-info__discount-amount {
+    font-size: 11px;
+    font-weight: 500;
+
+    color:
+        var(--color-primary-red, #e02020);
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CART PRODUCTS — SCROLL
+========================================================= */
 
 .content__scrolling {
     grid-area: scroll;
+
+    position: relative;
 
     display: grid;
 
@@ -416,24 +623,34 @@
             minmax(140px, 1fr)
         );
 
+    align-content: start;
+
     row-gap: 20px;
 
-    padding-top:
-        var(--spacing-2xl);
+    width: 100%;
+    height: 100%;
 
     min-width: 0;
     min-height: 0;
 
+    padding-top:
+        var(--spacing-2xl);
+
+    box-sizing: border-box;
+
     overflow-x: hidden;
     overflow-y: auto;
 
-    position: relative;
+    overscroll-behavior: contain;
+
+    border: 1px solid
+        var(--color-neutral-gray-light);
 }
 
 
 /* =========================================================
-   ACTION AREAS
-   ========================================================= */
+   CART SUMMARY / ACTION
+========================================================= */
 
 .content__action {
     grid-area: action;
@@ -452,26 +669,20 @@
 
     width: 100%;
     min-width: 0;
+    min-height: 176px;
 
     padding: 12px;
 
     box-sizing: border-box;
-}
 
-.content__action_product {
-    grid-area: action_product;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
-    min-width: 0;
+    border: 1px solid
+        var(--color-neutral-gray-light);
 }
 
 
 /* =========================================================
    CART SUMMARY
-   ========================================================= */
+========================================================= */
 
 .content__action-summary {
     display: flex;
@@ -514,8 +725,8 @@
 
 
 /* =========================================================
-   ACTION BUTTONS — TWO COLUMNS
-   ========================================================= */
+   CART ACTION BUTTONS
+========================================================= */
 
 .content__action-buttons {
     display: grid;
@@ -545,8 +756,7 @@
 }
 
 /*
- * The buttons are provided by the component library.
- * These rules constrain their actual HTML button elements.
+ * Button component library integration.
  */
 .content__action-button :global(button) {
     width: 100%;
@@ -559,6 +769,7 @@
 
     white-space: normal;
     overflow-wrap: anywhere;
+
     line-height: 1.25;
 }
 
@@ -576,8 +787,8 @@
 
 
 /* =========================================================
-   COUNTER
-   ========================================================= */
+   CART COUNTER
+========================================================= */
 
 .content__counter {
     position: relative;
@@ -640,7 +851,7 @@
 
 /* =========================================================
    CATEGORY ASIDE
-   ========================================================= */
+========================================================= */
 
 .container_circle {
     width: 10px;
@@ -711,8 +922,8 @@
 
 
 /* =========================================================
-   ANIMATION
-   ========================================================= */
+   PULSE ANIMATION
+========================================================= */
 
 @keyframes pulse {
     0% {
@@ -739,64 +950,19 @@
 
 
 /* =========================================================
-   TABLET — HEADER QUERY
-   ========================================================= */
+   RESPONSIVE — PRODUCTS PANE
+   Container queries respond to the resized column,
+   not only to the browser viewport.
+========================================================= */
 
-@media (max-width: 1024px) {
+@container (max-width: 680px) {
     .header-query {
-        grid-template-columns:
-            minmax(220px, 1fr)
-            auto
-            auto;
-
-        gap: 10px;
-    }
-
-    .header-query__layout {
-        grid-column: 1 / -1;
-
-        justify-content: flex-start;
-
-        margin-top: 2px;
-    }
-}
-
-
-/* =========================================================
-   TABLET — SALE ACTIONS
-   ========================================================= */
-
-@media (max-width: 768px) {
-    .content__action {
-        gap: 12px;
-        padding: 12px;
-    }
-
-    .content__action-buttons {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
 
         gap: 8px;
-    }
 
-    .content__action-button > *,
-    .content__action-button :global(button) {
-        min-height: 42px;
-    }
-}
-
-
-/* =========================================================
-   MOBILE — HEADER QUERY
-   ========================================================= */
-
-@media (max-width: 768px) {
-    .header-query {
-        grid-template-columns:
-            minmax(0, 1fr)
-            minmax(0, 1fr);
-
-        gap: 10px;
+        padding: 8px;
     }
 
     .header-query__search {
@@ -807,62 +973,37 @@
     .header-query__action--clear {
         width: 100%;
         min-width: 0;
+        padding: 0 8px;
     }
 
     .header-query__layout {
         grid-column: 1 / -1;
-
-        width: 100%;
-
-        justify-content: stretch;
-    }
-
-    .header-query__layout > * {
-        width: 100%;
+        justify-content: flex-start;
     }
 }
 
 
 /* =========================================================
-   SMALL MOBILE — HEADER QUERY
-   ========================================================= */
+   RESPONSIVE — CART PANE
+========================================================= */
 
-@media (max-width: 480px) {
-    .header-query {
+@media (max-width: 768px) {
+    .content__action {
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .content__action-buttons {
         gap: 8px;
     }
-
-    .header-query__action,
-    .header-query__action--clear {
-        height: 38px;
-
-        padding: 0 12px;
-
-        border-radius: 18px;
-
-        font-size:
-            var(--font-size-xs);
-    }
-
-    .header-query__action {
-        gap: 6px;
-    }
 }
 
 
 /* =========================================================
-   SMALL MOBILE — SALE ACTIONS
-   ========================================================= */
+   RESPONSIVE — SMALL SCREENS
+========================================================= */
 
 @media (max-width: 480px) {
-    .container {
-        grid-template-rows:
-            minmax(50px, auto)
-            minmax(50px, auto)
-            minmax(0, 1fr)
-            minmax(280px, auto);
-    }
-
     .content__action {
         gap: 10px;
         padding: 10px;
@@ -881,9 +1022,9 @@
 
     .content__action-buttons {
         grid-template-columns:
-            minmax(0, 1fr);
+            repeat(2, minmax(0, 1fr));
 
-        gap: 8px;
+        gap: 6px;
     }
 
     .content__action-button > *,
@@ -895,7 +1036,7 @@
 
 /* =========================================================
    TOUCH DEVICES
-   ========================================================= */
+========================================================= */
 
 @media (hover: none) {
     .header-query__action:hover,
@@ -911,7 +1052,7 @@
 
 /* =========================================================
    REDUCED MOTION
-   ========================================================= */
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
     .header-query__action,
@@ -933,7 +1074,7 @@
 
 /* =========================================================
    DARK MODE
-   ========================================================= */
+========================================================= */
 
 @media (prefers-color-scheme: dark) {
     .header-query__action--clear {
@@ -943,87 +1084,4 @@
         border-color:
             var(--color-neutral-gray-silver);
     }
-}
-
-
-/* =========================================================
-   HEADER INFO — DISCOUNT BADGE
-   ========================================================= */
-
-.header-info__discount {
-    display: flex;
-    align-items: center;
-
-    gap: 6px;
-
-    margin-top: 4px;
-}
-
-.header-info__discount-badge {
-    display: inline-flex;
-    align-items: center;
-
-    gap: 3px;
-
-    padding: 2px 8px;
-
-    border-radius: 10px;
-
-    background-color:
-        var(--color-primary-red, #e02020);
-
-    color:
-        var(--color-text-white, #fff);
-
-    font-size: 11px;
-    font-weight: 600;
-
-    line-height: 1.6;
-    white-space: nowrap;
-}
-
-.header-info__discount-amount {
-    font-size: 11px;
-    font-weight: 500;
-
-    color:
-        var(--color-primary-red, #e02020);
-
-    white-space: nowrap;
-}
-
-
-/* =========================================================
-   HEADER INFO — CLIENT META
-   ========================================================= */
-
-.header-info__meta {
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    margin-top: 3px;
-}
-
-.header-info__meta-item {
-    display: inline-flex;
-    align-items: center;
-
-    gap: 4px;
-
-    font-size: 12px;
-    font-weight: 400;
-
-    color:
-        var(--color-neutral-gray-dark, #555);
-
-    white-space: nowrap;
-}
-
-.header-info__meta-item--highlight {
-    font-weight: 600;
-
-    color:
-        var(--color-text-black, #111);
 }
