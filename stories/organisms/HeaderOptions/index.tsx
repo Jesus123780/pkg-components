@@ -103,14 +103,14 @@ export const Options = ({
   const permissionDescription = loadingPush && !pushNotificationSupported
     ? 'Comprobando la compatibilidad del navegador...'
     : !pushNotificationSupported
-      ? 'Este navegador o contexto no admite notificaciones push. Usa HTTPS o localhost y un navegador compatible.'
-    : userConsent === 'denied'
-      ? 'El permiso está bloqueado en el navegador. Habilítalo desde los permisos del sitio.'
-      : canSendTest
-        ? 'Las notificaciones están activas y sincronizadas con el servidor.'
-        : isConsentGranted
-          ? 'El permiso está concedido. Completa la suscripción para registrar este dispositivo.'
-          : 'Activa las notificaciones para recibir novedades y actualizaciones.'
+        ? 'Este navegador o contexto no admite notificaciones push. Usa HTTPS o localhost y un navegador compatible.'
+        : userConsent === 'denied'
+          ? 'El permiso está bloqueado en el navegador. Habilítalo desde los permisos del sitio.'
+          : canSendTest
+            ? 'Las notificaciones están activas y sincronizadas con el servidor.'
+            : isConsentGranted
+              ? 'El permiso está concedido. Completa la suscripción para registrar este dispositivo.'
+              : 'Activa las notificaciones para recibir novedades y actualizaciones.'
 
   return (
     <div className={styles.container}>
@@ -146,7 +146,11 @@ export const Options = ({
         aria-label='Abrir opciones y notificaciones'
         aria-expanded={openIndex === 2}
       >
-        <Icon icon='IconShopping' size={20} color={getGlobalStyle('--color-icons-primary')} />
+        <Icon
+          icon='IconShopping'
+          size={20}
+          color={getGlobalStyle('--color-icons-primary')}
+        />
       </button>
 
       {/* Use a div instead of nesting a button if ThemeToggle renders its own button. */}

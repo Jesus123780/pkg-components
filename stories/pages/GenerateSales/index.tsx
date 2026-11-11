@@ -78,11 +78,11 @@ interface IpropsSliderCategory {
   handleChangeCheck: (id: string) => void
 
   breakpoints: Record<
-    string,
-    {
-      slidesPerView: number | string
-      spaceBetween: number | string
-    }
+  string,
+  {
+    slidesPerView: number | string
+    spaceBetween: number | string
+  }
   >
 }
 
@@ -143,7 +143,7 @@ interface GenerateSalesProps {
   dataClientes?: any[]
 
   handleClickAction?: () => void
-
+  handleRedirectCreateProduct?: () => void
   handleAddProduct?: (
     product: ProductFood
   ) => void
@@ -202,7 +202,7 @@ interface GenerateSalesProps {
   ) => void
 
   setShow?: React.Dispatch<
-    React.SetStateAction<boolean>
+  React.SetStateAction<boolean>
   >
 
   dataFilter?: any
@@ -420,7 +420,8 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
    */
   dividerPosition = INITIAL_SALES_DIVIDER_POSITION,
   dividerPositionLoading = false,
-  onDividerPositionChange = () => { }
+  onDividerPositionChange = () => { },
+  handleRedirectCreateProduct = () => { }
 }) => {
   /* =====================================================
      RESIZABLE COLUMNS
@@ -459,13 +460,6 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     },
     [onDividerPositionChange]
   )
-
-  console.log('[GENERATE SALES - DIVIDER]', {
-    received: dividerPosition,
-    normalized: normalizedDividerPosition,
-    loading: dividerPositionLoading,
-    key: dividerPositionKey
-  })
 
   /* =====================================================
      SORT
@@ -697,6 +691,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
     <AwesomeModal
       title='Crea una venta'
       show={show}
+      useScroll
       size={MODAL_SIZES.large}
       header
       footer={false}
@@ -742,6 +737,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       ================================================== */}
 
       <div className={styles.container}>
+        {!dividerPositionLoading &&
           <ResisesColumns
             key={dividerPositionKey}
             lastMinWidth='440px'
@@ -752,11 +748,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             initialDividerPosition={
               normalizedDividerPosition
             }
-
             resizeStep={2}
             disabled={dividerPositionLoading}
             className={styles.sales_resizer}
-
             onResize={handleSalesColumnsResize}
           >
 
@@ -865,6 +859,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   handleAddProduct={handleAddProduct}
                   handleComment={handleComment}
                   sendNotification={sendNotification}
+                  handleRedirectCreateProduct={handleRedirectCreateProduct}
                 />
               </div>
 
@@ -1063,6 +1058,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
             </section>
 
           </ResisesColumns>
+        }
       </div>
 
       {/* =================================================

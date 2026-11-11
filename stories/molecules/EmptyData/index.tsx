@@ -1,13 +1,17 @@
 import { getGlobalStyle } from '../../../helpers'
-import { Column, Divider, Text } from '../../atoms'
+import { Button, Column, Divider, Text } from '../../atoms'
 
 interface EmptyDataProps extends React.SVGProps<SVGSVGElement> {
   height?: number
   width?: number
+  onClick?: () => {}
+  showAction?: boolean
 }
 export const EmptyData: React.FC<EmptyDataProps> = ({
   height = 590,
   width = 489,
+  onClick = () => { },
+  showAction = false,
   ...props
 }) => {
   return (
@@ -144,6 +148,13 @@ export const EmptyData: React.FC<EmptyDataProps> = ({
         >
           No hay datos disponibles
         </Text>
+        <Divider marginTop={getGlobalStyle('--spacing-2xl')} />
+
+        {showAction &&
+          <Button onClick={onClick}>
+            Ir a crear
+          </Button>
+        }
       </Column>
     </Column>
   )

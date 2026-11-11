@@ -1,140 +1,438 @@
-/* === Container (BackDrop) === */
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
 .container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+  --modal-enter-duration: 400ms;
+  --modal-close-duration: 360ms;
+
+  --overlay-enter-duration: 180ms;
+  --overlay-close-duration: 180ms;
+
+  --modal-enter-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --modal-exit-easing: cubic-bezier(0.4, 0, 0.8, 0.6);
+
+  --overlay-enter-easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --overlay-exit-easing: cubic-bezier(0.4, 0, 0.6, 1);
+
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 100;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.container *,
+.container *::before,
+.container *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   BACKDROP
+   ========================================================= */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: var(--color-background-overline);
+
+  clip-path: inset(0);
+
+  transition-property: clip-path;
+  transition-duration: var(--overlay-enter-duration);
+  transition-timing-function: var(--overlay-enter-easing);
+  transition-delay: 0ms;
+
+  pointer-events: auto;
+
+  will-change: auto;
+}
+
+/*
+  El backdrop comienza completamente recortado.
+  No utiliza opacity para aparecer.
+*/
+
+.preparing .backdrop {
+  clip-path: inset(0 0 100% 0);
+
+  transition: none;
+}
+
+/*
+  Durante la salida se retira independientemente
+  del desplazamiento del modal.
+
+  El contenido de la aplicación vuelve a quedar visible
+  mientras el modal todavía está terminando de salir.
+*/
+
+.closing .backdrop {
+  clip-path: inset(0 0 100% 0);
+
+  transition-property: clip-path;
+  transition-duration: var(--overlay-close-duration);
+  transition-timing-function: var(--overlay-exit-easing);
+  transition-delay: 0ms;
+
+  pointer-events: none;
+
+  will-change: clip-path;
+}
+
+/* =========================================================
+   WRAPPER
+   ========================================================= */
+
+.wrapper {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/*
+  El wrapper no intercepta los eventos.
+  El modal recupera su interacción mediante pointer-events.
+*/
+
+.modal {
+  --modal-offscreen-y: calc(-100vh - 100% - 24px);
+
+  position: relative;
+
+  width: auto;
+
+  min-width: 340px;
+
+  border-radius: 8px;
+
+  background-color: var(--color-base-white);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  transform: translate3d(0, 0, 0);
+  transform-origin: center center;
+
+  transition-property: transform;
+  transition-duration: var(--modal-enter-duration);
+  transition-timing-function: var(--modal-enter-easing);
+  transition-delay: 0ms;
+
+  pointer-events: auto;
+
+  will-change: auto;
+}
+
+/* =========================================================
+   SIZE
+   ========================================================= */
+
+.small {
+  width: 30%;
+}
+
+.medium {
+  width: 60%;
+}
+
+.large {
+  width: 100%;
+}
+
+/* =========================================================
+   PREPARING
+   ========================================================= */
+
+/*
+  La posición inicial considera:
+
+  - La altura completa del viewport.
+  - La altura real del modal.
+  - Un espacio adicional de seguridad.
+
+  De esta manera, incluso un modal de gran altura
+  comienza completamente fuera de la pantalla.
+*/
+
+.preparing .modal {
+  transform: translate3d(
+    0,
+    var(--modal-offscreen-y),
+    0
+  );
+
+  transition: none;
+}
+
+/* =========================================================
+   OPENING
+   ========================================================= */
+
+.opening .modal {
+  will-change: transform;
+}
+
+.opening .backdrop {
+  will-change: clip-path;
+}
+
+/* =========================================================
+   CLOSING
+   ========================================================= */
+
+/*
+  El modal sale desde su posición geométrica actual.
+
+  No se anima opacity.
+  No se modifica width, height ni dimensiones del modal.
+
+  El propio CSS calcula la distancia necesaria para
+  dejarlo completamente fuera del viewport.
+*/
+
+.closing .modal {
+  transform: translate3d(
+    0,
+    var(--modal-offscreen-y),
+    0
+  );
+
+  transition-property: transform;
+  transition-duration: var(--modal-close-duration);
+  transition-timing-function: var(--modal-exit-easing);
+  transition-delay: 0ms;
+
+  pointer-events: none;
+
+  will-change: transform;
+}
+
+/*
+  El overlay y el modal pierden su capacidad de interacción
+  mientras finaliza el desplazamiento.
+*/
+
+.closing .wrapper {
+  pointer-events: none;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.modal_header {
+  flex: 0 0 auto;
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  min-width: 0;
+}
+
+.modal_title {
+  min-width: 0;
+
+  margin: 0;
+
+  font-size: 1.25rem;
+}
+
+.close_button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  border: none;
+
+  background: none;
+
+  padding: 8px;
+
+  line-height: 0;
+
+  cursor: pointer;
+
+  transition: transform 160ms cubic-bezier(
+    0.22,
+    1,
+    0.36,
+    1
+  );
+}
+
+.close_button:not(:disabled):hover {
+  transform: scale(1.04);
+}
+
+.close_button:disabled {
+  cursor: default;
+}
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+.modal_body {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer_modal {
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
+
+  flex: 0 0 auto;
+
+  padding: 1rem;
+
+  gap: 0.5rem;
+
+  flex-wrap: wrap;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .modal {
     width: 100%;
-    height: 100%;
-    opacity: 1;
-    z-index: 100;
-    background: var(--color-background-overline);
-  }
-  
-  /* Visibilidad */
-  .hidden {
-    display: none;
-  }
-  
-  .visible {
-    display: block;
+
+    min-width: 0;
+
+    border-radius: 8px;
   }
 
-  /* Tamaños */
-.small {
-    width: 30%;
-  }
-  .medium {
-    width: 60%;
-  }
+  .small,
+  .medium,
   .large {
     width: 100%;
   }
 
-  
-  /* === Warper (Modal Wrapper) === */
-  .warper {
-    position: relative;
-    background: var(--color-base-transparent);
-    width: 100%;
-    height: 100%;
-    z-index: 888;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* === Modal Box === */
-  .modal {
-    background-color: var(--color-base-white);
-    max-height: -webkit-fill-available;
-    min-width: 340px;
-    border-radius: 8px;
-    animation: slideFromTopIn 0.3s ease-out forwards;
-    display: flex;
-    flex-direction: column; /* Para que header y body se comporten como columnas */
-  }
-  
-  /* === Header === */
-  .modal_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .modal_title {
-    margin: 0;
-    font-size: 1.25rem;
-  }
-  
-  .close_button {
-    border: none;
-    background: none;
-    padding: 0;
-  }
-  
   .footer_modal {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
-    gap: 0.5rem;
+    padding: 12px;
   }
-  
-  /* === Body === */
-  .modal_body {
-    overflow-y: auto;
-    position: relative;
-    flex: 1 1 auto; /* Toma todo el espacio disponible del modal */
-    flex-direction: column;
-    display: flex;
+}
+
+/*
+  En pantallas con poca altura se conserva el espacio
+  disponible y el desplazamiento interno del contenido.
+*/
+
+@media (max-height: 560px) {
+  .wrapper {
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
-  
-  /* === Animations: Container (BackDrop) Fade === */
-  .fadeInFast {
-    animation: fadeInBackdrop 0.1s linear;
+
+  .modal {
+    max-height: calc(100vh - 20px);
   }
-  
-  .fadeInSlow {
-    animation: fadeInBackdrop 0.5s linear;
+}
+
+/* =========================================================
+   DYNAMIC VIEWPORT
+   ========================================================= */
+
+@supports (height: 100dvh) {
+  .modal {
+    --modal-offscreen-y: calc(-100dvh - 100% - 24px);
   }
-  
-  @keyframes fadeInBackdrop {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  /* === Animations: Modal Slide From Top + Fade === */
-  .fadeIn {
-    animation: slideFromTopIn 0.3s ease-out forwards;
-  }
-  
-  .fadeOut {
-    animation: slideFromTopOut 0.3s ease-in forwards;
-  }
-  
-  @keyframes slideFromTopIn {
-    from {
-      opacity: 0;
-      transform: translateY(-100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+  @media (max-width: 640px) {
+    .modal {
+      max-height: calc(100dvh - 20px);
     }
   }
-  
-  @keyframes slideFromTopOut {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-100%);
+
+  @media (max-height: 560px) {
+    .modal {
+      max-height: calc(100dvh - 20px);
     }
   }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .backdrop {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  /*
+    Se elimina el desplazamiento prolongado.
+    El ciclo de vida se completa mediante el respaldo
+    JavaScript cuando no existe transitionend.
+  */
+
+  .preparing .modal,
+  .closing .modal {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .preparing .backdrop,
+  .closing .backdrop {
+    clip-path: inset(0);
+  }
+
+  .close_button {
+    transition-duration: 1ms;
+  }
+}

@@ -79,6 +79,25 @@ export const GoalModal: React.FC<GoalModalProps> = ({
                 onValueChange={(value) => {
                   return handleGoalChange(value != null ? String(value) : '')
                 }}
+             onKeyDown={(event) => {
+               if (event.key !== 'Enter') return
+
+               const rawValue = event.currentTarget.value
+
+               // Convierte $110.000,50 → 110000.50
+               const numericValue = Number(
+                 rawValue
+                   .replace(/[^\d,.-]/g, '')
+                   .replace(/\./g, '')
+                   .replace(',', '.')
+               )
+
+               if (!Number.isFinite(numericValue)) return
+
+               handleGoalChange(rawValue)
+
+               upsertGoal(numericValue)
+             }}
               />
             </div>
           </Column>

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import {
   Button,
@@ -65,7 +64,18 @@ export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
               Tiempo de entrega
             </Text>
             <Row className={styles.container_input}>
-              <TimeInput onChange={handleDeliveryTimeChange} value={deliveryTime} />
+              <TimeInput
+                onChange={handleDeliveryTimeChange}
+                value={deliveryTime}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      setDeliveryTimeOpen(false)
+                      createDeliveryTime(
+                        Number(event.currentTarget.value)
+                      )
+                    }
+                  }}
+              />
             </Row>
           </Column>
           <Column className={styles.actions}>
@@ -95,13 +105,4 @@ export const DeliveryTime: React.FC<DeliveryTimeProps> = ({
       </AwesomeModal>
     </div>
   )
-}
-
-DeliveryTime.propTypes = {
-  createDeliveryTime: PropTypes.func,
-  deliveryTime: PropTypes.string,
-  handleDeliveryTimeChange: PropTypes.func,
-  isOpen: PropTypes.bool,
-  loading: PropTypes.bool,
-  setDeliveryTimeOpen: PropTypes.func
 }

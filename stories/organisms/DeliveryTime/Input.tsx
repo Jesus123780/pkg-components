@@ -1,33 +1,68 @@
-import PropTypes from 'prop-types'
-import React from 'react'
+'use client'
+
+import React, {
+  type ChangeEvent,
+  type FC,
+  type KeyboardEventHandler
+} from 'react'
+
 import styles from './styles.module.css'
 
-export const TimeInput = ({ value, onChange }) => {
+interface TimeInputProps {
+  value?: number | string | null
+  onChange?: (value: number | null) => void
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>
+}
 
-  const handleChange = (event) => {
+export const TimeInput: FC<TimeInputProps> = ({
+  value,
+  onChange,
+  onKeyDown
+}) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     const inputValue = event.target.value
-    if (inputValue === '' || (!isNaN(inputValue) && (parseInt(inputValue) >= 1 && parseInt(inputValue) <= 60))) {
-      onChange(inputValue === '' ? null : parseInt(inputValue, 10))
+
+    if (inputValue === '') {
+      onChange?.(null)
+      return
+    }
+
+    const numericValue = Number(inputValue)
+
+    if (
+      Number.isInteger(numericValue) &&
+      numericValue >= 1 &&
+      numericValue <= 60
+    ) {
+      onChange?.(numericValue)
     }
   }
-  
 
   return (
     <div className={styles.inputContainer}>
-      <input 
+      <input
         className={styles.inputField}
-        id='input_date'
+        id="input_date"
         onChange={handleChange}
-        placeholder=' '
-        type='number'
-        value={value}
+        onKeyDown={onKeyDown}
+        placeholder=" "
+        type="number"
+        min={1}
+        max={60}
+        step={1}
+        value={value ?? ''}
       />
-      <label className={styles.label} htmlFor='input_date'>Minutos (1-60)</label>
+
+      <label
+        className={styles.label}
+        htmlFor="input_date"
+      >
+        Minutos (1-60)
+      </label>
     </div>
   )
 }
 
-TimeInput.propTypes = {
-  onChange: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-}
+TimeInput.displayName = 'TimeInput'

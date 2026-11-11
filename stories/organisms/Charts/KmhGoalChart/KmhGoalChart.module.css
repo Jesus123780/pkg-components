@@ -1,0 +1,257 @@
+/* =========================================================
+   ROOT
+========================================================= */
+
+.root {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  gap: 8px;
+  min-width: 0;
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+/* =========================================================
+   CHART
+========================================================= */
+
+.chart {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  user-select: none;
+}
+
+/* =========================================================
+   TRACK
+========================================================= */
+
+.track {
+  fill: none;
+  pointer-events: none;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress {
+  fill: none;
+  pointer-events: none;
+  transform-origin: center;
+  will-change: d;
+}
+
+/* =========================================================
+   TICKS
+========================================================= */
+
+.tick {
+  fill: none;
+  pointer-events: none;
+}
+
+/* =========================================================
+   GOAL MARKER
+========================================================= */
+
+.goalMarker {
+  fill: none;
+  pointer-events: none;
+}
+
+/* =========================================================
+   SVG TEXT
+========================================================= */
+
+.percentageText,
+.valueText,
+.endpointLabel {
+  font-family: inherit;
+  user-select: none;
+  pointer-events: none;
+}
+
+.percentageText {
+  dominant-baseline: auto;
+}
+
+.valueText {
+  dominant-baseline: auto;
+}
+
+.endpointLabel {
+  font-weight: 500;
+}
+
+/* =========================================================
+   CUSTOM CENTER CONTENT
+========================================================= */
+
+.centerContent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+  padding: 12px;
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+/* =========================================================
+   META / ADDITIONAL INFORMATION
+========================================================= */
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+
+.caption {
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  color: #777;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.statusLabel {
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.overflowLabel {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.goalReachedLabel {
+  color: #18864b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.legend {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 0;
+}
+
+.legendHorizontal {
+  flex-direction: row;
+}
+
+.legendVertical {
+  flex-direction: column;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.legendSwatch {
+  display: inline-block;
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.legendContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.legendLabel {
+  color: #444;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.legendDescription {
+  color: #888;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.legendValue {
+  color: #333;
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 3px;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 480px) {
+  .caption {
+    font-size: 13px;
+  }
+
+  .description {
+    font-size: 11px;
+  }
+
+  .centerContent {
+    padding: 8px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .progress {
+    transition: none !important;
+    animation: none !important;
+    will-change: auto;
+  }
+}

@@ -1,27 +1,493 @@
+
+/* =========================================================
+   TOKENS Y CONTENEDOR DE LA NUEVA LÍNEA DE TIEMPO
+   ========================================================= */
+
+.timelineWrapper {
+    width: 100%;
+    min-width: 0;
+    padding-bottom: 24px;
+    --schedule-hour-height: 48px;
+}
+
+.timelineContainer {
+    width: 100%;
+    min-width: 0;
+    animation: scheduleContainerEnter 360ms cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.timelineLegend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 18px;
+    padding: 0 4px;
+}
+
+.timelineLegendItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-neutral-gray-dark, #666);
+    font-family: PFont-Light;
+    font-size: var(--font-size-xs);
+}
+
+.legendOpen,
+.legendClosed,
+.legendCurrent {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    border-radius: 3px;
+}
+
+.legendOpen {
+    background: rgb(38, 175, 72);
+}
+
+.legendClosed {
+    background: var(--color-neutral-gray);
+}
+
+.legendCurrent {
+    height: 3px;
+    width: 14px;
+    border-radius: 10px;
+    background: var(--color-primary-red);
+}
+
+.timelineViewport {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 2px 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neutral-gray) transparent;
+}
+
+.timelineViewport::-webkit-scrollbar {
+    height: 8px;
+}
+
+.timelineViewport::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.timelineViewport::-webkit-scrollbar-thumb {
+    background: var(--color-neutral-gray);
+    border-radius: 20px;
+}
+
+.timelineCanvas {
+    width: 100%;
+    min-width: 980px;
+}
+
+/* =========================================================
+   CABECERA DE LOS DÍAS
+   ========================================================= */
+
+.timelineHeader {
+    display: grid;
+    grid-template-columns: 76px repeat(7, minmax(120px, 1fr));
+    gap: 0;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 12px;
+}
+
+.timelineCorner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 4px;
+    color: var(--color-neutral-gray-dark, #666);
+    font-family: PFont-Light;
+    font-size: var(--font-size-xs);
+}
+
+.dayHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 7px;
+    min-width: 0;
+    min-height: 76px;
+    margin: 0 5px;
+    padding: 11px 10px;
+    border: 1px solid var(--color-neutral-gray);
+    border-radius: 10px;
+    background: var(--color-base-transparent);
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition:
+        transform 220ms cubic-bezier(.2, .75, .25, 1),
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        background-color 220ms ease;
+}
+
+.dayHeader:hover {
+    transform: translateY(-3px);
+    border-color: rgb(38, 175, 72);
+    box-shadow: var(--box-shadow-xs);
+}
+
+.dayHeader:active {
+    transform: translateY(-1px) scale(.985);
+}
+
+.dayHeader:focus-visible {
+    outline: 2px solid var(--color-primary-red);
+    outline-offset: 3px;
+}
+
+.dayHeaderToday {
+    border-color: var(--color-primary-red);
+    background: color-mix(
+        in srgb,
+        var(--color-primary-red) 5%,
+        transparent
+    );
+}
+
+.dayHeaderName {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    color: var(--color-base-black, #25262b);
+    font-family: PFont-Light;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.todayIndicator {
+    padding: 3px 7px;
+    border-radius: 20px;
+    background: var(--color-primary-red);
+    color: white;
+    font-size: 10px;
+    line-height: 1;
+}
+
+.dayHeaderStatus {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    padding: 4px 7px;
+    border-radius: 5px;
+    font-family: PFont-Light;
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.dayHeaderStatusOpen {
+    background: rgb(224, 242, 223);
+    color: rgb(38, 175, 72);
+}
+
+.dayHeaderStatusClosed {
+    background: var(--color-neutral-gray);
+    color: var(--color-neutral-gray-dark, #666);
+}
+
+.dayHeaderCount {
+    color: var(--color-neutral-gray-dark, #666);
+    font-family: PFont-Light;
+    font-size: 10px;
+}
+
+/* =========================================================
+   CUERPO DE LA LÍNEA DE TIEMPO
+   ========================================================= */
+
+.timelineBody {
+    display: grid;
+    grid-template-columns: 76px repeat(7, minmax(120px, 1fr));
+    align-items: stretch;
+    position: relative;
+    border: 1px solid var(--color-neutral-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--color-base-transparent);
+}
+
+.timeScale {
+    height: calc(var(--schedule-hour-height) * 24);
+    position: relative;
+    background: var(--color-base-transparent);
+    border-right: 1px solid var(--color-neutral-gray);
+}
+
+.timeTick {
+    position: absolute;
+    left: 0;
+    right: 5px;
+    z-index: 1;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 5px;
+    color: var(--color-neutral-gray-dark, #777);
+    font-family: PFont-Light;
+    font-size: 10px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.dayTrack {
+    height: calc(var(--schedule-hour-height) * 24);
+    position: relative;
+    min-width: 0;
+    overflow: visible;
+    border-right: 1px solid var(--color-neutral-gray);
+    background-color: var(--color-base-transparent);
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(var(--schedule-hour-height) - 1px),
+        var(--color-neutral-gray) calc(var(--schedule-hour-height) - 1px),
+        var(--color-neutral-gray) var(--schedule-hour-height)
+    );
+    cursor: pointer;
+    transition: background-color 180ms ease;
+}
+
+.dayTrack:last-child {
+    border-right: none;
+}
+
+.dayTrack:hover {
+    background-color: color-mix(
+        in srgb,
+        var(--color-neutral-gray) 12%,
+        transparent
+    );
+}
+
+.dayTrackToday {
+    background-color: color-mix(
+        in srgb,
+        var(--color-primary-red) 3%,
+        transparent
+    );
+}
+
+.dayTrack:focus-visible {
+    outline: 2px solid var(--color-primary-red);
+    outline-offset: -3px;
+}
+
+.closedLabel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    white-space: nowrap;
+    color: var(--color-neutral-gray-dark, #888);
+    font-family: PFont-Light;
+    font-size: 10px;
+    pointer-events: none;
+}
+
+/* =========================================================
+   BLOQUES DE HORARIOS
+   ========================================================= */
+
+.scheduleBlock {
+    position: absolute;
+    z-index: 2;
+    left: 5px;
+    right: 5px;
+    width: calc(100% - 10px);
+    min-height: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    padding: 7px 6px;
+    overflow: hidden;
+    border: 1px solid color-mix(
+        in srgb,
+        rgb(38, 175, 72) 35%,
+        transparent
+    );
+    border-radius: 6px;
+    background: rgb(224, 242, 223);
+    color: rgb(38, 175, 72);
+    cursor: pointer;
+    text-align: left;
+    transform-origin: center;
+    animation: scheduleBlockEnter 340ms cubic-bezier(.2, .75, .25, 1) both;
+    transition:
+        transform 200ms cubic-bezier(.2, .75, .25, 1),
+        box-shadow 200ms ease,
+        border-color 200ms ease,
+        background-color 200ms ease;
+}
+
+.scheduleBlock:hover {
+    z-index: 4;
+    transform: translateY(-2px) scale(1.015);
+    border-color: rgb(38, 175, 72);
+    box-shadow: 0 4px 12px color-mix(
+        in srgb,
+        rgb(38, 175, 72) 20%,
+        transparent
+    );
+    background: color-mix(
+        in srgb,
+        rgb(224, 242, 223) 80%,
+        white
+    );
+}
+
+.scheduleBlock:active {
+    transform: scale(.98);
+}
+
+.scheduleBlock:focus-visible {
+    outline: 2px solid var(--color-primary-red);
+    outline-offset: 2px;
+}
+
+.scheduleBlockTime {
+    width: 100%;
+    overflow: hidden;
+    color: rgb(38, 125, 58);
+    font-family: PFont-Light;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.scheduleBlockDuration {
+    color: rgb(38, 125, 58);
+    font-family: PFont-Light;
+    font-size: 9px;
+    line-height: 1.2;
+}
+
+.scheduleBlockContinuation {
+    color: rgb(38, 125, 58);
+    font-family: PFont-Light;
+    font-size: 9px;
+    line-height: 1.2;
+}
+
+/* =========================================================
+   INDICADOR DE HORA ACTUAL
+   ========================================================= */
+
+.currentTimeLine {
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-primary-red);
+    pointer-events: none;
+}
+
+.currentTimeLine::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-primary-red);
+}
+
+.currentTimeLabel {
+    position: absolute;
+    top: -16px;
+    right: 3px;
+    padding: 3px 5px;
+    border-radius: 4px;
+    background: var(--color-primary-red);
+    color: white;
+    font-family: PFont-Light;
+    font-size: 9px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* Accesibilidad */
+
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* =========================================================
+   ANIMACIONES
+   No utilizan opacity para evitar desvanecimientos.
+   ========================================================= */
+
+@keyframes scheduleContainerEnter {
+    from {
+        transform: translateY(8px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes scheduleBlockEnter {
+    from {
+        transform: translateY(8px) scale(.97);
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   COMPATIBILIDAD CON EL CALENDARIO ANTERIOR
+   ========================================================= */
+
 .container {
     display: flex;
     margin-top: 110px;
 }
 
 .timeColumn {
-    cursor: pointer;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     justify-content: space-between;
-    padding-right: 10px;
     width: 110px;
+    padding-right: 10px;
     box-shadow: var(--box-shadow-xs);
 }
 
 .time {
-    font-family: PFont-Light;
-    text-align: right;
-    padding-right: 5px;
     position: relative;
     height: 110px;
+    padding-right: 5px;
+    font-family: PFont-Light;
     font-size: var(--font-size-xs);
+    text-align: right;
 }
+
 .time::after {
     content: '';
     position: absolute;
@@ -31,44 +497,51 @@
     height: 1px;
     border-top: 1px solid var(--color-neutral-gray);
 }
+
 .time:last-child {
     height: 110px;
 }
 
 .scheduleGrid {
-    border-radius: 10px;
-    border: 1px solid var(--color-neutral-gray);
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     width: var(--width-max-desktop);
+    border: 1px solid var(--color-neutral-gray);
+    border-radius: 10px;
 }
 
 .dayColumn {
-    border-left: 1px solid var(--color-neutral-gray);
+    position: relative;
     display: flex;
     flex-direction: column;
+    border-left: 1px solid var(--color-neutral-gray);
     font-family: PFont-Light;
-    position: relative;
 }
+
 .dayColumn:first-child {
     border-left: none;
 }
 
 .dayLabel_action {
+    position: absolute;
+    top: -70px;
+    margin-bottom: 5px;
+    padding: 10px;
+    border: 0;
     border-radius: 110px;
+    background: transparent;
     color: rgb(38, 175, 72);
     font-family: PFont-Light;
     font-size: var(--font-size-xs);
     font-weight: 500;
-    margin-bottom: 5px;
-    padding: 10px;
-    position: absolute;
-    top: -70px;
+    cursor: pointer;
 }
 
 .hourCell {
     position: relative;
     height: 110px;
+    padding: 0;
+    border: 0;
     background-color: var(--color-base-transparent);
 }
 
@@ -83,16 +556,15 @@
 }
 
 .event {
+    display: flex;
+    align-items: center;
+    width: -webkit-fill-available;
+    height: 110px;
+    margin-bottom: 3px;
+    padding: 0 10px;
     background-color: rgb(224, 242, 223);
     color: rgb(38, 175, 72);
-    margin-bottom: 3px;
     font-size: var(--font-size-xs);
-    height: 110px;
-    display: flex; /* Hacer que el contenido sea flex */
-    align-items: center; /* Alinear verticalmente el contenido */
-    padding: 0 10px; /* Añadir espaciado interior */
-    width: -webkit-fill-available;
-    
 }
 
 .hourCell_close {
@@ -102,10 +574,57 @@
 
 .line_close {
     position: absolute;
+    top: 50%;
     width: 200px;
     min-width: 200px;
     max-width: 200px;
-    top: 50%;
     border-top: .5px solid var(--color-neutral-gray);
     transform: rotate(31deg) scale(1.9) translate(2px, 2px);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .timelineLegend {
+        gap: 10px;
+    }
+
+    .timelineLegendItem {
+        font-size: 10px;
+    }
+
+    .timelineWrapper {
+        --schedule-hour-height: 44px;
+    }
+
+    .timelineCanvas {
+        min-width: 930px;
+    }
+
+    .dayHeader {
+        min-height: 70px;
+        padding: 9px 7px;
+    }
+
+    .scheduleBlock {
+        left: 3px;
+        right: 3px;
+        width: calc(100% - 6px);
+        padding: 5px 4px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .timelineContainer,
+    .scheduleBlock {
+        animation: none;
+    }
+
+    .dayHeader,
+    .dayTrack,
+    .scheduleBlock {
+        transition: none;
+    }
 }

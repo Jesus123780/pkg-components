@@ -1,7 +1,7 @@
 'use client'
 
 // pkg json
-import pkg from './package.json';
+import pkg from './package.json'
 
 // main styles
 import './stories/assets/public/styles.css'
@@ -45,4 +45,4 @@ export * from './scripts/tokens/choices'
 export { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 export type { DropResult } from 'react-beautiful-dnd'
 
-export const version = pkg.version;
+export const version = pkg.version
