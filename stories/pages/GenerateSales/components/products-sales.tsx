@@ -39,7 +39,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
 }) => {
   return <>
 
-        {!isLoading && data.PRODUCT.length > 0
+        {Array.isArray(data?.PRODUCT) && data.PRODUCT.length > 0
           ? (
               data.PRODUCT.map((product: any, index: number) => {
                 const tag = {
@@ -122,6 +122,8 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
 
                                     {/* sub productos  */}
                                     <button
+                                        type='button'
+                                        aria-label={`Configurar complementos de ${product.pName}`}
                                         onClick={(e) => {
                                           e.stopPropagation() // evita que se propague al card
                                           onClick(product)
@@ -181,7 +183,7 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
                                 ValueDelivery={product.ValueDelivery}
                                 withQuantity={true}
                                 hoverFree={true}
-                                free={ProPrice === 0}
+                                free={product.free === true}
                                 handleComment={() => {
                                   handleComment(product)
                                 }}
