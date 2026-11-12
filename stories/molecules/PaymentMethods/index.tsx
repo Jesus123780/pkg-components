@@ -28,7 +28,10 @@ export const PaymentMethods: React.FC<PaymentMethodsProps> = ({
         {methods.map((method) => {
           return (
             <Column key={method.id}>
-          <Column
+          <button
+            type='button'
+            aria-label={`Pagar con ${method.name}`}
+            aria-pressed={payId === method.id}
             className={`${styles.method} ${
               payId === method.id ? styles.selected : ''
             }`}
@@ -44,7 +47,7 @@ export const PaymentMethods: React.FC<PaymentMethodsProps> = ({
               icon={method.icon}
               size={50}
             />
-          </Column>
+          </button>
             <Text align='center'>
               {method.name}
             </Text>
