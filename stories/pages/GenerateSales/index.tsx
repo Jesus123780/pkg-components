@@ -124,18 +124,21 @@ interface GenerateSalesProps {
 
   isLoading?: boolean
 
+  /** Checkout is being submitted; independent from catalog loading. */
+  isSubmittingSale?: boolean
+
   data?: Data
 
   values?: {
     cliId: string
     change: string
-    ValueDelivery: string
+    valueDelivery: string
     tableId: string
   }
 
   errors?: {
     change: boolean
-    ValueDelivery: boolean
+    valueDelivery: boolean
   }
 
   paymentMethods?: Methods[]
@@ -348,7 +351,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   values = {
     cliId: '',
     change: '',
-    ValueDelivery: '',
+    valueDelivery: '',
     tableId: ''
   },
 
@@ -356,7 +359,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
 
   errors = {
     change: false,
-    ValueDelivery: false
+    valueDelivery: false
   },
 
   pagination = {
@@ -367,6 +370,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   show = false,
   openAside = false,
   isLoading = false,
+  isSubmittingSale = false,
   loadingClients = false,
 
   dataFilter,
@@ -908,9 +912,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   discountPercent={data.discountPercent ?? 0}
                   discountAmount={data?.discountAmount ?? 0}
                   payId={
-                    paymentMethods[
-                      Number(data?.payId) - 1
-                    ]?.name ?? paymentMethods[0]?.name
+                    paymentMethods.find(
+                      method => method.id === data?.payId
+                    )?.name ?? 'Sin seleccionar'
                   }
                 />
               </div>
@@ -1044,7 +1048,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
                   <div className={styles['content__action-button']}>
                     <Button
                       primary
-                      disabled={!data?.PRODUCT?.length}
+                      disabled={!data?.PRODUCT?.length || isSubmittingSale}
                       onClick={handleOpenAside}
                     >
                       Continuar
@@ -1074,11 +1078,11 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         handleSave={handleSave}
         client={client}
         disabled={!data?.PRODUCT?.length}
+        isSubmittingSale={isSubmittingSale}
         totalProductPrice={String(totalProductPrice)}
         discountType={data?.discountType ?? 'PERCENT'}
         discountPercent={data.discountPercent ?? 0}
         discountAmount={data?.discountAmount ?? 0}
-        discountResetKey={data?.PRODUCT?.length ?? 0}
         storeTables={normalizedStoreTables as any}
         overline
         payId={data?.payId}

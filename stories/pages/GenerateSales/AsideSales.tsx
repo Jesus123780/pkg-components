@@ -23,6 +23,7 @@ import styles from './styles.module.css'
 interface AsideProps {
   openAside?: boolean
   disabled: boolean
+  isSubmittingSale?: boolean
   overline?: boolean
   loadingClients?: boolean
   payId?: string
@@ -39,14 +40,14 @@ interface AsideProps {
 
   values?: {
     cliId: string
-    ValueDelivery: string
+    valueDelivery: string
     change: string
     tableId: string
   }
 
   errors?: {
     change: boolean
-    ValueDelivery: boolean
+    valueDelivery: boolean
   }
 
   discountType?: 'PERCENT' | 'AMOUNT'
@@ -72,6 +73,7 @@ interface AsideProps {
 export const AsideSales: React.FC<AsideProps> = ({
   openAside = false,
   disabled,
+  isSubmittingSale = false,
   loadingClients = false,
   payId = '',
   paymentMethods = [],
@@ -81,7 +83,7 @@ export const AsideSales: React.FC<AsideProps> = ({
     cliId: '',
     change: '',
     tableId: '',
-    ValueDelivery: ''
+    valueDelivery: ''
   },
   overline = false,
   discountType = 'PERCENT',
@@ -111,6 +113,7 @@ export const AsideSales: React.FC<AsideProps> = ({
   }
 
   const handleGenerateSale = (): void => {
+    if (disabled || isSubmittingSale) return
     handleOpenAside()
     handleSave()
   }
@@ -163,7 +166,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           ========================================= */}
 
           <Column className={styles.content} style={{
-            overflow: 'scroll',
+            overflow: 'auto',
             height: 'min-content'
           }}>
             <Divider
@@ -281,18 +284,18 @@ export const AsideSales: React.FC<AsideProps> = ({
               disabled={false}
               groupSeparator='.'
               label='Precio del domicilio'
-              name='ValueDelivery'
+              name='valueDelivery'
               onValueChange={(value) => {
                 handleChange({
                   target: {
-                    name: 'ValueDelivery',
+                    name: 'valueDelivery',
                     value
                   }
                 })
               }}
               placeholder='$ 0.00'
               prefix='$'
-              value={values.ValueDelivery}
+              value={values.valueDelivery}
             />
 
             <OrderDiscount
@@ -312,7 +315,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           <div className={styles.footer}>
             <Button
               primary
-              disabled={disabled}
+              disabled={disabled || isSubmittingSale}
               width='100%'
               tabIndex={8}
               onClick={handleGenerateSale}
@@ -322,7 +325,7 @@ export const AsideSales: React.FC<AsideProps> = ({
                 justifyContent: 'center'
               }}
             >
-              Generar venta
+              {isSubmittingSale ? 'Procesando venta…' : 'Generar venta'}
             </Button>
           </div>
         </Column>
