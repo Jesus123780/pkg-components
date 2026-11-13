@@ -1,6 +1,12 @@
-import React, { type FC, memo, useEffect, useRef, useState } from 'react'
+'use client'
 
-interface DiskProps {
+import { memo, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties, FC, TransitionEvent } from 'react'
+import styles from './CounterAnimation.module.css'
+import { getDiskNumbers } from './utils'
+
+/** API original de Disk conservada; las nuevas opciones son opcionales. */
+export interface DiskProps {
   delay: number
   number: string
   prevNumber: string
@@ -8,129 +14,112 @@ interface DiskProps {
   level: boolean
   size: string
   initialValue: number
-  unit: 'px' | 'em' | 'rem'
+  unit?: 'px' | 'em' | 'rem'
+  duration?: number
+  staggerDelay?: number
+  easing?: CSSProperties['transitionTimingFunction']
+  animated?: boolean
+  digitClassName?: string
+  lineHeight?: number
+  digitWidth?: number
 }
 
-const getDiskNumbers = (
-  from: number,
-  to: number,
-  isIncreasing: boolean,
-  level: boolean
-): number[] => {
-  const range: number[] = []
-  if (isIncreasing) {
-    for (let i = from; i <= to; i++) {
-      range.push(i % 10)
-    }
-  } else {
-    for (let i = from; i >= to; i--) {
-      range.push(i % 10)
-    }
-  }
-
-  // Asegurarse de siempre incluir el último número para mostrarlo claramente al final
-  range.push(to % 10)
-
-  return level ? [to % 10] : range
+const sanitize = (value: string): number => {
+  const number = Number(value)
+  return Number.isFinite(number) ? Math.max(0, Math.min(9, Math.trunc(number))) : 0
 }
 
-const MemoDisk: FC<DiskProps> = ({
+const getFontSize = (size: string, unit?: 'px' | 'em' | 'rem'): string =>
+  unit && /^\d+(?:\.\d+)?$/.test(size.trim()) ? `${size}${unit}` : size
+
+/**
+ * Una sola transición CSS de transform por cambio. La ruta tiene <=10 celdas,
+ * sin re-render por frame, sin Math.random y con rAF cancelable.
+ */
+const DiskImpl: FC<DiskProps> = ({
   delay,
+  number,
+  prevNumber,
+  isIncreasing,
+  level,
   size,
   unit,
-  prevNumber,
-  initialValue,
-  number,
-  isIncreasing,
-  level
+  duration,
+  staggerDelay = 0,
+  easing = 'cubic-bezier(.22,1,.36,1)',
+  animated = true,
+  digitClassName,
+  lineHeight = 1.12,
+  digitWidth = 0.64
 }) => {
-  const [value, setValue] = useState(initialValue)
-  const prevValue = parseInt(prevNumber, 10)
+  const from = sanitize(prevNumber)
+  const to = sanitize(number)
+  // Disk antiguo desactivaba el giro cuando level=true; se conserva.
+  const steps = useMemo(() => level ? [to] : getDiskNumbers(from, to, isIncreasing), [from, to, isIncreasing, level])
+  const [playing, setPlaying] = useState(!animated || steps.length <= 1)
+  const [settled, setSettled] = useState(!animated || steps.length <= 1)
+  const rafs = useRef<number[]>([])
+  const shouldAnimate = animated && steps.length > 1 && (duration ?? delay) > 0
 
-  const [offsetY, setOffsetY] = useState(0)
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (isFirstLoad) {
-      setIsFirstLoad(false)
+  useLayoutEffect(() => {
+    rafs.current.forEach(id => cancelAnimationFrame(id))
+    rafs.current = []
+    if (!shouldAnimate) {
+      setPlaying(true)
+      setSettled(true)
       return
     }
-    setValue(parseInt(number, 10))
-    const diskValues = getDiskNumbers(prevValue, value, isIncreasing, Boolean(level))
-    const finalOffset = -size * (diskValues.length - 1)
-
-    let start: number | null = null
-    const duration = delay // ms
-
-    const animate = (timestamp: number): void => {
-      if (start === null) start = timestamp
-      const elapsed = timestamp - start
-
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = easeOutCubic(progress)
-      const currentOffset = eased * finalOffset
-
-      setOffsetY(currentOffset)
-
-      if (progress < 1) {
-        requestAnimationFrame(animate)
-      }
+    setPlaying(false)
+    setSettled(false)
+    // Dos frames fuerzan la aplicación del transform inicial antes de transicionar.
+    const first = requestAnimationFrame(() => {
+      const second = requestAnimationFrame(() => setPlaying(true))
+      rafs.current.push(second)
+    })
+    rafs.current.push(first)
+    return () => {
+      rafs.current.forEach(id => cancelAnimationFrame(id))
+      rafs.current = []
     }
+  }, [from, to, isIncreasing, level, shouldAnimate, duration, delay, staggerDelay, easing])
 
-    requestAnimationFrame(animate)
-  }, [value, prevValue, size, delay, isFirstLoad])
+  const actualDigits = settled ? [to] : steps
+  const shift = settled ? 0 : playing ? Math.max(0, steps.length - 1) : 0
+  const fontSize = getFontSize(size, unit)
+  const reelStyle: CSSProperties = {
+    transform: `translate3d(0, ${(-shift * lineHeight).toFixed(4)}em, 0)`,
+    transitionDuration: shouldAnimate && !settled ? `${Math.max(0, duration ?? delay)}ms` : '0ms',
+    transitionDelay: shouldAnimate && !settled ? `${Math.max(0, staggerDelay)}ms` : '0ms',
+    transitionTimingFunction: easing
+  }
 
-  const diskValues = getDiskNumbers(prevValue, value, isIncreasing, Boolean(level))
+  const windowStyle: CSSProperties = {
+    fontSize,
+    height: `${lineHeight}em`,
+    minWidth: `${digitWidth}em`,
+    width: `${digitWidth}em`
+  }
 
   return (
-    <div
-      style={{
-        overflow: 'hidden',
-        height: `${size}${unit}`,
-        width: `${Number(size) * 0.6}${unit}`,
-        display: 'inline-block'
-      }}
-    >
-      <div
-        ref={ref}
-        style={{
-          transform: `translateY(${offsetY}${unit})`,
-          transition: 'transform 0.4s ease-out',
-          display: 'flex',
-          flexDirection: 'column',
-          width: 'min-content',
-          alignItems: 'center'
+    <span className={[styles.digitWindow, digitClassName].filter(Boolean).join(' ')}
+      style={windowStyle} data-testid="counter-digit" data-digit={to} aria-hidden="true">
+      <span
+        className={styles.reel}
+        style={reelStyle}
+        onTransitionEnd={(event: TransitionEvent<HTMLSpanElement>) => {
+          if (playing && event.target === event.currentTarget && event.propertyName === 'transform') {
+            setSettled(true)
+          }
         }}
       >
-        {diskValues.map((d, i) => {
-          return (
-            <span
-              key={`${d}-${i}`}
-              style={{
-                fontSize: `${size}${unit}`,
-                height: `${size}${unit}`,
-                lineHeight: '0.9',
-                width: 'min-content',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontVariantNumeric: 'tabular-nums'
-              }}
-            >
-              {d}
-            </span>
-          )
-        })}
-      </div>
-    </div>
+        {actualDigits.map((digit, index) => (
+          <span className={styles.cell} style={{ height: `${lineHeight}em` }}
+            key={`${index}-${digit}`}>{digit}</span>
+        ))}
+      </span>
+    </span>
   )
 }
 
-const easeOutCubic = (t: number): number => --t * t * t + 1
-
-export const Disk = memo(MemoDisk, (prevProps, nextProps) => {
-  return (
-    prevProps.number === nextProps.number
-  )
-})
+DiskImpl.displayName = 'Disk'
+export const Disk = memo(DiskImpl)

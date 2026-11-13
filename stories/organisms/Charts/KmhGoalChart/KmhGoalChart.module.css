@@ -1,22 +1,104 @@
-/* =========================================================
-   ROOT
-========================================================= */
+/*
+ * KmhGoalChart — isolated, token-driven, responsive CSS Module.
+ * Customise via containerStyle CSS variables or className. No global selectors.
+ * Motion is JS-driven only for the numeric progress. CSS animates decorative UI.
+ */
 
 .root {
+  --kgc-progress: var(--color-primary-red, #df3947);
+  --kgc-track: #e8ebf1;
+  --kgc-surface: #ffffff;
+  --kgc-text: #202b40;
+  --kgc-muted: #68768c;
+  --kgc-border: #dde3ed;
+  --kgc-shadow: 0 10px 32px rgb(29 43 70 / 7%);
+  --kgc-success: #137c52;
+  --kgc-warning: #b76b13;
+  --kgc-danger: #c43845;
+  --kgc-space: 10px;
+  --kgc-radius: 18px;
+
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  position: relative;
-  gap: 8px;
+  gap: var(--kgc-space);
   min-width: 0;
-  vertical-align: middle;
   max-width: 100%;
+  box-sizing: border-box;
+  isolation: isolate;
+  color: var(--kgc-text);
+  vertical-align: middle;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* =========================================================
-   CHART
-========================================================= */
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.densityComfortable { --kgc-space: 10px; }
+.densityCompact { --kgc-space: 5px; }
+
+.tonePrimary { --kgc-progress: var(--kgc-theme-progress, var(--color-primary-red, #df3947)); }
+.toneSuccess { --kgc-progress: var(--kgc-success); }
+.toneWarning { --kgc-progress: var(--kgc-warning); }
+.toneDanger { --kgc-progress: var(--kgc-danger); }
+.toneNeutral { --kgc-progress: #63748b; }
+
+/* Existing calls without variant continue to render with no card background. */
+.variantPlain { padding: 0; }
+.variantMinimal { --kgc-track: #edf0f4; --kgc-space: 5px; padding: 0; }
+.variantSoft {
+  padding: clamp(12px, 3%, 22px);
+  border-radius: var(--kgc-radius);
+  background: #f7f8fb;
+  background: color-mix(in srgb, var(--kgc-progress) 5%, var(--kgc-surface));
+}
+.variantCard {
+  padding: clamp(14px, 3%, 24px);
+  border: 1px solid var(--kgc-border);
+  border-radius: var(--kgc-radius);
+  background: var(--kgc-surface);
+  box-shadow: var(--kgc-shadow);
+}
+.variantOutline {
+  padding: clamp(12px, 3%, 22px);
+  border: 1px solid var(--kgc-border);
+  border-radius: var(--kgc-radius);
+  background: transparent;
+}
+.variantGlass {
+  padding: clamp(14px, 3%, 24px);
+  border: 1px solid rgb(255 255 255 / 45%);
+  border-radius: var(--kgc-radius);
+  background: rgb(255 255 255 / 82%);
+  box-shadow: var(--kgc-shadow);
+}
+@supports (backdrop-filter: blur(12px)) {
+  .variantGlass {
+    background: rgb(255 255 255 / 58%);
+    backdrop-filter: blur(12px) saturate(115%);
+  }
+}
+
+.responsive { width: 100%; }
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 
 .chart {
   position: relative;
@@ -24,234 +106,221 @@
   flex: 0 0 auto;
   min-width: 0;
   max-width: 100%;
+  aspect-ratio: 1;
+  container: kmh-chart / inline-size;
 }
 
 .svg {
   display: block;
   width: 100%;
   height: 100%;
+  max-width: 100%;
   overflow: visible;
   user-select: none;
+  -webkit-user-select: none;
 }
 
-/* =========================================================
-   TRACK
-========================================================= */
-
-.track {
-  fill: none;
+.track,
+.zone,
+.progress,
+.tick,
+.goalMarker,
+.indicator {
   pointer-events: none;
 }
+.track,
+.zone,
+.progress,
+.tick,
+.goalMarker { fill: none; }
 
-/* =========================================================
-   PROGRESS
-========================================================= */
-
+/* Stable SVG path + animatable stroke dash offset (no invalid will-change: d). */
 .progress {
-  fill: none;
-  pointer-events: none;
-  transform-origin: center;
-  will-change: d;
+  stroke-linejoin: round;
+  transition: stroke 180ms ease-out, stroke-opacity 180ms ease-out;
+  shape-rendering: geometricPrecision;
 }
-
-/* =========================================================
-   TICKS
-========================================================= */
-
-.tick {
-  fill: none;
-  pointer-events: none;
-}
-
-/* =========================================================
-   GOAL MARKER
-========================================================= */
-
-.goalMarker {
-  fill: none;
-  pointer-events: none;
-}
-
-/* =========================================================
-   SVG TEXT
-========================================================= */
+.track { shape-rendering: geometricPrecision; }
+.zone { shape-rendering: geometricPrecision; }
+.indicator { stroke: var(--kgc-surface); stroke-width: 1.25; }
 
 .percentageText,
 .valueText,
 .endpointLabel {
   font-family: inherit;
-  user-select: none;
   pointer-events: none;
+  user-select: none;
+  text-rendering: optimizeLegibility;
 }
-
 .percentageText {
-  dominant-baseline: auto;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.035em;
 }
-
-.valueText {
-  dominant-baseline: auto;
-}
-
-.endpointLabel {
-  font-weight: 500;
-}
-
-/* =========================================================
-   CUSTOM CENTER CONTENT
-========================================================= */
+.valueText { font-variant-numeric: tabular-nums; }
+.endpointLabel { font-weight: 600; }
 
 .centerContent {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+  gap: 4px;
   min-width: 0;
-  padding: 12px;
+  padding: clamp(8px, 4%, 16px);
+  text-align: center;
+  overflow-wrap: anywhere;
   pointer-events: auto;
-  overflow: hidden;
 }
-
-/* =========================================================
-   META / ADDITIONAL INFORMATION
-========================================================= */
+/* Never hide focus outlines of buttons or controls passed as centerContent. */
+.centerContent :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--kgc-progress);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 
 .meta {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   width: 100%;
   min-width: 0;
   text-align: center;
 }
-
+.caption,
+.description,
+.statusLabel,
+.overflowLabel,
+.goalReachedLabel { max-width: 100%; overflow-wrap: anywhere; }
 .caption {
-  color: #333;
-  font-size: 14px;
-  font-weight: 600;
+  color: var(--kgc-text);
+  font-size: clamp(13px, 0.85rem, 16px);
+  font-weight: 700;
   line-height: 1.35;
-  overflow-wrap: anywhere;
+  letter-spacing: -0.015em;
 }
-
 .description {
-  color: #777;
+  color: var(--kgc-muted);
   font-size: 12px;
   font-weight: 400;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
+  line-height: 1.55;
 }
-
 .statusLabel {
-  color: #666;
+  color: var(--kgc-muted);
   font-size: 12px;
   font-weight: 600;
   line-height: 1.4;
 }
-
 .overflowLabel {
+  color: var(--kgc-warning);
   font-size: 12px;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.45;
 }
-
 .goalReachedLabel {
-  color: #18864b;
+  color: var(--kgc-success);
   font-size: 12px;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.45;
 }
-
-/* =========================================================
-   LEGEND
-========================================================= */
 
 .legend {
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
   width: 100%;
   min-width: 0;
 }
-
-.legendHorizontal {
-  flex-direction: row;
-}
-
-.legendVertical {
-  flex-direction: column;
-}
-
+.legendHorizontal { flex-direction: row; }
+.legendVertical { flex-direction: column; align-items: stretch; }
 .legendItem {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   min-width: 0;
+  max-width: 100%;
 }
-
 .legendSwatch {
   display: inline-block;
   flex: 0 0 auto;
   border-radius: 50%;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 3%);
 }
-
-.legendContent {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  gap: 2px;
-}
-
+.legendContent { display: flex; flex-direction: column; min-width: 0; gap: 2px; }
 .legendLabel {
-  color: #444;
+  color: var(--kgc-text);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 650;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
-
 .legendDescription {
-  color: #888;
+  color: var(--kgc-muted);
   font-size: 11px;
-  line-height: 1.3;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
-
 .legendValue {
-  color: #333;
+  color: var(--kgc-text);
   font-size: 12px;
-  font-weight: 700;
-  margin-left: 3px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+@container kmh-chart (max-width: 180px) {
+  .centerContent { gap: 2px; padding: 6px; font-size: 0.82em; }
+}
 
 @media (max-width: 480px) {
-  .caption {
-    font-size: 13px;
-  }
+  .caption { font-size: 13px; }
+  .description { font-size: 11px; }
+  .legend { justify-content: flex-start; }
+}
 
-  .description {
-    font-size: 11px;
+@media (prefers-color-scheme: dark) {
+  .root {
+    --kgc-track: #344052;
+    --kgc-surface: #1b2431;
+    --kgc-text: #f2f5fb;
+    --kgc-muted: #b3c0d4;
+    --kgc-border: #364152;
+    --kgc-shadow: 0 14px 34px rgb(0 0 0 / 20%);
+    --kgc-success: #5ed8a3;
+    --kgc-warning: #ffbb64;
+    --kgc-danger: #ff838a;
   }
+  .variantSoft { background: #232c3b; background: color-mix(in srgb, var(--kgc-progress) 8%, var(--kgc-surface)); }
+  .variantGlass { background: rgb(20 29 43 / 74%); border-color: rgb(255 255 255 / 12%); }
+  .indicator { stroke: var(--kgc-surface); }
+}
 
-  .centerContent {
-    padding: 8px;
+@media (prefers-reduced-motion: reduce) {
+  .progress,
+  .root *,
+  .root *::before,
+  .root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
+@media (forced-colors: active) {
+  .track { stroke: GrayText; }
+  .progress, .indicator { stroke: Highlight; }
+  .variantCard, .variantOutline, .variantGlass { border-color: CanvasText; }
+  .caption, .description, .legendLabel, .legendDescription { color: CanvasText; }
+}
 
-@media (prefers-reduced-motion: reduce) {
-  .progress {
-    transition: none !important;
-    animation: none !important;
-    will-change: auto;
-  }
+@media print {
+  .variantGlass { backdrop-filter: none; }
+  .variantCard, .variantGlass { box-shadow: none; }
+  .root { break-inside: avoid; print-color-adjust: exact; }
 }

@@ -1,1389 +1,564 @@
 'use client'
 
-import React, {
-  forwardRef,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
-
+import React, { forwardRef, memo, useId, useMemo } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
+import {
+  clamp,
+  createZonePaths,
+  describeArcSweep,
+  finite,
+  getSvgCoordinate,
+  getSweepAngle,
+  polarToCartesian,
+  resolveGoalMetrics
+} from './geometry'
+import { useAnimatedProgress } from './useAnimatedProgress'
 import type {
-  CSSProperties,
-  ReactNode
-} from 'react'
-
+  KmhGoalChartLegendProps,
+  KmhGoalChartProps,
+  KmhGoalChartRenderContext,
+  KmhGoalChartVariant,
+  KmhGoalChartTone,
+  KmhGoalChartEasing
+} from './types'
 import styles from './KmhGoalChart.module.css'
 
-export interface KmhGoalChartPosition {
-  x: number | string
-  y: number | string
+// Type-only re-exports preserve imports from the original component path.
+export type {
+  KmhGoalChartProps,
+  KmhGoalChartLegendProps,
+  KmhGoalChartLegendItem,
+  KmhGoalChartPosition,
+  KmhGoalChartEasing,
+  KmhGoalChartColorStop,
+  KmhGoalChartGradient,
+  KmhGoalChartType,
+  KmhGoalChartVariant,
+  KmhGoalChartTone,
+  KmhGoalChartDensity,
+  KmhGoalChartZone,
+  KmhGoalChartRenderContext
+} from './types'
+
+const hasContent = (node: ReactNode): boolean =>
+  node !== undefined && node !== null && node !== false && node !== ''
+
+const variantClasses: Record<KmhGoalChartVariant, string> = {
+  plain: styles.variantPlain,
+  soft: styles.variantSoft,
+  card: styles.variantCard,
+  outline: styles.variantOutline,
+  glass: styles.variantGlass,
+  minimal: styles.variantMinimal
 }
 
-export type KmhGoalChartEasing =
-  | 'linear'
-  | 'ease-in'
-  | 'ease-out'
-  | 'ease-in-out'
-  | ((progress: number) => number)
-
-export interface KmhGoalChartColorStop {
-  /**
-   * Porcentaje mínimo a partir del cual se aplica el color.
-   * Ejemplo: { minPercentage: 70, color: '#E6A23C' }
-   */
-  minPercentage: number
-  color: string
+const toneClasses: Record<KmhGoalChartTone, string> = {
+  primary: styles.tonePrimary,
+  success: styles.toneSuccess,
+  warning: styles.toneWarning,
+  danger: styles.toneDanger,
+  neutral: styles.toneNeutral
 }
 
-export interface KmhGoalChartGradient {
-  startColor: string
-  endColor: string
-}
-
-export interface KmhGoalChartLegendItem {
-  id?: string
-  label: string
-  color: string
-  value?: ReactNode
-  description?: string
-}
-
-export interface KmhGoalChartProps {
-  /* =========================
-     DATA
-  ========================= */
-
-  current: number
-  goal: number
-
-  /* =========================
-     DIMENSIONS
-  ========================= */
-
-  size?: number | string
-  width?: number | string
-  height?: number | string
-
-  viewBoxSize?: number
-  centerX?: number
-  centerY?: number
-  radius?: number
-
-  /* =========================
-     FORMATTING
-  ========================= */
-
-  moneyFormat?: boolean
-  numberFormat?: (value: number) => string
-  valueFormatter?: (current: number, goal: number) => string | number
-  valueText?: string | number
-
-  formatPercentage?: (percentage: number) => string | number
-
-  showPercentage?: boolean
-  showValue?: boolean
-
-  fontSize?: number | string
-  percentageFontSize?: number | string
-
-  textColor?: string
-  valueColor?: string
-
-  textWeight?: CSSProperties['fontWeight']
-  valueFontWeight?: CSSProperties['fontWeight']
-
-  textPosition?: KmhGoalChartPosition
-  percentagePosition?: KmhGoalChartPosition
-  percentageTextOffsetY?: number
-
-  rotateText?: boolean
-
-  /* =========================
-     COLORS
-  ========================= */
-
-  bgColor?: string
-  fgColor?: string
-  trackColor?: string
-  progressColor?: string
-
-  trackOpacity?: number
-  progressOpacity?: number
-
-  colorStops?: KmhGoalChartColorStop[]
-  progressGradient?: KmhGoalChartGradient
-
-  themeColorVariable?: string
-  fallbackProgressColor?: string
-
-  /* =========================
-     STROKES
-  ========================= */
-
-  strokeWidth?: number
-  trackStrokeWidth?: number
-  progressStrokeWidth?: number
-
-  strokeLinecap?: 'butt' | 'round' | 'square'
-  trackLinecap?: 'butt' | 'round' | 'square'
-  progressLinecap?: 'butt' | 'round' | 'square'
-
-  /**
-   * Conserva la propiedad original.
-   * Si se utiliza, se aplica a ambos trazos como patrón SVG.
-   */
-  strokeDasharray?: string
-
-  trackDasharray?: string
-  progressDasharray?: string
-
-  showTrack?: boolean
-  showProgress?: boolean
-
-  /* =========================
-     ARC CONFIGURATION
-  ========================= */
-
-  orientation?: 'horizontal' | 'full'
-  startAngle?: number
-  reverseDirection?: boolean
-
-  /**
-   * Dirección real del recorrido.
-   * reverseDirection conserva el comportamiento anterior
-   * de desplazar el gráfico al lado opuesto.
-   */
-  sweepDirection?: 'clockwise' | 'counterclockwise'
-
-  /**
-   * Permite crear arcos personalizados.
-   * Por ejemplo: 90, 180, 240 o 360 grados.
-   */
-  sweepAngle?: number
-
-  /* =========================
-     ANIMATION
-  ========================= */
-
-  animated?: boolean
-  animateOnMount?: boolean
-  animationDuration?: number
-  animationDelay?: number
-  animationEasing?: KmhGoalChartEasing
+interface ProgressLayerProps {
+  percentage: number
+  animated: boolean
+  animateOnMount: boolean
+  animationDuration: number
+  animationDelay: number
+  animationEasing: KmhGoalChartEasing
   onAnimationComplete?: () => void
-
-  /* =========================
-     TICKS / MARKERS
-  ========================= */
-
-  showTicks?: boolean
-  tickCount?: number
-  tickLength?: number
-  tickGap?: number
-  tickColor?: string
-  tickStrokeWidth?: number
-
-  showGoalMarker?: boolean
-  goalMarkerColor?: string
-  goalMarkerLength?: number
-
-  startLabel?: string
-  endLabel?: string
-  endpointLabelColor?: string
-  endpointLabelFontSize?: number | string
-
-  /* =========================
-     EFFECTS
-  ========================= */
-
-  showGlow?: boolean
-  glowColor?: string
-  glowBlur?: number
-
-  /* =========================
-     ADDITIONAL CONTENT
-  ========================= */
-
-  centerContent?: ReactNode
-  children?: ReactNode
-
-  caption?: ReactNode
-  description?: ReactNode
-  statusLabel?: ReactNode
-
-  showOverflowLabel?: boolean
-  overflowLabel?: ReactNode
-  overflowColor?: string
-
-  showGoalReachedLabel?: boolean
-  goalReachedLabel?: ReactNode
-
-  /* =========================
-     ACCESSIBILITY
-  ========================= */
-
-  ariaLabel?: string
-  ariaValueText?: string
-  title?: string
-
-  /* =========================
-     STYLING
-  ========================= */
-
-  id?: string
-  className?: string
-  chartClassName?: string
-  centerClassName?: string
-  containerStyle?: CSSProperties
-  chartStyle?: CSSProperties
+  showProgress: boolean
+  fullPath: string
+  customProgressDash?: string
+  cx: number
+  cy: number
+  resolvedRadius: number
+  arcStart: number
+  signedSweep: number
+  progressStroke: string
+  progressWidth: number
+  progressOpacity: number
+  strokeLinecap: 'round' | 'butt' | 'square'
+  filterId?: string
+  showProgressIndicator: boolean
+  indicatorRadius: number
+  indicatorColor: string
 }
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-const clamp = (
-  value: number,
-  min: number,
-  max: number
-): number => {
-  return Math.min(Math.max(value, min), max)
-}
-
-const polarToCartesian = (
-  centerX: number,
-  centerY: number,
-  radius: number,
-  angleInDegrees: number
-) => {
-  const angleInRadians =
-    ((angleInDegrees - 90) * Math.PI) / 180
-
-  return {
-    x: centerX + radius * Math.cos(angleInRadians),
-    y: centerY + radius * Math.sin(angleInRadians)
-  }
-}
+/** Isolates the 60fps re-renders from metadata, legend and chart geometry. */
+const ProgressLayer = memo(function ProgressLayer ({
+  percentage, animated, animateOnMount, animationDuration, animationDelay,
+  animationEasing, onAnimationComplete, showProgress, fullPath,
+  customProgressDash, cx, cy, resolvedRadius, arcStart, signedSweep,
+  progressStroke, progressWidth, progressOpacity, strokeLinecap, filterId,
+  showProgressIndicator, indicatorRadius, indicatorColor
+}: ProgressLayerProps) {
+  const visualPercentage = useAnimatedProgress(percentage, {
+    animated, animateOnMount, duration: animationDuration,
+    delay: animationDelay, easing: animationEasing, onComplete: onAnimationComplete
+  })
+  const progressPath = customProgressDash
+    ? describeArcSweep(cx, cy, resolvedRadius, arcStart, signedSweep * clamp(visualPercentage, 0, 100) / 100)
+    : fullPath
+  const dot = polarToCartesian(cx, cy, resolvedRadius, arcStart + signedSweep * clamp(visualPercentage, 0, 100) / 100)
+  if (!showProgress) return null
+  return (
+    <>
+      <path
+        data-testid="kmh-progress"
+        className={styles.progress}
+        d={progressPath}
+        pathLength={customProgressDash ? undefined : 100}
+        stroke={progressStroke}
+        strokeWidth={progressWidth}
+        strokeOpacity={visualPercentage <= 0 ? 0 : clamp(progressOpacity, 0, 1)}
+        strokeDasharray={customProgressDash ?? '100 100'}
+        strokeDashoffset={customProgressDash ? undefined : 100 - clamp(visualPercentage, 0, 100)}
+        strokeLinecap={strokeLinecap}
+        filter={filterId}
+      />
+      {showProgressIndicator && visualPercentage > 0 && (
+        <circle className={styles.indicator} cx={dot.x} cy={dot.y}
+          r={clamp(indicatorRadius, 0.5, 30)} fill={indicatorColor} />
+      )}
+    </>
+  )
+})
 
 /**
- * Construye un arco SVG a partir de:
- * - ángulo inicial
- * - ángulo recorrido
- * - dirección
- *
- * También soporta círculos completos, que SVG no dibuja
- * correctamente utilizando un único comando A de 360 grados.
+ * Backward-compatible goal chart (semicircle, quarter, 3/4, radial and donut).
+ * The original percentage rules, render slots, style props and SVG positions are retained.
+ * Decorative SVG is aria-hidden; the forwarded div remains a semantic progressbar.
  */
-const describeArcSweep = (
-  centerX: number,
-  centerY: number,
-  radius: number,
-  startAngle: number,
-  sweep: number
-): string => {
-  const absoluteSweep = Math.abs(sweep)
-
-  if (absoluteSweep < 0.001) {
-    return ''
-  }
-
-  const sweepFlag = sweep >= 0 ? 1 : 0
-
-  const start = polarToCartesian(
-    centerX,
-    centerY,
-    radius,
-    startAngle
-  )
-
-  const end = polarToCartesian(
-    centerX,
-    centerY,
-    radius,
-    startAngle + sweep
-  )
-
-  // Un círculo completo necesita dos arcos.
-  if (absoluteSweep >= 359.999) {
-    const middle = polarToCartesian(
-      centerX,
-      centerY,
-      radius,
-      startAngle + sweep / 2
-    )
-
-    return [
-      `M ${start.x} ${start.y}`,
-      `A ${radius} ${radius} 0 1 ${sweepFlag} ${middle.x} ${middle.y}`,
-      `A ${radius} ${radius} 0 1 ${sweepFlag} ${end.x} ${end.y}`
-    ].join(' ')
-  }
-
-  const largeArcFlag = absoluteSweep > 180 ? 1 : 0
-
-  return [
-    `M ${start.x} ${start.y}`,
-    `A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${end.x} ${end.y}`
-  ].join(' ')
-}
-
-const getSvgCoordinate = (
-  value: number | string,
-  viewBoxSize: number,
-  fallback: number
-): number => {
-  if (typeof value === 'number') {
-    return value
-  }
-
-  const normalized = value.trim()
-
-  if (normalized.endsWith('%')) {
-    const percentage = Number.parseFloat(normalized)
-
-    return Number.isFinite(percentage)
-      ? (percentage / 100) * viewBoxSize
-      : fallback
-  }
-
-  const parsed = Number.parseFloat(normalized)
-
-  return Number.isFinite(parsed) ? parsed : fallback
-}
-
-const applyEasing = (
-  progress: number,
-  easing: KmhGoalChartEasing
-): number => {
-  const t = clamp(progress, 0, 1)
-
-  if (typeof easing === 'function') {
-    const result = easing(t)
-
-    return Number.isFinite(result)
-      ? clamp(result, 0, 1)
-      : t
-  }
-
-  switch (easing) {
-    case 'linear':
-      return t
-
-    case 'ease-in':
-      return t * t * t
-
-    case 'ease-in-out':
-      return t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2
-
-    case 'ease-out':
-    default:
-      return 1 - Math.pow(1 - t, 3)
-  }
-}
-
-/* =========================================================
-   MAIN COMPONENT
-========================================================= */
-
-export const KmhGoalChart = forwardRef<
-HTMLDivElement,
-KmhGoalChartProps
->(function KmhGoalChart (
-  {
+export const KmhGoalChart = forwardRef<HTMLDivElement, KmhGoalChartProps>(
+  function KmhGoalChart ({
     current,
     goal,
-
     size = 250,
     width,
     height,
-
     viewBoxSize = 240,
-    centerX = viewBoxSize / 2,
-    centerY = viewBoxSize / 2,
+    centerX,
+    centerY,
     radius = 100,
-
     moneyFormat = false,
-    numberFormat = (value: number) => value.toString(),
+    numberFormat,
     valueFormatter,
     valueText,
-
     formatPercentage,
-
     showPercentage = true,
     showValue = true,
-
-    fontSize = 'calc(10px + 1vw)',
-    percentageFontSize = 'calc(10px + 1vw)',
-
-    textColor = '#333',
-    valueColor = '#666',
-
-    textWeight = 'bold',
-    valueFontWeight = 'normal',
-
-    textPosition = {
-      x: '50%',
-      y: '58%'
-    },
-
-    percentagePosition = {
-      x: '50%',
-      y: '58%'
-    },
-
+    fontSize = 13,
+    percentageFontSize = 26,
+    textColor = 'var(--kgc-text)',
+    valueColor = 'var(--kgc-muted)',
+    textWeight = 750,
+    valueFontWeight = 500,
+    textPosition = { x: '50%', y: '58%' },
+    percentagePosition = { x: '50%', y: '58%' },
     percentageTextOffsetY = -20,
-
     rotateText = false,
-
-    bgColor = '#eee',
+    bgColor = 'var(--kgc-track)',
     fgColor,
     trackColor,
     progressColor,
-
     trackOpacity = 1,
     progressOpacity = 1,
-
     colorStops = [],
     progressGradient,
-
     themeColorVariable = '--color-primary-red',
     fallbackProgressColor = '#ff0000',
-
     strokeWidth = 15,
     trackStrokeWidth,
     progressStrokeWidth,
-
     strokeLinecap = 'round',
     trackLinecap,
     progressLinecap,
-
     strokeDasharray = '',
     trackDasharray,
     progressDasharray,
-
     showTrack = true,
     showProgress = true,
-
     orientation = 'horizontal',
-    startAngle = 180,
+    startAngle,
     reverseDirection = false,
     sweepDirection = 'clockwise',
     sweepAngle,
-
     animated = true,
     animateOnMount = true,
     animationDuration = 900,
     animationDelay = 80,
     animationEasing = 'ease-out',
     onAnimationComplete,
-
     showTicks = false,
     tickCount = 4,
     tickLength = 5,
     tickGap = 3,
     tickColor,
     tickStrokeWidth = 2,
-
     showGoalMarker = false,
     goalMarkerColor,
     goalMarkerLength = 12,
-
     startLabel,
     endLabel,
-    endpointLabelColor = '#777',
+    endpointLabelColor = 'var(--kgc-muted)',
     endpointLabelFontSize = 11,
-
     showGlow = false,
     glowColor,
     glowBlur = 5,
-
     centerContent,
     children,
-
     caption,
     description,
     statusLabel,
-
     showOverflowLabel = false,
     overflowLabel,
-    overflowColor = '#E67E22',
-
+    overflowColor = 'var(--kgc-warning)',
     showGoalReachedLabel = false,
     goalReachedLabel = 'Meta alcanzada',
-
     ariaLabel,
     ariaValueText,
     title,
-
     id,
     className,
     chartClassName,
     centerClassName,
     containerStyle,
-    chartStyle
-  },
-  forwardedRef
-) {
-  /* =====================================================
-     IDS
-  ===================================================== */
+    chartStyle,
+    // Extensions
+    chartType,
+    variant = 'plain',
+    tone = 'primary',
+    density = 'comfortable',
+    responsive = false,
+    zones = [],
+    zoneOpacity = 0.55,
+    showProgressIndicator = false,
+    indicatorRadius = 4,
+    indicatorColor,
+    locale,
+    currency = 'COP',
+    renderCenter,
+    legendItems,
+    legendLayout = 'horizontal',
+    testId
+  }, forwardedRef) {
+    const reactId = useId()
+    const safeId = reactId.replace(/[^a-zA-Z0-9_-]/g, '')
+    const gradientId = `kmh-gradient-${safeId}`
+    const glowId = `kmh-glow-${safeId}`
+    const metrics = resolveGoalMetrics(current, goal)
+    const { percentage, rawPercentage, isOverGoal, isGoalReached } = metrics
+    const baseProgressColor = progressColor ?? fgColor ?? 'var(--kgc-progress)'
+    const themeVariable = /^--[\w-]+$/.test(themeColorVariable) ? themeColorVariable : '--color-primary-red'
+    const rootStyle = {
+      '--kgc-theme-progress': `var(${themeVariable}, ${fallbackProgressColor})`,
+      ...containerStyle
+    } as CSSProperties
 
-  const reactId = useId()
-
-  const safeId = reactId.replace(/[^a-zA-Z0-9_-]/g, '')
-
-  const gradientId = `kmh-gradient-${safeId}`
-  const glowId = `kmh-glow-${safeId}`
-
-  /* =====================================================
-     SAFE VALUES
-  ===================================================== */
-
-  const safeCurrent = Number.isFinite(current) ? current : 0
-  const safeGoal = Number.isFinite(goal) ? goal : 0
-
-  const rawPercentage = safeGoal > 0
-    ? (safeCurrent / safeGoal) * 100
-    : safeCurrent > 0
-      ? 100
-      : 0
-
-  const percentage = clamp(rawPercentage, 0, 100)
-
-  const isOverGoal = rawPercentage > 100
-  const isGoalReached = rawPercentage >= 100 && safeGoal > 0
-
-  /* =====================================================
-     THEME COLOR
-  ===================================================== */
-
-  const [themeColor, setThemeColor] = useState(
-    fallbackProgressColor
-  )
-
-  useEffect(() => {
-    if (fgColor || progressColor) {
-      return
-    }
-
-    const cssColor = window
-      .getComputedStyle(document.documentElement)
-      .getPropertyValue(themeColorVariable)
-      .trim()
-
-    if (cssColor) {
-      setThemeColor(cssColor)
-    }
-  }, [
-    fgColor,
-    progressColor,
-    themeColorVariable
-  ])
-
-  const baseProgressColor =
-    progressColor ??
-    fgColor ??
-    themeColor
-
-  const resolvedProgressColor = useMemo(() => {
-    const sortedStops = [...colorStops].sort(
-      (a, b) => a.minPercentage - b.minPercentage
-    )
-
-    let selectedColor = baseProgressColor
-
-    sortedStops.forEach((stop) => {
-      if (percentage >= stop.minPercentage) {
-        selectedColor = stop.color
+    const resolvedProgressColor = useMemo(() => {
+      let color = baseProgressColor
+      const ordered = [...colorStops].sort((a, b) => a.minPercentage - b.minPercentage)
+      for (const stop of ordered) {
+        if (percentage >= stop.minPercentage && stop.color) color = stop.color
       }
-    })
+      return color
+    }, [baseProgressColor, colorStops, percentage])
 
-    return selectedColor
-  }, [
-    colorStops,
-    percentage,
-    baseProgressColor
-  ])
+    const safeBox = clamp(viewBoxSize, 32, 4096)
+    const cx = clamp(centerX ?? safeBox / 2, 0, safeBox)
+    const cy = clamp(centerY ?? safeBox / 2, 0, safeBox)
+    const trackWidth = clamp(trackStrokeWidth ?? strokeWidth, 0.5, safeBox / 3)
+    const progressWidth = clamp(progressStrokeWidth ?? strokeWidth, 0.5, safeBox / 3)
+    const widestStroke = Math.max(trackWidth, progressWidth)
+    const extraSpace = Math.max(
+      showTicks ? Math.max(0, tickGap) + Math.max(0, tickLength) + Math.max(0, tickStrokeWidth) / 2 : 0,
+      showGoalMarker ? Math.max(0, goalMarkerLength) : 0,
+      showProgressIndicator ? Math.max(0, indicatorRadius) : 0
+    )
+    const maxRadius = Math.max(1, Math.min(cx, cy, safeBox - cx, safeBox - cy) - widestStroke / 2 - extraSpace - 2)
+    const resolvedRadius = clamp(radius, 1, maxRadius)
+    const resolvedSweep = getSweepAngle(chartType, orientation, sweepAngle)
+    // Preserve the old reverseDirection behavior: rotate 180°, not invert the sweep.
+    const defaultEndAngle = chartType === 'semicircle' || chartType === 'quarter'
+      ? 90
+      : chartType === 'three-quarter' ? 135 : 180
+    const adjustedStartAngle = finite(startAngle ?? defaultEndAngle, defaultEndAngle) + (reverseDirection ? 180 : 0)
+    const direction = sweepDirection === 'counterclockwise' ? -1 : 1
+    const arcStart = direction === 1 ? adjustedStartAngle - resolvedSweep : adjustedStartAngle
+    const signedSweep = resolvedSweep * direction
 
-  /* =====================================================
-     ANIMATION
-  ===================================================== */
+    const fullPath = useMemo(() => describeArcSweep(cx, cy, resolvedRadius, arcStart, signedSweep), [cx, cy, resolvedRadius, arcStart, signedSweep])
+    // A fixed full path + stroke-dashoffset is cheaper than reconstructing the path every frame.
+    // Custom dash patterns retain the old partial-path behavior for compatibility.
+    const customProgressDash = progressDasharray || strokeDasharray || undefined
+    const customTrackDash = trackDasharray || strokeDasharray || undefined
+    const zonePaths = useMemo(
+      () => createZonePaths(zones, cx, cy, resolvedRadius, arcStart, signedSweep),
+      [zones, cx, cy, resolvedRadius, arcStart, signedSweep]
+    )
 
-  const initialPercentage =
-    animated && animateOnMount
-      ? 0
-      : percentage
+    const ticks = useMemo(() => {
+      if (!showTicks) return []
+      const count = clamp(Math.floor(tickCount), 1, 120)
+      const outer = resolvedRadius + widestStroke / 2 + Math.max(0, tickGap)
+      return Array.from({ length: count + 1 }, (_, index) => {
+        const pointAngle = arcStart + (signedSweep * index / count)
+        const a = polarToCartesian(cx, cy, outer, pointAngle)
+        const b = polarToCartesian(cx, cy, outer + Math.max(0, tickLength), pointAngle)
+        return { x1: a.x, y1: a.y, x2: b.x, y2: b.y }
+      })
+    }, [showTicks, tickCount, resolvedRadius, widestStroke, tickGap, tickLength, arcStart, signedSweep, cx, cy])
 
-  const [visualPercentage, setVisualPercentage] = useState(
-    initialPercentage
-  )
+    const markerRadius = resolvedRadius + widestStroke / 2
+    const markerA = polarToCartesian(cx, cy, markerRadius - Math.max(0, goalMarkerLength) / 2, arcStart + signedSweep)
+    const markerB = polarToCartesian(cx, cy, markerRadius + Math.max(0, goalMarkerLength) / 2, arcStart + signedSweep)
+    const startPoint = polarToCartesian(cx, cy, resolvedRadius + widestStroke / 2 + 15, arcStart)
+    const endPoint = polarToCartesian(cx, cy, resolvedRadius + widestStroke / 2 + 15, arcStart + signedSweep)
 
-  const visualPercentageRef = useRef(initialPercentage)
-
-  useEffect(() => {
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-      ).matches
-
-    if (
-      !animated ||
-      prefersReducedMotion ||
-      animationDuration <= 0
-    ) {
-      visualPercentageRef.current = percentage
-      setVisualPercentage(percentage)
-      return
+    const percentageX = getSvgCoordinate(percentagePosition.x, safeBox, cx)
+    const percentageY = getSvgCoordinate(percentagePosition.y, safeBox, cy)
+    const valueX = getSvgCoordinate(textPosition.x, safeBox, cx)
+    const valueY = getSvgCoordinate(textPosition.y, safeBox, cy)
+    const percentageRotation = rotateText ? `rotate(270 ${percentageX} ${percentageY + percentageTextOffsetY})` : undefined
+    const valueRotation = rotateText ? `rotate(270 ${valueX} ${valueY})` : undefined
+    const formattedPercentage = formatPercentage ? formatPercentage(percentage) : `${Math.round(percentage)}%`
+    const defaultFormat = (value: number): string => {
+      if (numberFormat) return numberFormat(value)
+      if (!locale) return String(value) // Retain legacy formatting by default.
+      try {
+        return new Intl.NumberFormat(locale, moneyFormat ? { style: 'currency', currency } : undefined).format(value)
+      } catch { return String(value) }
     }
+    const formattedValue = valueText ?? valueFormatter?.(metrics.current, metrics.goal) ??
+      (moneyFormat ? `${defaultFormat(metrics.current)} de ${defaultFormat(metrics.goal)}` : `${metrics.current} de ${metrics.goal}`)
 
-    const from = visualPercentageRef.current
-    const duration = Math.max(1, animationDuration)
-    const delay = Math.max(0, animationDelay)
-
-    let startTime: number | null = null
-    let animationFrame = 0
-
-    const animateFrame = (timestamp: number) => {
-      if (startTime === null) {
-        startTime = timestamp + delay
-      }
-
-      if (timestamp < startTime) {
-        animationFrame = window.requestAnimationFrame(
-          animateFrame
-        )
-
-        return
-      }
-
-      const elapsed = timestamp - startTime
-
-      const linearProgress = clamp(
-        elapsed / duration,
-        0,
-        1
-      )
-
-      const easedProgress = applyEasing(
-        linearProgress,
-        animationEasing
-      )
-
-      const nextPercentage =
-        from +
-        (percentage - from) * easedProgress
-
-      visualPercentageRef.current = nextPercentage
-      setVisualPercentage(nextPercentage)
-
-      if (linearProgress < 1) {
-        animationFrame = window.requestAnimationFrame(
-          animateFrame
-        )
-      } else {
-        visualPercentageRef.current = percentage
-        setVisualPercentage(percentage)
-        onAnimationComplete?.()
-      }
+    const context: KmhGoalChartRenderContext = {
+      ...metrics
     }
+    // centerContent/children keep their legacy priority over any new render prop.
+    const customCenter = centerContent ?? children ?? renderCenter?.(context)
+    const hasCustomCenter = hasContent(customCenter)
+    const showMeta = hasContent(caption) || hasContent(description) || hasContent(statusLabel) ||
+      (showOverflowLabel && isOverGoal) || (showGoalReachedLabel && isGoalReached)
+    const rootClass = [
+      styles.root,
+      variantClasses[variant] ?? styles.variantPlain,
+      toneClasses[tone] ?? styles.tonePrimary,
+      density === 'compact' ? styles.densityCompact : styles.densityComfortable,
+      responsive ? styles.responsive : '',
+      className
+    ].filter(Boolean).join(' ')
+    const chartClass = [styles.chart, chartClassName].filter(Boolean).join(' ')
+    const centerClass = [styles.centerContent, centerClassName].filter(Boolean).join(' ')
+    const resolvedChartStyle: CSSProperties = responsive
+      ? { width: width ?? '100%', maxWidth: width ? undefined : size, height: height ?? 'auto', aspectRatio: '1', ...chartStyle }
+      : { width: width ?? size, height: height ?? size, ...chartStyle }
+    const progressStroke = progressGradient ? `url(#${gradientId})` : resolvedProgressColor
+    const valueTextAria = ariaValueText ?? `${Math.round(percentage)}% del objetivo`
 
-    animationFrame = window.requestAnimationFrame(
-      animateFrame
-    )
-
-    return () => {
-      window.cancelAnimationFrame(animationFrame)
-    }
-  }, [
-    percentage,
-    animated,
-    animationDuration,
-    animationDelay,
-    animationEasing,
-    onAnimationComplete
-  ])
-
-  /* =====================================================
-     ARC GEOMETRY
-  ===================================================== */
-
-  const resolvedTrackWidth =
-    trackStrokeWidth ?? strokeWidth
-
-  const resolvedProgressWidth =
-    progressStrokeWidth ?? strokeWidth
-
-  const maxStrokeWidth = Math.max(
-    resolvedTrackWidth,
-    resolvedProgressWidth
-  )
-
-  const maxRadius = Math.max(
-    1,
-    viewBoxSize / 2 - maxStrokeWidth / 2 - 1
-  )
-
-  const resolvedRadius = clamp(
-    radius,
-    1,
-    maxRadius
-  )
-
-  const resolvedSweepAngle = clamp(
-    sweepAngle ?? (
-      orientation === 'full'
-        ? 360
-        : 180
-    ),
-    1,
-    360
-  )
-
-  // Se conserva el comportamiento anterior:
-  // reverseDirection desplaza el gráfico 180 grados.
-  const adjustedStartAngle =
-    startAngle + (reverseDirection ? 180 : 0)
-
-  const directionMultiplier =
-    sweepDirection === 'counterclockwise'
-      ? -1
-      : 1
-
-  const arcStartAngle =
-    directionMultiplier === 1
-      ? adjustedStartAngle - resolvedSweepAngle
-      : adjustedStartAngle
-
-  const trackPath = useMemo(() => {
-    return describeArcSweep(
-      centerX,
-      centerY,
-      resolvedRadius,
-      arcStartAngle,
-      directionMultiplier * resolvedSweepAngle
-    )
-  }, [
-    centerX,
-    centerY,
-    resolvedRadius,
-    arcStartAngle,
-    directionMultiplier,
-    resolvedSweepAngle
-  ])
-
-  const progressPath = useMemo(() => {
-    const progressSweep =
-      directionMultiplier *
-      resolvedSweepAngle *
-      (visualPercentage / 100)
-
-    return describeArcSweep(
-      centerX,
-      centerY,
-      resolvedRadius,
-      arcStartAngle,
-      progressSweep
-    )
-  }, [
-    centerX,
-    centerY,
-    resolvedRadius,
-    arcStartAngle,
-    directionMultiplier,
-    resolvedSweepAngle,
-    visualPercentage
-  ])
-
-  /* =====================================================
-     TICKS
-  ===================================================== */
-
-  const ticks = useMemo(() => {
-    if (!showTicks) {
-      return []
-    }
-
-    const safeTickCount = Math.max(
-      1,
-      Math.floor(tickCount)
-    )
-
-    const outerOffset =
-      maxStrokeWidth / 2 + tickGap
-
-    return Array.from(
-      { length: safeTickCount + 1 },
-      (_, index) => {
-        const tickProgress = index / safeTickCount
-
-        const angle =
-          arcStartAngle +
-          directionMultiplier *
-          resolvedSweepAngle *
-          tickProgress
-
-        const innerPoint = polarToCartesian(
-          centerX,
-          centerY,
-          resolvedRadius + outerOffset,
-          angle
-        )
-
-        const outerPoint = polarToCartesian(
-          centerX,
-          centerY,
-          resolvedRadius + outerOffset + tickLength,
-          angle
-        )
-
-        return {
-          id: index,
-          x1: innerPoint.x,
-          y1: innerPoint.y,
-          x2: outerPoint.x,
-          y2: outerPoint.y
-        }
-      }
-    )
-  }, [
-    showTicks,
-    tickCount,
-    tickGap,
-    tickLength,
-    maxStrokeWidth,
-    arcStartAngle,
-    directionMultiplier,
-    resolvedSweepAngle,
-    centerX,
-    centerY,
-    resolvedRadius
-  ])
-
-  /* =====================================================
-     GOAL MARKER
-  ===================================================== */
-
-  const goalMarker = useMemo(() => {
-    const endAngle =
-      arcStartAngle +
-      directionMultiplier * resolvedSweepAngle
-
-    const markerRadius =
-      resolvedRadius + maxStrokeWidth / 2
-
-    const innerPoint = polarToCartesian(
-      centerX,
-      centerY,
-      markerRadius - goalMarkerLength / 2,
-      endAngle
-    )
-
-    const outerPoint = polarToCartesian(
-      centerX,
-      centerY,
-      markerRadius + goalMarkerLength / 2,
-      endAngle
-    )
-
-    return {
-      x1: innerPoint.x,
-      y1: innerPoint.y,
-      x2: outerPoint.x,
-      y2: outerPoint.y
-    }
-  }, [
-    arcStartAngle,
-    directionMultiplier,
-    resolvedSweepAngle,
-    resolvedRadius,
-    maxStrokeWidth,
-    goalMarkerLength,
-    centerX,
-    centerY
-  ])
-
-  /* =====================================================
-     TEXT / FORMATTING
-  ===================================================== */
-
-  const percentageX = getSvgCoordinate(
-    percentagePosition.x,
-    viewBoxSize,
-    centerX
-  )
-
-  const percentageY = getSvgCoordinate(
-    percentagePosition.y,
-    viewBoxSize,
-    centerY
-  )
-
-  const valueX = getSvgCoordinate(
-    textPosition.x,
-    viewBoxSize,
-    centerX
-  )
-
-  const valueY = getSvgCoordinate(
-    textPosition.y,
-    viewBoxSize,
-    centerY
-  )
-
-  const percentageTransform = rotateText
-    ? `rotate(270 ${percentageX} ${percentageY + percentageTextOffsetY})`
-    : undefined
-
-  const valueTransform = rotateText
-    ? `rotate(270 ${valueX} ${valueY})`
-    : undefined
-
-  const percentageContent = formatPercentage
-    ? formatPercentage(percentage)
-    : `${Math.round(percentage)}%`
-
-  const formattedValue = valueText ??
-    valueFormatter?.(safeCurrent, safeGoal) ??
-    (
-      moneyFormat
-        ? `${numberFormat(safeCurrent)} de ${numberFormat(safeGoal)}`
-        : `${safeCurrent} de ${safeGoal}`
-    )
-
-  /* =====================================================
-     CENTER CONTENT
-  ===================================================== */
-
-  const customCenterContent =
-    centerContent ?? children
-
-  const hasCustomCenter =
-    customCenterContent !== undefined &&
-    customCenterContent !== null
-
-  /* =====================================================
-     STYLES
-  ===================================================== */
-
-  const resolvedChartStyle: CSSProperties = {
-    width: width ?? size,
-    height: height ?? size,
-    ...chartStyle
-  }
-
-  const rootClassName = [
-    styles.root,
-    className
-  ].filter(Boolean).join(' ')
-
-  const resolvedTrackColor =
-    trackColor ?? bgColor
-
-  const resolvedTrackDasharray =
-    trackDasharray || strokeDasharray || undefined
-
-  const resolvedProgressDasharray =
-    progressDasharray || strokeDasharray || undefined
-
-  const progressStroke = progressGradient
-    ? `url(#${gradientId})`
-    : resolvedProgressColor
-
-  const resolvedGlowColor =
-    glowColor ?? resolvedProgressColor
-
-  const defaultOverflowLabel =
-    `+${Math.round(rawPercentage - 100)}% sobre la meta`
-
-  const showMeta =
-    caption ||
-    description ||
-    statusLabel ||
-    (showOverflowLabel && isOverGoal) ||
-    (showGoalReachedLabel && isGoalReached)
-
-  /* =====================================================
-     RENDER
-  ===================================================== */
-
-  return (
-    <div
-      ref={forwardedRef}
-      id={id}
-      className={rootClassName}
-      style={containerStyle}
-      role="progressbar"
-      aria-label={
-        ariaLabel ??
-        title ??
-        'Progreso de objetivo'
-      }
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuenow={Number(percentage.toFixed(2))}
-      aria-valuetext={
-        ariaValueText ??
-        `${Math.round(percentage)}% del objetivo`
-      }
-      title={title}
-    >
+    return (
       <div
-        className={[
-          styles.chart,
-          chartClassName
-        ].filter(Boolean).join(' ')}
-        style={resolvedChartStyle}
+        ref={forwardedRef}
+        id={id}
+        data-testid={testId}
+        data-chart-type={chartType ?? (orientation === 'full' ? 'radial' : 'gauge')}
+        data-goal-reached={isGoalReached || undefined}
+        className={rootClass}
+        style={rootStyle}
+        role={hasCustomCenter ? undefined : 'progressbar'}
+        aria-label={hasCustomCenter ? undefined : ariaLabel ?? title ?? 'Progreso de objetivo'}
+        aria-valuemin={hasCustomCenter ? undefined : 0}
+        aria-valuemax={hasCustomCenter ? undefined : 100}
+        aria-valuenow={hasCustomCenter ? undefined : Number(percentage.toFixed(2))}
+        aria-valuetext={hasCustomCenter ? undefined : valueTextAria}
+        title={title}
       >
-        <svg
-          className={styles.svg}
-          width="100%"
-          height="100%"
-          viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
-          preserveAspectRatio="xMidYMid meet"
-          aria-hidden="true"
-        >
-          <defs>
-            {progressGradient && (
-              <linearGradient
-                id={gradientId}
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="0%"
-              >
-                <stop
-                  offset="0%"
-                  stopColor={progressGradient.startColor}
-                />
-
-                <stop
-                  offset="100%"
-                  stopColor={progressGradient.endColor}
-                />
-              </linearGradient>
-            )}
-
-            {showGlow && (
-              <filter
-                id={glowId}
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur
-                  in="SourceAlpha"
-                  stdDeviation={glowBlur}
-                  result="blur"
-                />
-
-                <feFlood
-                  floodColor={resolvedGlowColor}
-                  result="glowColor"
-                />
-
-                <feComposite
-                  in="glowColor"
-                  in2="blur"
-                  operator="in"
-                  result="coloredGlow"
-                />
-
-                <feMerge>
-                  <feMergeNode in="coloredGlow" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            )}
-          </defs>
-
-          {/* Marcas del gráfico */}
-          {ticks.map((tick) => (
-            <line
-              key={tick.id}
-              className={styles.tick}
-              x1={tick.x1}
-              y1={tick.y1}
-              x2={tick.x2}
-              y2={tick.y2}
-              stroke={tickColor ?? resolvedTrackColor}
-              strokeWidth={tickStrokeWidth}
-              strokeLinecap="round"
-            />
-          ))}
-
-          {/* Arco de fondo */}
-          {showTrack && (
-            <path
-              className={styles.track}
-              d={trackPath}
-              stroke={resolvedTrackColor}
-              strokeWidth={resolvedTrackWidth}
-              strokeOpacity={trackOpacity}
-              strokeDasharray={resolvedTrackDasharray}
-              strokeLinecap={
-                trackLinecap ?? strokeLinecap
-              }
-            />
-          )}
-
-          {/* Arco de progreso */}
-          {showProgress && progressPath && (
-            <path
-              className={styles.progress}
-              d={progressPath}
-              stroke={progressStroke}
-              strokeWidth={resolvedProgressWidth}
-              strokeOpacity={progressOpacity}
-              strokeDasharray={resolvedProgressDasharray}
-              strokeLinecap={
-                progressLinecap ?? strokeLinecap
-              }
-              filter={
-                showGlow
-                  ? `url(#${glowId})`
-                  : undefined
-              }
-            />
-          )}
-
-          {/* Indicador del objetivo */}
-          {showGoalMarker && (
-            <line
-              className={styles.goalMarker}
-              x1={goalMarker.x1}
-              y1={goalMarker.y1}
-              x2={goalMarker.x2}
-              y2={goalMarker.y2}
-              stroke={goalMarkerColor ?? resolvedProgressColor}
-              strokeWidth={2}
-              strokeLinecap="round"
-            />
-          )}
-
-          {/* Etiquetas inicial y final */}
-          {startLabel && (
-            <text
-              className={styles.endpointLabel}
-              x={
-                polarToCartesian(
-                  centerX,
-                  centerY,
-                  resolvedRadius + maxStrokeWidth / 2 + 15,
-                  arcStartAngle
-                ).x
-              }
-              y={
-                polarToCartesian(
-                  centerX,
-                  centerY,
-                  resolvedRadius + maxStrokeWidth / 2 + 15,
-                  arcStartAngle
-                ).y
-              }
-              textAnchor="middle"
-              fill={endpointLabelColor}
-              fontSize={endpointLabelFontSize}
-            >
-              {startLabel}
-            </text>
-          )}
-
-          {endLabel && (
-            <text
-              className={styles.endpointLabel}
-              x={
-                polarToCartesian(
-                  centerX,
-                  centerY,
-                  resolvedRadius + maxStrokeWidth / 2 + 15,
-                  arcStartAngle +
-                    directionMultiplier * resolvedSweepAngle
-                ).x
-              }
-              y={
-                polarToCartesian(
-                  centerX,
-                  centerY,
-                  resolvedRadius + maxStrokeWidth / 2 + 15,
-                  arcStartAngle +
-                    directionMultiplier * resolvedSweepAngle
-                ).y
-              }
-              textAnchor="middle"
-              fill={endpointLabelColor}
-              fontSize={endpointLabelFontSize}
-            >
-              {endLabel}
-            </text>
-          )}
-
-          {/* Porcentaje */}
-          {!hasCustomCenter && showPercentage && (
-            <text
-              className={styles.percentageText}
-              x={percentagePosition.x}
-              y={percentagePosition.y}
-              dy={percentageTextOffsetY}
-              textAnchor="middle"
-              fontSize={percentageFontSize}
-              fill={textColor}
-              fontWeight={textWeight}
-              transform={percentageTransform}
-            >
-              {percentageContent}
-            </text>
-          )}
-
-          {/* Valor actual frente a meta */}
-          {!hasCustomCenter && showValue && (
-            <text
-              className={styles.valueText}
-              x={textPosition.x}
-              y={textPosition.y}
-              textAnchor="middle"
-              fontSize={fontSize}
-              fill={valueColor}
-              fontWeight={valueFontWeight}
-              transform={valueTransform}
-            >
-              {formattedValue}
-            </text>
-          )}
-
-          {title && (
-            <title>{title}</title>
-          )}
-        </svg>
-
-        {/* Contenido central personalizado */}
+        {/* A separate progressbar avoids flattening interactive centerContent in the ARIA tree. */}
         {hasCustomCenter && (
-          <div
-            className={[
-              styles.centerContent,
-              centerClassName
-            ].filter(Boolean).join(' ')}
+          <span className={styles.srOnly} role="progressbar"
+            aria-label={ariaLabel ?? title ?? 'Progreso de objetivo'}
+            aria-valuemin={0} aria-valuemax={100}
+            aria-valuenow={Number(percentage.toFixed(2))}
+            aria-valuetext={valueTextAria}
+          />
+        )}
+        <div className={chartClass} style={resolvedChartStyle}>
+          <svg
+            className={styles.svg}
+            viewBox={`0 0 ${safeBox} ${safeBox}`}
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
+            focusable="false"
           >
-            {customCenterContent}
+            <defs>
+              {progressGradient && (
+                <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor={progressGradient.startColor} />
+                  <stop offset="100%" stopColor={progressGradient.endColor} />
+                </linearGradient>
+              )}
+              {showGlow && (
+                <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceAlpha" stdDeviation={clamp(glowBlur, 0, 60)} result="blur" />
+                  <feFlood floodColor={glowColor ?? resolvedProgressColor} result="glowColor" />
+                  <feComposite in="glowColor" in2="blur" operator="in" result="coloredGlow" />
+                  <feMerge><feMergeNode in="coloredGlow" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+              )}
+            </defs>
+
+            {showTrack && (
+              <path
+                data-testid="kmh-track"
+                className={styles.track}
+                d={fullPath}
+                stroke={trackColor ?? bgColor}
+                strokeWidth={trackWidth}
+                strokeOpacity={clamp(trackOpacity, 0, 1)}
+                strokeDasharray={customTrackDash}
+                strokeLinecap={trackLinecap ?? strokeLinecap}
+              />
+            )}
+
+            {zonePaths.map(zone => (
+              <path
+                key={zone.key}
+                className={styles.zone}
+                d={zone.path}
+                stroke={zone.color}
+                strokeOpacity={clamp(zoneOpacity, 0, 1)}
+                strokeWidth={trackWidth}
+                strokeLinecap="butt"
+              >
+                {zone.label && <title>{zone.label}</title>}
+              </path>
+            ))}
+
+            {showTicks && ticks.map((tick, index) => (
+              <line
+                key={index}
+                className={styles.tick}
+                x1={tick.x1} y1={tick.y1} x2={tick.x2} y2={tick.y2}
+                stroke={tickColor ?? trackColor ?? bgColor}
+                strokeWidth={clamp(tickStrokeWidth, 0.5, 20)}
+                strokeLinecap="round"
+              />
+            ))}
+
+            <ProgressLayer
+              percentage={percentage}
+              animated={animated}
+              animateOnMount={animateOnMount}
+              animationDuration={animationDuration}
+              animationDelay={animationDelay}
+              animationEasing={animationEasing}
+              onAnimationComplete={onAnimationComplete}
+              showProgress={showProgress}
+              fullPath={fullPath}
+              customProgressDash={customProgressDash}
+              cx={cx} cy={cy} resolvedRadius={resolvedRadius}
+              arcStart={arcStart} signedSweep={signedSweep}
+              progressStroke={progressStroke}
+              progressWidth={progressWidth}
+              progressOpacity={progressOpacity}
+              strokeLinecap={progressLinecap ?? strokeLinecap}
+              filterId={showGlow ? `url(#${glowId})` : undefined}
+              showProgressIndicator={showProgressIndicator}
+              indicatorRadius={indicatorRadius}
+              indicatorColor={indicatorColor ?? resolvedProgressColor}
+            />
+
+            {showGoalMarker && (
+              <line
+                className={styles.goalMarker}
+                x1={markerA.x} y1={markerA.y} x2={markerB.x} y2={markerB.y}
+                stroke={goalMarkerColor ?? resolvedProgressColor}
+                strokeWidth={2}
+                strokeLinecap="round"
+              />
+            )}
+
+            {startLabel && (
+              <text className={styles.endpointLabel} x={startPoint.x} y={startPoint.y}
+                textAnchor="middle" fill={endpointLabelColor} fontSize={endpointLabelFontSize}>{startLabel}</text>
+            )}
+            {endLabel && (
+              <text className={styles.endpointLabel} x={endPoint.x} y={endPoint.y}
+                textAnchor="middle" fill={endpointLabelColor} fontSize={endpointLabelFontSize}>{endLabel}</text>
+            )}
+
+            {!hasCustomCenter && showPercentage && (
+              <text className={styles.percentageText}
+                x={percentageX} y={percentageY} dy={percentageTextOffsetY}
+                textAnchor="middle" fontSize={percentageFontSize}
+                fill={textColor} fontWeight={textWeight} transform={percentageRotation}
+              >{formattedPercentage}</text>
+            )}
+            {!hasCustomCenter && showValue && (
+              <text className={styles.valueText}
+                x={valueX} y={valueY}
+                textAnchor="middle" fontSize={fontSize}
+                fill={valueColor} fontWeight={valueFontWeight} transform={valueRotation}
+              >{formattedValue}</text>
+            )}
+            {title && <title>{title}</title>}
+          </svg>
+          {hasCustomCenter && <div className={centerClass}>{customCenter}</div>}
+        </div>
+
+        {showMeta && (
+          <div className={styles.meta}>
+            {hasContent(caption) && <div className={styles.caption}>{caption}</div>}
+            {hasContent(description) && <div className={styles.description}>{description}</div>}
+            {hasContent(statusLabel) && <div className={styles.statusLabel}>{statusLabel}</div>}
+            {showOverflowLabel && isOverGoal && (
+              <div className={styles.overflowLabel} style={{ color: overflowColor }}>
+                {overflowLabel ?? `+${Math.round(rawPercentage - 100)}% sobre la meta`}
+              </div>
+            )}
+            {showGoalReachedLabel && isGoalReached && (
+              <div className={styles.goalReachedLabel}>{goalReachedLabel}</div>
+            )}
           </div>
         )}
+        {legendItems && legendItems.length > 0 && (
+          <KmhGoalChartLegend items={legendItems} layout={legendLayout} />
+        )}
       </div>
-
-      {/* Información adicional */}
-      {showMeta && (
-        <div className={styles.meta}>
-          {caption && (
-            <div className={styles.caption}>
-              {caption}
-            </div>
-          )}
-
-          {description && (
-            <div className={styles.description}>
-              {description}
-            </div>
-          )}
-
-          {statusLabel && (
-            <div className={styles.statusLabel}>
-              {statusLabel}
-            </div>
-          )}
-
-          {showOverflowLabel && isOverGoal && (
-            <div
-              className={styles.overflowLabel}
-              style={{ color: overflowColor }}
-            >
-              {overflowLabel ?? defaultOverflowLabel}
-            </div>
-          )}
-
-          {showGoalReachedLabel && isGoalReached && (
-            <div className={styles.goalReachedLabel}>
-              {goalReachedLabel}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  )
-})
+    )
+  }
+)
 
 KmhGoalChart.displayName = 'KmhGoalChart'
 
-/* =========================================================
-   COMPANION COMPONENT: LEGEND
-========================================================= */
-
-export interface KmhGoalChartLegendProps {
-  items: KmhGoalChartLegendItem[]
-  layout?: 'horizontal' | 'vertical'
-  gap?: number | string
-  dotSize?: number
-  className?: string
-}
-
-export const KmhGoalChartLegend: React.FC<
-KmhGoalChartLegendProps
-> = ({
+/** Optional companion; standalone export retained from the original library. */
+export const KmhGoalChartLegend = ({
   items,
   layout = 'horizontal',
   gap = 14,
   dotSize = 9,
   className
-}) => {
-  return (
-    <div
-      className={[
-        styles.legend,
-        layout === 'vertical'
-          ? styles.legendVertical
-          : styles.legendHorizontal,
-        className
-      ].filter(Boolean).join(' ')}
-      style={{ gap }}
-    >
-      {items.map((item, index) => (
-        <div
-          key={item.id ?? `${item.label}-${index}`}
-          className={styles.legendItem}
-        >
-          <span
-            className={styles.legendSwatch}
-            style={{
-              backgroundColor: item.color,
-              width: dotSize,
-              height: dotSize
-            }}
-            aria-hidden="true"
-          />
-
-          <div className={styles.legendContent}>
-            <span className={styles.legendLabel}>
-              {item.label}
-            </span>
-
-            {item.description && (
-              <span className={styles.legendDescription}>
-                {item.description}
-              </span>
-            )}
-          </div>
-
-          {item.value !== undefined && (
-            <span className={styles.legendValue}>
-              {item.value}
-            </span>
-          )}
+}: KmhGoalChartLegendProps) => (
+  <div
+    className={[styles.legend, layout === 'vertical' ? styles.legendVertical : styles.legendHorizontal, className].filter(Boolean).join(' ')}
+    style={{ gap }}
+    aria-label="Leyenda del gráfico"
+  >
+    {items.map((item, index) => (
+      <div key={item.id ?? `${item.label}-${index}`} className={styles.legendItem}>
+        <span className={styles.legendSwatch}
+          style={{ backgroundColor: item.color, width: dotSize, height: dotSize }}
+          aria-hidden="true" />
+        <div className={styles.legendContent}>
+          <span className={styles.legendLabel}>{item.label}</span>
+          {item.description && <span className={styles.legendDescription}>{item.description}</span>}
         </div>
-      ))}
-    </div>
-  )
-}
+        {item.value !== undefined && <span className={styles.legendValue}>{item.value}</span>}
+      </div>
+    ))}
+  </div>
+)
+
+KmhGoalChartLegend.displayName = 'KmhGoalChartLegend'

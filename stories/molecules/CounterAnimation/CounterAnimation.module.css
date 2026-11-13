@@ -1,0 +1,262 @@
+/* ============================================================
+   COUNTER ANIMATION PRO · CSS Modules
+   Respecta temas heredados y permite personalización por CSS vars.
+   Los estilos no se filtran al resto del Design System.
+   ============================================================ */
+.root {
+  --counter-accent: var(--color-primary-red, #e5484d);
+  --counter-fg: var(--color-text-primary, currentColor);
+  --counter-muted: var(--color-text-secondary, #6c7280);
+  --counter-surface: transparent;
+  --counter-border: transparent;
+  --counter-radius: 14px;
+  --counter-gap: 0;
+  --counter-padding: 0;
+  --counter-font-weight: 700;
+  --counter-line-height: 1.12;
+  --counter-letter-spacing: -0.025em;
+  --counter-digit-width: 0.64em;
+  color: var(--counter-fg);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  max-width: 100%;
+  min-width: 0;
+  width: max-content;
+  background: var(--counter-surface);
+  border: 1px solid var(--counter-border);
+  border-radius: var(--counter-radius);
+  padding: var(--counter-padding);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  isolation: isolate;
+  box-sizing: border-box;
+}
+
+.root *, .root *::before, .root *::after { box-sizing: border-box; }
+.alignStart { align-items: flex-start; }
+.alignEnd { align-items: flex-end; }
+.alignCenter { align-items: center; }
+
+.valueRow {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: baseline;
+  min-width: 0;
+  max-width: 100%;
+  gap: var(--counter-gap);
+  white-space: nowrap;
+  font-family: inherit;
+  font-weight: var(--counter-font-weight);
+  letter-spacing: var(--counter-letter-spacing);
+  line-height: 1;
+}
+
+.prefix, .suffix {
+  flex: 0 0 auto;
+  display: inline-flex;
+  justify-content: center;
+  align-items: baseline;
+  color: var(--counter-muted);
+  font-size: .65em;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.number {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+  font-size: inherit;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.digitWindow {
+  display: inline-block;
+  position: relative;
+  flex: 0 0 auto;
+  overflow: clip;
+  overflow-clip-margin: 1px;
+  font-size: inherit;
+  line-height: 1;
+  text-align: center;
+  contain: layout paint;
+  vertical-align: bottom;
+}
+.reel {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  width: 100%;
+  transition-property: transform;
+  transition-duration: 0ms;
+  transition-delay: 0ms;
+  transition-timing-function: cubic-bezier(.22,1,.36,1);
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+}
+.cell {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 1em;
+  line-height: 1;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.literal {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  min-width: 0;
+  height: 1.12em;
+  line-height: 1;
+  white-space: pre;
+  color: currentColor;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  padding-top: 8px;
+  text-align: inherit;
+}
+.label {
+  display: block;
+  font-size: .84rem;
+  font-weight: 650;
+  line-height: 1.4;
+  color: var(--counter-fg);
+  overflow-wrap: anywhere;
+}
+.description {
+  font-size: .76rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--counter-muted);
+  overflow-wrap: anywhere;
+}
+.trend {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: .005em;
+  color: var(--counter-muted);
+  border-radius: 999px;
+  padding: 3px 7px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
+.trend[data-trend='up'] { color: var(--counter-up, #18864b); }
+.trend[data-trend='down'] { color: var(--counter-down, #ca3e49); }
+
+/* Variantes: estilos con profundidad discreta, sin sombra agresiva. */
+.plain, .minimal { --counter-surface: transparent; --counter-border: transparent; --counter-padding: 0; }
+.minimal { --counter-letter-spacing: -.045em; }
+.soft {
+  --counter-surface: var(--counter-surface-soft, #f5f6f9);
+  --counter-border: var(--counter-border-soft, #e9ecf2);
+  --counter-padding: 10px 14px;
+}
+.card {
+  --counter-surface: var(--counter-card-surface, #fff);
+  --counter-border: var(--counter-card-border, #e5e7eb);
+  --counter-padding: 16px 20px;
+  box-shadow: 0 3px 6px -5px rgba(20,27,40,.16), 0 14px 28px -20px rgba(20,27,40,.24);
+}
+.outline {
+  --counter-border: var(--counter-outline-border, #d1d5db);
+  --counter-padding: 10px 14px;
+}
+.glass {
+  --counter-surface: color-mix(in srgb, var(--counter-glass-base, #fff) 76%, transparent);
+  --counter-border: color-mix(in srgb, currentColor 12%, transparent);
+  --counter-padding: 14px 18px;
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 70%, transparent), 0 12px 30px -24px rgba(0,0,0,.4);
+}
+
+/* Tonos. Se pueden sobrescribir mediante CSS vars o props. */
+.tonePrimary { --counter-fg: var(--counter-tone-primary, #315fe6); --counter-accent: #315fe6; }
+.toneSuccess { --counter-fg: var(--counter-tone-success, #157347); --counter-accent: #157347; }
+.toneWarning { --counter-fg: var(--counter-tone-warning, #ab6500); --counter-accent: #ab6500; }
+.toneDanger { --counter-fg: var(--counter-tone-danger, #c63542); --counter-accent: #c63542; }
+.toneNeutral { --counter-fg: var(--counter-tone-neutral, #4b5563); --counter-accent: #4b5563; }
+
+.srOnly {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Fallbacks cuando color-mix o glass no están disponibles. */
+@supports not (background: color-mix(in srgb, black, white)) {
+  .glass { --counter-surface: rgba(255,255,255,.85); --counter-border: rgba(150,150,150,.2); }
+  .trend { background: rgba(128,128,128,.07); }
+}
+@supports not (overflow: clip) { .digitWindow { overflow: hidden; } }
+
+/* Contraste automático para tema oscuro del consumidor. */
+@media (prefers-color-scheme: dark) {
+  .soft { --counter-surface-soft: #25272f; --counter-border-soft: #353944; }
+  .card { --counter-card-surface: #20222b; --counter-card-border: #3b3e47; }
+  .outline { --counter-outline-border: #464b56; }
+  .glass { --counter-glass-base: #262a35; }
+  .tonePrimary { --counter-fg: var(--counter-tone-primary, #a9bcff); }
+  .toneSuccess { --counter-fg: var(--counter-tone-success, #7be6ac); }
+  .toneWarning { --counter-fg: var(--counter-tone-warning, #ffc97e); }
+  .toneDanger { --counter-fg: var(--counter-tone-danger, #ff99a3); }
+  .toneNeutral { --counter-fg: var(--counter-tone-neutral, #cbd1da); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    animation: none !important;
+  }
+}
+@media (forced-colors: active) {
+  .card, .soft, .outline, .glass { border: 1px solid CanvasText; box-shadow: none; }
+  .root { forced-color-adjust: auto; }
+}
+
+/* Mejora progresiva moderna: inserción del indicador sin flash ni opacity. */
+@supports (transition-behavior: allow-discrete) {
+  .trend { transition: transform 180ms cubic-bezier(.2,.85,.3,1); }
+  @starting-style {
+    .trend { transform: translateY(6px); }
+  }
+}
+
+@media (max-width: 480px) {
+  .card { --counter-padding: 12px 14px; }
+  .glass { --counter-padding: 10px 12px; }
+  .meta { gap: 3px; }
+  .label { font-size: .78rem; }
+  .description { font-size: .72rem; }
+}
