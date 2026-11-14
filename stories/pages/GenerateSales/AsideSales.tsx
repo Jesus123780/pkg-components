@@ -19,6 +19,7 @@ import {
 
 import { getGlobalStyle } from '../../../utils'
 import styles from './styles.module.css'
+import { CashPaymentFields, type CashCheckoutView } from './CashPaymentFields'
 
 interface AsideProps {
   openAside?: boolean
@@ -29,6 +30,9 @@ interface AsideProps {
   payId?: string
   storeTables?: any[]
   paymentMethods?: Methods[]
+  paymentKind?: 'cash' | 'non-cash' | 'unknown'
+  cashCheckout?: CashCheckoutView
+  onCashReceivedChange?: (value: string) => void
   dataClientes?: any[]
 
   client?: {
@@ -37,6 +41,7 @@ interface AsideProps {
   }
 
   totalProductPrice?: string | number
+  discountableSubtotal?: number
 
   values?: {
     cliId: string
@@ -77,6 +82,9 @@ export const AsideSales: React.FC<AsideProps> = ({
   loadingClients = false,
   payId = '',
   paymentMethods = [],
+  paymentKind,
+  cashCheckout,
+  onCashReceivedChange,
   storeTables = [],
   dataClientes = [],
   values = {
@@ -86,6 +94,7 @@ export const AsideSales: React.FC<AsideProps> = ({
     valueDelivery: ''
   },
   overline = false,
+  discountableSubtotal,
   discountType = 'PERCENT',
   discountPercent = 0,
   discountAmount = 0,
@@ -97,10 +106,46 @@ export const AsideSales: React.FC<AsideProps> = ({
   handleClickAction = () => {},
   handleChange = () => {}
 }) => {
+  // Fallback for older consumers; the new POS supplies paymentKind from useSales.
+  const resolveMethodKind = (id: string) => {
+    const name = paymentMethods.find(method => method.id === id)?.name
+    const normalized = typeof name === 'string'
+      ? name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase().replace(/\s+/g, ' ')
+      : ''
+    return normalized
+      ? /^(efectivo|cash|pago en efectivo|dinero en efectivo)$/.test(normalized) ? 'cash' : 'non-cash'
+      : 'unknown'
+  }
+  const resolvedKind = paymentKind ?? resolveMethodKind(payId)
+  const canEditChange = resolvedKind === 'cash' && !isSubmittingSale
+
+  // Existing standalone consumers that do not supply paymentKind also clear
+  // the old value. With the new hook, cleanup is centralized in useSales.
+  React.useEffect(() => {
+    if (paymentKind !== undefined || resolvedKind !== 'non-cash' || values.change == null || values.change === '') return
+    handleChange({ target: { name: 'change', value: '' } })
+  }, [paymentKind, resolvedKind, values.change, handleChange])
+
+  // Backwards compatibility for consumers without the updated useSales hook.
+  // Use the NEXT selected ID, not the previous payment method.
+  const handlePaymentDispatch: React.Dispatch<any> = (action) => {
+    if (paymentKind === undefined && action?.type === 'PAYMENT_METHOD' &&
+        resolveMethodKind(action.payload) === 'non-cash') {
+      handleChange({ target: { name: 'change', value: '' } })
+    }
+    dispatch(action)
+  }
+
+  // Empty cart is always ineligible. An omitted subtotal is a legacy consumer;
+  // do not guess eligibility from a localized/formatted net total.
+  const canApplyDiscount = !disabled && (discountableSubtotal === undefined ||
+    (Number.isFinite(discountableSubtotal) && discountableSubtotal > 0))
+
   const handleDiscount = (payload: {
     type: string
     value: number
   }): void => {
+    if (isSubmittingSale || (payload.value > 0 && !canApplyDiscount)) return
     dispatch({
       type: 'APPLY_DISCOUNT',
       payload
@@ -113,7 +158,7 @@ export const AsideSales: React.FC<AsideProps> = ({
   }
 
   const handleGenerateSale = (): void => {
-    if (disabled || isSubmittingSale) return
+    if (disabled || isSubmittingSale || (cashCheckout && !cashCheckout.canSubmit)) return
     handleOpenAside()
     handleSave()
   }
@@ -245,7 +290,7 @@ export const AsideSales: React.FC<AsideProps> = ({
             />
 
             <PaymentMethods
-              dispatch={dispatch}
+              dispatch={handlePaymentDispatch}
               methods={paymentMethods}
               payId={payId}
             />
@@ -254,16 +299,21 @@ export const AsideSales: React.FC<AsideProps> = ({
               marginBottom={getGlobalStyle('--spacing-3xl')}
             />
 
-            <AmountInput
+            {cashCheckout && onCashReceivedChange ? (
+              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={2} />
+            ) : (
+              <AmountInput
+              key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
               allowDecimals
               decimalSeparator=','
               tabIndex={2}
               decimalsLimit={2}
-              disabled={false}
+              disabled={!canEditChange}
               groupSeparator='.'
               label='Cambio'
               name='change'
               onValueChange={(value) => {
+                if (!canEditChange) return
                 handleChange({
                   target: {
                     name: 'change',
@@ -273,8 +323,9 @@ export const AsideSales: React.FC<AsideProps> = ({
               }}
               placeholder='$ 0.00'
               prefix='$'
-              value={values.change}
+              value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
             />
+            )}
 
             <AmountInput
               allowDecimals
@@ -302,6 +353,8 @@ export const AsideSales: React.FC<AsideProps> = ({
               key={discountResetKey}
               tabIndex={4}
               onChange={handleDiscount}
+              canApplyDiscount={canApplyDiscount}
+              disabled={isSubmittingSale}
               discountType={discountType}
               discountPercent={discountPercent}
               discountAmount={discountAmount}
@@ -315,7 +368,7 @@ export const AsideSales: React.FC<AsideProps> = ({
           <div className={styles.footer}>
             <Button
               primary
-              disabled={disabled || isSubmittingSale}
+              disabled={disabled || isSubmittingSale || Boolean(cashCheckout && !cashCheckout.canSubmit)}
               width='100%'
               tabIndex={8}
               onClick={handleGenerateSale}

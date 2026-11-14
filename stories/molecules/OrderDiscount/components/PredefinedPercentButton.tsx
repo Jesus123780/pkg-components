@@ -10,16 +10,20 @@ export const PredefinedPercentButton = React.memo(
   ({
     percent,
     active,
+    disabled = false,
     onSelect
   }: {
     percent: number
     active: boolean
+    disabled?: boolean
     onSelect: (p: number) => void
   }) => {
     return (
       <button
         type='button'
-        onClick={() => onSelect(percent)}
+        disabled={disabled}
+        aria-pressed={active}
+        onClick={() => { if (!disabled) onSelect(percent) }}
         className={`${styles['option-btn']} ${active ? styles.active : ''}`}
       >
         {percent}%

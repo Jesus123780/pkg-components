@@ -3,7 +3,7 @@ import React from 'react'
 import styles from './Main.module.css'
 
 export const Main: React.FC = () => {
-  const BUSINESS_TITLE = (process.env.NEXT_PUBLIC_BUSINESS_TITLE != null) || 'Venty'
+  const BUSINESS_TITLE = (process.env.NEXT_PUBLIC_BUSINESS_TITLE != null) || ''
 
   function getFormattedSpanishDate (date: Date): string {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: '2-digit' }

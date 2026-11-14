@@ -28,6 +28,9 @@ import type {
 
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
+import type { CashCheckoutView } from './CashPaymentFields'
+export { CashPaymentFields } from './CashPaymentFields'
+export type { CashCheckoutView } from './CashPaymentFields'
 
 import {
   CategoriesProducts,
@@ -122,6 +125,9 @@ interface GenerateSalesProps {
 
   totalProductPrice?: string | number
 
+  /** Unformatted pre-discount eligible subtotal from useSales. */
+  discountableSubtotal?: number
+
   isLoading?: boolean
 
   /** Checkout is being submitted; independent from catalog loading. */
@@ -142,6 +148,10 @@ interface GenerateSalesProps {
   }
 
   paymentMethods?: Methods[]
+
+  paymentKind?: 'cash' | 'non-cash' | 'unknown'
+  cashCheckout?: CashCheckoutView
+  onCashReceivedChange?: (value: string) => void
 
   dataClientes?: any[]
 
@@ -332,6 +342,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   dataClientes = [],
   storeTables = [],
   paymentMethods = [],
+  paymentKind,
+  cashCheckout,
+  onCashReceivedChange,
 
   propsSliderCategory = {
     data: [],
@@ -356,6 +369,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   },
 
   totalProductPrice = '0',
+  discountableSubtotal,
 
   errors = {
     change: false,
@@ -1072,6 +1086,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
       <AsideSales
         values={values}
         paymentMethods={paymentMethods}
+        paymentKind={paymentKind}
+        cashCheckout={cashCheckout}
+        onCashReceivedChange={onCashReceivedChange}
         handleChange={handleChange as any}
         errors={errors}
         dispatch={dispatch}
@@ -1080,6 +1097,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         disabled={!data?.PRODUCT?.length}
         isSubmittingSale={isSubmittingSale}
         totalProductPrice={String(totalProductPrice)}
+        discountableSubtotal={discountableSubtotal}
         discountType={data?.discountType ?? 'PERCENT'}
         discountPercent={data.discountPercent ?? 0}
         discountAmount={data?.discountAmount ?? 0}
