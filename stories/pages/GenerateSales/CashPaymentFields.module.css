@@ -1,0 +1,11 @@
+.panel { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--color-neutral-gray-silver, #aaa); border-radius: 8px; font: inherit; }
+.line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.line > :last-child { text-align: right; overflow-wrap: anywhere; }
+.inputRow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.input { flex: 1 1 110px; width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--color-neutral-gray-silver, #aaa); border-radius: 5px; background: transparent; color: inherit; font: inherit; box-sizing: border-box; }
+.exact { padding: 10px; font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 5px; cursor: pointer; }
+.exact:disabled, .input:disabled { opacity: .55; cursor: not-allowed; }
+.exact:focus-visible, .input:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.valid { font-weight: 700; }
+.status { font-size: .875em; }
+.status:empty { display: none; }
