@@ -405,7 +405,7 @@ export const IconInformationProduct: React.FC<IconProps> = ({
  * @returns {JSX.Element} SVG icon
  */
 
-export const IconChart: React.FC<IconProps> = ({ style = {}, size, color, ...props }) => {
+export const IconChart: React.FC<IconProps> = ({ size, color }) => {
   return (
     <svg
       height={size ?? 800}
@@ -512,7 +512,7 @@ export const IconColombia: React.FC<IconProps> = ({ style = {}, size }: IconProp
   )
 }
 
-export const IconCircleNumber: React.FC<IconProps> = ({ style = {}, size, color }: IconProps) => {
+export const IconCircleNumber: React.FC<IconProps> = ({ size }: IconProps) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -784,8 +784,6 @@ export const IconHorario: React.FC<IconProps> = ({ style = {}, size, color }: Ic
 }
 
 export const IconBoxes: React.FC<IconProps> = ({
-  style = {},
-  size,
   color,
   ...props
 }) => (
@@ -858,7 +856,7 @@ export const IconMiniCheck: React.FC<IconProps> = ({ style = {}, size, color }: 
   )
 }
 
-export const IconArrowTop = ({ size, color }: IconProps) => {
+export const IconArrowTop: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       fill={color}
@@ -873,7 +871,7 @@ export const IconArrowTop = ({ size, color }: IconProps) => {
   )
 }
 
-export const IconArrowBottom = ({ color, size }: IconProps) => {
+export const IconArrowBottom: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       color={color}
@@ -1080,7 +1078,6 @@ export const IconShopping: React.FC<IconProps> = ({ style = {}, size, color }: I
 }
 
 export const IconCarrot: React.FC<IconProps> = ({
-  style = {},
   size,
   color,
   ...props
@@ -1137,9 +1134,7 @@ export const IconCarrot: React.FC<IconProps> = ({
 }
 
 export const IconFigure: React.FC<IconProps> = ({
-  style = {},
   size,
-  color,
   ...props
 }: IconProps) => {
   return (
@@ -1207,7 +1202,7 @@ export const IconSales: React.FC<IconProps> = ({ style = {}, size, color }: Icon
   )
 }
 
-export const IconDelete: React.FC<IconProps> = ({ style = {}, size, color, ...props }: IconProps) => {
+export const IconDelete: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -1541,7 +1536,7 @@ export const IconPlus: React.FC<IconProps> = ({ size = 24, color }: IconProps) =
     </svg>
   )
 }
-export const IconLinePart: React.FC<IconProps> = ({ size = 2, color, ...props }: IconProps) => {
+export const IconLinePart: React.FC<IconProps> = ({ size = 2, ...props }: IconProps) => {
   return (
     <svg
       width={size}
@@ -1686,7 +1681,7 @@ export const IconClose: React.FC<IconProps> = ({ size, color }: IconProps) => {
   )
 }
 
-export const IconLocationMap2: React.FC<IconProps> = ({ size, color, ...props }: IconProps) => {
+export const IconLocationMap2: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
       fill='none'
@@ -2044,13 +2039,12 @@ export const IconFileUpload: React.FC<IconProps> = ({ size, color }) => (
   </svg>
 )
 
-export const IconPdf: React.FC<IconProps> = ({ size, color, ...props }) => (
+export const IconPdf: React.FC<IconProps> = ({ size }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width={size}
     height={size}
     viewBox='0 0 32 32'
-    {...props}
   >
     <title>{'file_type_pdf2'}</title>
     <path
@@ -2138,11 +2132,11 @@ export const IconLinesFilter: React.FC<IconProps> = ({ size, color }) => {
   </svg>
 }
 
-export const IconVisa: React.FC<IconProps> = ({ size, color, ...props }) => (
+export const IconVisa: React.FC<IconProps> = ({ size, ...props }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    width={40}
-    height={40}
+    width={size ?? 40}
+    height={size ?? 40}
     fill='none'
     viewBox='0 -11 70 70'
     {...props}
@@ -2165,11 +2159,11 @@ export const IconVisa: React.FC<IconProps> = ({ size, color, ...props }) => (
   </svg>
 )
 
-export const IconMasterCard: React.FC<IconProps> = ({ size, color, ...props }) => (
+export const IconMasterCard: React.FC<IconProps> = ({ size, ...props }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    width={800}
-    height={800}
+    width={size ?? 800}
+    height={size ?? 800}
     fill='none'
     viewBox='0 -11 70 70'
     {...props}
@@ -2494,7 +2488,7 @@ export const IconFingerPrint: React.FC<IconProps> = ({ size, color }) => (
 )
 
 // email
-export const IconEmail: React.FC<IconProps> = ({ size, color }) => (
+export const IconEmail: React.FC<IconProps> = ({ size }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     xmlSpace='preserve'
@@ -2583,7 +2577,7 @@ export const IconSun: React.FC<IconProps> = ({ size, color }) => {
   </svg>
 }
 // icon moon
-export const IconMoon: React.FC<IconProps> = ({ size, color }) => {
+export const IconMoon: React.FC<IconProps> = ({ size }) => {
   return <svg
     xmlns='http://www.w3.org/2000/svg'
     width={size ?? 24}
@@ -2603,7 +2597,7 @@ export const IconMoon: React.FC<IconProps> = ({ size, color }) => {
 }
 
 // icon free
-export const IconFree: React.FC<IconProps> = ({ size, color }) => {
+export const IconFree: React.FC<IconProps> = ({ size }) => {
   return <svg
     xmlns='http://www.w3.org/2000/svg'
     xmlSpace='preserve'
@@ -2632,13 +2626,13 @@ export const IconFree: React.FC<IconProps> = ({ size, color }) => {
   </svg>
 }
 
-export const IconSticky: React.FC<IconProps> = ({ size, color }) => {
+export const IconSticky: React.FC<IconProps> = ({ size }) => {
   return <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width={size ?? 24} height={size ?? 24}>
     <path d='M19.608 19.51c.244-.266.392-.62.392-1.01v-13A1.5 1.5 0 0 0 18.5 4h-13A1.5 1.5 0 0 0 4 5.5v13a1.5 1.5 0 0 0 3 0v-2a.5.5 0 0 1 .64-.48l11.968 3.49Zm-1.894.49L8 17.167V18.5c0 .563-.186 1.082-.5 1.5h10.214ZM18.5 3A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-13A2.5 2.5 0 0 1 5.5 3h13Z' />
   </svg>
 }
 
-export const IconToTop: React.FC<IconProps> = ({ size, color }) => {
+export const IconToTop: React.FC<IconProps> = ({ size }) => {
   return <svg
     xmlns='http://www.w3.org/2000/svg'
     width={size ?? 48}
@@ -2749,5 +2743,58 @@ export const IconReload: React.FC<IconProps> = ({ size, color }) => {
         d='M10 4c-.8-1.1-2-2.5-4.1-2.5-2.5 0-4.4 2-4.4 4.5s2 4.5 4.4 4.5c1.3 0 2.5-.6 3.3-1.5m1.3-7.5V4c0 .3-.2.5-.5.5H7.5'
       />
     </svg>
+  )
+}
+
+export const IconExactPayment: React.FC<IconProps> = ({
+  size = 24,
+  color = 'currentColor',
+  accentColor = 'var(--color-text-success, #50a773)',
+  checkColor = '#ffffff',
+  strokeWidth = 1.6
+}) => {
+  return (
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width={size}
+        height={size}
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        aria-hidden='true'
+        focusable='false'
+      >
+        {/* Banknote */}
+        <rect
+          x='2'
+          y='4'
+          width='20'
+          height='14'
+          rx='2.5'
+        />
+
+        {/* Currency detail */}
+        <circle cx='12' cy='11' r='3' />
+
+        <path d='M5 11h1M18 8h1' />
+
+        {/* Payment confirmation */}
+        <circle
+          cx='18.5'
+          cy='17.5'
+          r='5'
+          fill={accentColor}
+          stroke='none'
+        />
+
+        <path
+          d='m16.3 17.5 1.5 1.5 2.9-3'
+          stroke={checkColor}
+          strokeWidth='1.6'
+        />
+      </svg>
   )
 }

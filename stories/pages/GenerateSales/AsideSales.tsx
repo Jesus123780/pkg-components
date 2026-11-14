@@ -31,8 +31,9 @@ interface AsideProps {
   storeTables?: any[]
   paymentMethods?: Methods[]
   paymentKind?: 'cash' | 'non-cash' | 'unknown'
+  deliverySection?: React.ReactNode
   cashCheckout?: CashCheckoutView
-  onCashReceivedChange?: (value: string) => void
+  onCashReceivedChange?: (value: string, mode?: 'manual' | 'exact') => void
   dataClientes?: any[]
 
   client?: {
@@ -83,6 +84,7 @@ export const AsideSales: React.FC<AsideProps> = ({
   payId = '',
   paymentMethods = [],
   paymentKind,
+  deliverySection,
   cashCheckout,
   onCashReceivedChange,
   storeTables = [],
@@ -99,12 +101,12 @@ export const AsideSales: React.FC<AsideProps> = ({
   discountPercent = 0,
   discountAmount = 0,
   discountResetKey = 0,
-  dispatch = () => {},
-  handleSave = () => {},
-  handleCloseAside = () => {},
-  handleOpenAside = () => {},
-  handleClickAction = () => {},
-  handleChange = () => {}
+  dispatch = () => { },
+  handleSave = () => { },
+  handleCloseAside = () => { },
+  handleOpenAside = () => { },
+  handleClickAction = () => { },
+  handleChange = () => { }
 }) => {
   // Fallback for older consumers; the new POS supplies paymentKind from useSales.
   const resolveMethodKind = (id: string) => {
@@ -129,8 +131,9 @@ export const AsideSales: React.FC<AsideProps> = ({
   // Backwards compatibility for consumers without the updated useSales hook.
   // Use the NEXT selected ID, not the previous payment method.
   const handlePaymentDispatch: React.Dispatch<any> = (action) => {
+    if (isSubmittingSale) return
     if (paymentKind === undefined && action?.type === 'PAYMENT_METHOD' &&
-        resolveMethodKind(action.payload) === 'non-cash') {
+      resolveMethodKind(action.payload) === 'non-cash') {
       handleChange({ target: { name: 'change', value: '' } })
     }
     dispatch(action)
@@ -299,40 +302,14 @@ export const AsideSales: React.FC<AsideProps> = ({
               marginBottom={getGlobalStyle('--spacing-3xl')}
             />
 
-            {cashCheckout && onCashReceivedChange ? (
-              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={2} />
-            ) : (
-              <AmountInput
-              key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
-              allowDecimals
-              decimalSeparator=','
-              tabIndex={2}
-              decimalsLimit={2}
-              disabled={!canEditChange}
-              groupSeparator='.'
-              label='Cambio'
-              name='change'
-              onValueChange={(value) => {
-                if (!canEditChange) return
-                handleChange({
-                  target: {
-                    name: 'change',
-                    value
-                  }
-                })
-              }}
-              placeholder='$ 0.00'
-              prefix='$'
-              value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
-            />
-            )}
-
+            {deliverySection ?? (
             <AmountInput
               allowDecimals
               decimalSeparator=','
-              decimalsLimit={3}
+              decimalsLimit={2}
+              allowNegativeValue={false}
               tabIndex={3}
-              disabled={false}
+              disabled={isSubmittingSale}
               groupSeparator='.'
               label='Precio del domicilio'
               name='valueDelivery'
@@ -348,6 +325,38 @@ export const AsideSales: React.FC<AsideProps> = ({
               prefix='$'
               value={values.valueDelivery}
             />
+            )}
+
+            {cashCheckout && onCashReceivedChange ? (
+              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={2} />
+            ) : (
+              <AmountInput
+                key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
+                allowDecimals
+                decimalSeparator=','
+                tabIndex={2}
+                decimalsLimit={2}
+                disabled={!canEditChange}
+                groupSeparator='.'
+                label='Cambio'
+                name='change'
+                onValueChange={(value) => {
+                  if (!canEditChange) return
+                  handleChange({
+                    target: {
+                      name: 'change',
+                      value
+                    }
+                  })
+                }}
+                placeholder='$ 0.00'
+                prefix='$'
+                value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
+              />
+            )}
+            <Divider marginBottom={getGlobalStyle('--spacing-xl')}
+            />
+
 
             <OrderDiscount
               key={discountResetKey}

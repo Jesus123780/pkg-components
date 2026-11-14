@@ -150,8 +150,9 @@ interface GenerateSalesProps {
   paymentMethods?: Methods[]
 
   paymentKind?: 'cash' | 'non-cash' | 'unknown'
+  deliverySection?: React.ReactNode
   cashCheckout?: CashCheckoutView
-  onCashReceivedChange?: (value: string) => void
+  onCashReceivedChange?: (value: string, mode?: 'manual' | 'exact') => void
 
   dataClientes?: any[]
 
@@ -343,6 +344,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   storeTables = [],
   paymentMethods = [],
   paymentKind,
+  deliverySection,
   cashCheckout,
   onCashReceivedChange,
 
@@ -997,7 +999,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
 
                   <div className={styles['content__action-total']}>
                     <span className={styles['content__action-label']}>
-                      Total de la venta
+                      {deliverySection ? 'Neto de mercancía' : 'Total de la venta'}
                     </span>
 
                     <Text
@@ -1087,6 +1089,7 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         values={values}
         paymentMethods={paymentMethods}
         paymentKind={paymentKind}
+        deliverySection={deliverySection}
         cashCheckout={cashCheckout}
         onCashReceivedChange={onCashReceivedChange}
         handleChange={handleChange as any}

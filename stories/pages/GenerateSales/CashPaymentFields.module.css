@@ -9,3 +9,15 @@
 .valid { font-weight: 700; }
 .status { font-size: .875em; }
 .status:empty { display: none; }
+
+/* AmountInput renders its own wrapper and native styling. */
+.inputField { flex: 1 1 140px; min-width: 0; }
+.inputField > div { width: 100%; min-width: 0; }
+
+.exactActive { border-color: var(--color-text-success, #50a773); color: var(--color-text-success, #50a773); }
+.exactHint { font-size: .8125em; line-height: 1.4; color: var(--color-text-success, #50a773); }
+
+.diagnostics { min-width: 0; padding-top: var(--spacing-md, 8px); border-top: 1px solid var(--color-neutral-gray, #e5e5e5); font-size: .8125em; }
+.diagnostics summary { cursor: pointer; color: var(--color-text-gray-light, #666); font-weight: 600; }
+.diagnostics p { margin: 8px 0; line-height: 1.5; }
+.diagnostics textarea { width: 100%; min-width: 0; box-sizing: border-box; resize: vertical; padding: 8px; border: 1px solid var(--color-neutral-gray, #e5e5e5); border-radius: var(--border-radius-xs, 6px); background: transparent; color: inherit; font: 12px/1.45 ui-monospace, monospace; }
