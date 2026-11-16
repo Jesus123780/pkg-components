@@ -1,126 +1,97 @@
 .containerAside {
-    transition: 300ms ease;
-    background-color: var(--BGColor);
-    height: min-content;
-    margin-bottom: 20px;
+  height: min-content;
+  min-width: 0;
+  background-color: var(--color-background-white);
 }
-
 .containerOption {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 10px;
-    cursor: pointer;
-    flex-direction: column;
-    align-items: baseline;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  box-sizing: border-box;
 }
-
+.containerOption > div { min-width: 0; }
+.optionActive { color: var(--color-primary-red-dark); }
+.editing { cursor: grab; }
+.editing:active { cursor: grabbing; }
 .button_global_create {
-    align-items: center;
-    border: 2px solid var(--color-background-primary);
-    color: var(--b-color);
-    display: flex;
-    font-weight: 500;
-    height: 30px;
-    justify-content: center;
-    margin: var(--spacing-sm);
-    transition: 0.2s;
-    width: 100%;
-    width: 90%;
+  align-items: center;
+  border: 2px solid var(--color-background-primary);
+  color: var(--b-color, var(--color-text-black));
+  display: flex;
+  font-weight: 500;
+  height: 30px;
+  justify-content: center;
+  margin: var(--spacing-sm);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+  width: 90%;
 }
-
-.button_global_create:hover {
-    box-shadow: var(--box-shadow-red-rose);
+@media (hover: hover) and (pointer: fine) {
+  .button_global_create:hover { box-shadow: var(--box-shadow-red-rose, none); }
+  .sidebar-header-button:hover { background-color: var(--color-background-gray); }
 }
-
-.button_global_create:active {
-    transform: scale(0.9);
-    box-shadow: var(--box-shadow-red);
+.button_global_create:active { transform: scale(0.9); box-shadow: var(--box-shadow-red, none); }
+.sidebar-header-button { border-radius: var(--border-radius-md); }
+.sidebar-header-button:focus-visible, .button_global_create:focus-visible {
+  outline: var(--border-width-xs) solid var(--color-secondary-blue-dark);
+  outline-offset: 2px;
 }
-
-.sidebar-header-button {
-    border-radius: var(--border-radius-md);
-}
-
-.sidebar-header-button:hover {
-    background-color: var(--color-background-gray);
-
-}
-
 .sidebar-header-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: var(--box-shadow-xs);
-    overflow: hidden;
-    height: 100vh;
-    justify-content: space-between;
-    background-color: var(--color-base-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  height: 100dvh;
+  min-width: 0;
+  overflow: hidden;
+  box-shadow: var(--box-shadow-xs);
+  background-color: var(--color-base-white);
 }
-
-.sidebar-header-router {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 75%;
-}
-
+.sidebarBody { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; width: 100%; overflow: hidden; }
+.sidebar-header { flex-shrink: 0; }
+.sidebar-header-column { min-width: 0; }
+.sidebar-header-router { flex: 1 1 auto; min-height: 0; width: 100%; overflow-y: auto; overflow-x: hidden; }
+.modulesContainer { width: 100%; min-width: 0; }
+.submodule { margin-inline-start: var(--spacing-lg); margin-block-start: var(--spacing-xs); min-width: 0; }
+.sidebar-footer { flex-shrink: 0; width: 100%; }
 .sidebar-header-text {
     color: var(--color-text-gray-light);
     line-height: 1.3rem;
     font-family: PFont-Light;
     word-break: break-word;
 }
-
 .quick_options {
-    background-color: var(--color-base-white);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--box-shadow-sm);
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: flex-start;
-    left: 215px;
-    padding: 16px;
-    position: absolute;
-    top: 80px;
-    transition: opacity 0.3s ease, transform 0.3s ease left 1s ease;
-    z-index: var(--z-index-9999);
-    width: fit-content;
+  position: absolute;
+  top: 80px;
+  left: 215px;
+  z-index: var(--z-index-9999);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: var(--spacing-md);
+  width: max-content;
+  max-width: calc(100vw - 235px);
+  box-sizing: border-box;
+  padding: var(--spacing-lg);
+  border: var(--border-width-xs) solid var(--color-neutral-gray);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-base-white);
+  box-shadow: var(--box-shadow-sm);
+  transform-origin: left top;
+  transition: opacity 180ms ease, transform 360ms cubic-bezier(0.22,1,0.36,1), left 300ms ease, visibility 0s;
 }
-
-.hidden {
-    opacity: 0;
-    transform: scale(0.95);
-    pointer-events: none;
-}
-
-.visible {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.quick_options--colapsed {
-    left: 40px;
-    transition: left 0.5s ease;
-}
-
+.hidden { visibility: hidden; opacity: 0; transform: perspective(900px) translate3d(-8px,0,-25px) rotateY(8deg); pointer-events: none; transition-delay: 0s, 0s, 0s, 360ms; }
+.visible { visibility: visible; opacity: 1; transform: perspective(900px) translate3d(0,0,0) rotateY(0); }
+.quick_options--colapsed { left: 40px; max-width: calc(100vw - 60px); }
 @media (max-width: 768px) {
-    .quick_options {
-        display: none;
-    }
-
-    .button_global_create {
-        display: none;
-    }
-
-    .containerAside {
-        z-index: 999;
-        height: 100%;
-        position: absolute;
-        transform: translate(-800px, 0px);
-    }
-
-    .containerAside.collapsed {
-        transform: translate(0px, 0px);
-    }
+  .quick_options, .button_global_create { display: none; }
+  .containerAside { position: absolute; z-index: var(--z-index-999); height: 100%; visibility: hidden; transform: translate3d(-100%,0,0); transition: transform 320ms cubic-bezier(0.22,1,0.36,1), visibility 0s 320ms; }
+  .containerAside.collapsed { visibility: visible; transform: translate3d(0,0,0); transition-delay: 0s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .containerAside, .quick_options, .button_global_create { transition: none; }
+  .button_global_create:active { transform: none; }
 }

@@ -74,10 +74,10 @@ interface AsideProps {
   discountAmount?: number
   discountResetKey?: number | string
 
-  handleSave?: () => void
+  handleSave?: () => void | boolean
   handleClickAction?: () => void
   handleCloseAside?: () => void
-  handleOpenAside?: () => void
+  handleOpenAside?: (open?: boolean) => void
 
   handleChange?: (e: {
     target: {
@@ -183,15 +183,17 @@ export const AsideSales: React.FC<AsideProps> = ({
   }
 
   const closeAside = (): void => {
-    if (isSubmittingSale) return
-    handleOpenAside()
+    if (!openAside || isSubmittingSale) return
+    handleOpenAside(false)
     handleCloseAside()
   }
 
   const handleGenerateSale = (): void => {
-    if (disabled || isSubmittingSale || (cashCheckout && !cashCheckout.canSubmit)) return
-    handleOpenAside()
-    handleSave()
+    if (!openAside || disabled || isSubmittingSale || (cashCheckout && !cashCheckout.canSubmit)) return
+    // A rejected preview keeps the checkout visible. Legacy void callbacks
+    // still work; the current parent returns a boolean explicitly.
+    if (handleSave() === false) return
+    handleOpenAside(false)
   }
 
   const panelRef = React.useRef<HTMLDivElement>(null)
@@ -208,7 +210,7 @@ export const AsideSales: React.FC<AsideProps> = ({
     const focusable = target.querySelector<HTMLElement>('input:not([disabled]):not([type="hidden"]), select:not([disabled]), button:not([disabled]), textarea:not([disabled]), a[href]') ?? target.querySelector<HTMLElement>('summary')
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
     target.scrollIntoView({ block: 'nearest', behavior: prefersReducedMotion ? 'auto' : 'smooth' })
-    ;(focusable ?? target).focus({ preventScroll: true })
+    ; (focusable ?? target).focus({ preventScroll: true })
     setHighlightedTarget(requiredAction.target)
     if (highlightTimer.current) clearTimeout(highlightTimer.current)
     highlightTimer.current = setTimeout(() => setHighlightedTarget(null), 1800)
@@ -225,165 +227,232 @@ export const AsideSales: React.FC<AsideProps> = ({
   const message = requiredAction?.message || (disabled ? 'Agrega productos al carrito.' : isSubmittingSale ? 'Procesando operación…' : checkoutBlocker || cashCheckout?.message || '')
   // The confirmation itself is the actionable instruction; retain other blockers.
   const footerMessage = paymentConfirmationSection && (message === 'Confirma que recibiste el pago.' || message === 'Confirma la venta sin cobro.') ? '' : message
-  const customerSelected = Boolean(values.cliId || values.tableId)
+  const customerFieldsRef = React.useRef<HTMLFieldSetElement>(null)
+  const contentRef = React.useRef<HTMLDivElement>(null)
+  const nextFieldFrame = React.useRef<number | null>(null)
+  const revealFrame = React.useRef<number | null>(null)
+  const [activeSelector, setActiveSelector] = React.useState<'cliId' | 'tableId' | null>(null)
+  const hasCustomer = Boolean(values.cliId)
+  const hasTable = Boolean(values.tableId)
+  const customerSummary = hasCustomer && hasTable ? '2 seleccionados' : hasCustomer ? 'Cliente seleccionado' : hasTable ? 'Mesa seleccionada' : 'Opcional'
+
+  React.useEffect(() => {
+    if (!openAside || isSubmittingSale) setActiveSelector(null)
+    return () => {
+      if (nextFieldFrame.current !== null) window.cancelAnimationFrame(nextFieldFrame.current)
+      if (revealFrame.current !== null) window.cancelAnimationFrame(revealFrame.current)
+      nextFieldFrame.current = null
+      revealFrame.current = null
+    }
+  }, [openAside, isSubmittingSale])
+
+  // Scroll only the checkout content, never the footer or the document.
+  React.useEffect(() => {
+    if (!activeSelector || !openAside || isSubmittingSale) return
+    revealFrame.current = window.requestAnimationFrame(() => {
+      revealFrame.current = null
+      const content = contentRef.current
+      const field = customerFieldsRef.current?.querySelector<HTMLElement>(`[data-selection-field="${activeSelector}"]`)
+      if (!content || !field || !field.getClientRects().length) return
+      const viewport = content.getBoundingClientRect()
+      const bounds = field.getBoundingClientRect()
+      const margin = 12
+      const available = Math.max(0, content.clientHeight - margin * 2)
+      // When the expanded selector is taller than the viewport, show its input first.
+      const delta = bounds.height > available || bounds.top < viewport.top + margin
+        ? bounds.top - viewport.top - margin
+        : Math.max(0, bounds.bottom - viewport.bottom + margin)
+      if (Math.abs(delta) > 1) content.scrollBy({ top: delta, behavior: 'auto' })
+    })
+    return () => {
+      if (revealFrame.current !== null) window.cancelAnimationFrame(revealFrame.current)
+      revealFrame.current = null
+    }
+  }, [activeSelector, openAside, isSubmittingSale])
+
+  const handleSelectorOpen = (field: 'cliId' | 'tableId', open: boolean) => {
+    setActiveSelector(previous => open ? field : previous === field ? null : previous)
+  }
+
+  const focusTableSelector = () => {
+    if (!openAside || isSubmittingSale || hasTable || storeTables.length === 0) return
+    const fieldset = customerFieldsRef.current
+    const customerInput = fieldset?.querySelector<HTMLInputElement>('input[name="cliId"]')
+    // Do not hijack focus when a selection was committed by leaving the field.
+    if (!customerInput || document.activeElement !== customerInput) return
+    if (nextFieldFrame.current !== null) window.cancelAnimationFrame(nextFieldFrame.current)
+    nextFieldFrame.current = window.requestAnimationFrame(() => {
+      nextFieldFrame.current = null
+      const tableInput = fieldset?.querySelector<HTMLInputElement>('input[name="tableId"]')
+      if (document.activeElement !== customerInput || !tableInput || tableInput.matches(':disabled') || !tableInput.getClientRects().length) return
+      tableInput.focus({ preventScroll: true })
+    })
+  }
   const discountLabel = discountType === 'AMOUNT' && discountAmount > 0 ? 'Valor fijo aplicado' : discountPercent > 0 ? `${discountPercent}% aplicado` : 'Sin descuento'
   return (
     <>
-      {overline && <Overline show={openAside} bgColor={getGlobalStyle('--color-background-overline')} zIndex={getGlobalStyle('--z-index-99999')} onClick={closeAside} style={{padding:getGlobalStyle('--spacing-lg')}} />}
-      <LateralModal open={openAside} handleClose={closeAside} style={{zIndex:getGlobalStyle('--z-index-modal'),height:'100dvh',maxHeight:'100dvh',minHeight:0,top:0,right:0,display:'flex',flexDirection:'column',width:'min(420px, 100vw)'}}>
+      {overline && <Overline show={openAside} bgColor={getGlobalStyle('--color-background-overline')} zIndex={getGlobalStyle('--z-index-99999')} onClick={closeAside} style={{ padding: getGlobalStyle('--spacing-lg') }} />}
+      <LateralModal open={openAside} handleClose={closeAside} style={{ zIndex: getGlobalStyle('--z-index-modal'), height: '100dvh', maxHeight: '100dvh', minHeight: 0, top: 0, right: 0, display: 'flex', flexDirection: 'column', width: 'min(420px, 100vw)' }}>
         <div className={styles.panel} ref={panelRef}>
           <header className={styles.header}>
             <span className={styles.eyebrow}>PUNTO DE VENTA</span>
             <h2>Completar venta</h2>
             <p>Selecciona cómo recibiste el pago.</p>
           </header>
-          <div className={styles.content}>
+          <div className={styles.content} ref={contentRef}>
             {recoverySection && <div {...targetProps('recovery')}>{recoverySection}</div>}
             <section className={styles.payment} aria-label='Medios de pago' {...targetProps('payment')}>
               <h3>Medio de pago</h3>
               <fieldset disabled={isSubmittingSale} className={styles.fields}>
-               <PaymentMethods dispatch={handlePaymentDispatch} methods={paymentMethods} payId={payId}/>
+                <PaymentMethods dispatch={handlePaymentDispatch} methods={paymentMethods} payId={payId} />
               </fieldset>
-              {paymentMethods.length===0 && <p className={styles.hint}>No hay medios de pago disponibles todavía.</p>}
+              {paymentMethods.length === 0 && <p className={styles.hint}>No hay medios de pago disponibles todavía.</p>}
               {paymentSettingsSection}
             </section>
             {cashSection && <div {...targetProps('cash-session')}><CheckoutDisclosure title='Caja del turno' summary={cashSectionSummary} required={cashSectionRequired}>{cashSection}</CheckoutDisclosure></div>}
             <div {...targetProps('delivery')}><CheckoutDisclosure title='Entrega' summary={deliverySectionSummary ?? 'Configurar'} required={deliverySectionRequired}>
               {deliverySection ?? (
-            <AmountInput
-              allowDecimals
-              decimalSeparator=','
-              decimalsLimit={2}
-              allowNegativeValue={false}
-              tabIndex={0}
-              disabled={isSubmittingSale}
-              groupSeparator='.'
-              label='Precio del domicilio'
-              name='valueDelivery'
-              onValueChange={(value) => {
-                handleChange({
-                  target: {
-                    name: 'valueDelivery',
-                    value
-                  }
-                })
-              }}
-              placeholder='$ 0.00'
-              prefix='$'
-              value={values.valueDelivery}
-            />
-            )}
+                <AmountInput
+                  allowDecimals
+                  decimalSeparator=','
+                  decimalsLimit={2}
+                  allowNegativeValue={false}
+                  tabIndex={0}
+                  disabled={isSubmittingSale}
+                  groupSeparator='.'
+                  label='Precio del domicilio'
+                  name='valueDelivery'
+                  onValueChange={(value) => {
+                    handleChange({
+                      target: {
+                        name: 'valueDelivery',
+                        value
+                      }
+                    })
+                  }}
+                  placeholder='$ 0.00'
+                  prefix='$'
+                  value={values.valueDelivery}
+                />
+              )}
             </CheckoutDisclosure></div>
             <div className={styles.cashFields} {...targetProps('cash-received')}>
-              {cashCheckout && onCashReceivedChange ? (
-              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={0} compact />
-            ) : (
-              <AmountInput
-                key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
-                allowDecimals
-                decimalSeparator=','
-                tabIndex={0}
-                decimalsLimit={2}
-                disabled={!canEditChange}
-                groupSeparator='.'
-                label='Cambio'
-                name='change'
-                onValueChange={(value) => {
-                  if (!canEditChange) return
-                  handleChange({
-                    target: {
-                      name: 'change',
-                      value
-                    }
-                  })
-                }}
-                placeholder='$ 0.00'
-                prefix='$'
-                value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
-              />
-            )}
+              {cashCheckout && onCashReceivedChange
+                ? (
+                  <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={0} compact />
+                  )
+                : (
+                  <AmountInput
+                    key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
+                    allowDecimals
+                    decimalSeparator=','
+                    tabIndex={0}
+                    decimalsLimit={2}
+                    disabled={!canEditChange}
+                    groupSeparator='.'
+                    label='Cambio'
+                    name='change'
+                    onValueChange={(value) => {
+                      if (!canEditChange) return
+                      handleChange({
+                        target: {
+                          name: 'change',
+                          value
+                        }
+                      })
+                    }}
+                    placeholder='$ 0.00'
+                    prefix='$'
+                    value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
+                  />
+                  )}
             </div>
-            <CheckoutDisclosure title='Cliente y mesa' summary={customerSelected ? 'Seleccionados' : 'Sin seleccionar'}>
-              <fieldset className={styles.fields} disabled={isSubmittingSale}>
-                <NewSelect
-              handleClickAction={handleClickAction}
-              id='cliId'
-              tabIndex={0}
-              action={false}
-              beforeLabel='Cliente'
-              loading={loadingClients}
-              name='cliId'
-              onChange={(e) => {
-                handleChange({
-                  target: {
-                    name: String(e.target.name),
-                    value: e.target.value
-                  }
-                })
-              }}
-              optionName={['clientName', 'clientLastName']}
-              options={dataClientes}
-              canDelete
-              handleClean={() => {
-                handleChange({
-                  target: {
-                    name: 'cliId',
-                    value: ''
-                  }
-                })
-              }}
-              title='Selecciona un cliente'
-              value={values.cliId ?? ''}
-            />
-                <NewSelect
-              name='tableId'
-              optionName='tableName'
-              tabIndex={0}
-              options={storeTables}
-              onChange={(e) => {
-                handleChange({
-                  target: {
-                    name: String(e.target.name),
-                    value: e.target.value
-                  }
-                })
-              }}
-              title='Selecciona una mesa'
-              value={values.tableId ?? ''}
-              handleClean={() => {
-                handleChange({
-                  target: {
-                    name: 'tableId',
-                    value: ''
-                  }
-                })
-              }}
-              canDelete
-              id='tableId'
-            />
+            <CheckoutDisclosure title='Cliente y mesa' summary={customerSummary} completed={hasCustomer && hasTable}>
+              <fieldset ref={customerFieldsRef} className={styles.customerFields} disabled={isSubmittingSale}>
+                <div className={styles.selectionField} data-selection-field='cliId'>
+                  <div className={styles.selectionLabel}>
+                    <label htmlFor='cliId'>Cliente</label>
+                    <span className={hasCustomer ? styles.selectionCompleted : styles.optionalLabel}>{hasCustomer ? '✓ Seleccionado' : 'Opcional'}</span>
+                  </div>
+                  <NewSelect
+                    id='cliId'
+                    name='cliId'
+                    ariaLabel='Selecciona un cliente'
+                    placeholder='Buscar cliente'
+                    tabIndex={0}
+                    disabled={isSubmittingSale}
+                    action={false}
+                    loading={loadingClients}
+                    optionName={['clientName', 'clientLastName']}
+                    options={dataClientes}
+                    canDelete
+                    autoSelectDefault={false}
+                    emptyMessage='No se encontraron clientes.'
+                    value={values.cliId ?? ''}
+                    handleClickAction={handleClickAction}
+                    onOpenChange={open => handleSelectorOpen('cliId', open)}
+                    onValueChange={(value, option) => {
+                      if (isSubmittingSale) return
+                      const next = String(value ?? '')
+                      handleChange({ target: { name: 'cliId', value: next } })
+                      if (option && next && next !== values.cliId) focusTableSelector()
+                    }}
+                  />
+                </div>
+                <div className={styles.selectionField} data-selection-field='tableId'>
+                  <div className={styles.selectionLabel}>
+                    <label htmlFor='tableId'>Mesa</label>
+                    <span className={hasTable ? styles.selectionCompleted : styles.optionalLabel}>{hasTable ? '✓ Seleccionada' : 'Opcional'}</span>
+                  </div>
+                  <NewSelect
+                    id='tableId'
+                    name='tableId'
+                    ariaLabel='Selecciona una mesa'
+                    placeholder='Buscar mesa'
+                    tabIndex={0}
+                    disabled={isSubmittingSale}
+                    optionName='tableName'
+                    options={storeTables}
+                    value={values.tableId ?? ''}
+                    canDelete
+                    autoSelectDefault={false}
+                    emptyMessage='No hay mesas disponibles.'
+                    onOpenChange={open => handleSelectorOpen('tableId', open)}
+                    onValueChange={value => {
+                      if (isSubmittingSale) return
+                      handleChange({ target: { name: 'tableId', value: String(value ?? '') } })
+                    }}
+                  />
+                </div>
+                <p className={styles.selectionHint} role='status'>
+                  {hasCustomer && hasTable ? 'Cliente y mesa configurados.' : 'Puedes continuar sin seleccionar cliente o mesa.'}
+                </p>
               </fieldset>
             </CheckoutDisclosure>
             <div {...targetProps('discount')}><CheckoutDisclosure title='Descuento' summary={discountLabel}>
               <OrderDiscount
-              key={discountResetKey}
-              tabIndex={0}
-              onChange={handleDiscount}
-              canApplyDiscount={canApplyDiscount}
-              disabled={isSubmittingSale}
-              discountType={discountType}
-              discountPercent={discountPercent}
-              discountAmount={discountAmount}
-            />
+                key={discountResetKey}
+                tabIndex={0}
+                onChange={handleDiscount}
+                canApplyDiscount={canApplyDiscount}
+                disabled={isSubmittingSale}
+                discountType={discountType}
+                discountPercent={discountPercent}
+                discountAmount={discountAmount}
+              />
             </CheckoutDisclosure></div>
             {financialNoticeSection}
 
           </div>
           <footer className={styles.footer}>
-            <CheckoutAccountingSummary checkout={cashCheckout} accounting={accountingSummary} />
+            <div className={styles.footerAccounting}>
+              <CheckoutAccountingSummary checkout={cashCheckout} accounting={accountingSummary} />
+            </div>
             <div className={styles.total}>
               <span>Total a cobrar en POS</span>
               <strong>{totalLabel}</strong>
             </div>
+            <div className={styles.footerControls}>
             {paymentConfirmationSection && (
               <div className={styles.confirmation} aria-label='Confirmación del cobro' {...targetProps('confirmation')}>
                 {paymentConfirmationSection}
@@ -400,7 +469,8 @@ export const AsideSales: React.FC<AsideProps> = ({
             {blocked && !requiredAction && onReturnToCart && !isSubmittingSale && !disabled && (
               <button type='button' className={styles.actionButton} onClick={onReturnToCart}>Volver al carrito</button>
             )}
-            <Button primary disabled={blocked} width='100%' onClick={handleGenerateSale} iconName='IconSales' iconPosition='right' styles={{justifyContent:'center'}}>
+            </div>
+            <Button primary disabled={blocked} width='100%' onClick={handleGenerateSale} iconName='IconSales' iconPosition='right' styles={{ justifyContent: 'center' }}>
               {isSubmittingSale ? 'Procesando venta…' : 'Revisar y generar venta'}
             </Button>
           </footer>

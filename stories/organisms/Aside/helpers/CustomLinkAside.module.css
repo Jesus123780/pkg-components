@@ -1,489 +1,123 @@
-/* ==========================================================================
-   CustomLinkAside
-   ==========================================================================
-
-   Navigation interaction system.
-
-   Design goals:
-   - Smooth left-to-right underline.
-   - No layout shift.
-   - No JavaScript animation.
-   - GPU-friendly transforms.
-   - Compatible with light/dark themes.
-   - Accessible reduced-motion behavior.
-   - Persistent active state.
-   - Subtle interaction suitable for a dense sidebar.
-   ========================================================================== */
-
-
-/* ==========================================================================
-   1. ROOT
-   ========================================================================== */
-
 .wrapper {
-    --link-animation-duration: 420ms;
-    --link-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
-
-    --link-hover-offset: 2px;
-
-    --underline-height: 2px;
-    --underline-inset: 8px;
-
-    position: relative;
-
-    width: 100%;
-    min-width: 0;
-
-    /*
-     * Creates a stable containing block for the underline.
-     */
-    isolation: isolate;
+  --motion-duration: 460ms;
+  --motion-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --line-duration: 420ms;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-width: 0;
+  perspective: 800px;
 }
-
-
-/* ==========================================================================
-   2. LINK
-   ========================================================================== */
-
 .link {
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: flex-start;
-
-    width: 100%;
-    min-width: 0;
-
-    /*
-     * Keep enough vertical space for the underline.
-     *
-     * The underline itself is absolutely positioned,
-     * so this padding does not participate in its animation.
-     */
-    padding: 10px 3px 11px;
-
-    border: 0;
-
-    background: transparent;
-
-    color: var(--color-text-gray-light);
-
-    text-decoration: none;
-
-    /*
-     * Only animate properties that are visually useful.
-     */
-    transition:
-        color 260ms ease,
-        transform var(--link-animation-duration)
-            var(--link-animation-easing),
-        opacity 220ms ease;
-
-    /*
-     * Improves text rendering during transform animations.
-     */
-    will-change: transform;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 0;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-base-transparent);
+  color: var(--color-text-black);
+  text-decoration: none;
+  font-size: var(--font-size-md);
+  transform-origin: left center;
+  transition: transform var(--motion-duration) var(--motion-easing), background-color 180ms ease, color 180ms ease;
 }
-
-
-/* ==========================================================================
-   3. UNDERLINE BASE
-   ========================================================================== */
-
-/*
- * The underline is deliberately implemented with a pseudo-element.
- *
- * Why?
- *
- * A border-bottom cannot create a sophisticated reveal animation
- * without affecting the element's box model.
- *
- * This pseudo-element:
- * - doesn't change layout;
- * - can be transformed independently;
- * - can be animated on the compositor;
- * - remains completely isolated from React.
- */
+/* Enter left -> right; exit left -> right (origin switches only at state boundary). */
 .wrapper::after {
-    position: absolute;
-
-    content: '';
-
-    /*
-     * Horizontal position.
-     */
-    left: var(--underline-inset);
-    right: var(--underline-inset);
-
-    /*
-     * Keep it very close to the bottom of the link.
-     */
-    bottom: -5px;
-
-    /*
-     * Very thin and elegant.
-     */
-    height: var(--underline-height);
-
-    border-radius: var(--border-radius-full);
-
-    /*
-     * Main line.
-     *
-     * The transparent end creates a subtle fade instead
-     * of an abrupt ending.
-     */
-    background: linear-gradient(
-        90deg,
-        var(--color-primary-red) 0%,
-        var(--color-primary-red) 72%,
-        color-mix(
-            in srgb,
-            var(--color-primary-red) 55%,
-            transparent
-        ) 100%
-    );
-
-    /*
-     * Hidden state.
-     */
-    opacity: 0;
-
-    /*
-     * The important part:
-     *
-     * The line starts from the LEFT and expands toward
-     * the RIGHT.
-     */
-    transform: scaleX(0);
-
-    transform-origin: left center;
-
-    /*
-     * Never interfere with clicking.
-     */
-    pointer-events: none;
-
-    /*
-     * The animation is intentionally slightly slower than
-     * the text transition.
-     */
-    transition:
-        transform 520ms cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 180ms ease;
-
-    /*
-     * Allows the browser to prepare the animation.
-     */
-    will-change: transform, opacity;
-
-    z-index: 1;
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 1;
+  height: 2px;
+  border-radius: var(--border-radius-full);
+  background-color: var(--color-primary-red);
+  content: '';
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--line-duration) var(--motion-easing);
+}
+.wrapperActive::after,
+.wrapper:focus-within:not(.disabled)::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+.wrapperActive .link, .active {
+  background-color: var(--color-primary-red-bg);
+  color: var(--color-primary-red-dark);
+  font-weight: var(--font-weight-semibold);
 }
 
-
-/* ==========================================================================
-   4. UNDERLINE HOVER
-   ========================================================================== */
-
-.wrapper:hover::after {
-    opacity: 1;
-
-    transform: scaleX(1);
+.menuBody > :has([aria-current='page']) {
+  width: 90%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-
-/* ==========================================================================
-   5. LINK HOVER
-   ========================================================================== */
-
-.wrapper:hover .link {
-    /*
-     * Very subtle movement.
-     *
-     * 2px is enough to communicate interaction without
-     * making the sidebar feel unstable.
-     */
-    transform: translate3d(
-        var(--link-hover-offset),
-        0,
-        0
-    );
-
-    color: var(--color-text-black);
-}
-
-
-/* ==========================================================================
-   6. ACTIVE STATE
-   ========================================================================== */
-
-/*
- * Active navigation items should not depend on hover.
- *
- * When the user navigates to the page, the underline remains visible.
- */
-.wrapperActive::after {
-    opacity: 1;
-
-    transform: scaleX(1);
-
-    background: linear-gradient(
-        90deg,
-        var(--color-primary-red) 0%,
-        var(--color-primary-red) 82%,
-        color-mix(
-            in srgb,
-            var(--color-primary-red) 65%,
-            transparent
-        ) 100%
-    );
-}
-
-
-/*
- * Active text.
- */
-.wrapperActive .link {
-    color: var(--color-text-primary);
-}
-
-
-/*
- * Active + hover should not become visually aggressive.
- *
- * We only slightly increase the underline opacity.
- */
-.wrapperActive:hover::after {
-    opacity: 1;
-}
-
-
-/* ==========================================================================
-   7. ACTIVE LINK COMPATIBILITY
-   ========================================================================== */
-
-/*
- * ActiveLink already receives activeClassName={styles.active}.
- *
- * Keep this class intentionally lightweight.
- *
- * We don't put borders here because the wrapper owns the active indicator.
- */
-.active {
-    color: var(--color-text-primary);
-}
-
-
-/* ==========================================================================
-   8. ICON ANIMATION
-   ========================================================================== */
-
-/*
- * ActiveLink may render an SVG internally.
- *
- * The icon follows the same visual rhythm as the link.
- */
 .link svg {
-    flex-shrink: 0;
-
-    transition:
-        transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-        color 240ms ease,
-        opacity 240ms ease;
+  flex-shrink: 0;
+  transition: transform var(--motion-duration) var(--motion-easing);
 }
-
-
-/*
- * Hover:
- *
- * The icon moves only 2px.
- *
- * This is intentionally subtle.
- */
-.wrapper:hover .link svg {
-    transform: translate3d(2px, 0, 0);
-
-    color: var(--color-icons-gray);
-}
-
-
-/*
- * Active icon.
- */
-.wrapperActive .link svg {
-    color: var(--color-icons-primary);
-}
-
-
-/*
- * Active + hover.
- */
-.wrapperActive:hover .link svg {
-    color: var(--color-icons-primary);
-}
-
-
-/* ==========================================================================
-   9. OPTIONAL ICON WRAPPER SUPPORT
-   ========================================================================== */
-
-/*
- * If ActiveLink wraps the icon in a span, this rule allows the icon
- * to participate in the animation without requiring changes to ActiveLink.
- *
- * Safe even if the span doesn't exist.
- */
-.link [class*='icon'] {
-    transition:
-        transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 240ms ease;
-}
-
-
-/* ==========================================================================
-   10. NOTIFICATION
-   ========================================================================== */
-
-.containerOption_count--notification {
-    position: absolute;
-
-    top: 0;
-    right: 40px;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    width: var(--spacing-xl);
-    height: var(--spacing-xl);
-
-    border-radius: var(--border-radius-full);
-
-    background-color: var(--color-primary-red);
-
-    color: var(--color-text-white);
-
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-
-    line-height: 1;
-
-    text-align: center;
-
-    /*
-     * Prevent notification from participating in hover transforms.
-     */
-    transform: none;
-}
-
-
-/* ==========================================================================
-   11. KEYBOARD FOCUS
-   ========================================================================== */
-
-/*
- * Hover is not the only way to see the interaction.
- *
- * Keyboard users receive the same visual language.
- */
-.link:focus-visible {
-    outline: none;
-
-    color: var(--color-text-black);
-}
-
-
-/*
- * Show the underline when keyboard navigation reaches the link.
- */
-.wrapper:has(.link:focus-visible)::after {
-    opacity: 1;
-
+@media (hover: hover) and (pointer: fine) {
+  .wrapper:not(.disabled):hover::after {
     transform: scaleX(1);
+    transform-origin: left center;
+  }
+  .wrapper:not(.disabled):not(.noMotion):hover .link {
+    transform: translate3d(0, -1px, 10px) rotateY(-3deg) rotateX(3deg);
+  }
+  .wrapper:not(.disabled):not(.wrapperActive):hover .link {
+    background-color: var(--color-neutral-gray-light);
+  }
+  .wrapper:not(.disabled):not(.noMotion):hover .link svg {
+    transform: translate3d(2px, 0, 0) rotateY(-12deg);
+  }
 }
-
-
-/* ==========================================================================
-   12. ACTIVE + FOCUS
-   ========================================================================== */
-
-.wrapperActive .link:focus-visible {
-    color: var(--color-text-primary);
+.wrapper:not(.disabled):not(.noMotion) .link:active {
+  transform: translate3d(0, 0, -10px) scale(0.985);
 }
-
-
-/* ==========================================================================
-   13. TOUCH DEVICES
-   ========================================================================== */
-
-/*
- * Hover doesn't exist meaningfully on touch devices.
- *
- * Avoid sticky hover behavior.
- */
-@media (hover: none) {
-    .wrapper:hover .link {
-        transform: none;
-    }
-
-    .wrapper:hover .link svg {
-        transform: none;
-    }
+.link:focus-visible {
+  outline: var(--border-width-xs) solid var(--color-secondary-blue-dark);
+  outline-offset: -2px;
 }
-
-
-/* ==========================================================================
-   14. REDUCED MOTION
-   ========================================================================== */
-
-/*
- * Users who request reduced motion should still see the active state,
- * but without animated transitions.
- */
+.collapsed .link {
+  justify-content: center;
+  padding-inline: 0;
+  min-height: 44px;
+}
+.collapsed .link > span:first-child { margin-inline-end: 0; }
+.collapsed .link > span:last-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.disabled .link { opacity: var(--opacity-50); cursor: not-allowed; }
+.noMotion .link, .noMotion .link svg, .noMotion::after { transition: none; }
+.containerOption_count--notification {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: var(--spacing-md);
+  display: grid;
+  place-items: center;
+  min-width: var(--spacing-xl);
+  min-height: var(--spacing-xl);
+  border-radius: var(--border-radius-full);
+  background-color: var(--color-primary-red-dark);
+  color: var(--color-text-white);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
 @media (prefers-reduced-motion: reduce) {
-    .wrapper,
-    .wrapper::after,
-    .link,
-    .link svg,
-    .link [class*='icon'] {
-        transition: none !important;
-        animation: none !important;
-    }
-
-    .wrapper:hover .link,
-    .wrapper:hover .link svg {
-        transform: none;
-    }
-
-    .wrapper::after {
-        opacity: 0;
-        transform: scaleX(0);
-    }
-
-    .wrapper:hover::after,
-    .wrapperActive::after,
-    .wrapper:has(.link:focus-visible)::after {
-        opacity: 1;
-        transform: scaleX(1);
-    }
-}
-
-
-/* ==========================================================================
-   15. VERY NARROW SIDEBAR
-   ========================================================================== */
-
-@media (max-width: 480px) {
-    .link {
-        padding-top: 9px;
-        padding-bottom: 10px;
-    }
-
-    .wrapper::after {
-        left: 6px;
-        right: 6px;
-    }
+  .wrapper::after, .link, .link svg { transition: none; }
+  .wrapper:not(.disabled):not(.noMotion):hover .link,
+  .wrapper:not(.disabled):not(.noMotion):hover .link svg,
+  .wrapper:not(.disabled):not(.noMotion) .link:active { transform: none; }
 }

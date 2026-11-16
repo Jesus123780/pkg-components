@@ -5,6 +5,8 @@ import React, {
   type SetStateAction,
   memo,
   useEffect,
+  useId,
+  useRef,
   useState
 } from 'react'
 import {
@@ -86,12 +88,45 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   setSalesOpen = () => {},
   handleCollapsedMenu = () => null,
   setShowComponentModal = () => {},
+  setIsDragDisabled,
   onDragEnd = () => {}
 }) => {
   const [show, setShow] = useState(false)
+  const quickId = useId()
+  const quickRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLDivElement>(null)
+  const quickOpen = show && !salesOpen && !isMobile && !isCollapsedMenu
+
+  useEffect(() => {
+    setShow(false)
+  }, [pathname, salesOpen, isMobile, isCollapsedMenu])
+
+  useEffect(() => {
+    if (!quickOpen) return
+    const close = (event: PointerEvent) => {
+      if (event.target instanceof Node && !quickRef.current?.contains(event.target) && !triggerRef.current?.contains(event.target)) setShow(false)
+    }
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShow(false)
+        triggerRef.current?.querySelector<HTMLElement>('button, a, [tabindex]')?.focus()
+      }
+    }
+    document.addEventListener('pointerdown', close)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('pointerdown', close)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [quickOpen])
   // El interruptor activa el modo de edición; fuera de ese modo se bloquea el arrastre.
   const [isEditingModules, setIsEditingModules] = useState(false)
+  useEffect(() => {
+    setIsDragDisabled?.(!isEditingModules)
+  }, [isEditingModules, setIsDragDisabled])
   const [active, setActive] = useState<boolean | number>(false)
+  const [closedActiveGroup, setClosedActiveGroup] = useState<number | null>(null)
+  useEffect(() => { setClosedActiveGroup(null) }, [pathname])
 
   interface DataStore {
     storeName: string
@@ -111,14 +146,14 @@ const MemoAside: React.FC<MemoAsideProps> = ({
   const handleOpenCreateProduct = (): void => {
     setShowComponentModal(3)
     handleClick(3)
-    setShow(!show)
+    setShow(false)
   }
 
   const modulesArray = modules ?? []
 
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent): void {
-      if (event.ctrlKey && event.key === 's') {
+    function handleKeyDown (event: KeyboardEvent): void {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's' && !event.repeat && !(event.target instanceof HTMLElement && (event.target.isContentEditable || event.target.closest('input, textarea, select')))) {
         event.preventDefault()
         setSalesOpen((prevState: boolean) => !prevState)
       }
@@ -176,11 +211,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
       >
         <Column className={styles['sidebar-header-container']}>
           <div
-            style={{
-              overflowY: 'hidden',
-              overflowX: 'hidden',
-              height: '100%'
-            }}
+            className={styles.sidebarBody}
           >
             <div>
               <Row className={styles['sidebar-header']}>
@@ -211,10 +242,13 @@ const MemoAside: React.FC<MemoAsideProps> = ({
 
               <Portal>
                 <div
-                  className={clsx(styles.quick_options as string, {
-                    [styles.visible]: show && salesOpen === false,
-                    [styles.hidden]: !show || salesOpen === true,
-                    [styles['quick_options--colapsed'] as string]: isCollapsedMenu
+                  id={quickId}
+                  ref={quickRef}
+                  aria-hidden={!quickOpen}
+                  className={clsx(styles.quick_options, {
+                    [styles.visible]: quickOpen,
+                    [styles.hidden]: !quickOpen,
+                    [styles['quick_options--colapsed']]: isCollapsedMenu
                   })}
                 >
                   {!hidden && (
@@ -238,6 +272,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       onClick={() => {
                         setShowComponentModal(4)
                         handleClick(4)
+                        setShow(false)
                       }}
                     >
                       Categorías
@@ -272,7 +307,7 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                       {storeName}
                     </Text>
                   </Link>
-                )}
+              )}
 
               {uState === '1' && (
                 <Column>
@@ -283,12 +318,14 @@ const MemoAside: React.FC<MemoAsideProps> = ({
               )}
 
               {!isCollapsedMenu && (
+                <div ref={triggerRef}>
                 <Button
-                  onClick={() => setShow(!show)}
+                  onClick={() => setShow(previous => !previous)}
                   className={styles.button_global_create}
                 >
                   Agregar nuevo
                 </Button>
+                </div>
               )}
             </div>
 
@@ -312,7 +349,8 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                         const existSubModules = subModules.length > 0
                         const action = module?.mPath?.startsWith('?')
                         const mPath = action === true ? '' : (module?.mPath as string)
-                        const isActive = `/${mPath}` === pathname
+                        const isActive = !action && `/${mPath}` === pathname
+                        const hasActiveChild = subModules.some((item: any) => `/${item?.smPath}` === pathname)
                         const draggableId = String(module?.mId ?? `module-${index}`)
 
                         return (
@@ -327,15 +365,10 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                 ref={dragProvided.innerRef}
                                 {...dragProvided.draggableProps}
                                 {...dragProvided.dragHandleProps}
-                                className={styles.containerOption}
+                                className={clsx(styles.containerOption, { [styles.editing]: isEditingModules, [styles.optionActive]: isActive || hasActiveChild })}
                                 style={{
                                   // No sobrescribir transform/position que requiere el drag and drop.
-                                  ...dragProvided.draggableProps.style,
-                                  borderLeft: `2px solid ${getGlobalStyle(
-                                    isActive
-                                      ? '--color-primary-red'
-                                      : '--color-base-transparent'
-                                  )}`
+                                  ...dragProvided.draggableProps.style
                                 }}
                               >
                                 {!existSubModules && (
@@ -346,6 +379,8 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                     action={action}
                                     mIcon={module?.mIcon}
                                     mName={module?.mName}
+                                    collapsed={isCollapsedMenu}
+                                    motion={!isEditingModules}
                                   />
                                 )}
 
@@ -368,8 +403,15 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                   {existSubModules && !isCollapsedMenu && (
                                     <Options
                                       size={10}
-                                      active={index === active}
-                                      handleClick={() => handleMenu(index)}
+                                      active={index === active || (active === false && hasActiveChild && closedActiveGroup !== index)}
+                                      handleClick={() => {
+                                        if (active === false && hasActiveChild && closedActiveGroup !== index) {
+                                          setClosedActiveGroup(index)
+                                        } else {
+                                          setClosedActiveGroup(hasActiveChild && active === index ? index : null)
+                                          handleMenu(index)
+                                        }
+                                      }}
                                       index={active}
                                       icon='IconTicket'
                                       label={module.mName}
@@ -377,16 +419,14 @@ const MemoAside: React.FC<MemoAsideProps> = ({
                                       {subModules.map((item: any, subIndex: number) => (
                                         <div
                                           key={item?.smId ?? `${draggableId}-sub-${subIndex}`}
-                                          style={{
-                                            marginLeft: '20px',
-                                            width: '90%',
-                                            marginTop: '10px'
-                                          }}
+                                          className={styles.submodule}
                                         >
                                           <CustomLinkAside
                                             mPath={item?.smPath}
                                             mIcon={item?.smIcon}
                                             mName={item?.smName}
+                                            isActive={`/${item?.smPath}` === pathname}
+                                            motion={!isEditingModules}
                                           />
                                         </div>
                                       ))}

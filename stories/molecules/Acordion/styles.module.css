@@ -1,133 +1,169 @@
-.menuContent {
-  overflow: hidden;
-  transition: height 0.3s ease;
-}
-
-.span {
-  color: var(--color-text-gray-light);
-  cursor: pointer;
-  width: 100%;
-  word-break: break-word;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-weight: 500;
-  font-size: 1.1rem;
-  line-height: 0.875rem;
-}
-
-.span.active {
-  color: #090a0a;
-}
-
-.linkOption {
-  display: block;
-  text-decoration: none;
-  font-size: var(--font-size-base);
-  padding: 5px 10px;
-  padding-left: 10px;
-  text-align: left;
-  margin: 0 30px;
-}
-
-.sideBarLeft {
-  width: 280px;
-  max-width: 280px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  height: 100%;
-  transition: 0.3s;
-  margin-left: -100%;
-}
-
-.sideBarLeft.menu {
-  margin-left: 0;
-}
-
-@media (min-width: 1024px) {
-  .sideBarLeft {
-    position: static;
-    width: 100%;
-    margin-left: 0;
-  }
-}
-
-.boxSideBar {
-  width: 100%;
-  height: 100%;
-  background: red;
-  padding: 0.8em 0;
-  overflow: auto;
-}
-
-.menuLeft {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  border: none;
-  outline: 0;
-  position: relative;
-  font-family: PFont-Regular;
-  border-bottom: 1px solid #52525242;
-  padding: 0;
-  background: transparent !important;
-  transition: 0.4s ease;
-  overflow: hidden;
-}
-
-.menuLeft.active {
-  border-bottom: none;
-}
-
-.row {
-  align-items: center;
-  background-color: transparent;
-  display: flex;
-  flex-direction: row;
-  height: 30px;
-  padding: 8px 0px;
-  position: relative;
-  width: 100%;
-  z-index: 10;
-}
-
+/* OPTIONS — VENTY DESIGN SYSTEM */
 .optionMenu {
-  width: 100%;
-  display: block;
-  overflow: hidden;
-  padding: 0;
-}
-
-.optionMenu.active {
-  border-bottom: none;
-}
-
-.boxTitleNavBar {
-  padding: 5px 0 50px;
-  text-align: center;
-  width: 100%;
-  background: blue;
-}
-
-.containerBurger {
-  width: max-content;
-}
-
-.burgerMenuContainer {
-  align-items: center;
+  --option-duration: 420ms;
+  --option-line-duration: 480ms;
+  --option-fast-duration: 180ms;
+  --option-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --option-perspective: 900px;
+  --option-depth: 8px;
+  --option-rotation: -3deg;
+  --option-color: var(--color-text-gray-light);
+  --option-active-color: var(--color-primary-red-dark);
+  --option-line-color: var(--color-primary-red);
+  --option-hover-background: var(--color-background-gray-light);
+  --option-active-background: var(--color-primary-red-bg);
+  position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  perspective: var(--option-perspective);
 }
-
-.burgerMenuContainer div {
-  background-color: transparent;
-  transition: all 0.3s ease-out;
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--spacing-xs);
+  box-sizing: border-box;
+  border: 0;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-base-transparent);
+  color: var(--option-color);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  text-align: start;
+  appearance: none;
+  cursor: pointer;
+  user-select: none;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform var(--option-duration) var(--option-easing), background-color var(--option-fast-duration) ease, color var(--option-fast-duration) ease;
 }
-
-.burgerMenuContainer .open:nth-child(1) {
-  transform: rotate(-180deg);
+.rowContent { display: flex; flex: 1; align-items: center; gap: var(--spacing-sm); min-width: 0; }
+.span {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-md);
+  text-align: start;
+  overflow-wrap: anywhere;
+  transition: color var(--option-fast-duration) ease;
+}
+.iconContainer {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  min-height: 24px;
+  color: var(--color-icons-gray);
+  transform-style: preserve-3d;
+  transform-origin: center;
+  transition: transform var(--option-duration) var(--option-easing), color var(--option-fast-duration) ease;
+}
+.iconContainer svg { display: block; flex-shrink: 0; max-width: 100%; }
+/* End-to-end underline: reveal from left, exit toward right. */
+.row::after {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  content: '';
+  height: var(--border-width-md);
+  border-radius: var(--border-radius-full);
+  background-color: var(--option-line-color);
+  transform: scale3d(0, 1, 1);
+  transform-origin: right center;
+  pointer-events: none;
+  transition: transform var(--option-line-duration) var(--option-easing);
+}
+.containerBurger { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: 24px; height: 24px; perspective: 400px; }
+.burgerMenuContainer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  transform: rotateX(0deg);
+  transform-style: preserve-3d;
+  transition: transform var(--option-duration) var(--option-easing), color var(--option-fast-duration) ease;
+}
+.burgerMenuContainer svg { display: block; max-width: 100%; }
+.active .row { background-color: var(--option-active-background); color: var(--option-active-color); }
+.active .span, .hasActiveChild .span { font-weight: var(--font-weight-semibold); }
+.active .row::after, .hasActiveChild .row::after { transform: scale3d(1, 1, 1); transform-origin: left center; }
+.active .iconContainer, .hasActiveChild .iconContainer { color: var(--color-icons-primary); }
+.active .burgerMenuContainer { color: var(--option-active-color); transform: rotateX(180deg); }
+.hasActiveChild .row { color: var(--option-active-color); }
+/* Intrinsic-height accordion */
+.menuContent {
+  display: grid;
+  grid-template-rows: 0fr;
+  width: 100%;
+  min-width: 0;
+  opacity: var(--opacity-0);
+  visibility: hidden;
+  pointer-events: none;
+  transition: grid-template-rows var(--option-duration) var(--option-easing), opacity 240ms ease, visibility 0s linear var(--option-duration);
+}
+.menuContentOpen {
+  grid-template-rows: 1fr;
+  opacity: var(--opacity-100);
+  visibility: visible;
+  pointer-events: auto;
+  transition: grid-template-rows var(--option-duration) var(--option-easing), opacity 240ms ease, visibility 0s;
+}
+.menuInner { min-width: 0; min-height: 0; overflow: hidden; }
+.menuBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  min-width: 0;
+  margin-block: var(--spacing-sm);
+  margin-inline-start: var(--spacing-md);
+  padding-inline-start: var(--spacing-sm);
+  border-inline-start: var(--border-width-xs) solid var(--color-neutral-gray);
+  transform: translate3d(0, -6px, 0) rotateX(-4deg);
+  transform-origin: top center;
+  transition: transform var(--option-duration) var(--option-easing);
+}
+.menuContentOpen .menuBody { transform: translate3d(0, 0, 0) rotateX(0deg); }
+.menuBody > * { min-width: 0; max-width: 100%; }
+@media (hover: hover) and (pointer: fine) {
+  .row:hover:not(:disabled) { background-color: var(--option-hover-background); color: var(--color-text-black); transform: translate3d(0, -1px, var(--option-depth)) rotateY(var(--option-rotation)) rotateX(2deg); }
+  .row:hover:not(:disabled)::after { transform: scale3d(1, 1, 1); transform-origin: left center; }
+  .row:hover:not(:disabled) .iconContainer { color: var(--color-icons-black); transform: translate3d(2px, 0, 4px) rotateY(-12deg); }
+  .row:hover:not(:disabled) .containerBurger { color: var(--color-icons-primary); }
+  .active .row:hover:not(:disabled) { color: var(--option-active-color); background-color: var(--option-active-background); }
+  .active .row:hover:not(:disabled) .iconContainer, .hasActiveChild .row:hover:not(:disabled) .iconContainer { color: var(--color-icons-primary); }
+}
+.row:active:not(:disabled) { transform: translate3d(0, 0, -6px) scale3d(0.985, 0.985, 1); transition-duration: 120ms; }
+.row:focus-visible { outline: var(--border-width-md) solid var(--color-secondary-blue-dark); outline-offset: var(--spacing-xs); color: var(--color-text-black); }
+.row:focus-visible::after { transform: scale3d(1, 1, 1); transform-origin: left center; }
+.active .row:focus-visible, .hasActiveChild .row:focus-visible { color: var(--option-active-color); }
+.disabled .row, .row:disabled { opacity: var(--opacity-50); cursor: not-allowed; transform: none; }
+@media (hover: none), (pointer: coarse) {
+  .row { min-height: 48px; }
+  .row:active:not(:disabled) { transform: scale3d(0.985, 0.985, 1); }
+}
+@media (max-width: 480px) {
+  .rowContent { gap: var(--spacing-xs); }
+  .menuBody { margin-inline-start: var(--spacing-sm); }
+}
+.noMotion .row, .noMotion .row::after, .noMotion .span, .noMotion .iconContainer, .noMotion .burgerMenuContainer, .noMotion .menuContent, .noMotion .menuBody { transition: none; animation: none; }
+.noMotion .row:hover:not(:disabled), .noMotion .row:active:not(:disabled), .noMotion .row:hover:not(:disabled) .iconContainer, .noMotion .menuBody { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .row, .row::after, .span, .iconContainer, .burgerMenuContainer, .menuContent, .menuBody { animation: none; transition: none; }
+  .row:hover:not(:disabled), .row:active:not(:disabled), .row:hover:not(:disabled) .iconContainer, .menuBody { transform: none; }
 }

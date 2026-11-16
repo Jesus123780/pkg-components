@@ -874,7 +874,7 @@ export const IconArrowTop: React.FC<IconProps> = ({ size, color }: IconProps) =>
 export const IconArrowBottom: React.FC<IconProps> = ({ size, color }: IconProps) => {
   return (
     <svg
-      color={color}
+      color={color ?? getGlobalStyle('--color-icons-black')}
       fill={color}
       height={size}
       viewBox='0 0 330 330'
@@ -1401,7 +1401,7 @@ export const IconComment: React.FC<IconProps> = ({
     >
       <path
         d='M4.667 12.288h2.667L10.3 14.26a.665.665 0 0 0 1.034-.553v-1.42c2 0 3.333-1.334 3.333-3.334v-4c0-2-1.333-3.333-3.333-3.333H4.667c-2 0-3.333 1.333-3.333 3.333v4c0 2 1.333 3.334 3.333 3.334zm1-5.288h4.666M5.667 7h4.666'
-        stroke={color}
+        stroke={color ?? getGlobalStyle('--color-icons-black')}
         strokeLinecap='round'
         strokeLinejoin='round'
         strokeMiterlimit={10}
@@ -1692,12 +1692,12 @@ export const IconLocationMap2: React.FC<IconProps> = ({ size, color }: IconProps
     >
       <path
         d='M16 17.907a4.16 4.16 0 1 0 0-8.32 4.16 4.16 0 0 0 0 8.32Z'
-        stroke={color ?? '#282828'}
+        stroke={color ?? getGlobalStyle('--color-icons-black')}
         strokeWidth={1.5}
       />
       <path
         d='M4.827 11.32C7.453-.227 24.56-.213 27.173 11.333c1.534 6.774-2.68 12.507-6.373 16.054a6.925 6.925 0 0 1-9.613 0c-3.68-3.547-7.894-9.294-6.36-16.067Z'
-        stroke={color ?? '#282828'}
+        stroke={color ?? getGlobalStyle('--color-icons-black')}
         strokeWidth={1.5}
       />
     </svg>
