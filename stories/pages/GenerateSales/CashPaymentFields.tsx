@@ -42,12 +42,14 @@ export const CashPaymentFields = ({
   checkout,
   onReceivedChange,
   disabled = false,
-  tabIndex
+  tabIndex,
+  compact = false
 }: {
   checkout: CashCheckoutView
   onReceivedChange: (value: string, mode?: 'manual' | 'exact') => void
   disabled?: boolean
   tabIndex?: number
+  compact?: boolean
 }) => {
   const id = useId()
   const showCash = checkout.kind === 'cash' && checkout.hasItems && checkout.amountsValid && checkout.total > 0
@@ -71,9 +73,10 @@ export const CashPaymentFields = ({
     onReceivedChange(next, mode)
   }
 
+  if (compact && !showCash) return null
   return (
     <section className={styles.panel} aria-label='Importes del cobro'>
-      {checkout.delivery > 0 && (
+      {!compact && checkout.delivery > 0 && (
         <>
           <div className={styles.line}>
             <span>Neto de mercancía</span>
@@ -85,10 +88,10 @@ export const CashPaymentFields = ({
           </div>
         </>
       )}
-      <div className={styles.line}>
+      {!compact && <div className={styles.line}>
         <strong>Total a cobrar en POS</strong>
         <strong>{checkout.amountsValid ? moneyFormatter.format(checkout.total) : '—'}</strong>
-      </div>
+      </div>}
       {showCash && (
         <>
           <label htmlFor={id}>Efectivo recibido</label>
@@ -151,13 +154,13 @@ export const CashPaymentFields = ({
         <output className={checkout.canSubmit ? styles.valid : undefined}>
           {checkout.kind === 'non-cash'
             ? 'No aplica'
-            : checkout.kind === 'cash' && checkout.canSubmit
+            : checkout.kind === 'cash' && checkout.amountsValid && checkout.received !== null && checkout.missing === 0 && checkout.received >= checkout.total
               ? moneyFormatter.format(checkout.change)
               : '—'}
         </output>
       </div>
       <div id={`${id}-status`} aria-live='polite' className={styles.status}>
-        {checkout.missing > 0 ? `Faltan ${moneyFormatter.format(checkout.missing)}` : checkout.message}
+        {checkout.missing > 0 ? `Faltan ${moneyFormatter.format(checkout.missing)}` : compact ? '' : checkout.message}
       </div>
       {checkout.integrityDebug && (
         <details className={styles.diagnostics}>

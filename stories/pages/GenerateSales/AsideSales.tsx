@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {
-  AlertInfo,
   AmountInput,
   PaymentMethods,
   NewSelect,
@@ -12,13 +11,12 @@ import {
 
 import {
   Button,
-  Column,
-  Divider,
   Overline
 } from '../../atoms'
 
 import { getGlobalStyle } from '../../../utils'
-import styles from './styles.module.css'
+import styles from './AsideSales.module.css'
+import { CheckoutDisclosure } from './CheckoutDisclosure'
 import { CashPaymentFields, type CashCheckoutView } from './CashPaymentFields'
 
 interface AsideProps {
@@ -32,6 +30,16 @@ interface AsideProps {
   paymentMethods?: Methods[]
   paymentKind?: 'cash' | 'non-cash' | 'unknown'
   deliverySection?: React.ReactNode
+  cashSection?: React.ReactNode
+  cashSectionSummary?: string
+  cashSectionRequired?: boolean
+  deliverySectionSummary?: string
+  deliverySectionRequired?: boolean
+  paymentConfirmationSection?: React.ReactNode
+  paymentSettingsSection?: React.ReactNode
+  recoverySection?: React.ReactNode
+  financialNoticeSection?: React.ReactNode
+  checkoutBlocker?: string
   cashCheckout?: CashCheckoutView
   onCashReceivedChange?: (value: string, mode?: 'manual' | 'exact') => void
   dataClientes?: any[]
@@ -85,6 +93,16 @@ export const AsideSales: React.FC<AsideProps> = ({
   paymentMethods = [],
   paymentKind,
   deliverySection,
+  cashSection,
+  cashSectionSummary,
+  cashSectionRequired,
+  deliverySectionSummary,
+  deliverySectionRequired,
+  paymentConfirmationSection,
+  paymentSettingsSection,
+  recoverySection,
+  financialNoticeSection,
+  checkoutBlocker,
   cashCheckout,
   onCashReceivedChange,
   storeTables = [],
@@ -96,6 +114,7 @@ export const AsideSales: React.FC<AsideProps> = ({
     valueDelivery: ''
   },
   overline = false,
+  totalProductPrice,
   discountableSubtotal,
   discountType = 'PERCENT',
   discountPercent = 0,
@@ -156,6 +175,7 @@ export const AsideSales: React.FC<AsideProps> = ({
   }
 
   const closeAside = (): void => {
+    if (isSubmittingSale) return
     handleOpenAside()
     handleCloseAside()
   }
@@ -166,71 +186,63 @@ export const AsideSales: React.FC<AsideProps> = ({
     handleSave()
   }
 
+  const totalLabel = cashCheckout?.amountsValid && cashCheckout.hasItems
+    ? new Intl.NumberFormat('es-CO', {style:'currency',currency:'COP',minimumFractionDigits:2,maximumFractionDigits:2}).format(cashCheckout.total)
+    : cashCheckout ? '—' : totalProductPrice == null ? '—' : String(totalProductPrice)
+  const blocked = disabled || isSubmittingSale || Boolean(cashCheckout && !cashCheckout.canSubmit)
+  const message = disabled ? 'Agrega productos al carrito.' : isSubmittingSale ? 'Procesando operación…' : checkoutBlocker || cashCheckout?.message || ''
+  const customerSelected = Boolean(values.cliId || values.tableId)
+  const discountLabel = discountType === 'AMOUNT' && discountAmount > 0 ? 'Valor fijo aplicado' : discountPercent > 0 ? `${discountPercent}% aplicado` : 'Sin descuento'
   return (
     <>
-      {overline && (
-        <Overline
-          show={openAside}
-          bgColor={getGlobalStyle('--color-background-overline')}
-          zIndex={getGlobalStyle('--z-index-99999')}
-          onClick={closeAside}
-          style={{
-            padding: getGlobalStyle('--spacing-lg')
-          }}
-        />
-      )}
-
-      <LateralModal
-        open={openAside}
-        handleClose={closeAside}
-        style={{
-          padding: getGlobalStyle('--spacing-xs'),
-          zIndex: getGlobalStyle('--z-index-modal'),
-
-          // Altura limitada al viewport.
-          height: '100dvh',
-          maxHeight: '100dvh',
-          minHeight: 0,
-
-          top: 0,
-          right: 0,
-
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
-        <Column
-          className={styles.panel}
-          justifyContent='space-between'
-          style={{
-            height: '100%',
-            maxHeight: '100%',
-            minHeight: 0,
-            flex: '1 1 auto'
-          }}
-        >
-          {/* =========================================
-              CONTENIDO DESPLAZABLE
-          ========================================= */}
-
-          <Column className={styles.content} style={{
-            overflow: 'auto',
-            height: 'min-content'
-          }}>
-            <Divider
-              marginBottom={getGlobalStyle('--spacing-3xl')}
+      {overline && <Overline show={openAside} bgColor={getGlobalStyle('--color-background-overline')} zIndex={getGlobalStyle('--z-index-99999')} onClick={closeAside} style={{padding:getGlobalStyle('--spacing-lg')}} />}
+      <LateralModal open={openAside} handleClose={closeAside} style={{zIndex:getGlobalStyle('--z-index-modal'),height:'100dvh',maxHeight:'100dvh',minHeight:0,top:0,right:0,display:'flex',flexDirection:'column',width:'min(420px, 100vw)'}}>
+        <div className={styles.panel}>
+          <header className={styles.header}>
+            <span className={styles.eyebrow}>PUNTO DE VENTA</span>
+            <h2>Completar venta</h2>
+            <p>Selecciona cómo recibiste el pago.</p>
+          </header>
+          <div className={styles.content}>
+            {recoverySection}
+            <section className={styles.payment} aria-label='Medios de pago'>
+              <h3>Medio de pago</h3>
+              <fieldset disabled={isSubmittingSale} className={styles.fields}>
+               <PaymentMethods dispatch={handlePaymentDispatch} methods={paymentMethods} payId={payId}/>
+              </fieldset>
+              {paymentMethods.length===0 && <p className={styles.hint}>No hay medios de pago disponibles todavía.</p>}
+              {paymentSettingsSection}
+            </section>
+            {cashSection && <CheckoutDisclosure title='Caja del turno' summary={cashSectionSummary} required={cashSectionRequired}>{cashSection}</CheckoutDisclosure>}
+            <CheckoutDisclosure title='Entrega' summary={deliverySectionSummary ?? 'Configurar'} required={deliverySectionRequired}>
+              {deliverySection ?? (
+            <AmountInput
+              allowDecimals
+              decimalSeparator=','
+              decimalsLimit={2}
+              allowNegativeValue={false}
+              tabIndex={0}
+              disabled={isSubmittingSale}
+              groupSeparator='.'
+              label='Precio del domicilio'
+              name='valueDelivery'
+              onValueChange={(value) => {
+                handleChange({
+                  target: {
+                    name: 'valueDelivery',
+                    value
+                  }
+                })
+              }}
+              placeholder='$ 0.00'
+              prefix='$'
+              value={values.valueDelivery}
             />
-
-            <AlertInfo
-              message='Selecciona a un cliente para la venta'
-              type='warning'
-            />
-
-            <Divider
-              marginBottom={getGlobalStyle('--spacing-3xl')}
-            />
-
-            <NewSelect
+            )}
+            </CheckoutDisclosure>
+            <CheckoutDisclosure title='Cliente y mesa' summary={customerSelected ? 'Seleccionados' : 'Sin seleccionar'}>
+              <fieldset className={styles.fields} disabled={isSubmittingSale}>
+                <NewSelect
               handleClickAction={handleClickAction}
               id='cliId'
               tabIndex={0}
@@ -260,15 +272,10 @@ export const AsideSales: React.FC<AsideProps> = ({
               title='Selecciona un cliente'
               value={values.cliId ?? ''}
             />
-
-            <Divider
-              marginBottom={getGlobalStyle('--spacing-3xl')}
-            />
-
-            <NewSelect
+                <NewSelect
               name='tableId'
               optionName='tableName'
-              tabIndex={1}
+              tabIndex={0}
               options={storeTables}
               onChange={(e) => {
                 handleChange({
@@ -291,50 +298,30 @@ export const AsideSales: React.FC<AsideProps> = ({
               canDelete
               id='tableId'
             />
-
-            <PaymentMethods
-              dispatch={handlePaymentDispatch}
-              methods={paymentMethods}
-              payId={payId}
-            />
-
-            <Divider
-              marginBottom={getGlobalStyle('--spacing-3xl')}
-            />
-
-            {deliverySection ?? (
-            <AmountInput
-              allowDecimals
-              decimalSeparator=','
-              decimalsLimit={2}
-              allowNegativeValue={false}
-              tabIndex={3}
+              </fieldset>
+            </CheckoutDisclosure>
+            <CheckoutDisclosure title='Descuento' summary={discountLabel}>
+              <OrderDiscount
+              key={discountResetKey}
+              tabIndex={0}
+              onChange={handleDiscount}
+              canApplyDiscount={canApplyDiscount}
               disabled={isSubmittingSale}
-              groupSeparator='.'
-              label='Precio del domicilio'
-              name='valueDelivery'
-              onValueChange={(value) => {
-                handleChange({
-                  target: {
-                    name: 'valueDelivery',
-                    value
-                  }
-                })
-              }}
-              placeholder='$ 0.00'
-              prefix='$'
-              value={values.valueDelivery}
+              discountType={discountType}
+              discountPercent={discountPercent}
+              discountAmount={discountAmount}
             />
-            )}
-
-            {cashCheckout && onCashReceivedChange ? (
-              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={2} />
+            </CheckoutDisclosure>
+            {financialNoticeSection}
+            <div className={styles.cashFields}>
+              {cashCheckout && onCashReceivedChange ? (
+              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={0} compact />
             ) : (
               <AmountInput
                 key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
                 allowDecimals
                 decimalSeparator=','
-                tabIndex={2}
+                tabIndex={0}
                 decimalsLimit={2}
                 disabled={!canEditChange}
                 groupSeparator='.'
@@ -354,43 +341,17 @@ export const AsideSales: React.FC<AsideProps> = ({
                 value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
               />
             )}
-            <Divider marginBottom={getGlobalStyle('--spacing-xl')}
-            />
-
-
-            <OrderDiscount
-              key={discountResetKey}
-              tabIndex={4}
-              onChange={handleDiscount}
-              canApplyDiscount={canApplyDiscount}
-              disabled={isSubmittingSale}
-              discountType={discountType}
-              discountPercent={discountPercent}
-              discountAmount={discountAmount}
-            />
-          </Column>
-
-          {/* =========================================
-              FOOTER INDEPENDIENTE DEL SCROLL
-          ========================================= */}
-
-          <div className={styles.footer}>
-            <Button
-              primary
-              disabled={disabled || isSubmittingSale || Boolean(cashCheckout && !cashCheckout.canSubmit)}
-              width='100%'
-              tabIndex={8}
-              onClick={handleGenerateSale}
-              iconName='IconSales'
-              iconPosition='right'
-              styles={{
-                justifyContent: 'center'
-              }}
-            >
-              {isSubmittingSale ? 'Procesando venta…' : 'Generar venta'}
-            </Button>
+            </div>
+            {paymentConfirmationSection && <div className={styles.confirmation}>{paymentConfirmationSection}</div>}
           </div>
-        </Column>
+          <footer className={styles.footer}>
+            <div className={styles.total}><span>Total a cobrar en POS</span><strong>{totalLabel}</strong></div>
+            {message && <p className={styles.message} role='status' aria-live='polite'>{message}</p>}
+            <Button primary disabled={blocked} width='100%' onClick={handleGenerateSale} iconName='IconSales' iconPosition='right' styles={{justifyContent:'center'}}>
+              {isSubmittingSale ? 'Procesando venta…' : 'Revisar y generar venta'}
+            </Button>
+          </footer>
+        </div>
       </LateralModal>
     </>
   )

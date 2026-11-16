@@ -151,6 +151,16 @@ interface GenerateSalesProps {
 
   paymentKind?: 'cash' | 'non-cash' | 'unknown'
   deliverySection?: React.ReactNode
+  cashSection?: React.ReactNode
+  cashSectionSummary?: string
+  cashSectionRequired?: boolean
+  deliverySectionSummary?: string
+  deliverySectionRequired?: boolean
+  paymentConfirmationSection?: React.ReactNode
+  paymentSettingsSection?: React.ReactNode
+  recoverySection?: React.ReactNode
+  financialNoticeSection?: React.ReactNode
+  checkoutBlocker?: string
   cashCheckout?: CashCheckoutView
   onCashReceivedChange?: (value: string, mode?: 'manual' | 'exact') => void
 
@@ -345,6 +355,16 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   paymentMethods = [],
   paymentKind,
   deliverySection,
+  cashSection,
+  cashSectionSummary,
+  cashSectionRequired,
+  deliverySectionSummary,
+  deliverySectionRequired,
+  paymentConfirmationSection,
+  paymentSettingsSection,
+  recoverySection,
+  financialNoticeSection,
+  checkoutBlocker,
   cashCheckout,
   onCashReceivedChange,
 
@@ -1090,6 +1110,16 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         paymentMethods={paymentMethods}
         paymentKind={paymentKind}
         deliverySection={deliverySection}
+        cashSection={cashSection}
+        cashSectionSummary={cashSectionSummary}
+        cashSectionRequired={cashSectionRequired}
+        deliverySectionSummary={deliverySectionSummary}
+        deliverySectionRequired={deliverySectionRequired}
+        paymentConfirmationSection={paymentConfirmationSection}
+        paymentSettingsSection={paymentSettingsSection}
+        recoverySection={recoverySection}
+        financialNoticeSection={financialNoticeSection}
+        checkoutBlocker={checkoutBlocker}
         cashCheckout={cashCheckout}
         onCashReceivedChange={onCashReceivedChange}
         handleChange={handleChange as any}
