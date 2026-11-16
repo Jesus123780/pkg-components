@@ -126,7 +126,9 @@ import {
   IconShield,
   IconActivity,
   IconReload,
-  IconDelivery
+  IconDelivery,
+  IconCashRegister,
+  IconSalesReconciliation
 } from '../../../assets'
 
 type IconMap = Record<string, FC<IconProps>>
@@ -262,7 +264,9 @@ export const Icons: IconMap = {
   IconShield,
   IconActivity,
   IconReload,
-  IconDelivery
+  IconDelivery,
+  IconCashRegister,
+  IconSalesReconciliation
 }
 
 const GetIcon = (key: string): FC<IconProps> | null => {

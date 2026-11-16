@@ -18,6 +18,8 @@ import { getGlobalStyle } from '../../../utils'
 import styles from './AsideSales.module.css'
 import { CheckoutDisclosure } from './CheckoutDisclosure'
 import { CashPaymentFields, type CashCheckoutView } from './CashPaymentFields'
+import { CheckoutAccountingSummary } from './CheckoutAccountingSummary'
+import { formatCheckoutMoney, type CheckoutAccounting, type CheckoutAction } from './checkout-accounting'
 
 interface AsideProps {
   openAside?: boolean
@@ -41,6 +43,9 @@ interface AsideProps {
   financialNoticeSection?: React.ReactNode
   checkoutBlocker?: string
   cashCheckout?: CashCheckoutView
+  accountingSummary?: CheckoutAccounting
+  requiredAction?: CheckoutAction
+  onReturnToCart?: () => void
   onCashReceivedChange?: (value: string, mode?: 'manual' | 'exact') => void
   dataClientes?: any[]
 
@@ -104,6 +109,9 @@ export const AsideSales: React.FC<AsideProps> = ({
   financialNoticeSection,
   checkoutBlocker,
   cashCheckout,
+  accountingSummary,
+  requiredAction,
+  onReturnToCart,
   onCashReceivedChange,
   storeTables = [],
   dataClientes = [],
@@ -186,26 +194,52 @@ export const AsideSales: React.FC<AsideProps> = ({
     handleSave()
   }
 
+  const panelRef = React.useRef<HTMLDivElement>(null)
+  const [highlightedTarget, setHighlightedTarget] = React.useState<string | null>(null)
+  const highlightTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  React.useEffect(() => () => { if (highlightTimer.current) clearTimeout(highlightTimer.current) }, [])
+  React.useEffect(() => { setHighlightedTarget(null) }, [requiredAction?.target, openAside])
+  const goToRequiredAction = () => {
+    if (!requiredAction) return
+    const target = panelRef.current?.querySelector<HTMLElement>(`[data-checkout-target="${requiredAction.target}"]`)
+    if (!target) return
+    const details = target.querySelector('details')
+    if (details) details.open = true
+    const focusable = target.querySelector<HTMLElement>('input:not([disabled]):not([type="hidden"]), select:not([disabled]), button:not([disabled]), textarea:not([disabled]), a[href]') ?? target.querySelector<HTMLElement>('summary')
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+    target.scrollIntoView({ block: 'nearest', behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+    ;(focusable ?? target).focus({ preventScroll: true })
+    setHighlightedTarget(requiredAction.target)
+    if (highlightTimer.current) clearTimeout(highlightTimer.current)
+    highlightTimer.current = setTimeout(() => setHighlightedTarget(null), 1800)
+  }
+  const targetProps = (target: CheckoutAction['target']) => ({
+    'data-checkout-target': target,
+    'data-attention': highlightedTarget === target ? 'true' : undefined,
+    tabIndex: -1
+  })
   const totalLabel = cashCheckout?.amountsValid && cashCheckout.hasItems
-    ? new Intl.NumberFormat('es-CO', {style:'currency',currency:'COP',minimumFractionDigits:2,maximumFractionDigits:2}).format(cashCheckout.total)
+    ? formatCheckoutMoney(cashCheckout.total)
     : cashCheckout ? '—' : totalProductPrice == null ? '—' : String(totalProductPrice)
   const blocked = disabled || isSubmittingSale || Boolean(cashCheckout && !cashCheckout.canSubmit)
-  const message = disabled ? 'Agrega productos al carrito.' : isSubmittingSale ? 'Procesando operación…' : checkoutBlocker || cashCheckout?.message || ''
+  const message = requiredAction?.message || (disabled ? 'Agrega productos al carrito.' : isSubmittingSale ? 'Procesando operación…' : checkoutBlocker || cashCheckout?.message || '')
+  // The confirmation itself is the actionable instruction; retain other blockers.
+  const footerMessage = paymentConfirmationSection && (message === 'Confirma que recibiste el pago.' || message === 'Confirma la venta sin cobro.') ? '' : message
   const customerSelected = Boolean(values.cliId || values.tableId)
   const discountLabel = discountType === 'AMOUNT' && discountAmount > 0 ? 'Valor fijo aplicado' : discountPercent > 0 ? `${discountPercent}% aplicado` : 'Sin descuento'
   return (
     <>
       {overline && <Overline show={openAside} bgColor={getGlobalStyle('--color-background-overline')} zIndex={getGlobalStyle('--z-index-99999')} onClick={closeAside} style={{padding:getGlobalStyle('--spacing-lg')}} />}
       <LateralModal open={openAside} handleClose={closeAside} style={{zIndex:getGlobalStyle('--z-index-modal'),height:'100dvh',maxHeight:'100dvh',minHeight:0,top:0,right:0,display:'flex',flexDirection:'column',width:'min(420px, 100vw)'}}>
-        <div className={styles.panel}>
+        <div className={styles.panel} ref={panelRef}>
           <header className={styles.header}>
             <span className={styles.eyebrow}>PUNTO DE VENTA</span>
             <h2>Completar venta</h2>
             <p>Selecciona cómo recibiste el pago.</p>
           </header>
           <div className={styles.content}>
-            {recoverySection}
-            <section className={styles.payment} aria-label='Medios de pago'>
+            {recoverySection && <div {...targetProps('recovery')}>{recoverySection}</div>}
+            <section className={styles.payment} aria-label='Medios de pago' {...targetProps('payment')}>
               <h3>Medio de pago</h3>
               <fieldset disabled={isSubmittingSale} className={styles.fields}>
                <PaymentMethods dispatch={handlePaymentDispatch} methods={paymentMethods} payId={payId}/>
@@ -213,8 +247,8 @@ export const AsideSales: React.FC<AsideProps> = ({
               {paymentMethods.length===0 && <p className={styles.hint}>No hay medios de pago disponibles todavía.</p>}
               {paymentSettingsSection}
             </section>
-            {cashSection && <CheckoutDisclosure title='Caja del turno' summary={cashSectionSummary} required={cashSectionRequired}>{cashSection}</CheckoutDisclosure>}
-            <CheckoutDisclosure title='Entrega' summary={deliverySectionSummary ?? 'Configurar'} required={deliverySectionRequired}>
+            {cashSection && <div {...targetProps('cash-session')}><CheckoutDisclosure title='Caja del turno' summary={cashSectionSummary} required={cashSectionRequired}>{cashSection}</CheckoutDisclosure></div>}
+            <div {...targetProps('delivery')}><CheckoutDisclosure title='Entrega' summary={deliverySectionSummary ?? 'Configurar'} required={deliverySectionRequired}>
               {deliverySection ?? (
             <AmountInput
               allowDecimals
@@ -239,7 +273,36 @@ export const AsideSales: React.FC<AsideProps> = ({
               value={values.valueDelivery}
             />
             )}
-            </CheckoutDisclosure>
+            </CheckoutDisclosure></div>
+            <div className={styles.cashFields} {...targetProps('cash-received')}>
+              {cashCheckout && onCashReceivedChange ? (
+              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={0} compact />
+            ) : (
+              <AmountInput
+                key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
+                allowDecimals
+                decimalSeparator=','
+                tabIndex={0}
+                decimalsLimit={2}
+                disabled={!canEditChange}
+                groupSeparator='.'
+                label='Cambio'
+                name='change'
+                onValueChange={(value) => {
+                  if (!canEditChange) return
+                  handleChange({
+                    target: {
+                      name: 'change',
+                      value
+                    }
+                  })
+                }}
+                placeholder='$ 0.00'
+                prefix='$'
+                value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
+              />
+            )}
+            </div>
             <CheckoutDisclosure title='Cliente y mesa' summary={customerSelected ? 'Seleccionados' : 'Sin seleccionar'}>
               <fieldset className={styles.fields} disabled={isSubmittingSale}>
                 <NewSelect
@@ -300,7 +363,7 @@ export const AsideSales: React.FC<AsideProps> = ({
             />
               </fieldset>
             </CheckoutDisclosure>
-            <CheckoutDisclosure title='Descuento' summary={discountLabel}>
+            <div {...targetProps('discount')}><CheckoutDisclosure title='Descuento' summary={discountLabel}>
               <OrderDiscount
               key={discountResetKey}
               tabIndex={0}
@@ -311,42 +374,32 @@ export const AsideSales: React.FC<AsideProps> = ({
               discountPercent={discountPercent}
               discountAmount={discountAmount}
             />
-            </CheckoutDisclosure>
+            </CheckoutDisclosure></div>
             {financialNoticeSection}
-            <div className={styles.cashFields}>
-              {cashCheckout && onCashReceivedChange ? (
-              <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={0} compact />
-            ) : (
-              <AmountInput
-                key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
-                allowDecimals
-                decimalSeparator=','
-                tabIndex={0}
-                decimalsLimit={2}
-                disabled={!canEditChange}
-                groupSeparator='.'
-                label='Cambio'
-                name='change'
-                onValueChange={(value) => {
-                  if (!canEditChange) return
-                  handleChange({
-                    target: {
-                      name: 'change',
-                      value
-                    }
-                  })
-                }}
-                placeholder='$ 0.00'
-                prefix='$'
-                value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
-              />
-            )}
-            </div>
-            {paymentConfirmationSection && <div className={styles.confirmation}>{paymentConfirmationSection}</div>}
+
           </div>
           <footer className={styles.footer}>
-            <div className={styles.total}><span>Total a cobrar en POS</span><strong>{totalLabel}</strong></div>
-            {message && <p className={styles.message} role='status' aria-live='polite'>{message}</p>}
+            <CheckoutAccountingSummary checkout={cashCheckout} accounting={accountingSummary} />
+            <div className={styles.total}>
+              <span>Total a cobrar en POS</span>
+              <strong>{totalLabel}</strong>
+            </div>
+            {paymentConfirmationSection && (
+              <div className={styles.confirmation} aria-label='Confirmación del cobro' {...targetProps('confirmation')}>
+                {paymentConfirmationSection}
+              </div>
+            )}
+            <div className={styles.messageRegion} role='status' aria-live='polite' aria-atomic='true'>
+              {footerMessage && <p className={styles.message}>{footerMessage}</p>}
+            </div>
+            {requiredAction && blocked && (!disabled || requiredAction.target === 'recovery') && (
+              <button type='button' className={styles.actionButton} onClick={goToRequiredAction}>
+                <span>{requiredAction.label}</span><span aria-hidden='true'>↗</span>
+              </button>
+            )}
+            {blocked && !requiredAction && onReturnToCart && !isSubmittingSale && !disabled && (
+              <button type='button' className={styles.actionButton} onClick={onReturnToCart}>Volver al carrito</button>
+            )}
             <Button primary disabled={blocked} width='100%' onClick={handleGenerateSale} iconName='IconSales' iconPosition='right' styles={{justifyContent:'center'}}>
               {isSubmittingSale ? 'Procesando venta…' : 'Revisar y generar venta'}
             </Button>

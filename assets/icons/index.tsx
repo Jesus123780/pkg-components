@@ -2946,3 +2946,80 @@ export const IconDelivery: React.FC<IconProps> = ({
     </svg>
   )
 }
+
+export const IconCashRegister: React.FC<IconProps> = ({
+  size = 24,
+  color = getGlobalStyle('--color-icons-black')
+}) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke={color}
+      strokeWidth={1.5}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'
+    >
+      <rect
+        x='8'
+        y='2'
+        width='12'
+        height='6'
+        rx='1.5'
+      />
+
+      <path d='M14 8v3' />
+      <path d='M5 11h14l3 6H2l3-6Z' />
+
+      <rect
+        x='2'
+        y='17'
+        width='20'
+        height='5'
+        rx='1.5'
+      />
+
+      <path d='M10 19.5h4' />
+
+      <path d='M7 14h2m3 0h2m3 0h1' />
+
+      <path d='M14 3.2v3.6' />
+      <path d='M15.4 4h-2a.8.8 0 0 0 0 1.6h1.2a.8.8 0 0 1 0 1.6h-2' />
+    </svg>
+  )
+}
+
+export const IconSalesReconciliation: React.FC<IconProps> = ({
+  size = 24,
+  color = getGlobalStyle('--color-icons-black')
+}) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke={color}
+      strokeWidth={1.5}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'
+    >
+      <path d='M11 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6' />
+
+      <path d='M7 7h3m-1.5-1.5v3' />
+      <path d='M7 12h8M7 16h3' />
+
+      <circle cx='17.5' cy='17.5' r='5' />
+
+      <path d='m15 17.5 1.7 1.7 3.3-3.4' />
+    </svg>
+  )
+}

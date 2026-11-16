@@ -29,8 +29,7 @@ import type {
 import { getGlobalStyle } from '../../../helpers'
 import { AsideSales } from './AsideSales'
 import type { CashCheckoutView } from './CashPaymentFields'
-export { CashPaymentFields } from './CashPaymentFields'
-export type { CashCheckoutView } from './CashPaymentFields'
+import type { CheckoutAccounting, CheckoutAction } from './checkout-accounting'
 
 import {
   CategoriesProducts,
@@ -68,6 +67,8 @@ import { ProductsView } from './components/ProductsView'
 import {
   PendingOrdersManager
 } from '../../organisms/PendingOrdersManager/PendingOrdersManager'
+export { CashPaymentFields } from './CashPaymentFields'
+export type { CashCheckoutView } from './CashPaymentFields'
 
 /* =========================================================
    TYPES
@@ -162,6 +163,9 @@ interface GenerateSalesProps {
   financialNoticeSection?: React.ReactNode
   checkoutBlocker?: string
   cashCheckout?: CashCheckoutView
+  accountingSummary?: CheckoutAccounting
+  requiredAction?: CheckoutAction
+  onReturnToCart?: () => void
   onCashReceivedChange?: (value: string, mode?: 'manual' | 'exact') => void
 
   dataClientes?: any[]
@@ -366,6 +370,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
   financialNoticeSection,
   checkoutBlocker,
   cashCheckout,
+  accountingSummary,
+  requiredAction,
+  onReturnToCart,
   onCashReceivedChange,
 
   propsSliderCategory = {
@@ -1121,6 +1128,9 @@ export const GenerateSales: React.FC<GenerateSalesProps> = ({
         financialNoticeSection={financialNoticeSection}
         checkoutBlocker={checkoutBlocker}
         cashCheckout={cashCheckout}
+        accountingSummary={accountingSummary}
+        requiredAction={requiredAction}
+        onReturnToCart={onReturnToCart}
         onCashReceivedChange={onCashReceivedChange}
         handleChange={handleChange as any}
         errors={errors}

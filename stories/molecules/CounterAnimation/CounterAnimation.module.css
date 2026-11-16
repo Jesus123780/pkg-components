@@ -5,7 +5,7 @@
    ============================================================ */
 .root {
   --counter-accent: var(--color-primary-red, #e5484d);
-  --counter-fg: var(--color-text-primary, currentColor);
+  --counter-fg: var(--color-text-black, currentColor);
   --counter-muted: var(--color-text-secondary, #6c7280);
   --counter-surface: transparent;
   --counter-border: transparent;
