@@ -205,12 +205,12 @@ export const MemoCardProductSimple: React.FC<CardProductSimpleProps> = ({
           >
             <Image
               alt={pName !== '' ? pName : ''}
-              blurDataURL='/images/dish-image-placeholder.png'
+              blurDataURL={`/api/images/${encodeURIComponent(ProImage)}`}
               className='store_image'
               height={275}
               objectFit='contain'
               width={300}
-              src={ProImage ?? '/images/dish-image-placeholder.png'}
+              src={`/api/images/${encodeURIComponent(ProImage)}`}
               unoptimized
               style={{
                 objectFit: 'contain',

@@ -2735,7 +2735,7 @@ export const IconReload: React.FC<IconProps> = ({ size, color }) => {
       height={size}
       fill={color}
       viewBox="0 0 12 12"
-      >
+    >
       <path
         fill='none'
         stroke='currentColor'
@@ -2754,47 +2754,195 @@ export const IconExactPayment: React.FC<IconProps> = ({
   strokeWidth = 1.6
 }) => {
   return (
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        width={size}
-        height={size}
-        viewBox='0 0 24 24'
-        fill='none'
-        stroke={color}
-        strokeWidth={strokeWidth}
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        aria-hidden='true'
-        focusable='false'
-      >
-        {/* Banknote */}
-        <rect
-          x='2'
-          y='4'
-          width='20'
-          height='14'
-          rx='2.5'
-        />
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke={color}
+      strokeWidth={strokeWidth}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'
+    >
+      {/* Banknote */}
+      <rect
+        x='2'
+        y='4'
+        width='20'
+        height='14'
+        rx='2.5'
+      />
 
-        {/* Currency detail */}
-        <circle cx='12' cy='11' r='3' />
+      {/* Currency detail */}
+      <circle cx='12' cy='11' r='3' />
 
-        <path d='M5 11h1M18 8h1' />
+      <path d='M5 11h1M18 8h1' />
 
-        {/* Payment confirmation */}
-        <circle
-          cx='18.5'
-          cy='17.5'
-          r='5'
-          fill={accentColor}
-          stroke='none'
+      {/* Payment confirmation */}
+      <circle
+        cx='18.5'
+        cy='17.5'
+        r='5'
+        fill={accentColor}
+        stroke='none'
+      />
+
+      <path
+        d='m16.3 17.5 1.5 1.5 2.9-3'
+        stroke={checkColor}
+        strokeWidth='1.6'
+      />
+    </svg>
+  )
+}
+
+export const IconDelivery: React.FC<IconProps> = ({
+  size = 48,
+  color = '#444444',
+  accentColor = '#EF1923'
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="120 120 830 625"
+      fill="none"
+      strokeWidth={14}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {/* Delivery driver */}
+      <g stroke={accentColor}>
+        <path
+          d="
+            M678 182
+            C657 171 638 141 607 141
+            C575 139 549 165 549 197
+            C549 225 571 247 598 247
+            C624 247 646 224 646 195
+            Q668 192 678 182
+            Z
+          "
         />
 
         <path
-          d='m16.3 17.5 1.5 1.5 2.9-3'
-          stroke={checkColor}
-          strokeWidth='1.6'
+          d="
+            M627 344
+            L598 283
+            C580 242 526 252 514 294
+            L481 436
+            C475 457 486 471 509 471
+            H633
+            Q641 471 638 484
+            L626 594
+            C622 622 659 630 664 599
+            L684 459
+            C688 441 675 430 655 430
+            H569
+            L588 359
+            C598 373 604 383 616 383
+            L700 382
+            C727 382 727 344 700 344
+            Z
+          "
         />
-      </svg>
+
+        {/* Speed lines */}
+        <rect x="215" y="498" width="116" height="21" rx="10.5" />
+
+        <rect x="212" y="559" width="100" height="26" rx="13" />
+
+        <rect x="158" y="559" width="31" height="26" rx="13" />
+
+        <rect x="192" y="625" width="101" height="26" rx="13" />
+
+        <rect x="138" y="625" width="31" height="26" rx="13" />
+      </g>
+
+      {/* Motorcycle */}
+      <g stroke={color}>
+        {/* Delivery box */}
+        <rect
+          x="312"
+          y="333"
+          width="146"
+          height="138"
+          rx="11"
+        />
+
+        {/* Motorcycle frame */}
+        <path
+          d="
+            M737 344
+            L782 327
+            Q790 324 790 337
+            V384
+            Q790 394 781 394
+            H762
+            L806 479
+            Q818 500 837 511
+            L907 550
+            Q921 559 907 566
+            Q899 570 881 565
+            C829 553 779 586 772 638
+            L769 659
+            Q765 674 739 677
+            H430
+            C402 677 402 634 430 634
+            H509
+            C492 602 461 574 425 574
+            C384 574 351 604 338 641
+            C324 596 361 550 388 521
+            Q363 509 351 495
+            Q348 491 360 491
+            H568
+            C589 491 594 506 587 532
+            L572 601
+            C569 619 587 634 606 634
+            H703
+            Q726 634 735 604
+            L752 548
+            Q759 526 748 497
+            L717 411
+            Q713 401 722 395
+            C741 381 743 361 737 344
+            Z
+          "
+        />
+
+        {/* Rear wheel */}
+        <path
+          d="
+            M468 613
+            C442 588 402 592 378 618
+            C348 648 352 692 382 714
+            C415 737 455 724 479 698
+            H430
+            C373 698 372 613 430 613
+            Z
+          "
+        />
+
+        {/* Front wheel */}
+        <path
+          d="
+            M837 592
+            C877 570 921 594 931 637
+            C944 682 908 727 863 727
+            C816 727 782 691 789 647
+            Q794 619 815 603
+            L844 661
+            C855 678 879 663 868 647
+            Z
+          "
+        />
+      </g>
+    </svg>
   )
 }
