@@ -412,7 +412,7 @@ export const FilterConfigsViewer = memo(({
       {totalSelected > 0
         ? (
         <div className={styles.selectionSummary} aria-live='polite'>
-          <span className={styles.summaryIndicator} aria-hidden='true'>✓</span>
+          <span className={styles.summaryIndicator} aria-hidden='true'><Icon icon='IconMiniCheck' size={15} /></span>
           <span>
             {totalSelected} filtro{totalSelected === 1 ? '' : 's'} seleccionado{totalSelected === 1 ? '' : 's'}
           </span>

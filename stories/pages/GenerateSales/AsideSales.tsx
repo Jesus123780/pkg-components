@@ -11,7 +11,9 @@ import {
 
 import {
   Button,
-  Overline
+  Icon,
+  Overline,
+  Text
 } from '../../atoms'
 
 import { getGlobalStyle } from '../../../utils'
@@ -210,7 +212,7 @@ export const AsideSales: React.FC<AsideProps> = ({
     const focusable = target.querySelector<HTMLElement>('input:not([disabled]):not([type="hidden"]), select:not([disabled]), button:not([disabled]), textarea:not([disabled]), a[href]') ?? target.querySelector<HTMLElement>('summary')
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
     target.scrollIntoView({ block: 'nearest', behavior: prefersReducedMotion ? 'auto' : 'smooth' })
-    ; (focusable ?? target).focus({ preventScroll: true })
+      ; (focusable ?? target).focus({ preventScroll: true })
     setHighlightedTarget(requiredAction.target)
     if (highlightTimer.current) clearTimeout(highlightTimer.current)
     highlightTimer.current = setTimeout(() => setHighlightedTarget(null), 1800)
@@ -253,7 +255,7 @@ export const AsideSales: React.FC<AsideProps> = ({
       revealFrame.current = null
       const content = contentRef.current
       const field = customerFieldsRef.current?.querySelector<HTMLElement>(`[data-selection-field="${activeSelector}"]`)
-      if (!content || !field || !field.getClientRects().length) return
+      if (!content || !field?.getClientRects().length) return
       const viewport = content.getBoundingClientRect()
       const bounds = field.getBoundingClientRect()
       const margin = 12
@@ -340,7 +342,7 @@ export const AsideSales: React.FC<AsideProps> = ({
               {cashCheckout && onCashReceivedChange
                 ? (
                   <CashPaymentFields checkout={cashCheckout} onReceivedChange={onCashReceivedChange} disabled={isSubmittingSale} tabIndex={0} compact />
-                  )
+                )
                 : (
                   <AmountInput
                     key={resolvedKind === 'cash' ? 'change-cash' : 'change-disabled'}
@@ -365,14 +367,19 @@ export const AsideSales: React.FC<AsideProps> = ({
                     prefix='$'
                     value={resolvedKind === 'cash' ? (values.change ?? '') : ''}
                   />
-                  )}
+                )}
             </div>
             <CheckoutDisclosure title='Cliente y mesa' summary={customerSummary} completed={hasCustomer && hasTable}>
               <fieldset ref={customerFieldsRef} className={styles.customerFields} disabled={isSubmittingSale}>
                 <div className={styles.selectionField} data-selection-field='cliId'>
                   <div className={styles.selectionLabel}>
                     <label htmlFor='cliId'>Cliente</label>
-                    <span className={hasCustomer ? styles.selectionCompleted : styles.optionalLabel}>{hasCustomer ? '✓ Seleccionado' : 'Opcional'}</span>
+                    <span className={hasCustomer ? styles.selectionCompleted : styles.optionalLabel}>
+                      {hasCustomer
+                        ? (<><Icon icon='IconMiniCheck' size={15} color={getGlobalStyle('--color-icons-success')} /><Text style={{ margin: getGlobalStyle('--spacing-md') }}>Seleccionado</Text></>)
+                        : 'Opcional'
+                      }
+                    </span>
                   </div>
                   <NewSelect
                     id='cliId'
@@ -402,7 +409,10 @@ export const AsideSales: React.FC<AsideProps> = ({
                 <div className={styles.selectionField} data-selection-field='tableId'>
                   <div className={styles.selectionLabel}>
                     <label htmlFor='tableId'>Mesa</label>
-                    <span className={hasTable ? styles.selectionCompleted : styles.optionalLabel}>{hasTable ? '✓ Seleccionada' : 'Opcional'}</span>
+                    <span className={hasTable ? styles.selectionCompleted : styles.optionalLabel}>{hasTable
+                      ? (<><Icon icon='IconMiniCheck' size={15} color={getGlobalStyle('--color-icons-success')} /><Text style={{ margin: getGlobalStyle('--spacing-md') }}>Seleccionado</Text></>)
+                      : 'Opcional'}
+                    </span>
                   </div>
                   <NewSelect
                     id='tableId'
@@ -453,22 +463,22 @@ export const AsideSales: React.FC<AsideProps> = ({
               <strong>{totalLabel}</strong>
             </div>
             <div className={styles.footerControls}>
-            {paymentConfirmationSection && (
-              <div className={styles.confirmation} aria-label='Confirmación del cobro' {...targetProps('confirmation')}>
-                {paymentConfirmationSection}
+              {paymentConfirmationSection && (
+                <div className={styles.confirmation} aria-label='Confirmación del cobro' {...targetProps('confirmation')}>
+                  {paymentConfirmationSection}
+                </div>
+              )}
+              <div className={styles.messageRegion} role='status' aria-live='polite' aria-atomic='true'>
+                {footerMessage && <p className={styles.message}>{footerMessage}</p>}
               </div>
-            )}
-            <div className={styles.messageRegion} role='status' aria-live='polite' aria-atomic='true'>
-              {footerMessage && <p className={styles.message}>{footerMessage}</p>}
-            </div>
-            {requiredAction && blocked && (!disabled || requiredAction.target === 'recovery') && (
-              <button type='button' className={styles.actionButton} onClick={goToRequiredAction}>
-                <span>{requiredAction.label}</span><span aria-hidden='true'>↗</span>
-              </button>
-            )}
-            {blocked && !requiredAction && onReturnToCart && !isSubmittingSale && !disabled && (
-              <button type='button' className={styles.actionButton} onClick={onReturnToCart}>Volver al carrito</button>
-            )}
+              {requiredAction && blocked && (!disabled || requiredAction.target === 'recovery') && (
+                <button type='button' className={styles.actionButton} onClick={goToRequiredAction}>
+                  <span>{requiredAction.label}</span><span aria-hidden='true'>↗</span>
+                </button>
+              )}
+              {blocked && !requiredAction && onReturnToCart && !isSubmittingSale && !disabled && (
+                <button type='button' className={styles.actionButton} onClick={onReturnToCart}>Volver al carrito</button>
+              )}
             </div>
             <Button primary disabled={blocked} width='100%' onClick={handleGenerateSale} iconName='IconSales' iconPosition='right' styles={{ justifyContent: 'center' }}>
               {isSubmittingSale ? 'Procesando venta…' : 'Revisar y generar venta'}

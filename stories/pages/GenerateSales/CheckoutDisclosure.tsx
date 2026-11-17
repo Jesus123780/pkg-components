@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import styles from './AsideSales.module.css'
+import { Icon } from '../../atoms'
 
 interface CheckoutDisclosureProps {
   title: string
@@ -52,7 +53,7 @@ export function CheckoutDisclosure({
           {required && <span className={styles.requiredDot} aria-label='Requiere atención' />}
         </span>
         <span className={styles.sectionMeta}>
-          {completed && !required && <span className={styles.completedIcon} aria-hidden='true'>✓</span>}
+          {completed && !required && <span className={styles.completedIcon} aria-hidden='true'><Icon icon='IconMiniCheck' size={15} /></span>}
           <small title={summary}>{summary}</small>
         </span>
         <span aria-hidden='true' className={styles.chevron} />

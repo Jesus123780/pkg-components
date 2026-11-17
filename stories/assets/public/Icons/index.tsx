@@ -32,14 +32,12 @@ export const IconDragHandle: React.FC<IconProps> = ({
 )
 
 export const IconMiniCheck: React.FC<IconProps> = ({
-  style = {},
   size,
   color
 }: IconProps) => {
   return <svg
-      fill={color}
+      fill={color ?? getGlobalStyle('--color-icons-success')}
       height={size}
-      style={style}
       viewBox='0 0 17 14'
       width={size}
       xmlns='http://www.w3.org/2000/svg'
