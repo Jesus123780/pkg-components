@@ -38,9 +38,9 @@ const getError = (error: unknown): Error => {
 
 export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
   text,
-  label = '',
+  label = 'Copy',
   showText = true,
-  copiedMessage = '',
+  copiedMessage = 'Copied!',
   errorMessage = 'No se pudo copiar',
   onCopySuccess,
   onCopyError
@@ -184,9 +184,10 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
         ? 'IconError'
         : 'IconCopy'
 
-  const iconColor = getGlobalStyle(status === 'success'
-    ? '--color-icons-white'
-    : '--color-icons-black'
+  const iconColor = getGlobalStyle(
+    status === 'success' || status === 'error'
+      ? '--color-icons-white'
+      : '--color-icons-black'
   )
 
   return (
