@@ -785,14 +785,13 @@ export const IconHorario: React.FC<IconProps> = ({ style = {}, size, color }: Ic
 
 export const IconBoxes: React.FC<IconProps> = ({
   color,
-  ...props
+  size
 }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    width={800}
-    height={800}
+    width={size ?? 800}
+    height={size ?? 800}
     viewBox='0 0 32 32'
-    {...props}
   >
     <path fill={color} d='M16 8h14v2H16zM16 22h14v2H16zM10 14H4a2.002 2.002 0 0 1-2-2V6a2.002 2.002 0 0 1 2-2h6a2.002 2.002 0 0 1 2 2v6a2.002 2.002 0 0 1-2 2ZM4 6v6h6.001L10 6ZM10 28H4a2.002 2.002 0 0 1-2-2v-6a2.002 2.002 0 0 1 2-2h6a2.002 2.002 0 0 1 2 2v6a2.002 2.002 0 0 1-2 2Zm-6-8v6h6.001L10 20Z' />
     <path
@@ -3020,6 +3019,62 @@ export const IconSalesReconciliation: React.FC<IconProps> = ({
       <circle cx='17.5' cy='17.5' r='5' />
 
       <path d='m15 17.5 1.7 1.7 3.3-3.4' />
+    </svg>
+  )
+}
+
+export const IconRefund: React.FC<IconProps> = ({
+  size = 24,
+  color = getGlobalStyle('--color-icons-black')
+}) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke={color}
+      strokeWidth={1.5}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'
+    >
+      {/* Flecha circular de devolución */}
+      <path d='M3 10a9 9 0 1 1 1.9 7.2' />
+      <path d='M3 4v6h6' />
+
+      {/* Moneda */}
+      <circle cx='12' cy='12' r='4.1' />
+
+      {/* Símbolo de dinero */}
+      <path d='M12 9.4v5.2' />
+      <path d='M13.6 10.2h-2.3a1.05 1.05 0 0 0 0 2.1h1.4a1.05 1.05 0 0 1 0 2.1h-2.3' />
+    </svg>
+  )
+}
+
+export const IconArrowUpRight: React.FC<IconProps> = ({
+  size = 24,
+  color = getGlobalStyle('--color-icons-black')
+}) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke={color}
+      strokeWidth={1.5}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'
+    >
+      <path d='M7 17 17 7' />
+      <path d='M7 7h10v10' />
     </svg>
   )
 }

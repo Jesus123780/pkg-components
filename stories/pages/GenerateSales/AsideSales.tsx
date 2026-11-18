@@ -13,6 +13,7 @@ import {
   Button,
   Icon,
   Overline,
+  Row,
   Text
 } from '../../atoms'
 
@@ -297,7 +298,10 @@ export const AsideSales: React.FC<AsideProps> = ({
       <LateralModal open={openAside} handleClose={closeAside} style={{ zIndex: getGlobalStyle('--z-index-modal'), height: '100dvh', maxHeight: '100dvh', minHeight: 0, top: 0, right: 0, display: 'flex', flexDirection: 'column', width: 'min(420px, 100vw)' }}>
         <div className={styles.panel} ref={panelRef}>
           <header className={styles.header}>
-            <span className={styles.eyebrow}>PUNTO DE VENTA</span>
+            <Row alignItems='center'>
+              <span className={styles.eyebrow}>PUNTO DE VENTA</span>
+              <Icon icon='IconSales' size={30} color={getGlobalStyle('--color-icons-primary')} />
+            </Row>
             <h2>Completar venta</h2>
             <p>Selecciona cómo recibiste el pago.</p>
           </header>

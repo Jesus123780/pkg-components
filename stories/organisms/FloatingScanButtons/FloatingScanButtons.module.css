@@ -1,41 +1,490 @@
+
+/* ==========================================
+   FLOATING SCANNER DOCK
+========================================== */
+
 .container {
-  bottom: 6rem;
+  --dock-accent: var(--color-primary-red2, #c00000);
+  --dock-white: var(--color-base-white, #fff);
+  --dock-text: var(--color-base-black, #282828);
+  --dock-muted: var(--color-text-gray-light, #747474);
+  --dock-border: var(--color-neutral-gray, #e7e7e7);
+
+  --dock-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --dock-duration: 320ms;
+
+  position: fixed;
+  bottom: 10%;
+  right: 0;
+  z-index: 70;
+
+  display: flex;
+  align-items: center;
+
+  width: 48px;
+  height: 56px;
+
+  transform: translateY(-50%);
+  isolation: isolate;
+}
+
+/* ==========================================
+   TRIGGER
+========================================== */
+
+.trigger {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  flex: none;
+
+  width: 48px;
+  height: 56px;
+  padding: 0;
+
+  overflow: hidden;
+
+  color: var(--dock-text);
+  background: var(--dock-white);
+
+  border: 1px solid var(--dock-border);
+  border-right: 0;
+  border-radius: 16px 0 0 16px;
+
+  box-shadow:
+    -5px 4px 20px rgb(0 0 0 / 7%),
+    -1px 0 5px rgb(0 0 0 / 3%);
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    width var(--dock-duration) var(--dock-easing),
+    background 240ms ease,
+    color 240ms ease,
+    box-shadow 240ms ease,
+    border-color 240ms ease;
+}
+
+.trigger::before {
+  content: '';
+
+  position: absolute;
+  top: 50%;
+  left: 0;
+
+  width: 3px;
+  height: 23px;
+
+  border-radius: 0 3px 3px 0;
+  background: var(--dock-accent);
+
+  transform: translateY(-50%);
+
+  transition:
+    height 260ms ease,
+    background 260ms ease;
+}
+
+.trigger:hover {
+  color: var(--dock-accent);
+  background: var(--color-neutral-gray-white, #fafafa);
+
+  box-shadow:
+    -7px 5px 24px rgb(0 0 0 / 10%);
+}
+
+.trigger:hover::before {
+  height: 32px;
+}
+
+.trigger:active {
+  background: var(--color-primary-red-bg, #fff4f4);
+}
+
+.trigger:focus-visible {
+  outline: 3px solid var(--dock-accent);
+  outline-offset: 3px;
+}
+
+.container[data-open='true'] .trigger {
+  color: var(--dock-white);
+  background: var(--dock-accent);
+  border-color: var(--dock-accent);
+}
+
+.container[data-open='true'] .trigger::before {
+  height: 0;
+}
+
+/* ==========================================
+   TRIGGER ICONS
+========================================== */
+
+.triggerScanner,
+.triggerClose {
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  pointer-events: none;
+
+  transition:
+    opacity 220ms ease,
+    transform 360ms var(--dock-easing);
+}
+
+.triggerScanner {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.triggerClose {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.65);
+}
+
+.container[data-open='true'] .triggerScanner {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.65);
+}
+
+.container[data-open='true'] .triggerClose {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* ==========================================
+   FLOATING PANEL
+========================================== */
+
+.panel {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 10px);
+
+  box-sizing: border-box;
+  width: min(240px, calc(100vw - 76px));
+  min-width: 0;
+  padding: 14px;
+
+  background: var(--dock-white);
+  border: 1px solid var(--dock-border);
+  border-radius: 16px;
+
+  box-shadow:
+    0 16px 48px rgb(0 0 0 / 11%),
+    0 3px 12px rgb(0 0 0 / 4%);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform:
+    translate3d(16px, -50%, 0)
+    scale(0.94);
+
+  transform-origin: right center;
+
+  transition:
+    opacity 220ms ease,
+    transform var(--dock-duration) var(--dock-easing),
+    visibility 0s linear var(--dock-duration);
+}
+
+.panel[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform:
+    translate3d(0, -50%, 0)
+    scale(1);
+
+  transition:
+    opacity 220ms ease,
+    transform var(--dock-duration) var(--dock-easing),
+    visibility 0s;
+}
+
+/* ==========================================
+   PANEL HEADER
+========================================== */
+
+.panelHeader {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  position: fixed;
-  right: 1.5rem;
-  width: min-content;
+  gap: 4px;
+
+  padding: 3px 4px 13px;
 }
 
-.fab {
-    background-color: var(--color-base-white);
-    box-shadow: var(--box-shadow-sm);
-    height: 70px;
-    transition: .4s ease;
-    width: 70px;
+.panelTitle {
+  color: var(--dock-text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.15px;
 }
 
-.fab:hover {
-  background-color: var(--color-neutral-gray-white);
-  transform: scale(1.05);
+.panelSubtitle {
+  color: var(--dock-muted);
+  font-size: 11px;
+  line-height: 1.4;
 }
 
-.fab:focus-visible {
-  outline: 2px solid var(--color-primary-red, #e01e5a);
+/* ==========================================
+   ACTIONS
+========================================== */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.action {
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 62px;
+  padding: 9px;
+
+  color: var(--dock-text);
+  background: var(--dock-white);
+
+  border: 1px solid var(--dock-border);
+  border-radius: 11px;
+
+  text-align: left;
+  font: inherit;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    box-shadow 220ms ease,
+    transform 260ms var(--dock-easing);
+}
+
+.action:not(:disabled):hover {
+  background: var(--color-primary-red-bg, #fff4f4);
+  border-color: var(--color-primary-pink-light, #ffc2c2);
+
+  box-shadow: 0 4px 12px rgb(0 0 0 / 4%);
+
+  transform: translateX(-2px);
+}
+
+.action:not(:disabled):active {
+  transform: translateX(0) scale(0.985);
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--dock-accent);
   outline-offset: 2px;
 }
 
-.fab:active {
-  transform: scale(0.97);
+.action:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .fab {
-    transition: none;
+/* ==========================================
+   ACTION ICON
+========================================== */
+
+.actionIcon {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 40px;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 10px;
+
+  transition:
+    background 220ms ease,
+    transform 280ms var(--dock-easing);
+}
+
+.qrIcon {
+  color: var(--dock-accent);
+  background: var(--color-primary-red-bg, #fff4f4);
+}
+
+.barcodeIcon {
+  color: var(--color-secondary-blue, #0062ff);
+  background: var(--color-neutral-gray-white, #f5f7fa);
+}
+
+.action:not(:disabled):hover .actionIcon {
+  transform: scale(1.06);
+}
+
+/* ==========================================
+   ACTION TEXT
+========================================== */
+
+.actionContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.actionTitle {
+  color: var(--dock-text);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.actionDescription {
+  color: var(--dock-muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.actionArrow {
+  display: grid;
+  place-items: center;
+
+  flex: none;
+  color: var(--dock-muted);
+  opacity: 0.6;
+
+  transition:
+    color 200ms ease,
+    opacity 200ms ease,
+    transform 260ms var(--dock-easing);
+}
+
+.action:not(:disabled):hover .actionArrow {
+  color: var(--dock-accent);
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* ==========================================
+   STAGGERED ENTRANCE
+========================================== */
+
+.panelHeader,
+.action {
+  transition-property:
+    opacity,
+    transform,
+    background,
+    border-color,
+    box-shadow;
+}
+
+.panel[data-open='false'] .panelHeader {
+  opacity: 0;
+  transform: translateY(7px);
+}
+
+.panel[data-open='true'] .panelHeader {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition:
+    opacity 260ms ease 45ms,
+    transform 300ms var(--dock-easing) 45ms;
+}
+
+.panel[data-open='false'] .action {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.panel[data-open='true'] .action {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.panel[data-open='true'] .action:nth-child(1) {
+  animation: dockActionEnter 340ms var(--dock-easing) 55ms both;
+}
+
+.panel[data-open='true'] .action:nth-child(2) {
+  animation: dockActionEnter 340ms var(--dock-easing) 105ms both;
+}
+
+@keyframes dockActionEnter {
+  from {
+    opacity: 0;
+    transform: translateX(10px) scale(0.97);
   }
-  .fab:hover,
-  .fab:active {
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 640px) {
+  .container {
+    top: auto;
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+
     transform: none;
+  }
+
+  .trigger {
+    width: 44px;
+    height: 52px;
+    border-radius: 14px 0 0 14px;
+  }
+
+  .panel {
+    top: auto;
+    right: calc(100% + 8px);
+    bottom: 0;
+
+    transform:
+      translate3d(14px, 0, 0)
+      scale(0.94);
+
+    transform-origin: bottom right;
+  }
+
+  .panel[data-open='true'] {
+    transform:
+      translate3d(0, 0, 0)
+      scale(1);
+  }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .container *,
+  .container *::before,
+  .container *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
