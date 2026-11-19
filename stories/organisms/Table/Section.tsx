@@ -1,51 +1,55 @@
 import React, { forwardRef, useMemo } from 'react'
 import styles from './section.module.css'
 
-interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
   columnWidth: Array<{ width?: string }>
-  bgRow?: number
+  bgRow?: number | string
   padding?: string
   odd?: boolean
   children: React.ReactNode
 }
 
 /**
- * Section (row) that uses the `columnWidth` widths provided by Table.
- * It renders a CSS grid with the same template columns the header uses,
- * ensuring header/body stay in sync (important for resize).
+ * Fila de tabla. Table y Section comparten las mismas medidas.
+ * Funciona además fuera de Table, usando columnWidth como fallback.
  */
 export const Section = forwardRef<HTMLDivElement, SectionProps>(({
-  children,
   columnWidth,
+  children,
   padding = '0',
-  odd,
-  ...res
+  odd = false,
+  bgRow,
+  className,
+  style,
+  role = 'row',
+  ...rest
 }, ref) => {
-  const template = useMemo(() => {
-    // we prefer explicit px widths where available to keep perfect sync with header
-    return (columnWidth && columnWidth.length > 0)
-      ? columnWidth.map(col => col.width ?? '1fr').join(' ')
-      : '1fr'
-  }, [columnWidth])
+  const template = useMemo(() => (
+    columnWidth.length > 0
+      ? columnWidth.map(col => col.width ?? 'minmax(0, 1fr)').join(' ')
+      : 'minmax(0, 1fr)'
+  ), [columnWidth])
 
-  const combinedStyles: React.CSSProperties = {
-    gridTemplateColumns: template,
-    padding,
-    display: 'grid',
-    alignItems: 'center',
-    width: '100%',
-    boxSizing: 'border-box',
-    ...res.style
-  }
-
-  const bgClass = (res as any).bgRow != null ? `sectionBg${(res as any).bgRow}` : ''
+  const backgroundClass = typeof bgRow === 'number'
+    ? (styles[`sectionBg${bgRow}`] ?? '')
+    : ''
 
   return (
     <div
-      className={`${styles.section} ${(odd ?? false) ? styles.sectionOdd : ''} ${styles.sectionHover} ${(styles as any)[bgClass] ?? ''}`}
+      {...rest}
       ref={ref}
-      {...res}
-      style={combinedStyles}
+      role={role}
+      className={[
+        styles.section,
+        odd ? styles.sectionOdd : '',
+        backgroundClass,
+        className ?? ''
+      ].filter(Boolean).join(' ')}
+      style={{
+        gridTemplateColumns: `var(--table-grid-template, ${template})`,
+        padding,
+        ...style
+      }}
     >
       {children}
     </div>
@@ -53,5 +57,4 @@ export const Section = forwardRef<HTMLDivElement, SectionProps>(({
 })
 
 Section.displayName = 'Section'
-
 export default Section

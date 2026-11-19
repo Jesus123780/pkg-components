@@ -1,76 +1,110 @@
 .swipeWrapper {
   position: relative;
+  display: block;
   width: max-content;
-  height: min-content;
-  touch-action: pan-y;
+  max-width: 100%;
+  min-width: 0;
+  isolation: isolate;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+  outline: none;
+  --swipe-duration: 400ms;
+  --swipe-exit-duration: 240ms;
+  --swipe-ease: cubic-bezier(0.2, 1.25, 0.45, 1);
+}
+
+.swipeWrapper:focus-visible {
+  outline: 2px solid var(--color-secondary-blue, #0062ff);
+  outline-offset: 3px;
+  border-radius: var(--border-radius-md, 10px);
 }
 
 .hiddenActions {
-  align-items: center;
-  bottom: 0;
-  display: flex;
-  height: min-content;
-  justify-content: space-around;
   position: absolute;
-  right: 0;
-  top: 0;
-  z-index: var(--z-index-0);
+  inset-block: 0;
+  z-index: var(--z-index-0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--spacing-xs, 4px);
+  height: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition:
+    width var(--swipe-duration) var(--swipe-ease),
+    background 220ms ease;
 }
+
+.rightActions { right: 0; }
+.leftActions { left: 0; }
+
+.hiddenActions > * { flex-shrink: 0; }
 
 .frontContent {
-  background-color: var(--color-base-transparent);
-  cursor: grab;
   position: relative;
-  transition: transform 0.3s ease-out;
+  z-index: var(--z-index-5, 5);
+  min-width: 0;
+  background: var(--color-base-transparent, transparent);
+  cursor: grab;
+  transform-origin: center;
   will-change: transform;
-  z-index: var(--z-index-5);
+  transition:
+    transform var(--swipe-duration) var(--swipe-ease),
+    opacity var(--swipe-exit-duration) ease;
+  backface-visibility: hidden;
 }
 
-.frontContent:active {
-  cursor: grabbing;
+.frontContent:active { cursor: grabbing; }
+.dragging .frontContent { transition: none; }
+.dragging .hiddenActions { transition: background 110ms linear; }
+.removing .frontContent { opacity: 0.42; transition: transform var(--swipe-exit-duration) ease-in, opacity var(--swipe-exit-duration) ease-out; }
+/* A vertical action is NOT a removal: no fading and no off-screen exit. */
+.verticalLifting .frontContent {
+  opacity: 1;
+  transition: transform var(--swipe-vertical-lift-duration, 90ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+.verticalReturning .frontContent {
+  opacity: 1;
+  transition: transform var(--swipe-vertical-return-duration, 440ms) cubic-bezier(0.18, 1.32, 0.35, 1);
 }
 
-/* 🌟 Animación de “vibración” al entrar en zona roja */
-@keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
+.disabled .frontContent { cursor: default; }
+.ready .hiddenActions { filter: saturate(1.08); }
 
-  25% {
-    transform: translateX(-4px);
-  }
-
-  50% {
-    transform: translateX(4px);
-  }
-
-  75% {
-    transform: translateX(-2px);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
+@keyframes card-shake {
+  0%, 100% { translate: 0 0; }
+  20% { translate: -3px 0; }
+  40% { translate: 4px 0; }
+  60% { translate: -2px 0; }
+  80% { translate: 2px 0; }
 }
 
-.shake {
-  animation: shake 0.25s ease;
-}
+.shake .frontContent { animation: card-shake 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
 
-
-/* 🔥 Animación de desaparición */
-.removing {
-  opacity: var(--opacity-50);
-  transform: scale(0.95) translateX(-30%);
-  transition: all 0.4s ease-in-out !important;
-}
-.deleted {
-  height: 0;
-  margin: 0;
-  opacity: var(--opacity-0);
-  overflow: hidden;
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
-  transform: scale(0.8) translateX(-50%);
-  transition: all 0.3s ease-in-out;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .swipeWrapper *, .swipeWrapper *::before, .swipeWrapper *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Predestructive feedback is separate from removal: reaching the warning zone
+   never changes opacity or triggers a callback until pointer release beyond
+   the actual full-swipe boundary. */
+.warning .hiddenActions { filter: saturate(1.06); }

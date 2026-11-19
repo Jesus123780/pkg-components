@@ -1174,10 +1174,7 @@
 
   margin: 0;
 
-  color:
-    var(
-      --color-base-white
-    );
+  color: var(--toast-foreground, var(--color-base-white, #fff));
 
   font-size: 14px;
   font-weight: 800;
@@ -1203,10 +1200,7 @@
   margin:
     8px 0 0;
 
-  color:
-    var(
-      --color-base-white
-    );
+  color: var(--toast-foreground, var(--color-base-white, #fff));
 
   font-size:
     var(
@@ -1255,13 +1249,11 @@
 
   border-radius: 7px;
 
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
+  background: color-mix(
+    in srgb,
+    var(--toast-foreground, #ffffff) 9%,
+    transparent
+  );
 
   cursor: pointer;
 
@@ -1315,6 +1307,35 @@
 }
 
 /* =========================================================
+   COLOR-AWARE SWIPE SURFACE
+   ========================================================= */
+
+.toast-swipe {
+  width: 100%;
+  max-width: 100%;
+
+  /* Darkened version of the actual semantic toast color.
+     This avoids SwipeableCard's hardcoded green -> pink gradient. */
+  --toast-action-background: color-mix(
+    in srgb,
+    var(--toast-background, #50a773) 54%,
+    var(--color-base-black, #282828)
+  );
+}
+
+.toast-swipe [data-swipe-action-panel] {
+  border-radius: 10px;
+  transition: filter 160ms ease;
+}
+
+.toast-swipe[data-delete-zone='approaching']
+  [data-swipe-action-panel],
+.toast-swipe[data-delete-zone='ready']
+  [data-swipe-action-panel] {
+  filter: saturate(1.14) brightness(1.08);
+}
+
+/* =========================================================
    SWIPE DELETE ACTION
    ========================================================= */
 
@@ -1332,6 +1353,10 @@
 
 .toast-delete-action-button {
   all: unset;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.15);
+  transition: background 180ms ease, transform 180ms ease;
 
   display: flex;
   align-items: center;
@@ -1343,6 +1368,19 @@
   border-radius: 10px;
 
   cursor: pointer;
+}
+
+.toast-delete-action-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.toast-delete-action-button:active {
+  transform: scale(0.93);
+}
+
+.toast-delete-action-button:focus-visible {
+  outline: 2px solid var(--color-base-white, #fff);
+  outline-offset: 2px;
 }
 
 /* =========================================================

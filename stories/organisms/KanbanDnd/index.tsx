@@ -67,7 +67,7 @@ export interface KanbanDndProps<T extends KanbanItem> {
  * app-shell transitions, sidebars, scroll wrappers and CSS animations cannot
  * displace the dragging card.
  */
-export function KanbanDnd<T extends KanbanItem>({
+export function KanbanDnd<T extends KanbanItem> ({
   columns,
   renderItem,
   onMove,
@@ -146,7 +146,7 @@ export function KanbanDnd<T extends KanbanItem>({
           <span aria-hidden="true">⠿</span>
         </div>
       </div>
-      {item && renderItem(item, {
+      {item != null && renderItem(item, {
         dragging: snapshot.isDragging,
         isDropAnimating: snapshot.isDropAnimating
       })}
@@ -222,13 +222,15 @@ export function KanbanDnd<T extends KanbanItem>({
             </Droppable>
           ) : (
             <div className={styles.list} aria-busy="true">
-              {column.items.length ? column.items.map(item => (
+              {(column.items.length > 0)
+                ? column.items.map(item => (
                 <div className={styles.item} key={item.id}>
                   {renderItem(item, { dragging: false, isDropAnimating: false })}
                 </div>
-              )) : (
+                ))
+                : (
                 <p className={styles.empty}>{column.emptyLabel || 'Sin elementos'}</p>
-              )}
+                  )}
             </div>
           )}
           {column.footer && <footer className={styles.footer}>{column.footer}</footer>}
@@ -244,14 +246,16 @@ export function KanbanDnd<T extends KanbanItem>({
       aria-label={ariaLabel}
       tabIndex={0}
     >
-      {ready ? (
+      {ready
+        ? (
         <DragDropContext
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
           {board}
         </DragDropContext>
-      ) : board}
+          )
+        : board}
     </div>
   )
 }

@@ -1387,24 +1387,29 @@ export const IconDownload: React.FC<IconProps> = ({
 }
 
 export const IconComment: React.FC<IconProps> = ({
-  size,
-  color
-}: IconProps) => {
+  size = 24,
+  color = getGlobalStyle('--color-icons-black')
+}) => {
   return (
     <svg
-      fill='none'
-      height={size ?? 16}
-      width={size ?? 16}
       xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
       viewBox='0 0 24 24'
+      fill='none'
+      stroke={color}
+      strokeWidth={1.5}
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'
     >
       <path
-        d='M4.667 12.288h2.667L10.3 14.26a.665.665 0 0 0 1.034-.553v-1.42c2 0 3.333-1.334 3.333-3.334v-4c0-2-1.333-3.333-3.333-3.333H4.667c-2 0-3.333 1.333-3.333 3.333v4c0 2 1.333 3.334 3.333 3.334zm1-5.288h4.666M5.667 7h4.666'
-        stroke={color ?? getGlobalStyle('--color-icons-black')}
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        strokeMiterlimit={10}
+        d='M7 4h10a4 4 0 0 1 4 4v7a4 4 0 0 1-4 4h-5.5l-4.8 2.5a1 1 0 0 1-1.5-.9V18.6A4 4 0 0 1 3 15V8a4 4 0 0 1 4-4Z'
       />
+
+      <path d='M7.5 9h9' />
+      <path d='M7.5 13h6.5' />
     </svg>
   )
 }

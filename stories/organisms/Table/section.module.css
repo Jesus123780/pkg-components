@@ -1,53 +1,50 @@
 .section {
-  align-items: center;
+  position: relative;
   display: grid;
-  border-bottom: 1px solid var(--table-border-color, #f0f0f0);
-  padding: 0;
-  width: 100%;
-}
-
-.sectionPadding {
-  padding: var(--section-padding, 12px);
-}
-
-.sectionOdd:nth-of-type(odd),
-.sectionOdd .thead-default th {
-  background-color: rgba(0, 0, 0, 0.03);
-}
-
-.sectionDisabled {
-  background-color: rgba(233, 233, 233, 0.2);
-}
-
-.sectionHover:hover {
-  background-color: rgba(233, 233, 233, 0.05);
-}
-
-.sectionHover:hover:first-child {
-  background-color: #fff;
-}
-
-.sectionBg1 { background-color: var(--tbga-color, #fff); }
-.sectionBg2 { background-color: var(--bg-color, #fff); }
-.sectionBg3 { background-color: var(--tbg-b-color, #fff); }
-.sectionBg4 { background-color: var(--tbg-s-color, #fff); }
-.sectionBg5 { background-color: var(--tbga-color, #fff); }
-.sectionBg6 { background-color: var(--tbge-color, #fff); }
-.sectionBg7 { background-color: var(--tbgr-color, #fff); }
-.sectionBg8 { background-color: var(--tbgd-color, #fff); }
-
-/* content inside a section (row) */
-.section__content {
   align-items: center;
-  display: flex;
-  justify-content: space-around;
-  margin: 10px 0;
-  font-size: 15px;
+  width: 100%;
   min-width: 0;
+  box-sizing: border-box;
+  border-bottom: var(--border-width-xs, 1px) solid var(--color-neutral-gray, #e5e5e5);
+  background: var(--color-background-white, #fff);
+  transition: background-color 150ms ease;
 }
 
-/* hidden label helper */
+.sectionOdd {
+  background: var(--color-neutral-gray-white, #f9f9f9);
+}
+
+.section:hover {
+  background: var(--color-neutral-gray-light, #f5f5f5);
+}
+
+.section:focus-within {
+  z-index: 1;
+}
+
+.sectionBg1 { background: var(--tbga-color, #fff); }
+.sectionBg2 { background: var(--bg-color, #fff); }
+.sectionBg3 { background: var(--tbg-b-color, #fff); }
+.sectionBg4 { background: var(--tbg-s-color, #fff); }
+.sectionBg5 { background: var(--tbga-color, #fff); }
+.sectionBg6 { background: var(--tbge-color, #fff); }
+.sectionBg7 { background: var(--tbgr-color, #fff); }
+.sectionBg8 { background: var(--tbgd-color, #fff); }
+
+.section__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 0;
+  margin: 10px 0;
+  font-size: var(--font-size-md, 14px);
+}
+
 .section__content--label__hidden input {
   height: 0;
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section { transition: none; }
 }

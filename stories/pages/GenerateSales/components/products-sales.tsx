@@ -39,186 +39,294 @@ export const ProductsSales: React.FC<ProductsSalesProps> = ({
 }) => {
   return <>
 
-        {Array.isArray(data?.PRODUCT) && data.PRODUCT.length > 0
-          ? (
-              data.PRODUCT.map((product: any, index: number) => {
-                const tag = {
-                  tag: product?.getOneTags?.nameTag ?? ''
-                }
-                const ProQuantity = product?.ProQuantity ?? 0
-                const ProPrice = product.ProPrice
-                const isHighlighted =
-                  Boolean(highlightedPid) &&
-                  String(product.pId) === String(highlightedPid)
-                return (
-                    <div
-                        key={product.pId}
-                        className={`${styles.item} ${isHighlighted ? styles.pop : ''}`}
-                    >
-                        <SwipeableCard
-                            swipeWidth={30}
-                            autoClose={true}
-                            sticky={false}
-                            shake={true}
-                            gradientAnimation={false}
-                            onDelete={() => {
-                              dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
-                            }}
-                            onSwipeUp={() => {
-                              onClick(product)
-                            }}
-                            rightActions={
-                                <Column
-                                    style={{
-                                      height: '100%',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center'
-                                    }}
-                                >
-                                    <button
-                                        onClick={(e) => {
-                                          e.stopPropagation()
-                                          dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
-                                        }}
-                                        style={{
-                                          all: 'unset',
-                                          cursor: 'pointer',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          width: 30,
-                                          height: 30
-                                        }}
-                                    >
-                                        <Icon
-                                            icon='IconDelete'
-                                            color={getGlobalStyle('--color-icons-primary')}
-                                            size={16}
-                                        />
-                                    </button>
-                                    <button
-                                        onClick={(e) => {
-                                          e.stopPropagation() // evita que se propague al card
-                                          handleComment(product)
-                                        }}
-                                        style={{
-                                          all: 'unset',
-                                          cursor: 'pointer',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          width: 30,
-                                          height: 30,
-                                          backgroundColor: getGlobalStyle('--color-feedback-success-dark')
-                                        }}
-                                    >
-                                        <Icon
-                                            icon='IconComment'
-                                            color={getGlobalStyle('--color-icons-white')}
-                                            size={16}
-                                        />
-                                    </button>
-
-                                    {/* sub productos  */}
-                                    <button
-                                        type='button'
-                                        aria-label={`Configurar complementos de ${product.pName}`}
-                                        onClick={(e) => {
-                                          e.stopPropagation() // evita que se propague al card
-                                          onClick(product)
-                                        }}
-                                    >
-                                        <Icon size={20} icon='IconBox' />
-                                    </button>
-                                </Column>
-                            }
-                        >
-                            <MiniCardProduct
-                                {...product}
-                                editing={product.editing}
-                                editable={true}
-                                canDelete={true}
-                                showDiscount={false}
-                                height={300}
-                                handleDelete={() => {
-                                  dispatch({ type: 'REMOVE_PRODUCT_TO_CART', payload: product })
-                                }}
-                                handleChangeQuantity={(event) => {
-                                  const { value } = event.target
-                                  return dispatch({
-                                    type: 'ON_CHANGE',
-                                    payload: {
-                                      id: product.pId,
-                                      index,
-                                      value
-                                    }
-                                  })
-                                }}
-                                ProDescription={product.ProDescription}
-                                plainPrice={ProPrice}
-                                ProDescuento={product.ProDescuento}
-                                ProImage={product.ProImage}
-                                ProPrice={numberFormat(ProPrice)}
-                                discount={numberFormat(product.ProDescuento) ?? 0}
-                                ProQuantity={ProQuantity}
-                                handleToggleEditingStatus={() => {
-                                  dispatch({
-                                    type: 'TOGGLE_EDITING_PRODUCT',
-                                    payload: product
-                                  })
-                                }}
-                                handleCancelUpdateQuantity={() => {
-                                  dispatch({
-                                    type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
-                                    payload: product
-                                  })
-                                }}
-                                handleSuccessUpdateQuantity={() => {
-                                  dispatch({
-                                    type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
-                                    payload: product
-                                  })
-                                }}
-                                ValueDelivery={product.ValueDelivery}
-                                withQuantity={true}
-                                hoverFree={true}
-                                free={product.free === true}
-                                handleComment={() => {
-                                  handleComment(product)
-                                }}
-                                showDot={true}
-                                hasDiscount={true}
-                                openQuantity={Boolean(ProQuantity)}
-                                handleDecrement={() => {
-                                  handleDecrement(product)
-                                }}
-                                handleIncrement={() => {
-                                  handleAddProduct(product)
-                                }}
-                                handleFreeProducts={() => {
-                                  handleFreeProducts(product)
-                                }}
-                                handleGetSubItems={() => {
-                                  onClick(product)
-                                }}
-                                edit={false}
-                                onClick={() => {
-                                  handleAddProduct(product)
-                                }}
-                                pName={product.pName}
-                                render={<Icon size={20} icon='IconSales' />}
-                                tag={product?.getOneTags?.nameTag !== null && tag}
-                            />
-                        </SwipeableCard>
-                    </div>
-                )
-              })
-            )
-          : (
-                <EmptyData height={200} width={200} />
-            )
+{Array.isArray(data?.PRODUCT) && data.PRODUCT.length > 0
+  ? (
+      data.PRODUCT.map((product: any, index: number) => {
+        const tag = {
+          tag: product?.getOneTags?.nameTag ?? ''
         }
 
-    </>
+        const ProQuantity = product?.ProQuantity ?? 0
+        const ProPrice = product.ProPrice
+
+        const isHighlighted =
+        Boolean(highlightedPid) &&
+        String(product.pId) === String(highlightedPid)
+
+        const removeProduct = () => {
+          dispatch({
+            type: 'REMOVE_PRODUCT_TO_CART',
+            payload: product
+          })
+        }
+
+        return (
+        <div
+          key={product.pId}
+          className={`${styles.item} ${isHighlighted ? styles.pop : ''}`}
+        >
+          <SwipeableCard
+            ariaLabel={`Acciones del producto ${product.pName}`}
+
+            // Dimensiones
+            swipeWidth={52}
+            leftSwipeWidth={52}
+            swipeHeight={80}
+
+            // Gestos horizontales
+            swipeDirections='both'
+            deleteDirections='both'
+            allowFullSwipe={true}
+
+            // Umbrales
+            activationDistance={10}
+            openThreshold={0.35}
+            fullSwipeThreshold={1.6}
+            minFullSwipeDistance={130}
+            resistance={0.2}
+
+            // Shake antes de eliminar
+            shake={true}
+            shakeThreshold={0.85}
+
+            // Gestos verticales
+            verticalSwipe='up'
+            verticalThreshold={1.2}
+            verticalBounceDuration={440}
+            enableVerticalTouch={false}
+
+            // Animaciones
+            motion='spring'
+            animationDuration={380}
+            exitDuration={240}
+            rotateOnSwipe={0}
+            scaleOnSwipe={0}
+            gradientAnimation={false}
+            sticky={false}
+
+            // Protección de controles
+            ignoreInteractiveElements={true}
+
+            // Cierre automático
+            autoClose={true}
+            autoCloseDelay={4000}
+            closeOnActionClick={true}
+            closeOnOutsideClick={true}
+
+            // Eliminación por swipe izquierdo o derecho
+            onDelete={(_direction) => {
+              removeProduct()
+            }}
+
+            // Elevación vertical con rebote
+            onSwipeUp={() => {
+              onClick(product)
+            }}
+
+            rightActions={
+              <Column
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  minHeight: 150,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  padding: '8px 0',
+                  boxSizing: 'border-box'
+                }}
+              >
+                {/* Eliminar */}
+                <button
+                  type='button'
+                  aria-label={`Eliminar ${product.pName}`}
+                  title='Eliminar producto'
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    removeProduct()
+                  }}
+                  style={{
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 40,
+                    height: 40,
+                    flexShrink: 0,
+                    borderRadius: 12,
+                    backgroundColor: getGlobalStyle(
+                      '--color-primary-red-bg'
+                    )
+                  }}
+                >
+                  <Icon
+                    icon='IconDelete'
+                    color={getGlobalStyle(
+                      '--color-icons-primary'
+                    )}
+                    size={18}
+                  />
+                </button>
+
+                {/* Comentario */}
+                <button
+                  type='button'
+                  aria-label={`Agregar comentario a ${product.pName}`}
+                  title='Agregar comentario'
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    handleComment(product)
+                  }}
+                  style={{
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 40,
+                    height: 40,
+                    flexShrink: 0,
+                    borderRadius: 12,
+                    backgroundColor: getGlobalStyle(
+                      '--color-feedback-success-dark'
+                    )
+                  }}
+                >
+                  <Icon
+                    icon='IconComment'
+                    color={getGlobalStyle(
+                      '--color-icons-white'
+                    )}
+                    size={18}
+                  />
+                </button>
+
+                {/* Complementos */}
+                <button
+                  type='button'
+                  aria-label={`Configurar complementos de ${product.pName}`}
+                  title='Configurar complementos'
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onClick(product)
+                  }}
+                  style={{
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 40,
+                    height: 40,
+                    flexShrink: 0,
+                    borderRadius: 12,
+                    backgroundColor: getGlobalStyle(
+                      '--color-neutral-gray-white'
+                    )
+                  }}
+                >
+                  <Icon
+                    size={20}
+                    icon='IconBox'
+                  />
+                </button>
+              </Column>
+            }
+          >
+            <MiniCardProduct
+              {...product}
+              editing={product.editing}
+              editable={true}
+              canDelete={true}
+              showDiscount={false}
+              height={300}
+              handleDelete={removeProduct}
+              handleChangeQuantity={(event) => {
+                const { value } = event.target
+
+                return dispatch({
+                  type: 'ON_CHANGE',
+                  payload: {
+                    id: product.pId,
+                    index,
+                    value
+                  }
+                })
+              }}
+              ProDescription={product.ProDescription}
+              plainPrice={ProPrice}
+              ProDescuento={product.ProDescuento}
+              ProImage={product.ProImage}
+              ProPrice={numberFormat(ProPrice)}
+              discount={
+                numberFormat(product.ProDescuento) ?? 0
+              }
+              ProQuantity={ProQuantity}
+              handleToggleEditingStatus={() => {
+                dispatch({
+                  type: 'TOGGLE_EDITING_PRODUCT',
+                  payload: product
+                })
+              }}
+              handleCancelUpdateQuantity={() => {
+                dispatch({
+                  type: 'CANCEL_UPDATE_QUANTITY_EDITING_PRODUCT',
+                  payload: product
+                })
+              }}
+              handleSuccessUpdateQuantity={() => {
+                dispatch({
+                  type: 'UPDATE_SUCCESS_QUANTITY_EDITING_PRODUCT',
+                  payload: product
+                })
+              }}
+              ValueDelivery={product.ValueDelivery}
+              withQuantity={true}
+              hoverFree={true}
+              free={product.free === true}
+              handleComment={() => {
+                handleComment(product)
+              }}
+              showDot={true}
+              hasDiscount={true}
+              openQuantity={Boolean(ProQuantity)}
+              handleDecrement={() => {
+                handleDecrement(product)
+              }}
+              handleIncrement={() => {
+                handleAddProduct(product)
+              }}
+              handleFreeProducts={() => {
+                handleFreeProducts(product)
+              }}
+              handleGetSubItems={() => {
+                onClick(product)
+              }}
+              edit={false}
+              onClick={() => {
+                handleAddProduct(product)
+              }}
+              pName={product.pName}
+              render={
+                <Icon size={20} icon='IconSales' />
+              }
+              tag={
+                product?.getOneTags?.nameTag !== null &&
+                tag
+              }
+            />
+          </SwipeableCard>
+        </div>
+        )
+      })
+    )
+  : (
+    <EmptyData height={200} width={200} />
+    )
+}
+
+  </>
 }

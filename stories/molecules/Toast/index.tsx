@@ -287,6 +287,19 @@ const getBackgroundColor = (
 }
 
 /**
+ * Foreground contrast for the semantic palette.
+ * Warning is yellow (#ebbc26): dark text/icons are easier to read.
+ * Success and error preserve the original white foreground.
+ */
+const getForegroundColor = (
+  color?: ToastItem['backgroundColor']
+): string => (
+  color === 'warning'
+    ? 'var(--color-base-black, #282828)'
+    : 'var(--color-base-white, #ffffff)'
+)
+
+/**
  * Returns the icon associated with a toast type.
  *
  * @param color Toast color.
@@ -377,7 +390,7 @@ export const Toast: React.FC<ToastProps> = ({
   stackHoverLift = false,
   stackHoverScale = DEFAULT_STACK_HOVER_SCALE,
   stackTransitionDuration =
-    DEFAULT_STACK_TRANSITION_DURATION,
+  DEFAULT_STACK_TRANSITION_DURATION,
   toastWidth = 'min(560px, calc(100vw - 24px))'
 }) => {
   const [list, setList] = useState<RuntimeToastItem[]>([])
@@ -613,13 +626,13 @@ export const Toast: React.FC<ToastProps> = ({
         typeof toast.createdAt === 'number'
           ? toast.createdAt
           : existing?.createdAt ??
-            Date.now()
+          Date.now()
 
       const sequence =
         typeof toast.sequence === 'number'
           ? toast.sequence
           : existing?.sequence ??
-            sequenceRef.current++
+          sequenceRef.current++
 
       sequenceRef.current = Math.max(
         sequenceRef.current,
@@ -882,11 +895,11 @@ export const Toast: React.FC<ToastProps> = ({
       setList((previous) =>
         previous.map((item) =>
           getToastKey(item.id) ===
-          key
+            key
             ? {
-                ...item,
-                lifecycle: 'exiting'
-              }
+              ...item,
+              lifecycle: 'exiting'
+            }
             : item
         )
       )
@@ -959,11 +972,11 @@ export const Toast: React.FC<ToastProps> = ({
         setList((previous) =>
           previous.map((item) =>
             getToastKey(item.id) ===
-            key
+              key
               ? {
-                  ...item,
-                  lifecycle: 'queued'
-                }
+                ...item,
+                lifecycle: 'queued'
+              }
               : item
           )
         )
@@ -1054,7 +1067,7 @@ export const Toast: React.FC<ToastProps> = ({
 
       if (
         toast.lifecycle !==
-          'visible' ||
+        'visible' ||
         !toast.parentPresent
       ) {
         clearAutoDeleteTimer(key)
@@ -1068,7 +1081,7 @@ export const Toast: React.FC<ToastProps> = ({
 
       if (
         autoDeleteDeadlinesRef.current[
-          key
+        key
         ] === undefined
       ) {
         autoDeleteDeadlinesRef.current[
@@ -1080,13 +1093,13 @@ export const Toast: React.FC<ToastProps> = ({
 
       if (
         !autoDeleteTimersRef.current[
-          key
+        key
         ] &&
         !hoveredIds.has(key)
       ) {
         const remaining =
           autoDeleteDeadlinesRef.current[
-            key
+          key
           ] - now
 
         scheduleAutoDelete(
@@ -1102,9 +1115,9 @@ export const Toast: React.FC<ToastProps> = ({
       const exists = list.some(
         (item) =>
           getToastKey(item.id) ===
-            key &&
+          key &&
           item.lifecycle ===
-            'visible'
+          'visible'
       )
 
       if (!exists) {
@@ -1144,9 +1157,9 @@ export const Toast: React.FC<ToastProps> = ({
           listRef.current.find(
             (item) =>
               getToastKey(item.id) ===
-                key &&
+              key &&
               item.lifecycle ===
-                'visible'
+              'visible'
           )
 
         if (!toast) {
@@ -1237,7 +1250,7 @@ export const Toast: React.FC<ToastProps> = ({
                     item.id
                   ) === key &&
                   item.lifecycle ===
-                    'visible'
+                  'visible'
               )
 
             if (!toast) {
@@ -1246,13 +1259,13 @@ export const Toast: React.FC<ToastProps> = ({
 
             const remaining =
               pausedRemainingRef.current[
-                key
+              key
               ] ??
               Math.max(
                 0,
                 toast.createdAt +
-                  autoDeleteTime -
-                  Date.now()
+                autoDeleteTime -
+                Date.now()
               )
 
             delete pausedRemainingRef.current[
@@ -1300,8 +1313,8 @@ export const Toast: React.FC<ToastProps> = ({
       ) => {
         const nextTarget =
           event.relatedTarget as
-            | Node
-            | null
+          | Node
+          | null
 
         if (
           nextTarget &&
@@ -1364,13 +1377,13 @@ export const Toast: React.FC<ToastProps> = ({
 
         const cached =
           progressDelayRef.current[
-            key
+          key
           ]
 
         if (
           cached &&
           cached.signature ===
-            signature
+          signature
         ) {
           return cached.delay
         }
@@ -1378,7 +1391,7 @@ export const Toast: React.FC<ToastProps> = ({
         const elapsed = Math.max(
           0,
           Date.now() -
-            toast.createdAt
+          toast.createdAt
         )
 
         const delay = -Math.min(
@@ -1414,198 +1427,161 @@ export const Toast: React.FC<ToastProps> = ({
       (
         toast: RuntimeToastItem,
         groupPosition: ToastPosition,
-        isHovered: boolean
+        _isHovered: boolean
       ) => {
-        const isBottom =
-          isBottomPosition(
-            groupPosition
-          )
+        const progressDelay = getProgressDelay(toast)
+        const backgroundColor = getBackgroundColor(toast.backgroundColor)
+        const foregroundColor = getForegroundColor(toast.backgroundColor)
+        const isWarning = toast.backgroundColor === 'warning'
 
-        const progressDelay =
-          getProgressDelay(toast)
+        // Align the revealed action with the side of the viewport.
+        // Right-aligned Toast -> swipe left to reveal a right-side action.
+        // Left-aligned Toast  -> swipe right to reveal a left-side action.
+        // Full-swipe deletion remains enabled in BOTH directions.
+        const showActionOnLeft = isLeftPosition(groupPosition)
 
-        const backgroundColor =
-          getBackgroundColor(
-            toast.backgroundColor
-          )
+        const deleteAction = (
+          <div className={styles['toast-delete-action']}>
+            <button
+              type='button'
+              className={styles['toast-delete-action-button']}
+              aria-label={`Eliminar notificación ${toast.title}`}
+              title='Eliminar notificación'
+              onClick={(event) => {
+                event.stopPropagation()
+                requestDeleteById(toast.id)
+              }}
+            >
+              <Icon
+                icon='IconDelete'
+                color={getGlobalStyle('--color-icons-white')}
+                size={20}
+              />
+            </button>
+          </div>
+        )
 
         return (
           <SwipeableCard
-            swipeWidth={100}
-            autoClose={false}
-            shake={true}
-            gradientAnimation={true}
-            onDelete={() =>
-              requestDeleteById(
-                toast.id
-              )
-            }
-            delay={1500}
-            style={{
-              top: 15,
-              right: 15
-            }}
-            rightActions={
-              groupPosition ===
-              ToastPosition['bottom-left']
-                ? null
-                : (
-                  <div
-                    className={
-                      styles[
-                        'toast-delete-action'
-                      ]
-                    }
-                    onClick={(event) => {
-                      event.stopPropagation()
+            ariaLabel={`Notificación: ${String(toast.title)}`}
+            className={styles['toast-swipe']}
+            wrapperStyle={{
+              width: '100%',
+              maxWidth: '100%',
+              '--toast-background': backgroundColor,
+              '--toast-foreground': foregroundColor
+            } as ToastCSSProperties}
 
-                      requestDeleteById(
-                        toast.id
-                      )
-                    }}
-                    role='button'
-                    aria-label={`Eliminar notificación ${toast.title}`}
-                  >
-                    <button
-                      type='button'
-                      className={
-                        styles[
-                          'toast-delete-action-button'
-                        ]
-                      }
-                      aria-label={`Eliminar notificación ${toast.title}`}
-                    >
-                      <Icon
-                        icon='IconDelete'
-                        color={getGlobalStyle(
-                          '--color-icons-white'
-                        )}
-                        size={20}
-                      />
-                    </button>
-                  </div>
-                )
-            }
+            // Reveal the color-aware action on the outer side of the toast.
+            swipeWidth={76}
+            leftSwipeWidth={76}
+            swipeDirections='both'
+            rightActions={showActionOnLeft ? undefined : deleteAction}
+            leftActions={showActionOnLeft ? deleteAction : undefined}
+            style={{ background: 'var(--toast-action-background)' }}
+            leftActionsStyle={{ background: 'var(--toast-action-background)' }}
+
+            // Warn BEFORE deletion; confirm only after crossing the threshold
+            // and releasing. 76 * 1.6 = 121.6; minimum = 140 px.
+            allowFullSwipe={true}
+            deleteDirections='both'
+            fullSwipeThreshold={1.6}
+            minFullSwipeDistance={140}
+            shake={true}
+            shakeThreshold={0.82}
+            activationDistance={8}
+            openThreshold={0.35}
+            resistance={0.18}
+            ignoreInteractiveElements={true}
+
+            // A vertical lift is just a spring bounce, not dismissal.
+            verticalSwipe='up'
+            swipeHeight={72}
+            verticalThreshold={1.05}
+            verticalBounceDuration={440}
+            enableVerticalTouch={true}
+            onSwipeUp={() => undefined}
+
+            // Keep the toast legible during any gesture.
+            motion='snappy'
+            animationDuration={260}
+            exitDuration={220}
+            rotateOnSwipe={0.75}
+            scaleOnSwipe={0.01}
+            gradientAnimation={false}
+            sticky={false}
+
+            // Toast lifecycle is managed by requestDeleteById, not autoClose.
+            autoClose={false}
+            delay={0}
+            closeOnActionClick={true}
+            onSwipeStart={() => pauseAutoDelete(toast.id)}
+            onSwipeEnd={() => resumeAutoDelete(toast.id)}
+            onSwipeCancel={() => resumeAutoDelete(toast.id)}
+            onDelete={() => requestDeleteById(toast.id)}
           >
             <div
               className={`${styles.notification} ${styles.toast}`}
-              style={
-                {
-                  '--toast-background':
-                    backgroundColor,
-                  '--toast-width':
-                    typeof toastWidth ===
-                    'number'
-                      ? `${toastWidth}px`
-                      : toastWidth,
-                  backgroundColor
-                } satisfies ToastCSSProperties
-              }
+              style={{
+                '--toast-background': backgroundColor,
+                '--toast-foreground': foregroundColor,
+                '--toast-width':
+                  typeof toastWidth === 'number' ? `${toastWidth}px` : toastWidth,
+                backgroundColor
+              } satisfies ToastCSSProperties}
             >
-              <div
-                className={
-                  styles['toast-header']
-                }
-              >
-                <div
-                  className={
-                    styles[
-                      'toast-title-wrapper'
-                    ]
-                  }
-                >
-                  <span
-                    className={
-                      styles[
-                        'toast-icon'
-                      ]
-                    }
-                  >
+              <div className={styles['toast-header']}>
+                <div className={styles['toast-title-wrapper']}>
+                  <span className={styles['toast-icon']}>
                     <Icon
-                      icon={getIcon(
-                        toast.backgroundColor
-                      )}
-                      color={getGlobalStyle(
-                        '--color-icons-white'
-                      )}
+                      icon={getIcon(toast.backgroundColor)}
+                      color={isWarning
+                        ? getGlobalStyle('--color-base-black')
+                        : getGlobalStyle('--color-icons-white')}
                       size={20}
                     />
                   </span>
 
-                  <p
-                    className={
-                      styles[
-                        'notification-title'
-                      ]
-                    }
-                  >
-                    {String(
-                      toast.title
-                    )}
+                  <p className={styles['notification-title']}>
+                    {String(toast.title)}
                   </p>
                 </div>
 
                 <button
                   type='button'
-                  className={
-                    styles[
-                      'notification-button'
-                    ]
-                  }
+                  className={styles['notification-button']}
                   onClick={(event) => {
                     event.stopPropagation()
-
-                    requestDeleteById(
-                      toast.id
-                    )
+                    requestDeleteById(toast.id)
                   }}
                   aria-label={`Cerrar notificación ${toast.title}`}
                 >
                   <Icon
                     icon='IconCancel'
-                    color={getGlobalStyle(
-                      '--color-icons-white'
-                    )}
+                    color={isWarning
+                      ? getGlobalStyle('--color-base-black')
+                      : getGlobalStyle('--color-icons-white')}
                     size={25}
                   />
                 </button>
               </div>
 
-              <p
-                className={
-                  styles[
-                    'notification-message'
-                  ]
-                }
-              >
-                {String(
-                  toast.description
-                )}
+              <p className={styles['notification-message']}>
+                {String(toast.description)}
               </p>
 
               {autoDelete &&
                 showProgress &&
-                toast.lifecycle ===
-                  'visible' && (
+                toast.lifecycle === 'visible' && (
                   <div
-                    className={
-                      styles[
-                        'toast-progress-track'
-                      ]
-                    }
+                    className={styles['toast-progress-track']}
                     aria-hidden='true'
                   >
                     <div
-                      className={
-                        styles[
-                          'toast-progress'
-                        ]
-                      }
+                      className={styles['toast-progress']}
                       style={{
-                        animationDuration:
-                          `${autoDeleteTime}ms`,
-                        animationDelay:
-                          `${progressDelay}ms`
+                        animationDuration: `${autoDeleteTime}ms`,
+                        animationDelay: `${progressDelay}ms`
                       }}
                     />
                   </div>
@@ -1618,7 +1594,9 @@ export const Toast: React.FC<ToastProps> = ({
         autoDelete,
         autoDeleteTime,
         getProgressDelay,
+        pauseAutoDelete,
         requestDeleteById,
+        resumeAutoDelete,
         showProgress,
         toastWidth
       ]
@@ -1659,16 +1637,16 @@ export const Toast: React.FC<ToastProps> = ({
         const stackScale = Math.max(
           0.88,
           1 -
-            depth *
-              stackScaleStep
+          depth *
+          stackScaleStep
         )
 
         const stackOpacity =
           Math.max(
             0.66,
             1 -
-              depth *
-                0.08
+            depth *
+            0.08
           )
 
         const offset =
@@ -1701,7 +1679,7 @@ export const Toast: React.FC<ToastProps> = ({
             `${stackTransitionDuration}ms`,
           '--toast-width':
             typeof toastWidth ===
-            'number'
+              'number'
               ? `${toastWidth}px`
               : toastWidth
         }
@@ -1762,7 +1740,7 @@ export const Toast: React.FC<ToastProps> = ({
               )}
               className={
                 styles[
-                  'toast-motion-container'
+                'toast-motion-container'
                 ]
               }
             >
@@ -1805,7 +1783,7 @@ export const Toast: React.FC<ToastProps> = ({
                 <div
                   className={
                     styles[
-                      'toast-stack-counter'
+                    'toast-stack-counter'
                     ]
                   }
                   aria-hidden='true'
@@ -1877,23 +1855,23 @@ export const Toast: React.FC<ToastProps> = ({
       const stackVisible =
         isStacked
           ? orderedList.slice(
-              -maxVisible
-            )
+            -maxVisible
+          )
           : orderedList
 
       const hiddenCount =
         Math.max(
           0,
           groupList.length -
-            maxVisible
+          maxVisible
         )
 
       const containerClass = [
         styles[
-          'notification-container'
+        'notification-container'
         ],
         styles[groupPosition] ??
-          '',
+        '',
         isStacked
           ? styles.stacked
           : '',
@@ -1920,7 +1898,7 @@ export const Toast: React.FC<ToastProps> = ({
               zIndex: 2147483647,
               '--toast-width':
                 typeof toastWidth ===
-                'number'
+                  'number'
                   ? `${toastWidth}px`
                   : toastWidth,
               '--stack-offset-y':
@@ -1937,7 +1915,9 @@ export const Toast: React.FC<ToastProps> = ({
               (toast) =>
                 renderToastMotion(
                   toast,
-                  groupPosition
+                  groupPosition,
+                  false,
+                  hoveredIds.has(getToastKey(toast.id))
                 )
             )}
 
@@ -1945,7 +1925,7 @@ export const Toast: React.FC<ToastProps> = ({
             <div
               className={
                 styles[
-                  'toast-stack-container'
+                'toast-stack-container'
                 ]
               }
               aria-live='polite'
@@ -1958,7 +1938,7 @@ export const Toast: React.FC<ToastProps> = ({
                   {
                     '--toast-width':
                       typeof toastWidth ===
-                      'number'
+                        'number'
                         ? `${toastWidth}px`
                         : toastWidth,
                     '--stack-offset-y':
@@ -2025,9 +2005,9 @@ export const Toast: React.FC<ToastProps> = ({
         list.some(
           (toast) =>
             toast.position !==
-              undefined &&
+            undefined &&
             toast.position !==
-              null
+            null
         )
 
       if (
